@@ -123,11 +123,4 @@ describe DeadStepsSorter do
     content_of_dead_steps_file.should == "##{Dir.getwd}/temp_dead_steps.rb\nGiven /^I am a dead step$/ do\n  puts 'stuff'\nend\n"
   end
 
-  it "blah" do
-    step_definitions_folder = "../features/step_definitions/dead_step_sorter_steps/"
-    list_of_dead_steps = ["I am a nested step", "the result is \"([^\"]*)\""]
-
-    @dead_steps_sorter.move_dead_steps(step_definitions_folder, list_of_dead_steps)
-  end
-
 end
