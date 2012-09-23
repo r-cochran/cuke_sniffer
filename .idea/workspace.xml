@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2d3508e-43a9-4cca-8aef-d52fffe4afb1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rspec/dead_steps_sorter_spec.rb" afterPath="$PROJECT_DIR$/rspec/dead_steps_sorter_spec.rb" />
     </list>
     <ignored path="cuke_sniffer.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,7 +27,7 @@
       <file leaf-file-name="dead_steps_sorter_spec.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/rspec/dead_steps_sorter_spec.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="115" column="31" selection-start="5757" selection-end="5757" vertical-scroll-proportion="0.6125356">
+            <state line="98" column="40" selection-start="5135" selection-end="5135" vertical-scroll-proportion="0.2008547">
               <folding />
             </state>
           </provider>
@@ -528,11 +526,16 @@
       <created>1347410664297</created>
       <updated>1347410664297</updated>
     </task>
+    <task id="LOCAL-00001" summary="Removed a sandbox spec.">
+      <created>1348439199632</created>
+      <updated>1348439199632</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -652,7 +655,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/rspec/dead_steps_sorter_spec.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="115" column="31" selection-start="5757" selection-end="5757" vertical-scroll-proportion="0.6125356">
+        <state line="98" column="40" selection-start="5135" selection-end="5135" vertical-scroll-proportion="0.2008547">
           <folding />
         </state>
       </provider>
