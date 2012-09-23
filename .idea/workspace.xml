@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2d3508e-43a9-4cca-8aef-d52fffe4afb1" name="Default" comment="">
+      <change type="DELETED" beforePath="C:\development\ruby_projects\cuke_sniffer\rspec\dead_steps.rb" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="cuke_sniffer.iws" />
@@ -27,16 +28,7 @@
       <file leaf-file-name="dead_steps_sorter_spec.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/rspec/dead_steps_sorter_spec.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="98" column="40" selection-start="5135" selection-end="5135" vertical-scroll-proportion="0.2008547">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dead_steps.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/rspec/dead_steps.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="71" selection-start="336" selection-end="336" vertical-scroll-proportion="0.0">
+            <state line="101" column="40" selection-start="5276" selection-end="5276" vertical-scroll-proportion="0.5106383">
               <folding />
             </state>
           </provider>
@@ -261,7 +253,7 @@
       <recent name="C:\development\ruby_projects\cuke_sniffer\features\step_definitions\nested_steps" />
     </key>
   </component>
-  <component name="RunManager" selected="Ruby.temp">
+  <component name="RunManager" selected="RSpec.dead_steps_sorter_spec">
     <configuration default="false" name="Add two numbers" type="CucumberRunConfigurationType" factoryName="Cucumber" temporary="true">
       <predefined_log_file id="RUBY_CUCUMBER" enabled="true" />
       <module name="cuke_sniffer" />
@@ -322,22 +314,6 @@
       <CUCUMBER_RUN_CONFIG_SETTINGS_ID NAME="CUCUMBER_RUNNER_PATH" VALUE="" />
       <CUCUMBER_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_RUNNER" VALUE="false" />
       <CUCUMBER_RUN_CONFIG_SETTINGS_ID NAME="SETTINGS_VERSION" VALUE="2" />
-      <RunnerSettings RunnerId="RubyRunner" />
-      <ConfigurationWrapper RunnerId="RubyRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="temp" type="RubyRunConfigurationType" factoryName="Ruby" temporary="true">
-      <module name="cuke_sniffer" />
-      <RUBY_RUN_CONFIG NAME="RUBY_ARGS" VALUE="-e $stdout.sync=true;$stderr.sync=true;load($0=ARGV.shift)" />
-      <RUBY_RUN_CONFIG NAME="WORK DIR" VALUE="$PROJECT_DIR$" />
-      <RUBY_RUN_CONFIG NAME="SHOULD_USE_SDK" VALUE="false" />
-      <RUBY_RUN_CONFIG NAME="ALTERN_SDK_NAME" VALUE="" />
-      <RUBY_RUN_CONFIG NAME="myPassParentEnvs" VALUE="true" />
-      <envs />
-      <EXTENSION ID="BundlerRunConfigurationExtension" bundleExecEnabled="false" />
-      <EXTENSION ID="RubyCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" track_test_folders="true" runner="rcov" />
-      <RUBY_RUN_CONFIG NAME="SCRIPT_PATH" VALUE="$PROJECT_DIR$/temp.rb" />
-      <RUBY_RUN_CONFIG NAME="SCRIPT_ARGS" VALUE="" />
       <RunnerSettings RunnerId="RubyRunner" />
       <ConfigurationWrapper RunnerId="RubyRunner" />
       <method />
@@ -493,12 +469,11 @@
       <ConfigurationWrapper RunnerId="RubyRunner" />
       <method />
     </configuration>
-    <list size="5">
+    <list size="4">
       <item index="0" class="java.lang.String" itemvalue="Cucumber.Add two numbers" />
       <item index="1" class="java.lang.String" itemvalue="Cucumber.All features in: scenarios" />
-      <item index="2" class="java.lang.String" itemvalue="Ruby.temp" />
-      <item index="3" class="java.lang.String" itemvalue="RSpec.dead_steps_sorter_spec" />
-      <item index="4" class="java.lang.String" itemvalue="RSpec.DeadStepsSorter blah" />
+      <item index="2" class="java.lang.String" itemvalue="RSpec.dead_steps_sorter_spec" />
+      <item index="3" class="java.lang.String" itemvalue="RSpec.DeadStepsSorter blah" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
@@ -530,7 +505,11 @@
       <created>1348439199632</created>
       <updated>1348439199632</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Removed a sandbox spec.">
+      <created>1348439232651</created>
+      <updated>1348439232651</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -541,17 +520,17 @@
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26159793" sideWeight="0.67027026" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26159793" sideWeight="0.55945945" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31621623" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.44054055" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -628,11 +607,6 @@
         <state line="6" column="35" selection-start="119" selection-end="119" vertical-scroll-proportion="0.2642487" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rspec/dead_steps.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="71" selection-start="336" selection-end="336" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/complex_calculator.feature">
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="22" selection-start="180" selection-end="180" vertical-scroll-proportion="0.0" />
@@ -655,7 +629,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/rspec/dead_steps_sorter_spec.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="98" column="40" selection-start="5135" selection-end="5135" vertical-scroll-proportion="0.2008547">
+        <state line="101" column="40" selection-start="5276" selection-end="5276" vertical-scroll-proportion="0.5106383">
           <folding />
         </state>
       </provider>
