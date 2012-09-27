@@ -8,4 +8,5 @@ end
 
 Then /^the result is "([^"]*)"$/ do |result|
   result.to_i.should == @first_number + @second_number
+
 end
