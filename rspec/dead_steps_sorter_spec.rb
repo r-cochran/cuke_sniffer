@@ -1,5 +1,5 @@
 require 'rspec'
-require '../source/dead_steps_sorter'
+require '../src/dead_steps_sorter'
 
 describe DeadStepsSorter do
 

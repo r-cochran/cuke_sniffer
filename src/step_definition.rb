@@ -1,5 +1,5 @@
 class StepDefinition
-  attr_accessor :regex, :code, :parameters, :calls, :nested_steps
+  attr_accessor :location, :regex, :code, :parameters, :calls, :nested_steps
 
   STEP_DEFINITION_REGEX = /^(Given|When|Then|And|Or|\*)\s\/(?<step>.+)\/\sdo\s?(\|(?<parameters>.*)\|)?$/x
   SIMPLE_NESTED_STEP_REGEX = /^steps\s"(Given|When|Then|And|Or|\*)\s(?<step_string>.*)"/x
@@ -10,7 +10,9 @@ class StepDefinition
   START_COMPLEX_WITH_STEP_REGEX = /^steps\s%{(Given|When|Then|And|Or|\*)\s(?<step_string>.*)/x
   END_COMPLEX_WITH_STEP_REGEX = /^(Given|When|Then|And|Or|\*)\s(?<step_string>.*)}$/x
 
-  def initialize(raw_code)
+  def initialize(location, raw_code)
+    @location = location
+
     @parameters = []
     @calls = {}
     @nested_steps = []
@@ -60,6 +62,15 @@ class StepDefinition
         next
       end
     }
+  end
+
+  def ==(comparison_object)
+    comparison_object.location == @location
+    comparison_object.regex == @regex
+    comparison_object.code == code
+    comparison_object.parameters == @parameters
+    comparison_object.calls == @calls
+    comparison_object.nested_steps == @nested_steps
   end
 
 end

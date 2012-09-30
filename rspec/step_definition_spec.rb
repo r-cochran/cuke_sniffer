@@ -1,13 +1,22 @@
 require 'rspec'
-require '../source/step_definition'
+require '../src/step_definition'
 
 describe StepDefinition do
+
+  it "should retain the passed location of the step after initialization" do
+    raw_code = ["When /^the second number is 1$/ do",
+                "@second_number = 1",
+                "end"]
+    location = "path/path/path/my_steps.rb:1"
+    step_definition = StepDefinition.new(location, raw_code)
+    step_definition.location.should == location
+  end
 
   it "should accept a simple step definition with no parameters it should divide that code into a regular expression, parameters, and code" do
     raw_code = ["When /^the second number is 1$/ do",
                 "@second_number = 1",
                 "end"]
-    step_definition = StepDefinition.new(raw_code)
+    step_definition = StepDefinition.new("location", raw_code)
     step_definition.regex.should == /^the second number is 1$/
     step_definition.parameters.should == []
     step_definition.code.should == ["@second_number = 1"]
@@ -17,7 +26,7 @@ describe StepDefinition do
     raw_code = ["Given /^the first number is \"([^\"]*)\"$/ do |first_number|",
                 "@second_number = 1",
                 "end"]
-    step_definition = StepDefinition.new(raw_code)
+    step_definition = StepDefinition.new("location", raw_code)
     step_definition.regex.should == /^the first number is "([^"]*)"$/
     step_definition.parameters.should == %w"first_number"
     step_definition.code.should == ["@second_number = 1"]
@@ -27,7 +36,7 @@ describe StepDefinition do
     raw_code = ["Given /^the first number is \"([^\"]*)\"$/ do |first_number|",
                 "@second_number = 1",
                 "end"]
-    step_definition = StepDefinition.new(raw_code)
+    step_definition = StepDefinition.new("location", raw_code)
     location = "myFile.rb:line 3"
     step_string = "the first number is \"1\""
     step_definition.add_call(location, step_string)
@@ -39,7 +48,7 @@ describe StepDefinition do
     raw_code = ["Given /^the first number is 1$/ do |first_number|",
                 "steps \"And #{nested_step}\"",
                 "end"]
-    step_definition = StepDefinition.new(raw_code)
+    step_definition = StepDefinition.new("location", raw_code)
     step_definition.nested_steps.should == [nested_step]
   end
 
@@ -49,7 +58,7 @@ describe StepDefinition do
                 "steps %{And #{nested_step}",
                 "}",
                 "end"]
-    step_definition = StepDefinition.new(raw_code)
+    step_definition = StepDefinition.new("location", raw_code)
     step_definition.nested_steps.should == [nested_step]
   end
 
@@ -59,7 +68,7 @@ describe StepDefinition do
                 "steps %{",
                 "And #{nested_step}}",
                 "end"]
-    step_definition = StepDefinition.new(raw_code)
+    step_definition = StepDefinition.new("location", raw_code)
     step_definition.nested_steps.should == [nested_step]
   end
 
@@ -70,7 +79,7 @@ describe StepDefinition do
                 "And #{nested_step}",
                 "}",
                 "end"]
-    step_definition = StepDefinition.new(raw_code)
+    step_definition = StepDefinition.new("location", raw_code)
     step_definition.nested_steps.should == [nested_step]
   end
 
@@ -82,7 +91,7 @@ describe StepDefinition do
                 "And #{nested_step}",
                 "}",
                 "end"]
-    step_definition = StepDefinition.new(raw_code)
+    step_definition = StepDefinition.new("location", raw_code)
     step_definition.nested_steps.should == [nested_step, nested_step]
   end
 
@@ -94,7 +103,7 @@ describe StepDefinition do
                 "And #{nested_step}",
                 "And #{nested_step}}",
                 "end"]
-    step_definition = StepDefinition.new(raw_code)
+    step_definition = StepDefinition.new("location", raw_code)
     step_definition.nested_steps.should == [nested_step, nested_step, nested_step, nested_step]
   end
 
@@ -106,7 +115,7 @@ describe StepDefinition do
                 "#And #{nested_step}",
                 "And #{nested_step}}",
                 "end"]
-    step_definition = StepDefinition.new(raw_code)
+    step_definition = StepDefinition.new("location", raw_code)
     step_definition.nested_steps.should == [nested_step, nested_step, nested_step]
   end
 
