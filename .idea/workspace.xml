@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c2d3508e-43a9-4cca-8aef-d52fffe4afb1" name="Default" comment="" />
+    <list default="true" id="c2d3508e-43a9-4cca-8aef-d52fffe4afb1" name="Default" comment="Noticed a problem  with the last step in a file being chopped off. Resolved that in the scenario class. Built the feature helper to generate a folder worth of content. And started work on the cuke sniffer master class. Left the cuke sniffer at the &quot;gather all of the used steps&quot; part, this includes nested steps obtained from the step_definition objects.">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rspec/cuke_sniffer_spec.rb" afterPath="$PROJECT_DIR$/rspec/cuke_sniffer_spec.rb" />
+    </list>
     <ignored path="cuke_sniffer.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -22,10 +25,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="cuke_sniffer.rb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="cuke_sniffer.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/cuke_sniffer.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="30" selection-start="1453" selection-end="1453" vertical-scroll-proportion="0.745">
+            <state line="39" column="127" selection-start="1443" selection-end="1443" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -49,10 +52,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cuke_sniffer_spec.rb" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="cuke_sniffer_spec.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/rspec/cuke_sniffer_spec.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="76" selection-start="850" selection-end="850" vertical-scroll-proportion="0.0">
+            <state line="30" column="27" selection-start="1097" selection-end="1097" vertical-scroll-proportion="0.6175">
               <folding />
             </state>
           </provider>
@@ -96,10 +99,10 @@
         <option value="$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/nested_directory/nested_feature.feature" />
         <option value="$PROJECT_DIR$/src/feature.rb" />
         <option value="$PROJECT_DIR$/features/step_definitions/dead_step_sorter_steps/simple_calculator_steps.rb" />
-        <option value="$PROJECT_DIR$/rspec/cuke_sniffer_spec.rb" />
         <option value="$PROJECT_DIR$/src/cuke_sniffer.rb" />
         <option value="$PROJECT_DIR$/src/step_definition_helper.rb" />
         <option value="$PROJECT_DIR$/rspec/step_definition_helper_spec.rb" />
+        <option value="$PROJECT_DIR$/rspec/cuke_sniffer_spec.rb" />
       </list>
     </option>
   </component>
@@ -901,13 +904,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/rspec/cuke_sniffer_spec.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="76" selection-start="850" selection-end="850" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rspec/step_definition_helper_spec.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="10" column="59" selection-start="266" selection-end="266" vertical-scroll-proportion="0.0">
@@ -917,7 +913,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cuke_sniffer.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="30" selection-start="1453" selection-end="1453" vertical-scroll-proportion="0.745">
+        <state line="39" column="127" selection-start="1443" selection-end="1443" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rspec/cuke_sniffer_spec.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="27" selection-start="1097" selection-end="1097" vertical-scroll-proportion="0.6175">
           <folding />
         </state>
       </provider>

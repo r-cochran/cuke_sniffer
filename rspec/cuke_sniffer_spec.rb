@@ -29,6 +29,5 @@ describe CukeSniffer do
   it "should condense all nested steps in a step definition to a hash of location(augmented index) => step call" do
     steps = @cuke_sniffer.extract_steps_from_step_definitions
     steps.keys.length.should == 1
-    puts steps.keys[0]
   end
 end
