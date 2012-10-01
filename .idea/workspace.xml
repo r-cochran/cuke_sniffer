@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c2d3508e-43a9-4cca-8aef-d52fffe4afb1" name="Default" comment="Updated step_definition class/spec. Added the step_definition_helper class/spec to be used in building step definition classes from files/folders.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rspec/feature_spec.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rspec/scenario_spec.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/feature.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/feature_helper.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/scenario.rb" />
+    <list default="true" id="c2d3508e-43a9-4cca-8aef-d52fffe4afb1" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rspec/cuke_sniffer_spec.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rspec/feature_helper_spec.rb" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/cuke_sniffer.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/complex_calculator.feature" afterPath="$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/complex_calculator.feature" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/simple_calculator.feature" afterPath="$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/simple_calculator.feature" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/features/step_definitions/dead_step_sorter_steps/simple_calculator_steps.rb" afterPath="$PROJECT_DIR$/features/step_definitions/dead_step_sorter_steps/simple_calculator_steps.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rspec/step_definition_helper_spec.rb" afterPath="$PROJECT_DIR$/rspec/step_definition_helper_spec.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/feature.rb" afterPath="$PROJECT_DIR$/src/feature.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/feature_helper.rb" afterPath="$PROJECT_DIR$/src/feature_helper.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/step_definition_helper.rb" afterPath="$PROJECT_DIR$/src/step_definition_helper.rb" />
     </list>
     <ignored path="cuke_sniffer.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,64 +34,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="feature.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/feature.rb">
+      <file leaf-file-name="cuke_sniffer.rb" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/cuke_sniffer.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="64" column="44" selection-start="1768" selection-end="1768" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="feature_spec.rb" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/rspec/feature_spec.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="41" selection-start="235" selection-end="235" vertical-scroll-proportion="-1.8631579">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="complex_calculator.feature" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/complex_calculator.feature">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="8" selection-start="521" selection-end="521" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="simple_calculator.feature" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/simple_calculator.feature">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="nested_feature.feature" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/nested_directory/nested_feature.feature">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="scenario_spec.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/rspec/scenario_spec.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="12" selection-start="1591" selection-end="1591" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="scenario.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/scenario.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="47" selection-start="56" selection-end="62" vertical-scroll-proportion="0.0">
+            <state line="39" column="23" selection-start="1443" selection-end="1443" vertical-scroll-proportion="0.66">
               <folding />
             </state>
           </provider>
@@ -96,7 +46,34 @@
       <file leaf-file-name="step_definition.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/step_definition.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="73" column="8" selection-start="2141" selection-end="2427" vertical-scroll-proportion="0.0">
+            <state line="12" column="24" selection-start="743" selection-end="743" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="step_definition_helper.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/step_definition_helper.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="113" selection-start="538" selection-end="538" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="cuke_sniffer_spec.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rspec/cuke_sniffer_spec.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="24" column="76" selection-start="850" selection-end="850" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="step_definition_helper_spec.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/rspec/step_definition_helper_spec.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="59" selection-start="266" selection-end="266" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -119,22 +96,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/rspec/step_definition_spec.rb" />
-        <option value="$PROJECT_DIR$/src/step_definition.rb" />
-        <option value="$PROJECT_DIR$/features/step_definitions/dead_step_sorter_steps/complex_calculator_steps.rb" />
-        <option value="$PROJECT_DIR$/src/step_definition_helper.rb" />
-        <option value="$PROJECT_DIR$/rspec/step_definition_helper_spec.rb" />
-        <option value="$PROJECT_DIR$/src/feature_step.rb" />
-        <option value="$PROJECT_DIR$/src/scenario_step.rb" />
-        <option value="$PROJECT_DIR$/rspec/feature_step_spec.rb" />
         <option value="$PROJECT_DIR$/src/scenario_step_helper.rb" />
         <option value="$PROJECT_DIR$/rspec/feature_step_helper_spec.rb" />
         <option value="$PROJECT_DIR$/rspec/scenario_helper_spec.rb" />
-        <option value="$PROJECT_DIR$/rspec/feature_helper_spec.rb" />
-        <option value="$PROJECT_DIR$/src/feature.rb" />
         <option value="$PROJECT_DIR$/src/scenario.rb" />
-        <option value="$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/complex_calculator.feature" />
         <option value="$PROJECT_DIR$/rspec/feature_spec.rb" />
+        <option value="$PROJECT_DIR$/rspec/feature_helper_spec.rb" />
+        <option value="$PROJECT_DIR$/src/feature_helper.rb" />
+        <option value="$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/complex_calculator.feature" />
+        <option value="$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/simple_calculator.feature" />
+        <option value="$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/nested_directory/nested_feature.feature" />
+        <option value="$PROJECT_DIR$/src/feature.rb" />
+        <option value="$PROJECT_DIR$/features/step_definitions/dead_step_sorter_steps/simple_calculator_steps.rb" />
+        <option value="$PROJECT_DIR$/rspec/cuke_sniffer_spec.rb" />
+        <option value="$PROJECT_DIR$/src/cuke_sniffer.rb" />
+        <option value="$PROJECT_DIR$/src/step_definition_helper.rb" />
+        <option value="$PROJECT_DIR$/rspec/step_definition_helper_spec.rb" />
       </list>
     </option>
   </component>
@@ -254,28 +231,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="step_definitions" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dead_step_sorter_steps" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cuke_sniffer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="cuke_sniffer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="features" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="scenarios" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -330,7 +285,7 @@
       <recent name="C:\development\ruby_projects\cuke_sniffer\features\step_definitions\nested_steps" />
     </key>
   </component>
-  <component name="RunManager" selected="RSpec.feature_spec">
+  <component name="RunManager" selected="RSpec.All specs in: rspec">
     <configuration default="false" name="All features in: scenarios" type="CucumberRunConfigurationType" factoryName="Cucumber" temporary="true">
       <predefined_log_file id="RUBY_CUCUMBER" enabled="true" />
       <module name="cuke_sniffer" />
@@ -656,7 +611,63 @@
       <ConfigurationWrapper RunnerId="RubyRunner" />
       <method />
     </configuration>
-    <list size="8">
+    <configuration default="false" name="feature_helper_spec" type="RSpecRunConfigurationType" factoryName="RSpec">
+      <predefined_log_file id="RUBY_RSPEC" enabled="true" />
+      <module name="cuke_sniffer" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="-e $stdout.sync=true;$stderr.sync=true;load($0=ARGV.shift)" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$PROJECT_DIR$/rspec" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
+      <envs>
+        <env name="JRUBY_OPTS" value="-X+O" />
+      </envs>
+      <EXTENSION ID="BundlerRunConfigurationExtension" bundleExecEnabled="false" />
+      <EXTENSION ID="RubyCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" track_test_folders="true" runner="rcov" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="$PROJECT_DIR$/rspec/feature_helper_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_VERSION" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_SPEC_RUNNER" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
+      <RunnerSettings RunnerId="RubyRunner" />
+      <ConfigurationWrapper RunnerId="RubyRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="cuke_sniffer_spec" type="RSpecRunConfigurationType" factoryName="RSpec">
+      <predefined_log_file id="RUBY_RSPEC" enabled="true" />
+      <module name="cuke_sniffer" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="-e $stdout.sync=true;$stderr.sync=true;load($0=ARGV.shift)" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="WORK DIR" VALUE="$PROJECT_DIR$/rspec" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SHOULD_USE_SDK" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
+      <envs>
+        <env name="JRUBY_OPTS" value="-X+O" />
+      </envs>
+      <EXTENSION ID="BundlerRunConfigurationExtension" bundleExecEnabled="false" />
+      <EXTENSION ID="RubyCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" track_test_folders="true" runner="rcov" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TESTS_FOLDER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_SCRIPT_PATH" VALUE="$PROJECT_DIR$/rspec/cuke_sniffer_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_RUNNER_PATH" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_FILE_MASK" VALUE="**/*_spec.rb" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_EXAMPLE_NAME" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="TEST_TEST_TYPE" VALUE="TEST_SCRIPT" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="SPEC_ARGS" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="RUNNER_VERSION" VALUE="" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="USE_CUSTOM_SPEC_RUNNER" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="DRB" VALUE="false" />
+      <RSPEC_RUN_CONFIG_SETTINGS_ID NAME="FULL_BACKTRACE" VALUE="false" />
+      <RunnerSettings RunnerId="RubyRunner" />
+      <ConfigurationWrapper RunnerId="RubyRunner" />
+      <method />
+    </configuration>
+    <list size="10">
       <item index="0" class="java.lang.String" itemvalue="Cucumber.All features in: scenarios" />
       <item index="1" class="java.lang.String" itemvalue="RSpec.dead_steps_sorter_spec" />
       <item index="2" class="java.lang.String" itemvalue="RSpec.step_definition_spec" />
@@ -665,6 +676,8 @@
       <item index="5" class="java.lang.String" itemvalue="RSpec.scenario_spec" />
       <item index="6" class="java.lang.String" itemvalue="RSpec.feature_spec" />
       <item index="7" class="java.lang.String" itemvalue="RSpec.Feature should gather a scenario with its tags and create a scenario object and add feature level tags to the scenario" />
+      <item index="8" class="java.lang.String" itemvalue="RSpec.feature_helper_spec" />
+      <item index="9" class="java.lang.String" itemvalue="RSpec.cuke_sniffer_spec" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
@@ -712,13 +725,18 @@
       <created>1349013774923</created>
       <updated>1349013774923</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="created scenario and feature/feature helper objects to be utilized in future functionality.">
+      <created>1349050609880</created>
+      <updated>1349050609880</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -733,7 +751,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -776,7 +793,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated step_definition class/spec. Added the step_definition_helper class/spec to be used in building step definition classes from files/folders." />
+    <option name="LAST_COMMIT_MESSAGE" value="created scenario and feature/feature helper objects to be utilized in future functionality." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -794,99 +811,120 @@
     <MESSAGE value="Began work on the step_definition class. Was able to identify and parse out the regex, the parameters, and all of the possible nested steps I can think of. Will need to figure out how I want to store these faux constants regular expressions." />
     <MESSAGE value="Began work on the step_definition class. Was able to identify and parse out the regex, the parameters, and all of the possible nested steps I can think of. Will need to figure out how I want to store these pseudo constants regular expressions.&#10;&#10;Added notes section on things that will not be addressed in the current scope of this project. First note is my approach to deprecated cucumber functionality." />
     <MESSAGE value="Updated step_definition class/spec. Added the step_definition_helper class/spec to be used in building step definition classes from files/folders." />
+    <MESSAGE value="created scenario and feature/feature helper objects to be utilized in future functionality." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/rspec/feature_helper_spec.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="32" selection-start="426" selection-end="426" vertical-scroll-proportion="0.48320413">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/features/step_definitions/dead_step_sorter_steps/nested_steps/nested_steps.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="41" selection-start="68" selection-end="68" vertical-scroll-proportion="0.085" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dead_steps_sorter.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="30" selection-start="421" selection-end="421" vertical-scroll-proportion="0.28531468" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rspec/dead_steps_sorter_spec.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="8" selection-start="8" selection-end="8" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rspec/step_definition_spec.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="25" selection-start="50" selection-end="430" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/features/step_definitions/dead_step_sorter_steps/complex_calculator_steps.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="96" selection-start="304" selection-end="304" vertical-scroll-proportion="0.425" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/feature_helper.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="20" selection-end="20" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/step_definition_helper.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="31" selection-start="1099" selection-end="1099" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rspec/step_definition_helper_spec.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="64" selection-start="740" selection-end="762" vertical-scroll-proportion="1.1860465" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/rspec/scenario_spec.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="12" selection-start="1591" selection-end="1591" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/step_definition.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="73" column="8" selection-start="2141" selection-end="2427" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/simple_calculator.feature">
-      <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/nested_directory/nested_feature.feature">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/complex_calculator.feature">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="8" selection-start="521" selection-end="521" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/feature.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="44" selection-start="1768" selection-end="1768" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/scenario.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="47" selection-start="56" selection-end="62" vertical-scroll-proportion="0.0">
+        <state line="3" column="3" selection-start="172" selection-end="172" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rspec/dead_steps_sorter_spec.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="122" column="66" selection-start="5966" selection-end="5967" vertical-scroll-proportion="0.5831063">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/simple_calculator.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="28" selection-start="83" selection-end="83" vertical-scroll-proportion="0.13421053">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/feature.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="80" column="68" selection-start="2096" selection-end="2096" vertical-scroll-proportion="1.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/rspec/feature_spec.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="41" selection-start="235" selection-end="235" vertical-scroll-proportion="-1.8631579">
+        <state line="66" column="0" selection-start="1977" selection-end="1977" vertical-scroll-proportion="0.66">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/nested_directory/nested_feature.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="26" selection-start="108" selection-end="108" vertical-scroll-proportion="0.1275">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/complex_calculator.feature">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="33" selection-start="61" selection-end="90" vertical-scroll-proportion="0.1275">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rspec/step_definition_spec.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/step_definition.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="24" selection-start="743" selection-end="743" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/step_definition_helper.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="113" selection-start="538" selection-end="538" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/features/step_definitions/dead_step_sorter_steps/simple_calculator_steps.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="32" selection-start="221" selection-end="221" vertical-scroll-proportion="0.425">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rspec/cuke_sniffer_spec.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="76" selection-start="850" selection-end="850" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/rspec/step_definition_helper_spec.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="59" selection-start="266" selection-end="266" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/cuke_sniffer.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="23" selection-start="1443" selection-end="1443" vertical-scroll-proportion="0.66">
           <folding />
         </state>
       </provider>

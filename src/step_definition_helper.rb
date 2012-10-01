@@ -2,7 +2,7 @@ class StepDefinitionHelper
   STEP_DEFINITION_REGEX = /^(Given|When|Then|And|Or|\*)\s\/(?<step>.+)\/\sdo\s?(\|(?<parameters>.*)\|)?$/x
   FILE_IGNORE_LIST = [".", ".."]
 
-  def parse_step_definitions(file_name)
+  def self.parse_step_definitions(file_name)
     step_hash = {}
     step_file = File.open(file_name)
 
@@ -10,7 +10,7 @@ class StepDefinitionHelper
     group_counter = 0
     step_code = []
     step_location = nil
-    line_counter = 0
+    line_counter = 1
     step_file.each_line{|line|
       if(line =~ STEP_DEFINITION_REGEX)
         step_flag = true
@@ -35,7 +35,7 @@ class StepDefinitionHelper
     step_hash
   end
 
-  def is_comment?(line)
+  def self.is_comment?(line)
     if line =~ /^\#.*$/
       true
     else
@@ -43,7 +43,7 @@ class StepDefinitionHelper
     end
   end
 
-  def build_step_definitions(file_name)
+  def self.build_step_definitions(file_name)
     definitions_of_file = parse_step_definitions(file_name)
     step_definitions = []
     definitions_of_file.each_key{|key|
@@ -52,7 +52,7 @@ class StepDefinitionHelper
     step_definitions
   end
 
-  def build_step_definitions_from_folder(folder_name)
+  def self.build_step_definitions_from_folder(folder_name)
     list_of_steps = []
     Dir.entries(folder_name).each_entry { |file_name|
       unless (FILE_IGNORE_LIST.include?(file_name))

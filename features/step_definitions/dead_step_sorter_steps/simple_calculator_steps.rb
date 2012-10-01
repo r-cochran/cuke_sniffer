@@ -1,5 +1,5 @@
 Given /^the first number is 1$/ do
-  @first_number = 1
+  steps "Given the first number is \"1\""
 end
 
 When /^the second number is 1$/ do

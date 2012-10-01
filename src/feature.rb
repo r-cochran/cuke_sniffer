@@ -38,7 +38,7 @@ class Feature
         next
       end
 
-      if(SCENARIO_TITLE_REGEX.match(line) || total_lines == line_counter)
+      if(SCENARIO_TITLE_REGEX.match(line))
         if scenario_location.nil? == false
           not_my_code = []
           code_block.reverse.each{|code|
@@ -58,14 +58,18 @@ class Feature
 
       code_block << line.strip unless @name.nil?
     }
+    scenario = Scenario.new(scenario_location, code_block)
+    scenario.tags += @tags
+    @scenarios << scenario
+
     feature_file.close
   end
 
   def ==(comparison_object)
     comparison_object.location == @location
-    comparison_object.code == @code
-    comparison_object.name == @name
     comparison_object.tags == @tags
+    comparison_object.name == @name
+    comparison_object.scenarios == @scenarios
   end
 
 

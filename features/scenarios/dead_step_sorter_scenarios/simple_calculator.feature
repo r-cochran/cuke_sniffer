@@ -5,4 +5,3 @@ Feature: Basic Calculator
     And the second number is 1
     When the calculator adds
     Then the result is 2
-
