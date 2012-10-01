@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c2d3508e-43a9-4cca-8aef-d52fffe4afb1" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rspec/cuke_sniffer_spec.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/rspec/feature_helper_spec.rb" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/cuke_sniffer.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/complex_calculator.feature" afterPath="$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/complex_calculator.feature" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/simple_calculator.feature" afterPath="$PROJECT_DIR$/features/scenarios/dead_step_sorter_scenarios/simple_calculator.feature" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/features/step_definitions/dead_step_sorter_steps/simple_calculator_steps.rb" afterPath="$PROJECT_DIR$/features/step_definitions/dead_step_sorter_steps/simple_calculator_steps.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/rspec/step_definition_helper_spec.rb" afterPath="$PROJECT_DIR$/rspec/step_definition_helper_spec.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/feature.rb" afterPath="$PROJECT_DIR$/src/feature.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/feature_helper.rb" afterPath="$PROJECT_DIR$/src/feature_helper.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/step_definition_helper.rb" afterPath="$PROJECT_DIR$/src/step_definition_helper.rb" />
-    </list>
+    <list default="true" id="c2d3508e-43a9-4cca-8aef-d52fffe4afb1" name="Default" comment="" />
     <ignored path="cuke_sniffer.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -37,7 +25,7 @@
       <file leaf-file-name="cuke_sniffer.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/cuke_sniffer.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="23" selection-start="1443" selection-end="1443" vertical-scroll-proportion="0.66">
+            <state line="41" column="30" selection-start="1453" selection-end="1453" vertical-scroll-proportion="0.745">
               <folding />
             </state>
           </provider>
@@ -729,7 +717,11 @@
       <created>1349050609880</created>
       <updated>1349050609880</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Noticed a problem  with the last step in a file being chopped off. Resolved that in the scenario class. Built the feature helper to generate a folder worth of content. And started work on the cuke sniffer master class. Left the cuke sniffer at the &quot;gather all of the used steps&quot; part, this includes nested steps obtained from the step_definition objects.">
+      <created>1349058363922</created>
+      <updated>1349058363922</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -793,7 +785,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="created scenario and feature/feature helper objects to be utilized in future functionality." />
+    <option name="LAST_COMMIT_MESSAGE" value="Noticed a problem  with the last step in a file being chopped off. Resolved that in the scenario class. Built the feature helper to generate a folder worth of content. And started work on the cuke sniffer master class. Left the cuke sniffer at the &quot;gather all of the used steps&quot; part, this includes nested steps obtained from the step_definition objects." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -812,6 +804,7 @@
     <MESSAGE value="Began work on the step_definition class. Was able to identify and parse out the regex, the parameters, and all of the possible nested steps I can think of. Will need to figure out how I want to store these pseudo constants regular expressions.&#10;&#10;Added notes section on things that will not be addressed in the current scope of this project. First note is my approach to deprecated cucumber functionality." />
     <MESSAGE value="Updated step_definition class/spec. Added the step_definition_helper class/spec to be used in building step definition classes from files/folders." />
     <MESSAGE value="created scenario and feature/feature helper objects to be utilized in future functionality." />
+    <MESSAGE value="Noticed a problem  with the last step in a file being chopped off. Resolved that in the scenario class. Built the feature helper to generate a folder worth of content. And started work on the cuke sniffer master class. Left the cuke sniffer at the &quot;gather all of the used steps&quot; part, this includes nested steps obtained from the step_definition objects." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -924,7 +917,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/cuke_sniffer.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="23" selection-start="1443" selection-end="1443" vertical-scroll-proportion="0.66">
+        <state line="41" column="30" selection-start="1453" selection-end="1453" vertical-scroll-proportion="0.745">
           <folding />
         </state>
       </provider>
