@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c2d3508e-43a9-4cca-8aef-d52fffe4afb1" name="Default" comment="Noticed a problem  with the last step in a file being chopped off. Resolved that in the scenario class. Built the feature helper to generate a folder worth of content. And started work on the cuke sniffer master class. Left the cuke sniffer at the &quot;gather all of the used steps&quot; part, this includes nested steps obtained from the step_definition objects.">
-      <change type="DELETED" beforePath="C:\development\ruby_projects\cuke_sniffer\.idea\.name" afterPath="" />
-      <change type="DELETED" beforePath="C:\development\ruby_projects\cuke_sniffer\.idea\cuke_sniffer.iml" afterPath="" />
-      <change type="DELETED" beforePath="C:\development\ruby_projects\cuke_sniffer\.idea\encodings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\development\ruby_projects\cuke_sniffer\.idea\misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\development\ruby_projects\cuke_sniffer\.idea\modules.xml" afterPath="" />
+    <list default="true" id="c2d3508e-43a9-4cca-8aef-d52fffe4afb1" name="Default" comment="">
       <change type="DELETED" beforePath="C:\development\ruby_projects\cuke_sniffer\.idea\scopes\scope_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\development\ruby_projects\cuke_sniffer\.idea\vcs.xml" afterPath="" />
       <change type="DELETED" beforePath="C:\development\ruby_projects\cuke_sniffer\.idea\workspace.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
     </list>
@@ -44,7 +38,7 @@
       <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="154" column="18" selection-start="1895" selection-end="1895" vertical-scroll-proportion="0.3640898">
+            <state line="161" column="24" selection-start="1959" selection-end="1959" vertical-scroll-proportion="0.61845386">
               <folding />
             </state>
           </provider>
@@ -130,6 +124,10 @@
         <subPane subId="All">
           <PATH>
             <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="cuke_sniffer">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
@@ -450,13 +448,22 @@
       <created>1349058363922</created>
       <updated>1349058363922</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Removed the .idea folder and its contents from source control.">
+      <created>1350258090795</created>
+      <updated>1350258090795</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Removed the .idea folder and its contents from source control.">
+      <created>1350258257239</created>
+      <updated>1350258257239</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -471,7 +478,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -514,7 +520,7 @@
     <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Noticed a problem  with the last step in a file being chopped off. Resolved that in the scenario class. Built the feature helper to generate a folder worth of content. And started work on the cuke sniffer master class. Left the cuke sniffer at the &quot;gather all of the used steps&quot; part, this includes nested steps obtained from the step_definition objects." />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed the .idea folder and its contents from source control." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -534,6 +540,7 @@
     <MESSAGE value="Updated step_definition class/spec. Added the step_definition_helper class/spec to be used in building step definition classes from files/folders." />
     <MESSAGE value="created scenario and feature/feature helper objects to be utilized in future functionality." />
     <MESSAGE value="Noticed a problem  with the last step in a file being chopped off. Resolved that in the scenario class. Built the feature helper to generate a folder worth of content. And started work on the cuke sniffer master class. Left the cuke sniffer at the &quot;gather all of the used steps&quot; part, this includes nested steps obtained from the step_definition objects." />
+    <MESSAGE value="Removed the .idea folder and its contents from source control." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -632,7 +639,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="154" column="18" selection-start="1895" selection-end="1895" vertical-scroll-proportion="0.3640898">
+        <state line="161" column="24" selection-start="1959" selection-end="1959" vertical-scroll-proportion="0.61845386">
           <folding />
         </state>
       </provider>
