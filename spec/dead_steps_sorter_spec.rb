@@ -1,4 +1,4 @@
-require 'rspec'
+require 'spec_helper'
 require '../src/dead_steps_sorter'
 
 describe DeadStepsSorter do

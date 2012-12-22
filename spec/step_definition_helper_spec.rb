@@ -1,6 +1,4 @@
-require 'rspec'
-require '../src/step_definition_helper'
-require '../src/step_definition'
+require 'spec_helper'
 
 describe StepDefinitionHelper do
 

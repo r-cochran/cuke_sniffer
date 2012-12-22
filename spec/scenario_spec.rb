@@ -1,5 +1,4 @@
-require 'rspec'
-require '../src/scenario'
+require 'spec_helper'
 
 describe Scenario do
 

@@ -1,6 +1,4 @@
-require 'rspec'
-require '../src/feature'
-require '../src/scenario'
+require 'spec_helper'
 
 describe Feature do
 
@@ -66,4 +64,5 @@ describe Feature do
     @feature.scenarios[0].should == expected_scenario_1
     @feature.scenarios[1].tags.should == expected_scenario_2.tags
   end
+
 end

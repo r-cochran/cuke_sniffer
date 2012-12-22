@@ -1,7 +1,4 @@
-require 'rspec'
-require '../src/feature_helper'
-require '../src/feature'
-require '../src/scenario'
+require 'spec_helper'
 
 describe FeatureHelper do
 
