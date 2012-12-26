@@ -1,5 +1,5 @@
 class Feature
-  FEATURE_NAME_REGEX = /Feature: (?<name>.*)/
+  FEATURE_NAME_REGEX = /Feature:\s*(?<name>.*)/
   TAG_REGEX = /(?<tag>@\S*)/
   SCENARIO_TITLE_REGEX = /(Scenario:|Scenario Outline:|Scenario Template:)\s(?<name>.*)/
 
@@ -8,61 +8,70 @@ class Feature
   def initialize(file_name)
     @location = file_name
     @tags = []
-    @name = nil
+    @name = ""
     @scenarios = []
     split_feature(file_name)
   end
 
   def split_feature(file_name)
-    scenario_location = nil
-    line_counter = 0
-    code_block = []
-    feature_file = File.open(file_name)
+    feature_lines = []
 
-    total_lines = 0
-    feature_file.each_line{total_lines += 1}
+    feature_file = File.open(file_name)
+    feature_file.each_line { |line| feature_lines << line }
     feature_file.close
 
+    index = 0
+    until feature_lines[index].match FEATURE_NAME_REGEX
+      create_tag_list(feature_lines[index])
+      index += 1
+    end
 
-    feature_file = File.open(file_name)
-    feature_file.each_line { |line|
-      line_counter += 1
-      unless (TAG_REGEX.match(line).nil?)
-        unless is_comment?(line) || @name.nil? == false
-          line.scan(TAG_REGEX).each { |tag| @tags << tag[0] }
-        end
+    until index >= feature_lines.length or feature_lines[index].match TAG_REGEX or feature_lines[index].match SCENARIO_TITLE_REGEX
+      create_feature_name(feature_lines[index])
+      index += 1
+    end
+
+    scenario_title_found = false
+    index_of_title = nil
+    code_block = []
+    until index >= feature_lines.length
+      if scenario_title_found and (feature_lines[index].match TAG_REGEX or feature_lines[index].match SCENARIO_TITLE_REGEX)
+        add_scenario_to_feature(code_block, index_of_title)
+        scenario_title_found = false
+        code_block = []
       end
-
-      unless FEATURE_NAME_REGEX.match(line).nil?
-        @name = FEATURE_NAME_REGEX.match(line)[:name]
-        next
+      code_block << feature_lines[index]
+      if (feature_lines[index].match SCENARIO_TITLE_REGEX)
+        scenario_title_found = true
+        index_of_title = "#{file_name}:#{index + 1}"
       end
+      index += 1
+    end
+    #TODO - FIX ME YOU SONOFABITCH
+    add_scenario_to_feature(code_block, index_of_title) unless code_block==[]
+  end
 
-      if(SCENARIO_TITLE_REGEX.match(line))
-        if scenario_location.nil? == false
-          not_my_code = []
-          code_block.reverse.each{|code|
-            if(code == "" || TAG_REGEX.match(code))
-              not_my_code << code
-            else
-              break
-            end
-          }
-          scenario = Scenario.new(scenario_location, code_block - not_my_code)
-          scenario.tags += @tags
-          @scenarios << scenario
-          code_block = not_my_code
-        end
-        scenario_location = "#{file_name}:#{line_counter}"
-      end
-
-      code_block << line.strip unless @name.nil?
-    }
-    scenario = Scenario.new(scenario_location, code_block)
+  def add_scenario_to_feature(code_block, index_of_title)
+    scenario = Scenario.new(index_of_title, code_block)
     scenario.tags += @tags
     @scenarios << scenario
+  end
 
-    feature_file.close
+  def create_tag_list(line)
+    unless (TAG_REGEX.match(line).nil?)
+      unless is_comment?(line)
+        line.scan(TAG_REGEX).each { |tag| @tags << tag[0] }
+      end
+    end
+  end
+
+  def create_feature_name(line)
+    unless is_comment?(line)
+      line.gsub!("Feature:", "")
+      line.strip!
+      @name += " " unless @name.empty? or line.empty?
+      @name += line
+    end
   end
 
   def ==(comparison_object)
