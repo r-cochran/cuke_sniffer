@@ -1,7 +1,4 @@
-gem 'rspec'
-require 'rspec'
-require '../src/feature'
-require '../src/scenario'
+require 'spec_helper'
 
 describe Feature do
 
@@ -141,5 +138,19 @@ describe Feature do
     file.close
     @feature = Feature.new(@file_name)
     @feature.scenarios.should == []
+  end
+
+  it "should have a list of scenarios with rules evaluated" do
+    scenario = @feature.scenarios[0]
+    scenario.score.should >= 0
+    scenario.rules_hash.should == {"Rule Descriptor" => 1}
+  end
+
+  it "should have a score and rules of the feature and the scenarios contained in it" do
+    @feature.score = 0
+    @feature.rules_hash = {}
+    @feature.evaluate_score
+    @feature.score.should == 3
+    @feature.rules_hash.should == {"Rule Descriptor" => 3}
   end
 end

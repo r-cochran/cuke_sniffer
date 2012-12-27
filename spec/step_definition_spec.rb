@@ -118,4 +118,32 @@ describe StepDefinition do
     step_definition.nested_steps.should == [nested_step, nested_step, nested_step]
   end
 
+  it "should evaluate the step definition and the score should be greater than 0" do
+    raw_code = ["Given /^the first number is \"([^\"]*)\"$/ do |first_number|",
+                "@second_number = 1",
+                "end"]
+    step_definition = StepDefinition.new("location", raw_code)
+    step_definition.score = 0
+    step_definition.evaluate_score
+    step_definition.score.should > 0
+  end
+
+  it "should evaluate the step definition and then update a list of rules/occurrences" do
+    raw_code = ["Given /^the first number is \"([^\"]*)\"$/ do |first_number|",
+                "@second_number = 1",
+                "end"]
+    step_definition = StepDefinition.new("location", raw_code)
+    step_definition.rules_hash = {}
+    step_definition.evaluate_score
+    step_definition.rules_hash.should == {"Rule Descriptor" => 1}
+  end
+
+  it "should have a score and rule list immediately after being created" do
+    raw_code = ["Given /^the first number is \"([^\"]*)\"$/ do |first_number|",
+                "@second_number = 1",
+                "end"]
+    step_definition = StepDefinition.new("location", raw_code)
+    step_definition.score.should == 1
+    step_definition.rules_hash.should == {"Rule Descriptor" => 1}
+  end
 end

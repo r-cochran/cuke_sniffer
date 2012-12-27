@@ -3,14 +3,17 @@ class Feature
   TAG_REGEX = /(?<tag>@\S*)/
   SCENARIO_TITLE_REGEX = /(Scenario:|Scenario Outline:|Scenario Template:)\s(?<name>.*)/
 
-  attr_accessor :location, :tags, :name, :scenarios
+  attr_accessor :location, :tags, :name, :scenarios, :score, :rules_hash
 
   def initialize(file_name)
     @location = file_name
     @tags = []
     @name = ""
     @scenarios = []
+    @score = 0
+    @rules_hash = {}
     split_feature(file_name)
+    evaluate_score
   end
 
   def split_feature(file_name)
@@ -81,6 +84,18 @@ class Feature
     comparison_object.scenarios == @scenarios
   end
 
+  def evaluate_score
+    @score = 1
+    @rules_hash = {"Rule Descriptor" => 1}
+    scenarios.each do |scenario|
+      @score += scenario.score
+      scenario.rules_hash.each_key do |rule_descriptor|
+        if @rules_hash.keys.include?(rule_descriptor)
+          @rules_hash[rule_descriptor] += scenario.rules_hash[rule_descriptor]
+        end
+      end
+    end
+  end
 
   #todo make a helper method somewhere
   def is_comment?(line)

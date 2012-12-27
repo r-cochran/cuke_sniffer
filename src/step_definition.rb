@@ -1,5 +1,5 @@
 class StepDefinition
-  attr_accessor :location, :regex, :code, :parameters, :calls, :nested_steps
+  attr_accessor :location, :regex, :code, :parameters, :calls, :nested_steps, :score, :rules_hash
 
   STEP_DEFINITION_REGEX = /^(Given|When|Then|And|Or|\*)\s\/(?<step>.+)\/\sdo\s?(\|(?<parameters>.*)\|)?$/x
   SIMPLE_NESTED_STEP_REGEX = /^steps\s"(Given|When|Then|And|Or|\*)\s(?<step_string>.*)"/x
@@ -16,6 +16,8 @@ class StepDefinition
     @parameters = []
     @calls = {}
     @nested_steps = []
+    @score = 0
+    @rules_hash = {}
 
     matches = STEP_DEFINITION_REGEX.match(raw_code.first)
     @regex = Regexp.new(matches[:step])
@@ -23,6 +25,7 @@ class StepDefinition
     @parameters = matches[:parameters].split(",") unless matches[:parameters].nil?
     @code = raw_code[1...raw_code.length-1]
     detect_nested_steps
+    evaluate_score
   end
 
   def add_call(location, step_string)
@@ -71,6 +74,11 @@ class StepDefinition
     comparison_object.parameters == @parameters
     comparison_object.calls == @calls
     comparison_object.nested_steps == @nested_steps
+  end
+
+  def evaluate_score
+    @score = 1
+    @rules_hash = {"Rule Descriptor" => 1}
   end
 
 end

@@ -2,6 +2,7 @@ class FeatureHelper
   FILE_IGNORE_LIST = [".", ".."]
 
   def self.build_features_from_folder(folder_path)
+    #TODO - WHY IS I A HASH?
     features_hash = {}
     Dir.entries(folder_path).each_entry { |file_name|
       unless (FILE_IGNORE_LIST.include?(file_name))

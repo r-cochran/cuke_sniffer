@@ -1,5 +1,5 @@
 class Scenario
-  attr_accessor :location, :name, :tags, :steps, :examples_table
+  attr_accessor :location, :name, :tags, :steps, :examples_table, :score, :rules_hash
   SCENARIO_TITLE_REGEX = /(Scenario:|Scenario Outline:|Scenario Template:)\s(?<name>.*)/
   TAG_REGEX = /(?<tag>@\S*)/
 
@@ -8,7 +8,10 @@ class Scenario
     @tags = []
     @steps = []
     @examples_table = []
+    @score = 0
+    @rules_hash = {}
     split_scenario(scenario)
+    evaluate_score
   end
 
   def split_scenario(scenario)
@@ -42,6 +45,11 @@ class Scenario
     comparison_object.steps == @steps
     comparison_object.examples_table == @examples_table
     comparison_object.tags == @tags
+  end
+
+  def evaluate_score
+    @score = 1
+    @rules_hash = {"Rule Descriptor" => 1}
   end
 
 end

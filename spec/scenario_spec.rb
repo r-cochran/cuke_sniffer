@@ -70,7 +70,7 @@ describe Scenario do
   end
 
   it "should retain the examples table if it is a scenario outline" do
-    scenario = [
+    scenario_block = [
         "Scenario Outline: Test Scenario",
         "Given I am making a scenario",
         "When I make the scenario",
@@ -80,14 +80,39 @@ describe Scenario do
         "|a|"
     ]
     location = "path/path/path/my_feature.feature:1"
-    step_definition = Scenario.new(location, scenario)
-    step_definition.location.should == location
-    step_definition.name.should == "Test Scenario"
-    step_definition.steps.should == ["Given I am making a scenario",
-                                     "When I make the scenario",
-                                     "Then the scenario is made"]
-    step_definition.examples_table.should == ["|stuff|",
-                                              "|a|"]
+    scenario = Scenario.new(location, scenario_block)
+    scenario.location.should == location
+    scenario.name.should == "Test Scenario"
+    scenario.steps.should == ["Given I am making a scenario",
+                              "When I make the scenario",
+                              "Then the scenario is made"]
+    scenario.examples_table.should == ["|stuff|",
+                                       "|a|"]
   end
 
+  it "should evaluate the scenario and the score should be greater than 0" do
+    scenario_block = [
+        "Scenario: Test Scenario",
+        "Given I am making a scenario",
+        "When I make the scenario",
+        "Then the scenario is made",
+    ]
+    scenario = Scenario.new("location", scenario_block)
+    scenario.score = 0
+    scenario.evaluate_score
+    scenario.score.should > 0
+  end
+
+  it "should evaluate the scenario and then update a list of rules/occurrences" do
+    scenario_block = [
+        "Scenario: Test Scenario",
+        "Given I am making a scenario",
+        "When I make the scenario",
+        "Then the scenario is made",
+    ]
+    scenario = Scenario.new("location", scenario_block)
+    scenario.rules_hash = {}
+    scenario.evaluate_score
+    scenario.rules_hash.should == {"Rule Descriptor" => 1}
+  end
 end
