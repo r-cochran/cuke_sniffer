@@ -38,13 +38,13 @@ class Feature < RulesEvaluator
         code_block = []
       end
       code_block << feature_lines[index].strip
-      if (feature_lines[index].match SCENARIO_TITLE_REGEX)
+      if feature_lines[index].match SCENARIO_TITLE_REGEX
         scenario_title_found = true
         index_of_title = "#{file_name}:#{index + 1}"
       end
       index += 1
     end
-    #TODO - FIX ME YOU SONOFABITCH
+    #TODO - Last scenario falling through above logic, needs a fix (code_block related)
     add_scenario_to_feature(code_block, index_of_title) unless code_block==[]
   end
 

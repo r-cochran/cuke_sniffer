@@ -4,7 +4,7 @@ class RulesEvaluator
   def initialize(location)
     @location = location
     @score = 0
-    @rules_hash= {}
+    @rules_hash = {}
     evaluate_score
   end
 
@@ -14,10 +14,8 @@ class RulesEvaluator
   end
 
   def create_tag_list(line)
-    unless (TAG_REGEX.match(line).nil?)
-      unless is_comment?(line)
-        line.scan(TAG_REGEX).each { |tag| @tags << tag[0] }
-      end
+    if TAG_REGEX.match(line) and !is_comment?(line)
+      line.scan(TAG_REGEX).each { |tag| @tags << tag[0] }
     end
   end
 

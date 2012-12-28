@@ -21,8 +21,7 @@ class StepDefinition < RulesEvaluator
 
   def detect_nested_steps
     multi_line_step_flag = false
-    @code.each { |line|
-
+    @code.each do |line|
       regex = nil
       case line
         when SIMPLE_NESTED_STEP_REGEX
@@ -38,20 +37,17 @@ class StepDefinition < RulesEvaluator
           regex = END_COMPLEX_WITH_STEP_REGEX
           multi_line_step_flag= false
         when STEP_REGEX
-          if multi_line_step_flag
-            regex = STEP_REGEX
-          end
+          regex = STEP_REGEX if multi_line_step_flag
         when END_COMPLEX_STEP_REGEX
           multi_line_step_flag = false
         else
       end
 
-      unless regex.nil?
+      if regex
         match = regex.match(line)
         @nested_steps << match[:step_string]
-        next
       end
-    }
+    end
   end
 
   def ==(comparison_object)

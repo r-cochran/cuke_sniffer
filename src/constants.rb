@@ -9,7 +9,6 @@ STEP_STYLES = /(Given|When|Then|And|Or|\*)\s/
 STEP_REGEX = /^#{STEP_STYLES}(?<step_string>.*)/x
 STEP_DEFINITION_REGEX = /^#{STEP_STYLES}\/(?<step>.+)\/\sdo\s?(\|(?<parameters>.*)\|)?$/x
 
-
 SIMPLE_NESTED_STEP_REGEX = /^steps\s"#{STEP_STYLES}(?<step_string>.*)"/x
 SAME_LINE_COMPLEX_STEP_REGEX = /^steps\s%{#{STEP_STYLES}(?<step_string>.*)}/x
 START_COMPLEX_STEP_REGEX = /^steps\s%{\s*$/

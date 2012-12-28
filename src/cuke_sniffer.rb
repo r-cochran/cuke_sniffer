@@ -43,35 +43,35 @@ class CukeSniffer
 
   def extract_steps_from_feature
     steps_hash = {}
-    @features.each_key { |key|
+    @features.each_key do |key|
       sub_feature = @features[key]
-      sub_feature.scenarios.each { |scenario|
+      sub_feature.scenarios.each do |scenario|
         path = /(?<path>.*):(?<line_number>\d*)/.match(scenario.location)[:path]
         line_number = /(?<path>.*):(?<line_number>\d*)/.match(scenario.location)[:line_number].to_i
         counter = 1
-        scenario.steps.each { |step|
+        scenario.steps.each do |step|
           steps_hash["#{path}:#{line_number + counter}"] = step
           counter += 1
-        }
-      }
-    }
+        end
+      end
+    end
     steps_hash
   end
 
   def extract_steps_from_step_definitions
     steps_hash = {}
-    @step_definitions.each { |step_definition|
-      step_definition.nested_steps.each { |nested_step|
+    @step_definitions.each do |step_definition|
+      step_definition.nested_steps.each do |nested_step|
         path = /(?<path>.*):(?<line_number>\d*)/.match(step_definition.location)[:path]
         line_number = /(?<path>.*):(?<line_number>\d*)/.match(step_definition.location)[:line_number].to_i
         counter = 1
-        step_definition.code.each { |code|
+        step_definition.code.each do |code|
           break if (code.include?(nested_step))
           counter += 1
-        }
+        end
         steps_hash["#{path}:#{line_number + counter}"] = nested_step
-      }
-    }
+      end
+    end
     steps_hash
   end
 
@@ -90,10 +90,7 @@ class CukeSniffer
       Max: #{step_definition_results[:max]}
       Average: #{step_definition_results[:average]}
   Improvements to make:"
-    @summary[:improvement_list].each{|improvement|
-      output << "\n    #{improvement}"
-    }
-    puts output
+    @summary[:improvement_list].each { |improvement| output << "\n    #{improvement}" }
     output
   end
 end
