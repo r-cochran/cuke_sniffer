@@ -1,42 +1,48 @@
-class Scenario
-  attr_accessor :location, :name, :tags, :steps, :examples_table, :score, :rules_hash
-  SCENARIO_TITLE_REGEX = /(Scenario:|Scenario Outline:|Scenario Template:)\s(?<name>.*)/
-  TAG_REGEX = /(?<tag>@\S*)/
+class Scenario < RulesEvaluator
+  attr_accessor :name, :tags, :steps, :examples_table
 
   def initialize(location, scenario)
-    @location = location
+    @name = ""
     @tags = []
     @steps = []
     @examples_table = []
-    @score = 0
-    @rules_hash = {}
     split_scenario(scenario)
-    evaluate_score
+    super(location)
   end
 
   def split_scenario(scenario)
-    name_found = false
-    examples_found = false
-    scenario.each{|line|
-      unless(TAG_REGEX.match(line).nil?)
-        line.scan(TAG_REGEX).each{|tag| @tags << tag[0]}
-      end
+    index = 0
+    until scenario[index].match SCENARIO_TITLE_REGEX
+      create_tag_list(scenario[index])
+      index += 1
+    end
 
-      unless(SCENARIO_TITLE_REGEX.match(line).nil?)
-        @name = SCENARIO_TITLE_REGEX.match(line)[:name]
-        name_found = true
-        next
-      end
+    until scenario[index].match STEP_REGEX
+      create_scenario_name(scenario[index])
+      index += 1
+    end
 
-      if(line.include?("Examples:"))
-        name_found = false
-        examples_found = true
-        next
-      end
+    until index >= scenario.length or scenario[index].include?("Examples:")
+      @steps << scenario[index]
+      index += 1
+    end
 
-      @steps << line if name_found
-      @examples_table << line if examples_found
-    }
+    if index < scenario.length and scenario[index].include?("Examples")
+      index += 1
+      until index >= scenario.length
+        @examples_table << scenario[index]
+        index += 1
+      end
+    end
+  end
+
+  def create_scenario_name(line)
+    unless is_comment?(line)
+      line.gsub!(SCENARIO_TITLE_STYLES, "")
+      line.strip!
+      @name += " " unless @name.empty? or line.empty?
+      @name += line
+    end
   end
 
   def ==(comparison_object)
@@ -45,11 +51,6 @@ class Scenario
     comparison_object.steps == @steps
     comparison_object.examples_table == @examples_table
     comparison_object.tags == @tags
-  end
-
-  def evaluate_score
-    @score = 1
-    @rules_hash = {"Rule Descriptor" => 1}
   end
 
 end

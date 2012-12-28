@@ -153,4 +153,11 @@ describe Feature do
     @feature.score.should == 3
     @feature.rules_hash.should == {"Rule Descriptor" => 3}
   end
+
+  it "should add rules from the scenario independent of the feature rules" do
+    scenario = @feature.scenarios[0]
+    scenario.rules_hash = {"Scenario Rule" => 1}
+    @feature.evaluate_score
+    @feature.rules_hash.include?("Scenario Rule").should be_true
+  end
 end

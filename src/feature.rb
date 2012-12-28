@@ -1,19 +1,13 @@
-class Feature
-  FEATURE_NAME_REGEX = /Feature:\s*(?<name>.*)/
-  TAG_REGEX = /(?<tag>@\S*)/
-  SCENARIO_TITLE_REGEX = /(Scenario:|Scenario Outline:|Scenario Template:)\s(?<name>.*)/
+class Feature < RulesEvaluator
 
-  attr_accessor :location, :tags, :name, :scenarios, :score, :rules_hash
+  attr_accessor :tags, :name, :scenarios
 
   def initialize(file_name)
-    @location = file_name
     @tags = []
     @name = ""
     @scenarios = []
-    @score = 0
-    @rules_hash = {}
     split_feature(file_name)
-    evaluate_score
+    super(file_name)
   end
 
   def split_feature(file_name)
@@ -43,7 +37,7 @@ class Feature
         scenario_title_found = false
         code_block = []
       end
-      code_block << feature_lines[index]
+      code_block << feature_lines[index].strip
       if (feature_lines[index].match SCENARIO_TITLE_REGEX)
         scenario_title_found = true
         index_of_title = "#{file_name}:#{index + 1}"
@@ -58,14 +52,6 @@ class Feature
     scenario = Scenario.new(index_of_title, code_block)
     scenario.tags += @tags
     @scenarios << scenario
-  end
-
-  def create_tag_list(line)
-    unless (TAG_REGEX.match(line).nil?)
-      unless is_comment?(line)
-        line.scan(TAG_REGEX).each { |tag| @tags << tag[0] }
-      end
-    end
   end
 
   def create_feature_name(line)
@@ -90,19 +76,9 @@ class Feature
     scenarios.each do |scenario|
       @score += scenario.score
       scenario.rules_hash.each_key do |rule_descriptor|
-        if @rules_hash.keys.include?(rule_descriptor)
-          @rules_hash[rule_descriptor] += scenario.rules_hash[rule_descriptor]
-        end
+        @rules_hash[rule_descriptor] ||= 0
+        @rules_hash[rule_descriptor] += scenario.rules_hash[rule_descriptor]
       end
-    end
-  end
-
-  #todo make a helper method somewhere
-  def is_comment?(line)
-    if line =~ /^\#.*$/
-      true
-    else
-      false
     end
   end
 end

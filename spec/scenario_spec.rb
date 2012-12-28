@@ -115,4 +115,18 @@ describe Scenario do
     scenario.evaluate_score
     scenario.rules_hash.should == {"Rule Descriptor" => 1}
   end
+
+  it "should return the name for multi-line scenarios" do
+    scenario = [
+        "Scenario: Test",
+        "My",
+        "Multi-line",
+        "Scenario",
+        "Given I am making a scenario",
+        "When I make the scenario",
+        "Then the scenario is made",
+    ]
+    scenario = Scenario.new(nil, scenario)
+    scenario.name.should == "Test My Multi-line Scenario"
+  end
 end

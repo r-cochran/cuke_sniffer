@@ -1,23 +1,15 @@
 class CukeSniffer
   attr_accessor :features, :step_definitions, :summary
 
-  def initialize(features_location, step_definitions_location)
+  def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd + "/step_definitions")
     @features_location = features_location
     @step_definitions_location = step_definitions_location
     @features = FeatureHelper.build_features_from_folder(features_location)
     @step_definitions = StepDefinitionHelper.build_step_definitions_from_folder(step_definitions_location)
     @summary = {
         :total_score => 0,
-        :features => {
-            :min => 0,
-            :max => 0,
-            :average => 0
-        },
-        :step_definitions => {
-            :min => 0,
-            :max => 0,
-            :average => 0
-        },
+        :features => {},
+        :step_definitions => {},
         :improvement_list => []
     }
     assess_score

@@ -1,6 +1,4 @@
 class StepDefinitionHelper
-  STEP_DEFINITION_REGEX = /^(Given|When|Then|And|Or|\*)\s\/(?<step>.+)\/\sdo\s?(\|(?<parameters>.*)\|)?$/x
-  FILE_IGNORE_LIST = [".", ".."]
 
   def self.parse_step_definitions(file_name)
     step_hash = {}
@@ -57,10 +55,10 @@ class StepDefinitionHelper
     Dir.entries(folder_name).each_entry { |file_name|
       unless (FILE_IGNORE_LIST.include?(file_name))
         file_name = "#{folder_name}/#{file_name}"
-        if (file_name.include?("steps.rb"))
-          list_of_steps << build_step_definitions(file_name)
-        else
+        if (File.directory?(file_name))
           list_of_steps << build_step_definitions_from_folder(file_name)
+        elsif (file_name.include?("steps.rb"))
+          list_of_steps << build_step_definitions(file_name)
         end
       end
     }
