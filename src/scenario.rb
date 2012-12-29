@@ -17,7 +17,7 @@ class Scenario < RulesEvaluator
       index += 1
     end
 
-    until scenario[index].match STEP_REGEX
+    until index >= scenario.length or scenario[index].match STEP_REGEX
       create_scenario_name(scenario[index])
       index += 1
     end
@@ -53,4 +53,20 @@ class Scenario < RulesEvaluator
     comparison_object.tags == @tags
   end
 
+  def evaluate_score
+    super
+    evaluate_scenario_scores
+  end
+
+  def evaluate_scenario_scores
+    rule_empty_name("Scenario")
+    rule_empty_scenario
+  end
+
+  def rule_empty_scenario
+    if @steps.empty?
+      @score += 3
+      @rules_hash["Scenario with no steps!"] = 1
+    end
+  end
 end

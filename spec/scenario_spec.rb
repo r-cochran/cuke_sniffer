@@ -129,4 +129,25 @@ describe Scenario do
     scenario = Scenario.new(nil, scenario)
     scenario.name.should == "Test My Multi-line Scenario"
   end
+
+  it "should have a rule for empty scenario names" do
+    scenario_block = [
+        "Scenario:",
+        "Given I am making a scenario",
+        "When I make the scenario",
+        "Then the scenario is made",
+    ]
+    scenario = Scenario.new("location", scenario_block)
+    scenario.rules_hash.include?("No Scenario Description!").should be_true
+    scenario.rules_hash["No Scenario Description!"].should > 0
+  end
+
+  it "should have a rule for a scenario with no steps" do
+      scenario_block = [
+          "Scenario: Empty Scenario",
+      ]
+      scenario = Scenario.new("location", scenario_block)
+      scenario.rules_hash.include?("Scenario with no steps!").should be_true
+      scenario.rules_hash["Scenario with no steps!"].should > 0
+    end
 end

@@ -5,7 +5,7 @@ TAG_REGEX = /(?<tag>@\S*)/
 SCENARIO_TITLE_STYLES = /(Scenario|Scenario Outline|Scenario Template):\s*/
 SCENARIO_TITLE_REGEX = /#{SCENARIO_TITLE_STYLES}(?<name>.*)/
 
-STEP_STYLES = /(Given|When|Then|And|Or|\*)\s/
+STEP_STYLES = /(Given|When|Then|And|Or|But|\*)\s/
 STEP_REGEX = /^#{STEP_STYLES}(?<step_string>.*)/x
 STEP_DEFINITION_REGEX = /^#{STEP_STYLES}\/(?<step>.+)\/\sdo\s?(\|(?<parameters>.*)\|)?$/x
 

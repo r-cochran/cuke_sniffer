@@ -160,4 +160,18 @@ describe Feature do
     @feature.evaluate_score
     @feature.rules_hash.include?("Scenario Rule").should be_true
   end
+
+  it "should have a rule and associated score for a descriptionless feature" do
+    file = File.open(@file_name, "w")
+    file.puts("Feature:")
+    file.puts("")
+    file.puts("Scenario: My Test Scenario")
+    file.puts("Given I want to be a test")
+    file.puts("When I become a test")
+    file.puts("Then I am a test")
+    file.close
+    @feature = Feature.new(@file_name)
+    @feature.rules_hash.include?("No Feature Description!").should be_true
+    @feature.rules_hash["No Feature Description!"].should > 0
+  end
 end

@@ -13,6 +13,13 @@ class RulesEvaluator
     @rules_hash = {"Rule Descriptor" => 1}
   end
 
+  def rule_empty_name(type)
+    if @name.empty?
+      @score += 3
+      @rules_hash["No #{type} Description!"] = 1
+    end
+  end
+
   def create_tag_list(line)
     if TAG_REGEX.match(line) and !is_comment?(line)
       line.scan(TAG_REGEX).each { |tag| @tags << tag[0] }

@@ -71,8 +71,12 @@ class Feature < RulesEvaluator
   end
 
   def evaluate_score
-    @score = 1
-    @rules_hash = {"Rule Descriptor" => 1}
+    super
+    include_scenario_scores
+    evaluate_feature_scores
+  end
+
+  def include_scenario_scores
     scenarios.each do |scenario|
       @score += scenario.score
       scenario.rules_hash.each_key do |rule_descriptor|
@@ -81,4 +85,9 @@ class Feature < RulesEvaluator
       end
     end
   end
+
+  def evaluate_feature_scores
+    rule_empty_name("Feature")
+  end
+
 end

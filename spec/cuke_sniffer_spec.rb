@@ -26,7 +26,7 @@ describe CukeSniffer do
             :max => 0,
             :average => 0
         },
-        :improvement_list => []
+        :improvement_list => {}
     }
     @cuke_sniffer.assess_score
     @cuke_sniffer.summary.should == {
@@ -41,7 +41,7 @@ describe CukeSniffer do
             :max => 1,
             :average => 1
         },
-        :improvement_list => ["Rule Descriptor"]
+        :improvement_list => {"Rule Descriptor" => 14}
     }
   end
 
@@ -58,7 +58,7 @@ describe CukeSniffer do
       Max: 1
       Average: 1
   Improvements to make:
-    Rule Descriptor"
+    (14)Rule Descriptor"
   end
 
   it "should catalog all calls a step definition has" do
@@ -71,6 +71,26 @@ describe CukeSniffer do
     @cuke_sniffer = CukeSniffer.new(@features_location, "../features/dead_step_definitions")
     dead_steps = @cuke_sniffer.get_dead_steps
     dead_steps.empty?.should be_false
+  end
+
+  it "should output rules" do
+    cuke_sniffer = CukeSniffer.new("../features/rule_scenarios", "../features/rule_step_definitions")
+    cuke_sniffer.output_results.should ==
+"Suite Summary
+  Total Score: 15
+    Features (../features/rule_scenarios)
+      Min: 15
+      Max: 15
+      Average: 15
+    Step Definitions (../features/rule_step_definitions)
+      Min:\s
+      Max:\s
+      Average:\s
+  Improvements to make:
+    (3)Rule Descriptor
+    (2)Scenario with no steps!
+    (1)No Scenario Description!
+    (1)No Feature Description!"
   end
 
 end

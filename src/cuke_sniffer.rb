@@ -10,7 +10,7 @@ class CukeSniffer
         :total_score => 0,
         :features => {},
         :step_definitions => {},
-        :improvement_list => []
+        :improvement_list => {}
     }
     assess_score
     output_results
@@ -23,7 +23,10 @@ class CukeSniffer
     array.each do |node|
       score = node.score
       @summary[:total_score] += score
-      @summary[:improvement_list] << node.rules_hash.keys
+      node.rules_hash.each_key do |key|
+        @summary[:improvement_list][key] ||= 0
+        @summary[:improvement_list][key] += node.rules_hash[key]
+      end
       min = score if (min.nil? or score < min)
       max = score if (max.nil? or score > max)
       total += score
@@ -37,8 +40,7 @@ class CukeSniffer
 
   def assess_score
     @summary[:features] = assess_array(@features)
-    @summary[:step_definitions] = assess_array(@step_definitions)
-    @summary[:improvement_list].flatten!.uniq!
+    @summary[:step_definitions] = assess_array(@step_definitions) unless @step_definitions.empty?
   end
 
   def output_results
@@ -56,7 +58,7 @@ class CukeSniffer
       Max: #{step_definition_results[:max]}
       Average: #{step_definition_results[:average]}
   Improvements to make:"
-    @summary[:improvement_list].each { |improvement| output << "\n    #{improvement}" }
+    @summary[:improvement_list].each_key { |improvement| output << "\n    (#{summary[:improvement_list][improvement]})#{improvement}" }
     output
   end
 
@@ -88,3 +90,4 @@ class CukeSniffer
   end
 
 end
+
