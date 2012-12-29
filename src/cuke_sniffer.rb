@@ -1,7 +1,7 @@
 class CukeSniffer
   attr_accessor :features, :step_definitions, :summary
 
-  def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd + "/step_definitions")
+  def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd)
     @features_location = features_location
     @step_definitions_location = step_definitions_location
     @features = FeatureHelper.build_features_from_folder(features_location)
@@ -36,43 +36,9 @@ class CukeSniffer
   end
 
   def assess_score
-    @summary[:features] = assess_array(@features.values)
+    @summary[:features] = assess_array(@features)
     @summary[:step_definitions] = assess_array(@step_definitions)
     @summary[:improvement_list].flatten!.uniq!
-  end
-
-  def extract_steps_from_feature
-    steps_hash = {}
-    @features.each_key do |key|
-      sub_feature = @features[key]
-      sub_feature.scenarios.each do |scenario|
-        path = /(?<path>.*):(?<line_number>\d*)/.match(scenario.location)[:path]
-        line_number = /(?<path>.*):(?<line_number>\d*)/.match(scenario.location)[:line_number].to_i
-        counter = 1
-        scenario.steps.each do |step|
-          steps_hash["#{path}:#{line_number + counter}"] = step
-          counter += 1
-        end
-      end
-    end
-    steps_hash
-  end
-
-  def extract_steps_from_step_definitions
-    steps_hash = {}
-    @step_definitions.each do |step_definition|
-      step_definition.nested_steps.each do |nested_step|
-        path = /(?<path>.*):(?<line_number>\d*)/.match(step_definition.location)[:path]
-        line_number = /(?<path>.*):(?<line_number>\d*)/.match(step_definition.location)[:line_number].to_i
-        counter = 1
-        step_definition.code.each do |code|
-          break if (code.include?(nested_step))
-          counter += 1
-        end
-        steps_hash["#{path}:#{line_number + counter}"] = nested_step
-      end
-    end
-    steps_hash
   end
 
   def output_results
@@ -81,11 +47,11 @@ class CukeSniffer
     #todo this string is completely dependent on the tabbing in the string
     output = "Suite Summary
   Total Score: #{@summary[:total_score]}
-    Features (#{@features_location})
+    Features (#@features_location)
       Min: #{feature_results[:min]}
       Max: #{feature_results[:max]}
       Average: #{feature_results[:average]}
-    Step Definitions (#{@step_definitions_location})
+    Step Definitions (#@step_definitions_location)
       Min: #{step_definition_results[:min]}
       Max: #{step_definition_results[:max]}
       Average: #{step_definition_results[:average]}
@@ -93,4 +59,32 @@ class CukeSniffer
     @summary[:improvement_list].each { |improvement| output << "\n    #{improvement}" }
     output
   end
+
+  def catalog_step_calls
+    @features.each do |feature|
+      feature.scenarios.each do |scenario|
+        scenario_line = scenario.location.match(/:(?<line>\d*)/)[:line].to_i
+        scenario_location = scenario.location.gsub(scenario_line.to_s, "")
+        scenario.steps.each do |step|
+          scenario_line += 1
+          @step_definitions.each do |step_definition|
+            if step.gsub(STEP_STYLES, "") =~ step_definition.regex
+              step_definition.add_call("#{scenario_location}#{scenario_line}", step)
+              break
+            end
+          end
+        end
+      end
+    end
+  end
+
+  def get_dead_steps
+    catalog_step_calls
+    dead_steps =  []
+    @step_definitions.each do |step_definition|
+      dead_steps << step_definition if step_definition.calls.empty?
+    end
+    dead_steps
+  end
+
 end

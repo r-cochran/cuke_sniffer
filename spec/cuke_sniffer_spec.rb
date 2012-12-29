@@ -13,16 +13,6 @@ describe CukeSniffer do
     fail "step definitions were not initialized" if @cuke_sniffer.step_definitions == []
   end
 
-  it "should condense all steps in a feature to a hash of location => step call" do
-    steps = @cuke_sniffer.extract_steps_from_feature
-    steps.keys.length.should == 9
-  end
-
-  it "should condense all nested steps in a step definition to a hash of location(augmented index) => step call" do
-    steps = @cuke_sniffer.extract_steps_from_step_definitions
-    steps.keys.length.should == 1
-  end
-
   it "should summarize the content of a cucumber suite including the min, max, and average scores of both Features and Step Definitions" do
     @cuke_sniffer.summary = {
         :total_score => 0,
@@ -59,15 +49,28 @@ describe CukeSniffer do
     @cuke_sniffer.output_results.should ==
 "Suite Summary
   Total Score: 14
-    Features (#{@features_location})
+    Features (#@features_location)
       Min: 2
       Max: 2
       Average: 2
-    Step Definitions (#{@step_definitions_location})
+    Step Definitions (#@step_definitions_location)
       Min: 1
       Max: 1
       Average: 1
   Improvements to make:
     Rule Descriptor"
   end
+
+  it "should catalog all calls a step definition has" do
+    @cuke_sniffer.step_definitions[0].calls.empty?.should be_true
+    @cuke_sniffer.catalog_step_calls
+    @cuke_sniffer.step_definitions[0].calls.empty?.should be_false
+  end
+
+  it "should identify dead step definitions" do
+    @cuke_sniffer = CukeSniffer.new(@features_location, "../features/dead_step_definitions")
+    dead_steps = @cuke_sniffer.get_dead_steps
+    dead_steps.empty?.should be_false
+  end
+
 end

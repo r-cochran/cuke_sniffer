@@ -16,6 +16,7 @@ class StepDefinitionHelper
         step_location = file_name + ":#{line_counter}"
       end
       step_code << line.strip if step_flag
+      #todo this will probably break with while/until/if/unless/any other code block starter
       group_counter += 1 if(is_comment?(line) == false && (line.include?("{") || line.include?("do")))
       group_counter -= 1 if(is_comment?(line) == false && (line.include?("}") || line.include?("end")))
 
@@ -63,6 +64,6 @@ class StepDefinitionHelper
         end
       end
     end
-    list_of_steps.flatten.uniq
+    list_of_steps.flatten
   end
 end
