@@ -1,18 +1,20 @@
 class StepDefinition < RulesEvaluator
-  attr_accessor :regex, :code, :parameters, :calls, :nested_steps
+  attr_accessor :start_line, :regex, :code, :parameters, :calls, :nested_steps
 
   def initialize(location, raw_code)
     @parameters = []
     @calls = {}
-    @nested_steps = []
-
+    @nested_steps = {}
+    @start_line = location.match(/:(?<line>\d*)/)[:line].to_i
     matches = STEP_DEFINITION_REGEX.match(raw_code.first)
     @regex = Regexp.new(matches[:step])
 
+    end_match_index = (raw_code.size - 1) - raw_code.reverse.index("end")
+
     @parameters = matches[:parameters].split(",") unless matches[:parameters].nil?
-    @code = raw_code[1...raw_code.length-1]
-    detect_nested_steps
+    @code = raw_code[1...end_match_index]
     super(location)
+    detect_nested_steps
   end
 
   def add_call(location, step_string)
@@ -21,6 +23,7 @@ class StepDefinition < RulesEvaluator
 
   def detect_nested_steps
     multi_line_step_flag = false
+    counter = 1
     @code.each do |line|
       regex = nil
       case line
@@ -35,7 +38,7 @@ class StepDefinition < RulesEvaluator
           multi_line_step_flag = true
         when END_COMPLEX_WITH_STEP_REGEX
           regex = END_COMPLEX_WITH_STEP_REGEX
-          multi_line_step_flag= false
+          multi_line_step_flag = false
         when STEP_REGEX
           regex = STEP_REGEX if multi_line_step_flag
         when END_COMPLEX_STEP_REGEX
@@ -45,8 +48,10 @@ class StepDefinition < RulesEvaluator
 
       if regex
         match = regex.match(line)
-        @nested_steps << match[:step_string]
+        nested_step_line = (@start_line + counter)
+        @nested_steps[@location.gsub(@start_line.to_s, nested_step_line.to_s)] = match[:step_string]
       end
+      counter += 1
     end
   end
 

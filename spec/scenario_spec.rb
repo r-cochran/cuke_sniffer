@@ -97,7 +97,7 @@ describe Scenario do
         "When I make the scenario",
         "Then the scenario is made",
     ]
-    scenario = Scenario.new("location", scenario_block)
+    scenario = Scenario.new("location:1", scenario_block)
     scenario.score = 0
     scenario.evaluate_score
     scenario.score.should > 0
@@ -110,7 +110,7 @@ describe Scenario do
         "When I make the scenario",
         "Then the scenario is made",
     ]
-    scenario = Scenario.new("location", scenario_block)
+    scenario = Scenario.new("location:1", scenario_block)
     scenario.rules_hash = {}
     scenario.evaluate_score
     scenario.rules_hash.should == {"Rule Descriptor" => 1}
@@ -126,7 +126,7 @@ describe Scenario do
         "When I make the scenario",
         "Then the scenario is made",
     ]
-    scenario = Scenario.new(nil, scenario)
+    scenario = Scenario.new("location:1", scenario)
     scenario.name.should == "Test My Multi-line Scenario"
   end
 
@@ -137,7 +137,7 @@ describe Scenario do
         "When I make the scenario",
         "Then the scenario is made",
     ]
-    scenario = Scenario.new("location", scenario_block)
+    scenario = Scenario.new("location:1", scenario_block)
     scenario.rules_hash.include?("No Scenario Description!").should be_true
     scenario.rules_hash["No Scenario Description!"].should > 0
   end
@@ -146,7 +146,7 @@ describe Scenario do
       scenario_block = [
           "Scenario: Empty Scenario",
       ]
-      scenario = Scenario.new("location", scenario_block)
+      scenario = Scenario.new("location:1", scenario_block)
       scenario.rules_hash.include?("Scenario with no steps!").should be_true
       scenario.rules_hash["Scenario with no steps!"].should > 0
     end

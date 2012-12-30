@@ -6,9 +6,9 @@ describe FeatureHelper do
     folder_path = "../features/scenarios"
     feature_hash = FeatureHelper.build_features_from_folder(folder_path)
     expected_hash = [
-       Feature.new("../features/scenarios/dead_step_sorter_scenarios/complex_calculator.feature"),
-       Feature.new("../features/scenarios/dead_step_sorter_scenarios/nested_directory/nested_feature.feature"),
-       Feature.new("../features/scenarios/dead_step_sorter_scenarios/simple_calculator.feature"),
+       Feature.new("../features/scenarios/complex_calculator.feature"),
+       Feature.new("../features/scenarios/nested_directory/nested_feature.feature"),
+       Feature.new("../features/scenarios/simple_calculator.feature"),
     ]
     feature_hash.should == expected_hash
   end

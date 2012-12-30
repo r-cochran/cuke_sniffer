@@ -65,24 +65,34 @@ class CukeSniffer
   def catalog_step_calls
     @features.each do |feature|
       feature.scenarios.each do |scenario|
-        scenario_line = scenario.location.match(/:(?<line>\d*)/)[:line].to_i
-        scenario_location = scenario.location.gsub(scenario_line.to_s, "")
+        scenario_line = scenario.start_line
         scenario.steps.each do |step|
           scenario_line += 1
-          @step_definitions.each do |step_definition|
-            if step.gsub(STEP_STYLES, "") =~ step_definition.regex
-              step_definition.add_call("#{scenario_location}#{scenario_line}", step)
-              break
-            end
-          end
+          update_step_definition(scenario.location.gsub(scenario.start_line.to_s, scenario_line.to_s), step)
         end
+      end
+    end
+
+    @step_definitions.each do |definition|
+      next if definition.calls.empty?
+      definition.nested_steps.each_key do |key|
+        update_step_definition(key, definition.nested_steps[key])
+      end
+    end
+  end
+
+  def update_step_definition(location, step)
+    @step_definitions.each do |step_definition|
+      if step.gsub(STEP_STYLES, "") =~ step_definition.regex
+        step_definition.add_call(location, step)
+        break
       end
     end
   end
 
   def get_dead_steps
     catalog_step_calls
-    dead_steps =  []
+    dead_steps = []
     @step_definitions.each do |step_definition|
       dead_steps << step_definition if step_definition.calls.empty?
     end

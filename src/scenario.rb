@@ -1,7 +1,8 @@
 class Scenario < RulesEvaluator
-  attr_accessor :name, :tags, :steps, :examples_table
+  attr_accessor :start_line, :name, :tags, :steps, :examples_table
 
   def initialize(location, scenario)
+    @start_line = location.match(/:(?<line>\d*)/)[:line].to_i
     @name = ""
     @tags = []
     @steps = []

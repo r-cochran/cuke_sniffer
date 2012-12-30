@@ -47,7 +47,7 @@ describe CukeSniffer do
 
   it "should output results" do
     @cuke_sniffer.output_results.should ==
-"Suite Summary
+        "Suite Summary
   Total Score: 14
     Features (#@features_location)
       Min: 2
@@ -61,10 +61,58 @@ describe CukeSniffer do
     (14)Rule Descriptor"
   end
 
-  it "should catalog all calls a step definition has" do
-    @cuke_sniffer.step_definitions[0].calls.empty?.should be_true
+  it "should catalog all calls a scenario and nested step definition calls" do
+
+    scenario_block = [
+        "Scenario: Empty Scenario",
+        "Given live step",
+        "When nested step"
+    ]
+    scenario = Scenario.new("ScenarioLocation:3", scenario_block)
+
+    my_feature = Feature.new("#@features_location/simple_calculator.feature")
+    my_feature.scenarios = [scenario]
+    @cuke_sniffer.features = [my_feature]
+
+    raw_code = ["When /^live step$/ do", "end"]
+    live_step_definition = StepDefinition.new("LiveStep:1", raw_code)
+
+    raw_code = ["When /^nested step$/ do",
+                "steps \"When live step\"",
+                "end"]
+    nested_step_definition = StepDefinition.new("NestedStep:1", raw_code)
+
+    my_step_definitions = [live_step_definition, nested_step_definition]
+
+    @cuke_sniffer.step_definitions = my_step_definitions
     @cuke_sniffer.catalog_step_calls
-    @cuke_sniffer.step_definitions[0].calls.empty?.should be_false
+    @cuke_sniffer.step_definitions[0].calls.count.should == 2
+  end
+
+  it "should not catalog a nested step called by a dead step" do
+
+    scenario_block = [
+        "Scenario: Empty Scenario",
+    ]
+    scenario = Scenario.new("ScenarioLocation:3", scenario_block)
+
+    my_feature = Feature.new("#@features_location/simple_calculator.feature")
+    my_feature.scenarios = [scenario]
+    @cuke_sniffer.features = [my_feature]
+
+    raw_code = ["When /^dead step$/ do", "end"]
+    live_step_definition = StepDefinition.new("LiveStep:1", raw_code)
+
+    raw_code = ["When /^nested step$/ do",
+                "steps \"When dead step\"",
+                "end"]
+    nested_step_definition = StepDefinition.new("NestedStep:1", raw_code)
+
+    my_step_definitions = [live_step_definition, nested_step_definition]
+
+    @cuke_sniffer.step_definitions = my_step_definitions
+    @cuke_sniffer.catalog_step_calls
+    @cuke_sniffer.step_definitions[0].calls.count.should == 0
   end
 
   it "should identify dead step definitions" do
@@ -76,7 +124,7 @@ describe CukeSniffer do
   it "should output rules" do
     cuke_sniffer = CukeSniffer.new("../features/rule_scenarios", "../features/rule_step_definitions")
     cuke_sniffer.output_results.should ==
-"Suite Summary
+        "Suite Summary
   Total Score: 15
     Features (../features/rule_scenarios)
       Min: 15
