@@ -64,10 +64,10 @@ class Feature < RulesEvaluator
   end
 
   def ==(comparison_object)
-    comparison_object.location == @location
-    comparison_object.tags == @tags
-    comparison_object.name == @name
-    comparison_object.scenarios == @scenarios
+    comparison_object.location == location
+    comparison_object.tags == tags
+    comparison_object.name == name
+    comparison_object.scenarios == scenarios
   end
 
   def evaluate_score
@@ -80,14 +80,26 @@ class Feature < RulesEvaluator
     scenarios.each do |scenario|
       @score += scenario.score
       scenario.rules_hash.each_key do |rule_descriptor|
-        @rules_hash[rule_descriptor] ||= 0
-        @rules_hash[rule_descriptor] += scenario.rules_hash[rule_descriptor]
+        rules_hash[rule_descriptor] ||= 0
+        rules_hash[rule_descriptor] += scenario.rules_hash[rule_descriptor]
       end
     end
   end
 
   def evaluate_feature_scores
     rule_empty_name("Feature")
+    rule_no_scenarios
+    rule_too_many_scenarios
+    rule_numbers_in_name("Feature")
+    rule_long_name("Feature")
+  end
+
+  def rule_no_scenarios
+    store_rule(3, "Feature with no scenarios") if @scenarios.empty?
+  end
+
+  def rule_too_many_scenarios
+    store_rule(3, "Feature with too many scenarios") if @scenarios.size >= 10
   end
 
 end

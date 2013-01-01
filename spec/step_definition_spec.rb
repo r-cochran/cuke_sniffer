@@ -128,8 +128,7 @@ describe StepDefinition do
   end
 
   it "should evaluate the step definition and the score should be greater than 0" do
-    raw_code = ["Given /^the first number is \"([^\"]*)\"$/ do |first_number|",
-                "@second_number = 1",
+    raw_code = ["Given /^step with no code$/ do",
                 "end"]
     step_definition = StepDefinition.new("location:1", raw_code)
     step_definition.score = 0
@@ -138,21 +137,28 @@ describe StepDefinition do
   end
 
   it "should evaluate the step definition and then update a list of rules/occurrences" do
-    raw_code = ["Given /^the first number is \"([^\"]*)\"$/ do |first_number|",
-                "@second_number = 1",
+    raw_code = ["Given /^step with no code$/ do",
                 "end"]
     step_definition = StepDefinition.new("location:1", raw_code)
     step_definition.rules_hash = {}
     step_definition.evaluate_score
-    step_definition.rules_hash.should == {"Rule Descriptor" => 1}
+    step_definition.rules_hash.should_not == {}
   end
 
   it "should have a score and rule list immediately after being created" do
-    raw_code = ["Given /^the first number is \"([^\"]*)\"$/ do |first_number|",
-                "@second_number = 1",
+    raw_code = ["Given /^step with no code$/ do",
                 "end"]
     step_definition = StepDefinition.new("location:1", raw_code)
-    step_definition.score.should == 1
-    step_definition.rules_hash.should == {"Rule Descriptor" => 1}
+    step_definition.score.should > 0
+    step_definition.rules_hash.should_not == {}
+  end
+
+  it "should have a rule and associated score for a step definition with no code" do
+    raw_code = ["Given /^step with no code$/ do",
+                "end"]
+    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition.score.should > 0
+    step_definition.rules_hash.include?("Step definition has no code").should be_true
+    step_definition.rules_hash["Step definition has no code"].should > 0
   end
 end

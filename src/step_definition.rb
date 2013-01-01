@@ -49,19 +49,32 @@ class StepDefinition < RulesEvaluator
       if regex
         match = regex.match(line)
         nested_step_line = (@start_line + counter)
-        @nested_steps[@location.gsub(@start_line.to_s, nested_step_line.to_s)] = match[:step_string]
+        @nested_steps[location.gsub(@start_line.to_s, nested_step_line.to_s)] = match[:step_string]
       end
       counter += 1
     end
   end
 
   def ==(comparison_object)
-    comparison_object.location == @location
-    comparison_object.regex == @regex
+    comparison_object.location == location
+    comparison_object.regex == regex
     comparison_object.code == code
-    comparison_object.parameters == @parameters
-    comparison_object.calls == @calls
-    comparison_object.nested_steps == @nested_steps
+    comparison_object.parameters == parameters
+    comparison_object.calls == calls
+    comparison_object.nested_steps == nested_steps
+  end
+
+  def evaluate_score
+    super
+    evaluate_step_definition_score
+  end
+  
+  def evaluate_step_definition_score
+    rule_no_code  
+  end
+
+  def rule_no_code
+    store_rule(5, "Step definition has no code") if @code.empty?
   end
 
 end

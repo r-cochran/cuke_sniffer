@@ -17,7 +17,7 @@ describe Feature do
     file.puts("Then I am a test")
     file.puts("")
     file.puts("@fun_tag")
-    file.puts("Scenario: My Test Scenario 2")
+    file.puts("Scenario: My Other Test Scenario")
     file.puts("Given I want to be a test")
     file.puts("When I become a test")
     file.puts("Then I am a test")
@@ -35,7 +35,7 @@ describe Feature do
   end
 
   it "should gather all non commented feature level tags" do
-    @feature.tags.should == ["@tag1", "@tag2", "@tag3"]
+    @feature.tags.should == %w(@tag1 @tag2 @tag3)
   end
 
   it "should gather a scenario with its tags and create a scenario object and add feature level tags to the scenario" do
@@ -140,18 +140,18 @@ describe Feature do
     @feature.scenarios.should == []
   end
 
-  it "should have a list of scenarios with rules evaluated" do
-    scenario = @feature.scenarios[0]
-    scenario.score.should >= 0
-    scenario.rules_hash.should == {"Rule Descriptor" => 1}
-  end
-
   it "should have a score and rules of the feature and the scenarios contained in it" do
     @feature.score = 0
     @feature.rules_hash = {}
+
+    my_scenario = Scenario.new("location:1", ["Scenario: Trigger a rule"])
+    my_scenario.score = 1
+    my_scenario.rules_hash = {"Rule Descriptor" => 1}
+    @feature.scenarios[0] = my_scenario
+
     @feature.evaluate_score
-    @feature.score.should == 3
-    @feature.rules_hash.should == {"Rule Descriptor" => 3}
+    @feature.score.should == 1
+    @feature.rules_hash.should == {"Rule Descriptor" => 1}
   end
 
   it "should add rules from the scenario independent of the feature rules" do
@@ -173,5 +173,44 @@ describe Feature do
     @feature = Feature.new(@file_name)
     @feature.rules_hash.include?("No Feature Description!").should be_true
     @feature.rules_hash["No Feature Description!"].should > 0
+  end
+
+  it "should have a rule and associated score for a feature without scenarios" do
+    file = File.open(@file_name, "w")
+    file.puts("Feature: I'm a feature without scenarios!")
+    file.close
+    @feature = Feature.new(@file_name)
+    @feature.rules_hash.include?("Feature with no scenarios").should be_true
+    @feature.rules_hash["Feature with no scenarios"].should > 0
+  end
+
+  it "should have a rule associated score for a feature with 10 or more scenarios" do
+    file = File.open(@file_name, "w")
+    file.puts("Feature: I'm a feature without scenarios!")
+    10.times {file.puts "Scenario: I am a simple scenario"}
+    file.close
+    @feature = Feature.new(@file_name)
+    @feature.rules_hash.include?("Feature with too many scenarios").should be_true
+    @feature.rules_hash["Feature with too many scenarios"].should > 0
+  end
+
+  it "should have a rule associated score for a feature with any number" do
+    file = File.open(@file_name, "w")
+    file.puts("Feature: Story Card 12345")
+    file.close
+    @feature = Feature.new(@file_name)
+    @feature.rules_hash.include?("Feature has number(s) in the title").should be_true
+    @feature.rules_hash["Feature has number(s) in the title"].should > 0
+  end
+
+  it "should have a rule associated score for a feature with a very long description" do
+    feature_description = ""
+    180.times{feature_description << "A"}
+    file = File.open(@file_name, "w")
+    file.puts("Feature: #{feature_description}")
+    file.close
+    @feature = Feature.new(@file_name)
+    @feature.rules_hash.include?("Feature title is too long").should be_true
+    @feature.rules_hash["Feature title is too long"].should > 0
   end
 end

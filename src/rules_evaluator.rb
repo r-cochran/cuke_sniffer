@@ -9,20 +9,29 @@ class RulesEvaluator
   end
 
   def evaluate_score
-    @score = 1
-    @rules_hash = {"Rule Descriptor" => 1}
+  end
+
+  def store_rule(score, description)
+    @score += score
+    @rules_hash[description] ||= 0
+    @rules_hash[description] += 1
   end
 
   def rule_empty_name(type)
-    if @name.empty?
-      @score += 3
-      @rules_hash["No #{type} Description!"] = 1
-    end
+    store_rule(3, "No #{type} Description!") if name.empty?
+  end
+
+  def rule_numbers_in_name(type)
+    store_rule(3, "#{type} has number(s) in the title") if name =~ /\d/
+  end
+
+  def rule_long_name(type)
+    store_rule(0.5, "#{type} title is too long") if name.size >= 180
   end
 
   def create_tag_list(line)
     if TAG_REGEX.match(line) and !is_comment?(line)
-      line.scan(TAG_REGEX).each { |tag| @tags << tag[0] }
+      line.scan(TAG_REGEX).each { |tag| tags << tag[0] }
     end
   end
 
