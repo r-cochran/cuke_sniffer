@@ -209,8 +209,19 @@ describe Feature do
     file = File.open(@file_name, "w")
     file.puts("Feature: #{feature_description}")
     file.close
-    @feature = Feature.new(@file_name)
-    @feature.rules_hash.include?("Feature title is too long").should be_true
-    @feature.rules_hash["Feature title is too long"].should > 0
+    feature = Feature.new(@file_name)
+    feature.rules_hash.include?("Feature title is too long").should be_true
+    feature.rules_hash["Feature title is too long"].should > 0
+  end
+
+  it "should record a rule occurrence nd increment of the score of a feature with too many tags" do
+    file = File.open(@file_name, "w")
+    8.times{|n| file.puts "@tag_#{n}"}
+    file.puts("Feature: Feature with many tags")
+    file.close
+
+    feature = Feature.new(@file_name)
+    feature.rules_hash.include?("Feature has too many tags").should be_true
+    feature.rules_hash["Feature has too many tags"].should == 1
   end
 end

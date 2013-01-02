@@ -29,6 +29,10 @@ class RulesEvaluator
     store_rule(0.5, "#{type} title is too long") if name.size >= 180
   end
 
+  def rule_too_many_tags(type)
+    store_rule(3, "#{type} has too many tags") if tags.size >= 8
+  end
+
   def create_tag_list(line)
     if TAG_REGEX.match(line) and !is_comment?(line)
       line.scan(TAG_REGEX).each { |tag| tags << tag[0] }

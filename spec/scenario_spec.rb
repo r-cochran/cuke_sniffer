@@ -89,6 +89,22 @@ describe Scenario do
     scenario.examples_table.should == %w(|stuff| |a|)
   end
 
+  it "should retain the type of scenario" do
+    scenario_block = [
+        "Scenario: Test Scenario",
+    ]
+    scenario = Scenario.new("location:1", scenario_block)
+    scenario.type.should == "Scenario"
+  end
+
+  it "should retain the type of scenario outline" do
+    scenario_block = [
+        "Scenario Outline: Test Scenario",
+    ]
+    scenario = Scenario.new("location:1", scenario_block)
+    scenario.type.should == "Scenario Outline"
+  end
+
   it "should evaluate the scenario and the score should be greater than 0" do
     scenario_block = [
         "Scenario: Test Scenario with empty scenario rule firing",
@@ -243,8 +259,8 @@ describe Scenario do
     scenario = Scenario.new("location:1", scenario_block)
     scenario.rules_hash.include?("First step began with And/But").should be_true
     scenario.rules_hash.include?("Steps are out of Given/When/Then order").should be_true
-    scenario.rules_hash["First step began with And/But"].should > 0
-    scenario.rules_hash["Steps are out of Given/When/Then order"].should > 0
+    scenario.rules_hash["First step began with And/But"].should == 1
+    scenario.rules_hash["Steps are out of Given/When/Then order"].should == 1
   end
 
   it "should have a rule and associate score for a scenario with * as a step" do
@@ -254,7 +270,7 @@ describe Scenario do
     ]
     scenario = Scenario.new("location:1", scenario_block)
     scenario.rules_hash.include?("Steps includes a *").should be_true
-    scenario.rules_hash["Steps includes a *"].should > 0
+    scenario.rules_hash["Steps includes a *"].should == 1
   end
 
   it "should have record a rule occurrence and increment the score for each step in a scenario with an *" do
@@ -271,4 +287,155 @@ describe Scenario do
     scenario.rules_hash["Steps includes a *"].should == 2
   end
 
+  it "should have record a rule occurrence and increment the score for a commented step in a scenario" do
+    scenario_block = [
+        "Scenario: Scenario with commented line",
+        "#Given I am first",
+        "When I am second",
+        "Then I am third"
+    ]
+    scenario = Scenario.new("location:1", scenario_block)
+    scenario.rules_hash.include?("Commented Step").should be_true
+    scenario.rules_hash["Commented Step"].should == 1
+  end
+
+  it "should have record a rule occurrence and increment the score for each commented step in a scenario" do
+    scenario_block = [
+        "Scenario: Scenario with commented line",
+        "#Given I am first",
+        "#When I am second",
+        "#Then I am third"
+    ]
+    scenario = Scenario.new("location:1", scenario_block)
+    scenario.rules_hash.include?("Commented Step").should be_true
+    scenario.rules_hash["Commented Step"].should == 3
+    scenario.score.should >= 9
+  end
+
+  it "should record a rule occurrence and increment the score of a scenario outline with a commented example row" do
+    scenario_block = [
+        "Scenario Outline: Scenario with commented line",
+        "Given I am first",
+        "When I am second",
+        "Then I am third",
+        "Examples:",
+        "|var_a|",
+        "#|a|",
+        "|b|"
+    ]
+    scenario = Scenario.new("location:1", scenario_block)
+    scenario.rules_hash.include?("Commented Example").should be_true
+    scenario.rules_hash["Commented Example"].should == 1
+  end
+
+  it "should record a rule occurrence and increment the score of a scenario outline with each commented example row" do
+    scenario_block = [
+        "Scenario Outline: Scenario with commented line",
+        "Given I am first",
+        "When I am second",
+        "Then I am third",
+        "Examples:",
+        "|var_a|",
+        "#|a|",
+        "#|b|"
+    ]
+    scenario = Scenario.new("location:1", scenario_block)
+    scenario.rules_hash.include?("Commented Example").should be_true
+    scenario.rules_hash["Commented Example"].should == 2
+    scenario.score.should >= 6
+  end
+
+  it "should record a rule occurrence and increment the score of a scenario outline only no examples" do
+    scenario_block = [
+        "Scenario Outline: Scenario Outline with no examples",
+        "Given I am first",
+        "When I am second",
+        "Then I am third",
+        "Examples:",
+        "|var_a|",
+    ]
+    scenario = Scenario.new("location:1", scenario_block)
+    scenario.rules_hash.include?("Scenario Outline with only no examples").should be_true
+    scenario.rules_hash["Scenario Outline with only no examples"].should == 1
+  end
+
+  it "should record a rule occurrence and increment the score of a scenario outline only one example" do
+    scenario_block = [
+        "Scenario Outline: Scenario Outline with one example",
+        "Given I am first",
+        "When I am second",
+        "Then I am third",
+        "Examples:",
+        "|var_a|",
+        "|a|"
+    ]
+    scenario = Scenario.new("location:1", scenario_block)
+    scenario.rules_hash.include?("Scenario Outline with only one example").should be_true
+    scenario.rules_hash["Scenario Outline with only one example"].should == 1
+  end
+
+  it "should record a rule occurrence and increment the score of a scenario outline without an examples table" do
+    scenario_block = [
+        "Scenario Outline: Scenario with no examples table",
+        "Given I am first",
+        "When I am second",
+        "Then I am third",
+    ]
+    scenario = Scenario.new("location:1", scenario_block)
+    scenario.rules_hash.include?("Scenario Outline with no examples table").should be_true
+    scenario.rules_hash["Scenario Outline with no examples table"].should == 1
+  end
+
+  it "should record a rule occurrence and increment the score of a scenario outline with too many examples" do
+    scenario_block = [
+        "Scenario Outline: Scenario with too many examples",
+        "Given I am first",
+        "When I am second",
+        "Then I am third",
+        "Examples:",
+        "|var_a|"
+    ]
+
+    8.times{|n| scenario_block << "|#{n}|"}
+
+    scenario = Scenario.new("location:1", scenario_block)
+    scenario.rules_hash.include?("Scenario Outline with too many examples").should be_true
+    scenario.rules_hash["Scenario Outline with too many examples"].should == 1
+  end
+
+  it "should record a rule occurrence and increment the score of a scenario with too many tags" do
+    scenario_block = []
+    8.times{|n| scenario_block << "@tag_#{n}"}
+    scenario_block << "Scenario: Scenario with many tags"
+
+    scenario = Scenario.new("location:1", scenario_block)
+    scenario.rules_hash.include?("Scenario has too many tags").should be_true
+    scenario.rules_hash["Scenario has too many tags"].should == 1
+  end
+
+  it "should record a rule occurrence with the word used and increment the score of a scenario with any implementation word" do
+    scenario_block = [
+        "Scenario: Scenario with implementation words",
+        "Given I am on the login page",
+        "When I log in to the site",
+        "Then I am on the home page",
+    ]
+
+    scenario = Scenario.new("location:1", scenario_block)
+    scenario.rules_hash.include?("Implementation word used: page").should be_true
+    scenario.rules_hash.include?("Implementation word used: site").should be_true
+    scenario.rules_hash["Implementation word used: page"].should == 2
+    scenario.rules_hash["Implementation word used: site"].should == 1
+  end
+
+  it "should record a rule occurrence with the date used and increment the score of a scenario with dates used" do
+    scenario_block = [
+        "Scenario: Scenario with dates used",
+        "Given Today is 11/12/2013",
+    ]
+
+    scenario = Scenario.new("location:1", scenario_block)
+    scenario.rules_hash.include?("Date used: 11/12/2013").should be_true
+    scenario.rules_hash["Date used: 11/12/2013"].should == 1
+  end
 end

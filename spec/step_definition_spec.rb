@@ -111,22 +111,6 @@ describe StepDefinition do
     }
   end
 
-  it "should not evaluate commented lines in complex steps" do
-    nested_step = "the first number is \"1\""
-    raw_code = ["Given /^the first number is 1$/ do |first_number|",
-                "steps %{And #{nested_step}",
-                "And #{nested_step}",
-                "#And #{nested_step}",
-                "And #{nested_step}}",
-                "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
-    step_definition.nested_steps.should == {
-            "location:2" => nested_step,
-            "location:3" => nested_step,
-            "location:5" => nested_step,
-        }
-  end
-
   it "should evaluate the step definition and the score should be greater than 0" do
     raw_code = ["Given /^step with no code$/ do",
                 "end"]

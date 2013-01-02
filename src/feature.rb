@@ -92,6 +92,7 @@ class Feature < RulesEvaluator
     rule_too_many_scenarios
     rule_numbers_in_name("Feature")
     rule_long_name("Feature")
+    rule_too_many_tags("Feature")
   end
 
   def rule_no_scenarios
