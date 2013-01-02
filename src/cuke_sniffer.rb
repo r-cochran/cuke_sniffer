@@ -4,8 +4,8 @@ class CukeSniffer
   def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd)
     @features_location = features_location
     @step_definitions_location = step_definitions_location
-    @features = FeatureHelper.build_features_from_folder(features_location)
-    @step_definitions = StepDefinitionHelper.build_step_definitions_from_folder(step_definitions_location)
+    @features = build_features_from_folder(features_location)
+    @step_definitions = build_step_definitions_from_folder(step_definitions_location)
     @summary = {
         :total_score => 0,
         :features => {},
@@ -14,6 +14,57 @@ class CukeSniffer
     }
     assess_score
     output_results
+  end
+
+  def build_features_from_folder(folder_path)
+    features = []
+    Dir.entries(folder_path).each_entry do |file_name|
+      unless FILE_IGNORE_LIST.include?(file_name)
+        file_name = "#{folder_path}/#{file_name}"
+        if File.directory?(file_name)
+          features << build_features_from_folder(file_name)
+        elsif file_name.include?(".feature")
+          features << Feature.new(file_name)
+        end
+      end
+    end
+    features.flatten
+  end
+
+  def build_step_definitions(file_name)
+    step_file_lines = []
+    step_file = File.open(file_name)
+    step_file.each_line { |line| step_file_lines << line }
+    step_file.close
+
+    counter = 0
+    step_code = []
+    step_definitions = []
+    until counter >= step_file_lines.length
+      if step_file_lines[counter] =~ STEP_DEFINITION_REGEX && !step_code.empty?
+        step_definitions << StepDefinition.new("#{file_name}:#{counter+1 - step_code.count}", step_code)
+        step_code = []
+      end
+      step_code << step_file_lines[counter].strip
+      counter+=1
+    end
+    step_definitions << StepDefinition.new("#{file_name}:#{counter+1}", step_code)
+    step_definitions
+  end
+
+  def build_step_definitions_from_folder(folder_name)
+    list_of_steps = []
+    Dir.entries(folder_name).each_entry do |file_name|
+      unless FILE_IGNORE_LIST.include?(file_name)
+        file_name = "#{folder_name}/#{file_name}"
+        if File.directory?(file_name)
+          list_of_steps << build_step_definitions_from_folder(file_name)
+        elsif file_name.include?("steps.rb")
+          list_of_steps << build_step_definitions(file_name)
+        end
+      end
+    end
+    list_of_steps.flatten
   end
 
   def assess_array(array)

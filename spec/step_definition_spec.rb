@@ -137,12 +137,46 @@ describe StepDefinition do
     step_definition.rules_hash.should_not == {}
   end
 
-  it "should have a rule and associated score for a step definition with no code" do
+end
+
+describe "StepDefinitionRules" do
+  it "should punish Step Definitions with no code" do
     raw_code = ["Given /^step with no code$/ do",
                 "end"]
     step_definition = StepDefinition.new("location:1", raw_code)
     step_definition.score.should > 0
     step_definition.rules_hash.include?("Step definition has no code").should be_true
     step_definition.rules_hash["Step definition has no code"].should > 0
+  end
+
+  it "should punish Step Definitions with too many parameters" do
+    raw_code = ["Given /^step with many parameters$/ do |a, b, c|", "end"]
+    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition.rules_hash.include?("Too many parameters for Step Definition").should be_true
+    step_definition.rules_hash["Too many parameters for Step Definition"].should == 1
+  end
+
+  it "should punish Step Definitions that have nested steps" do
+    raw_code = ["Given /^step with nested step call$/ do", "steps \"And I am a nested step\"", "end"]
+    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition.rules_hash.include?("Nested Step call").should be_true
+    step_definition.rules_hash["Nested Step call"].should == 1
+  end
+
+  it "should punish Step Definitions that have recursive nested steps" do
+    raw_code = ["Given /^step with recursive nested step call$/ do", "steps \"And step with recursive nested step call\"", "end"]
+    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition.rules_hash.include?("Recursive Nested Step call").should be_true
+    step_definition.rules_hash["Recursive Nested Step call"].should == 1
+  end
+
+  it "should punish each commented line in a Step Definition" do
+    raw_code = ["Given /^step with comments$/ do",
+                "#steps \"And step with recursive nested step call\"",
+                "#steps \"And step with recursive nested step call\"",
+                "end"]
+    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition.rules_hash.include?("Commented code in Step Definition").should be_true
+    step_definition.rules_hash["Commented code in Step Definition"].should == 2
   end
 end

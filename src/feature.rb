@@ -1,13 +1,12 @@
-class Feature < RulesEvaluator
+class Feature < CukeRulesEvaluator
 
-  attr_accessor :tags, :name, :scenarios
+  attr_accessor :background, :scenarios
 
   def initialize(file_name)
-    @tags = []
-    @name = ""
+    super(file_name)
     @scenarios = []
     split_feature(file_name)
-    super(file_name)
+    evaluate_score
   end
 
   def split_feature(file_name)
@@ -24,7 +23,7 @@ class Feature < RulesEvaluator
     end
 
     until index >= feature_lines.length or feature_lines[index].match TAG_REGEX or feature_lines[index].match SCENARIO_TITLE_REGEX
-      create_feature_name(feature_lines[index])
+      create_name(feature_lines[index], "Feature:")
       index += 1
     end
 
@@ -50,49 +49,45 @@ class Feature < RulesEvaluator
 
   def add_scenario_to_feature(code_block, index_of_title)
     scenario = Scenario.new(index_of_title, code_block)
-    scenario.tags += @tags
-    @scenarios << scenario
-  end
-
-  def create_feature_name(line)
-    unless is_comment?(line)
-      line.gsub!("Feature:", "")
-      line.strip!
-      @name += " " unless @name.empty? or line.empty?
-      @name += line
+    scenario.tags += tags
+    if scenario.type == "Background"
+      @background = scenario
+    else
+      @scenarios << scenario
     end
   end
 
   def ==(comparison_object)
-    comparison_object.location == location
-    comparison_object.tags == tags
-    comparison_object.name == name
+    super(comparison_object)
     comparison_object.scenarios == scenarios
   end
 
   def evaluate_score
     super
+    include_sub_scores(@background) unless @background.nil?
     include_scenario_scores
     evaluate_feature_scores
   end
 
+  def include_sub_scores(sub_class)
+    @score += sub_class.score
+    sub_class.rules_hash.each_key do |rule_descriptor|
+      rules_hash[rule_descriptor] ||= 0
+      rules_hash[rule_descriptor] += sub_class.rules_hash[rule_descriptor]
+    end
+  end
+
   def include_scenario_scores
     scenarios.each do |scenario|
-      @score += scenario.score
-      scenario.rules_hash.each_key do |rule_descriptor|
-        rules_hash[rule_descriptor] ||= 0
-        rules_hash[rule_descriptor] += scenario.rules_hash[rule_descriptor]
-      end
+      include_sub_scores(scenario)
     end
   end
 
   def evaluate_feature_scores
-    rule_empty_name("Feature")
     rule_no_scenarios
     rule_too_many_scenarios
-    rule_numbers_in_name("Feature")
-    rule_long_name("Feature")
-    rule_too_many_tags("Feature")
+    rule_background_with_no_scenarios
+    rule_background_with_one_scenario
   end
 
   def rule_no_scenarios
@@ -101,6 +96,14 @@ class Feature < RulesEvaluator
 
   def rule_too_many_scenarios
     store_rule(3, "Feature with too many scenarios") if @scenarios.size >= 10
+  end
+
+  def rule_background_with_no_scenarios
+    store_rule(5, "Feature has background with no scenarios") if @scenarios.empty? and !@background.nil?
+  end
+
+  def rule_background_with_one_scenario
+    store_rule(5, "Feature has background with one scenarios") if @scenarios.size == 1 and !@background.nil?
   end
 
 end

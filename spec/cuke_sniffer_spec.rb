@@ -115,6 +115,74 @@ describe CukeSniffer do
   it "should output rules" do
     cuke_sniffer = CukeSniffer.new("../features/rule_scenarios", "../features/rule_step_definitions")
     cuke_sniffer.output_results.should =~ /Suite Summary\n\s*Total Score: \d*\n\s*Features \(.*\)\n\s*Min: \d*\n\s*Max: \d*\n\s*Average: \d*\n\s*Step Definitions \(.*\)\n\s*Min: \d*\n\s*Max: \d*\n\s*Average: \d*\n\s*Improvements to make:\n.*/
+    puts cuke_sniffer.output_results
+  end
+
+  it "should create a hash table of features from a folder where the key is the file name and the value is the feature object" do
+    folder_path = "../features/scenarios"
+    feature_hash = @cuke_sniffer.build_features_from_folder(folder_path)
+    expected_hash = [
+        Feature.new("../features/scenarios/complex_calculator.feature"),
+        Feature.new("../features/scenarios/nested_directory/nested_feature.feature"),
+        Feature.new("../features/scenarios/simple_calculator.feature"),
+    ]
+    feature_hash.should == expected_hash
+  end
+
+  it "should read every line of multiple step definition and segment those lines into steps." do
+    file_name = "my_steps.rb"
+    file = File.open(file_name, "w")
+    file.puts("Given /^I am a step$/ do")
+    file.puts("  puts 'stuff'")
+    file.puts("end")
+    file.puts("")
+    file.puts("And /^I too am a step$/ do")
+
+    file.puts("if true {")
+    file.puts("puts 'no'")
+    file.puts("}")
+    file.puts("end")
+    file.close
+
+    steps_array = @cuke_sniffer.build_step_definitions(file_name)
+    steps_array.count.should == 2
+
+    File.delete(file_name)
+  end
+
+  it "should create a list of step definition objects from a step definition file." do
+    file_name = "my_steps.rb"
+    file = File.open(file_name, "w")
+    file.puts("Given /^I am a step$/ do")
+    file.puts("  puts 'stuff'")
+    file.puts("end")
+    file.close
+
+    expected_step_definitions = [
+        StepDefinition.new("my_steps.rb:0", ["Given /^I am a step$/ do", "puts 'stuff'", "end"])
+    ]
+    step_definitions = @cuke_sniffer.build_step_definitions(file_name)
+
+    step_definitions.should == expected_step_definitions
+    File.delete(file_name)
+  end
+
+  it "should create a list of step definition objects from a step definitions folder and its sub folders" do
+    folder_name = "../features/step_definitions"
+    step_definitions = @cuke_sniffer.build_step_definitions_from_folder(folder_name)
+
+    expected_step_definitions = [
+        StepDefinition.new("../features/step_definitions/complex_calculator_steps.rb:1", ["Given /^the first number is \"([^\"]*)\"$/ do |first_number|", "@first_number = first_number.to_i", "end"]),
+        StepDefinition.new("../features/step_definitions/complex_calculator_steps.rb:5", ["When /^the second number is \"([^\"]*)\"$/ do |second_number|", "@second_number = second_number.to_i", "end"]),
+        StepDefinition.new("../features/step_definitions/complex_calculator_steps.rb:9", ["Then /^the result is \"([^\"]*)\"$/ do |result|", "result.to_i.should == @first_number + @second_number", "end"]),
+        StepDefinition.new("../features/step_definitions/nested_steps/nested_steps.rb:1", ["Given /^I am a nested step$/ do", "puts \"i have no functionality\"", "end"]),
+        StepDefinition.new("../features/step_definitions/simple_calculator_steps.rb:1", ["Given /^the first number is 1$/ do", "steps \"Given the first number is \\\"1\\\"\"", "end"]),
+        StepDefinition.new("../features/step_definitions/simple_calculator_steps.rb:5", ["When /^the second number is 1$/ do", "@second_number = 1", "end"]),
+        StepDefinition.new("../features/step_definitions/simple_calculator_steps.rb:9", ["When /^the calculator adds$/ do", "@result = @first_number + @second_number", "end"]),
+        StepDefinition.new("../features/step_definitions/simple_calculator_steps.rb:13", ["Then /^the result is 2$/ do", "@result.should == 2", "end"]),
+    ]
+
+    step_definitions.should == expected_step_definitions
   end
 
 end

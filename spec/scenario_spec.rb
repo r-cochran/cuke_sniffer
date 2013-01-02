@@ -139,7 +139,10 @@ describe Scenario do
     scenario.name.should == "Test My Multi-line Scenario"
   end
 
-  it "should have a rule for empty scenario names" do
+end
+
+describe "ScenarioRules" do
+  it "should punish Scenarios without a name" do
     scenario_block = [
         "Scenario:",
         "Given I am making a scenario",
@@ -151,7 +154,7 @@ describe Scenario do
     scenario.rules_hash["No Scenario Description!"].should > 0
   end
 
-  it "should have a rule for a scenario with no steps" do
+  it "should punish Scenarios with no steps" do
     scenario_block = [
         "Scenario: Empty Scenario",
     ]
@@ -160,7 +163,7 @@ describe Scenario do
     scenario.rules_hash["Scenario with no steps!"].should > 0
   end
 
-  it "should have a rule and associated score for a scenario name containing digits" do
+  it "should punish Scenarios with numbers in its name" do
     scenario_block = [
         "Scenario: Scenario with some digits 123"
     ]
@@ -169,7 +172,7 @@ describe Scenario do
     scenario.rules_hash["Scenario has number(s) in the title"].should > 0
   end
 
-  it "should have a rule and associated score for a scenario name with a very long description" do
+  it "should punish Scenarios with long names" do
     scenario_description = ""
     180.times{scenario_description << "A"}
     scenario_block = [
@@ -180,7 +183,7 @@ describe Scenario do
     scenario.rules_hash["Scenario title is too long"].should > 0
   end
 
-  it "should have a rule and associated score for a scenario with too many steps" do
+  it "should punish Scenarios with too many steps" do
     scenario_block = [
         "Scenario: Scenario with too many steps"
     ]
@@ -192,7 +195,7 @@ describe Scenario do
     scenario.rules_hash["Scenario has too many steps"].should > 0
   end
 
-  it "should have a rule and associated score for a scenario with Then/When steps" do
+  it "should punish Scenarios with steps that are out of order: Then/When" do
     scenario_block = [
         "Scenario: Scenario with out of order steps",
         "Then comes first",
@@ -203,7 +206,7 @@ describe Scenario do
     scenario.rules_hash["Steps are out of Given/When/Then order"].should > 0
   end
 
-  it "should have a rule and associated score for a scenario with Then/When/Given steps" do
+  it "should punish Scenarios with steps that are out of order: Then/When/Given" do
     scenario_block = [
         "Scenario: Scenario with out of order steps",
         "Then comes first",
@@ -215,7 +218,7 @@ describe Scenario do
     scenario.rules_hash["Steps are out of Given/When/Then order"].should > 0
   end
 
-  it "should have a rule and associated score for a scenario with Given/Then/And/When steps" do
+  it "should punish Scenarios with steps that are out of order: Given/Then/And/When" do
     scenario_block = [
         "Scenario: Scenario with out of order steps",
         "Given comes first",
@@ -228,7 +231,7 @@ describe Scenario do
     scenario.rules_hash["Steps are out of Given/When/Then order"].should > 0
   end
 
-  it "should have a rule and associate score for a scenario with And as the first step" do
+  it "should punish Scenarios with And as its first step" do
     scenario_block = [
         "Scenario: Scenario with And as its first step",
         "And is not a valid first step",
@@ -239,7 +242,7 @@ describe Scenario do
     scenario.rules_hash["First step began with And/But"].should > 0
   end
 
-  it "should have a rule and associate score for a scenario with But as the first step" do
+  it "should punish Scenarios with But as its first step" do
     scenario_block = [
         "Scenario: Scenario with But as its first step",
         "But is not a valid first step",
@@ -250,7 +253,7 @@ describe Scenario do
     scenario.rules_hash["First step began with And/But"].should > 0
   end
 
-  it "should have a rule and associate score for a scenario with And as the only steps" do
+  it "should punish Scenarios with only And steps" do
     scenario_block = [
         "Scenario: Scenario with multiple And steps",
         "And is not a valid first step",
@@ -263,7 +266,7 @@ describe Scenario do
     scenario.rules_hash["Steps are out of Given/When/Then order"].should == 1
   end
 
-  it "should have a rule and associate score for a scenario with * as a step" do
+  it "should punish Scenarios that use the * step" do
     scenario_block = [
         "Scenario: Scenario with *",
         "* is an awesome operator"
@@ -273,7 +276,7 @@ describe Scenario do
     scenario.rules_hash["Steps includes a *"].should == 1
   end
 
-  it "should have record a rule occurrence and increment the score for each step in a scenario with an *" do
+  it "should punish each step in a Scenario that uses *" do
     scenario_block = [
         "Scenario: Scenario with *",
         "Given I am first",
@@ -287,7 +290,7 @@ describe Scenario do
     scenario.rules_hash["Steps includes a *"].should == 2
   end
 
-  it "should have record a rule occurrence and increment the score for a commented step in a scenario" do
+  it "should punish Scenarios with commented steps" do
     scenario_block = [
         "Scenario: Scenario with commented line",
         "#Given I am first",
@@ -299,7 +302,7 @@ describe Scenario do
     scenario.rules_hash["Commented Step"].should == 1
   end
 
-  it "should have record a rule occurrence and increment the score for each commented step in a scenario" do
+  it "should punish each step in a Scenario that is commented" do
     scenario_block = [
         "Scenario: Scenario with commented line",
         "#Given I am first",
@@ -312,7 +315,7 @@ describe Scenario do
     scenario.score.should >= 9
   end
 
-  it "should record a rule occurrence and increment the score of a scenario outline with a commented example row" do
+  it "should punish Scenario Outlines with commented examples" do
     scenario_block = [
         "Scenario Outline: Scenario with commented line",
         "Given I am first",
@@ -328,7 +331,7 @@ describe Scenario do
     scenario.rules_hash["Commented Example"].should == 1
   end
 
-  it "should record a rule occurrence and increment the score of a scenario outline with each commented example row" do
+  it "should punish each commented example in a Scenario Outline" do
     scenario_block = [
         "Scenario Outline: Scenario with commented line",
         "Given I am first",
@@ -345,7 +348,7 @@ describe Scenario do
     scenario.score.should >= 6
   end
 
-  it "should record a rule occurrence and increment the score of a scenario outline only no examples" do
+  it "should punish Scenario Outlines with no examples" do
     scenario_block = [
         "Scenario Outline: Scenario Outline with no examples",
         "Given I am first",
@@ -359,7 +362,7 @@ describe Scenario do
     scenario.rules_hash["Scenario Outline with only no examples"].should == 1
   end
 
-  it "should record a rule occurrence and increment the score of a scenario outline only one example" do
+  it "should punish Scenario Outlines with only one example" do
     scenario_block = [
         "Scenario Outline: Scenario Outline with one example",
         "Given I am first",
@@ -374,7 +377,7 @@ describe Scenario do
     scenario.rules_hash["Scenario Outline with only one example"].should == 1
   end
 
-  it "should record a rule occurrence and increment the score of a scenario outline without an examples table" do
+  it "should punish Scenario Outlines without the Examples table" do
     scenario_block = [
         "Scenario Outline: Scenario with no examples table",
         "Given I am first",
@@ -386,7 +389,7 @@ describe Scenario do
     scenario.rules_hash["Scenario Outline with no examples table"].should == 1
   end
 
-  it "should record a rule occurrence and increment the score of a scenario outline with too many examples" do
+  it "should punish Scenario Outlines with too many examples" do
     scenario_block = [
         "Scenario Outline: Scenario with too many examples",
         "Given I am first",
@@ -403,7 +406,7 @@ describe Scenario do
     scenario.rules_hash["Scenario Outline with too many examples"].should == 1
   end
 
-  it "should record a rule occurrence and increment the score of a scenario with too many tags" do
+  it "should punish Scenarios with too many tags" do
     scenario_block = []
     8.times{|n| scenario_block << "@tag_#{n}"}
     scenario_block << "Scenario: Scenario with many tags"
@@ -413,7 +416,7 @@ describe Scenario do
     scenario.rules_hash["Scenario has too many tags"].should == 1
   end
 
-  it "should record a rule occurrence with the word used and increment the score of a scenario with any implementation word" do
+  it "should punish Scenarios that use implementation words(page/site/ect)" do
     scenario_block = [
         "Scenario: Scenario with implementation words",
         "Given I am on the login page",
@@ -428,7 +431,7 @@ describe Scenario do
     scenario.rules_hash["Implementation word used: site"].should == 1
   end
 
-  it "should record a rule occurrence with the date used and increment the score of a scenario with dates used" do
+  it "should punish Scenarios with steps that use fixed Dates(01/01/0001)" do
     scenario_block = [
         "Scenario: Scenario with dates used",
         "Given Today is 11/12/2013",
