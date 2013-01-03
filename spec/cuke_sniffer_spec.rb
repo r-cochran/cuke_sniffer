@@ -49,7 +49,7 @@ describe CukeSniffer do
   end
 
   it "should output results" do
-    @cuke_sniffer.output_results.should =~ /Suite Summary\n\s*Total Score: \d*\n\s*Features \(.*\)\n\s*Min: \d*\n\s*Max: \d*\n\s*Average: \d*\n\s*Step Definitions \(.*\)\n\s*Min: \d*\n\s*Max: \d*\n\s*Average: \d*\n\s*Improvements to make:\n.*/
+    @cuke_sniffer.output_results.should =~ /Suite Summary\n\s*Total Score: [.0-9]*\n\s*Features \(.*\)\n\s*Min: [.0-9]*\n\s*Max: \d*\n\s*Average: [.0-9]*\n\s*Step Definitions \(.*\)\n\s*Min: [.0-9]*\n\s*Max: [.0-9]*\n\s*Average: [.0-9]*\n\s*Improvements to make:\n.*/
   end
 
   it "should catalog all calls a scenario and nested step definition calls" do
@@ -114,7 +114,7 @@ describe CukeSniffer do
 
   it "should output rules" do
     cuke_sniffer = CukeSniffer.new("../features/rule_scenarios", "../features/rule_step_definitions")
-    cuke_sniffer.output_results.should =~ /Suite Summary\n\s*Total Score: \d*\n\s*Features \(.*\)\n\s*Min: \d*\n\s*Max: \d*\n\s*Average: \d*\n\s*Step Definitions \(.*\)\n\s*Min: \d*\n\s*Max: \d*\n\s*Average: \d*\n\s*Improvements to make:\n.*/
+    cuke_sniffer.output_results.should =~ /Suite Summary\n\s*Total Score: [.0-9]*\n\s*Features \(.*\)\n\s*Min: [.0-9]*\n\s*Max: \d*\n\s*Average: [.0-9]*\n\s*Step Definitions \(.*\)\n\s*Min: [.0-9]*\n\s*Max: [.0-9]*\n\s*Average: [.0-9]*\n\s*Improvements to make:.*/
     puts cuke_sniffer.output_results
   end
 

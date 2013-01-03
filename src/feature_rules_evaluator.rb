@@ -14,9 +14,11 @@ class FeatureRulesEvaluator < RulesEvaluator
     @name += line
   end
 
-  def create_tag_list(line)
-    if TAG_REGEX.match(line) and !is_comment?(line)
-      line.scan(TAG_REGEX).each { |tag| tags << tag[0] }
+  def update_tag_list(line)
+    if TAG_REGEX.match(line) && !is_comment?(line)
+      line.scan(TAG_REGEX).each { |tag| @tags << tag[0] }
+    else
+      @tags << line.strip unless line.empty?
     end
   end
 

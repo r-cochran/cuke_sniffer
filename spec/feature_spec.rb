@@ -43,15 +43,15 @@ describe Feature do
     feature.name.should == expected_feature_name
   end
 
-  it "should gather all non commented feature level tags" do
+  it "should gather all feature level tags" do
     file = File.open(@file_name, "w")
     file.puts("@tag1 @tag2")
     file.puts("@tag3")
-    file.puts("\#@tag4")
+    file.puts('#@tag4')
     file.puts("Feature: My features are in this")
     file.close
     feature = Feature.new(@file_name)
-    feature.tags.should == %w(@tag1 @tag2 @tag3)
+    feature.tags.should == ["@tag1", "@tag2", "@tag3", '#@tag4']
   end
 
   it "should capture a background in a feature" do

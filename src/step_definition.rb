@@ -12,9 +12,13 @@ class StepDefinition < RulesEvaluator
     end_match_index = (raw_code.size - 1) - raw_code.reverse.index("end")
     @code = raw_code[1...end_match_index]
 
-    matches = STEP_DEFINITION_REGEX.match(raw_code.first)
-    @regex = Regexp.new(matches[:step])
-    @parameters = matches[:parameters].split(",") unless matches[:parameters].nil?
+    raw_code.each do |line|
+      if line =~ STEP_DEFINITION_REGEX
+        matches = STEP_DEFINITION_REGEX.match(line)
+        @regex = Regexp.new(matches[:step])
+        @parameters = matches[:parameters].split(",") unless matches[:parameters].nil?
+      end
+    end
 
     detect_nested_steps
     evaluate_score

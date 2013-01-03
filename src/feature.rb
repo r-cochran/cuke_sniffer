@@ -18,7 +18,7 @@ class Feature < FeatureRulesEvaluator
 
     index = 0
     until feature_lines[index].match FEATURE_NAME_REGEX
-      create_tag_list(feature_lines[index])
+      update_tag_list(feature_lines[index])
       index += 1
     end
 

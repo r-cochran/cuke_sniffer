@@ -54,6 +54,7 @@ describe Scenario do
     scenario = [
         "@tag1 @tag2",
         "@tag3",
+        "#comment before scenario",
         "Scenario: Test Scenario",
         "Given I am making a scenario",
         "When I make the scenario",
@@ -63,7 +64,7 @@ describe Scenario do
     step_definition = Scenario.new(location, scenario)
     step_definition.location.should == location
     step_definition.name.should == "Test Scenario"
-    step_definition.tags.should == %w(@tag1 @tag2 @tag3)
+    step_definition.tags.should == ["@tag1", "@tag2", "@tag3", "#comment before scenario"]
     step_definition.steps.should == ["Given I am making a scenario",
                                      "When I make the scenario",
                                      "Then the scenario is made",]
@@ -246,8 +247,8 @@ describe "ScenarioRules" do
         "When comes second"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Steps are out of Given/When/Then order").should be_true
-    scenario.rules_hash["Steps are out of Given/When/Then order"].should > 0
+    scenario.rules_hash.include?("Scenario does not follow proper Given/When/Then conventions").should be_true
+    scenario.rules_hash["Scenario does not follow proper Given/When/Then conventions"].should > 0
   end
 
   it "should punish Scenarios with steps that are out of order: Then/When/Given" do
@@ -258,8 +259,8 @@ describe "ScenarioRules" do
         "Given comes third"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Steps are out of Given/When/Then order").should be_true
-    scenario.rules_hash["Steps are out of Given/When/Then order"].should > 0
+    scenario.rules_hash.include?("Scenario does not follow proper Given/When/Then conventions").should be_true
+    scenario.rules_hash["Scenario does not follow proper Given/When/Then conventions"].should > 0
   end
 
   it "should punish Scenarios with steps that are out of order: Given/Then/And/When" do
@@ -271,8 +272,8 @@ describe "ScenarioRules" do
         "When comes third"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Steps are out of Given/When/Then order").should be_true
-    scenario.rules_hash["Steps are out of Given/When/Then order"].should > 0
+    scenario.rules_hash.include?("Scenario does not follow proper Given/When/Then conventions").should be_true
+    scenario.rules_hash["Scenario does not follow proper Given/When/Then conventions"].should > 0
   end
 
   it "should punish Scenarios with And as its first step" do
@@ -305,9 +306,9 @@ describe "ScenarioRules" do
     ]
     scenario = Scenario.new("location:1", scenario_block)
     scenario.rules_hash.include?("First step began with And/But").should be_true
-    scenario.rules_hash.include?("Steps are out of Given/When/Then order").should be_true
+    scenario.rules_hash.include?("Scenario does not follow proper Given/When/Then conventions").should be_true
     scenario.rules_hash["First step began with And/But"].should == 1
-    scenario.rules_hash["Steps are out of Given/When/Then order"].should == 1
+    scenario.rules_hash["Scenario does not follow proper Given/When/Then conventions"].should == 1
   end
 
   it "should punish Scenarios that use the * step" do

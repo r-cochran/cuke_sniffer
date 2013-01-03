@@ -40,11 +40,13 @@ class CukeSniffer
     counter = 0
     step_code = []
     step_definitions = []
+    found_first_step = false
     until counter >= step_file_lines.length
-      if step_file_lines[counter] =~ STEP_DEFINITION_REGEX && !step_code.empty?
+      if step_file_lines[counter] =~ STEP_DEFINITION_REGEX and !step_code.empty? and found_first_step
         step_definitions << StepDefinition.new("#{file_name}:#{counter+1 - step_code.count}", step_code)
         step_code = []
       end
+      found_first_step = true if step_file_lines[counter] =~ STEP_DEFINITION_REGEX
       step_code << step_file_lines[counter].strip
       counter+=1
     end
@@ -83,9 +85,10 @@ class CukeSniffer
       total += score
     end
     {
+        :total => array.count,
         :min => min,
         :max => max,
-        :average => total/array.count
+        :average => total.to_f/array.count.to_f
     }
   end
 

@@ -6,13 +6,20 @@ Identical backgrounds across features
 Verifying more than one end case, more than 1 and after a Then
 Multiple Given/When/Then's
 Scenarios with same name in feature
+Comma's in title
+Unimplemented steps
+Folder Structure (cucumber convention) Features> (step_definitions, support/env.rb)
+Puts statements in steps
+method definitions found in step definition
+Commented tags
+Tag followed by comment before scenario (super difficult)
 
 Future Problems/Issues log:
 Tagged Examples Table
 Multiple example tables
 
+(1000)STAHP!        - Horrible, Horrible convention.  You should be fired for this.
 (100) Fatal         - will prevent suite from executing properly: Recursive Nested Step
 (25)  Error         - will cause problem with debugging: Nested steps
 (10)  Warning       - readibility/misuse of cucumber: Scenarios that use *
-(5)   Issue         -
 (1)   Informational - Formatting

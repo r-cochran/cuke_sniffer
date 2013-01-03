@@ -12,14 +12,14 @@ class Scenario < FeatureRulesEvaluator
 
   def split_scenario(scenario)
     index = 0
-    until scenario[index] =~ SCENARIO_TITLE_STYLES
-      create_tag_list(scenario[index])
+    until index >= scenario.length or scenario[index] =~ SCENARIO_TITLE_STYLES
+      update_tag_list(scenario[index])
       index += 1
     end
 
-    @type = scenario[index].match(SCENARIO_TITLE_STYLES)[:type]
-
     until index >= scenario.length or scenario[index].match STEP_REGEX or scenario[index].include?("Examples:")
+      match = scenario[index].match(SCENARIO_TITLE_STYLES)
+      @type = match[:type] unless match.nil?
       create_name(scenario[index], SCENARIO_TITLE_STYLES)
       index += 1
     end
@@ -88,7 +88,7 @@ class Scenario < FeatureRulesEvaluator
   def rule_step_order
     step_order = get_step_order.uniq
     %w(But * And).each { |type| step_order.delete(type) }
-    store_rule(5, "Steps are out of Given/When/Then order") unless step_order == %w(Given When Then) or step_order == %w(When Then)
+    store_rule(5, "Scenario does not follow proper Given/When/Then conventions") unless step_order == %w(Given When Then) or step_order == %w(When Then)
   end
 
   def rule_invalid_first_step
