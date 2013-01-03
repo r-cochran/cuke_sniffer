@@ -1,4 +1,4 @@
-class CukeRulesEvaluator < RulesEvaluator
+class FeatureRulesEvaluator < RulesEvaluator
   attr_accessor :tags, :name
 
   def initialize(location)
@@ -8,12 +8,10 @@ class CukeRulesEvaluator < RulesEvaluator
   end
 
   def create_name(line, filter)
-    unless is_comment?(line)
-      line.gsub!(filter, "")
-      line.strip!
-      @name += " " unless @name.empty? or line.empty?
-      @name += line
-    end
+    line.gsub!(/#{COMMENT_REGEX}#{filter}/, "")
+    line.strip!
+    @name += " " unless @name.empty? or line.empty?
+    @name += line
   end
 
   def create_tag_list(line)

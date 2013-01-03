@@ -139,6 +139,50 @@ describe Scenario do
     scenario.name.should == "Test My Multi-line Scenario"
   end
 
+  it "should only include examples in the examples table and not white space" do
+    raw_code = [
+        "Scenario Outline: Examples table should not keep white space or comments",
+        "Examples:",
+        "|var_name|",
+        "|one|",
+        "#|two|",
+        "",
+        "|three|",
+        ""
+    ]
+
+    scenario = Scenario.new("location:1", raw_code)
+    scenario.examples_table.should == ["|var_name|", "|one|", "#|two|", "|three|"]
+  end
+
+  it "should only include steps and not white space" do
+    raw_code = [
+        "Scenario: Examples table should not keep white space or comments",
+        "Given I am a thing",
+        "And I am also a thing",
+        "",
+        "#      When I skip a line",
+        "",
+        "#hi",
+        "Then I should have an interesting scenario",
+        ""
+    ]
+
+    scenario = Scenario.new("location:1", raw_code)
+    scenario.steps.should == ["Given I am a thing", "And I am also a thing","#      When I skip a line", "Then I should have an interesting scenario"]
+  end
+
+  it "should capture a scenario even if it commented out" do
+    raw_code = [
+        "# Scenario: I am a commented Scenario",
+        "# Given I am commented",
+        "When I am commented",
+        "#Then we are all commented"
+    ]
+
+    scenario = Scenario.new("location:1", raw_code)
+    scenario.name.should == "I am a commented Scenario"
+  end
 end
 
 describe "ScenarioRules" do
@@ -192,7 +236,7 @@ describe "ScenarioRules" do
 
     scenario = Scenario.new("location:1", scenario_block)
     scenario.rules_hash.include?("Scenario has too many steps").should be_true
-    scenario.rules_hash["Scenario has too many steps"].should > 0
+    scenario.rules_hash["Scenario has too many steps"].should == 1
   end
 
   it "should punish Scenarios with steps that are out of order: Then/When" do

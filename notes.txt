@@ -1,1 +1,18 @@
+Future Rules:
+Nested steps that go 2+ layers deep
+Number of Feature/Step files
+Unused Inline/Example table variable
+Identical backgrounds across features
+Verifying more than one end case, more than 1 and after a Then
+Multiple Given/When/Then's
+Scenarios with same name in feature
 
+Future Problems/Issues log:
+Tagged Examples Table
+Multiple example tables
+
+(100) Fatal         - will prevent suite from executing properly: Recursive Nested Step
+(25)  Error         - will cause problem with debugging: Nested steps
+(10)  Warning       - readibility/misuse of cucumber: Scenarios that use *
+(5)   Issue         -
+(1)   Informational - Formatting

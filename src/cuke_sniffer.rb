@@ -48,7 +48,7 @@ class CukeSniffer
       step_code << step_file_lines[counter].strip
       counter+=1
     end
-    step_definitions << StepDefinition.new("#{file_name}:#{counter+1}", step_code)
+    step_definitions << StepDefinition.new("#{file_name}:#{counter+1}", step_code) unless step_code.empty?
     step_definitions
   end
 

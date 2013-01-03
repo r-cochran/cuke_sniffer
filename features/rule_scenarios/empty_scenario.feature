@@ -1,17 +1,33 @@
-Feature:
+Feature: banana phone
 
   Scenario: An empty Scenario
-    And I am illegal
+    Given I am illegal
+    When I am a step
+    Then I am a step
 
-
-  Scenario Outline:
+  Scenario: Banananananana phone
     When I am out of order
     Then I am out of order
-    Given I am out of order
     And I am out of order
     And I am out of order
     And I am out of order
     And I am out of order
     And I am out of order
     And I am out of order
+
+
+  Scenario Outline: Banananananana phone
+    When I am out of order
+    Then I am out of order
+    And I am out of order
+    And I am out of order
+    And I am out of order
+    And I am out of order
+    And I am out of order
+    And I am out of order
+  Examples:
+    | a |
+    | 1 |
+
+
 

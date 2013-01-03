@@ -1,4 +1,4 @@
-class Feature < CukeRulesEvaluator
+class Feature < FeatureRulesEvaluator
 
   attr_accessor :background, :scenarios
 

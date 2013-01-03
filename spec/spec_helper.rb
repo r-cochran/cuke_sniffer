@@ -3,7 +3,7 @@ require 'rspec'
 
 require '../src/constants'
 require '../src/rules_evaluator'
-require '../src/cuke_rules_evaluator'
+require '../src/feature_rules_evaluator'
 require '../src/step_definition'
 require '../src/feature'
 require '../src/scenario'

@@ -1,4 +1,4 @@
-class Scenario < CukeRulesEvaluator
+class Scenario < FeatureRulesEvaluator
   attr_accessor :start_line, :type, :steps, :examples_table
 
   def initialize(location, scenario)
@@ -19,20 +19,20 @@ class Scenario < CukeRulesEvaluator
 
     @type = scenario[index].match(SCENARIO_TITLE_STYLES)[:type]
 
-    until index >= scenario.length or scenario[index].match STEP_REGEX
+    until index >= scenario.length or scenario[index].match STEP_REGEX or scenario[index].include?("Examples:")
       create_name(scenario[index], SCENARIO_TITLE_STYLES)
       index += 1
     end
 
     until index >= scenario.length or scenario[index].include?("Examples:")
-      @steps << scenario[index]
+      @steps << scenario[index] if scenario[index].match STEP_REGEX
       index += 1
     end
 
-    if index < scenario.length and scenario[index].include?("Examples")
+    if index < scenario.length and scenario[index].include?("Examples:")
       index += 1
       until index >= scenario.length
-        @examples_table << scenario[index]
+        @examples_table << scenario[index] unless scenario[index].empty?
         index += 1
       end
     end
