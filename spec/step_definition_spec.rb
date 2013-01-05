@@ -140,34 +140,42 @@ describe StepDefinition do
 end
 
 describe "StepDefinitionRules" do
+
+  def validate_rule(step_definition, rule)
+    phrase = rule[:phrase].gsub(/{.*}/, "Scenario")
+
+    step_definition.rules_hash.include?(phrase).should be_true
+    step_definition.rules_hash[phrase].should > 0
+    step_definition.score.should >= rule[:score]
+  end
+
   it "should punish Step Definitions with no code" do
     raw_code = ["Given /^step with no code$/ do",
                 "end"]
     step_definition = StepDefinition.new("location:1", raw_code)
-    step_definition.score.should > 0
-    step_definition.rules_hash.include?("Step definition has no code").should be_true
-    step_definition.rules_hash["Step definition has no code"].should > 0
+   validate_rule(step_definition, STEP_DEFINITION_RULES[:no_code])
   end
 
   it "should punish Step Definitions with too many parameters" do
-    raw_code = ["Given /^step with many parameters$/ do |a, b, c|", "end"]
+    rule = STEP_DEFINITION_RULES[:too_many_parameters]
+    parameters = ""
+    rule[:max].times{|n| parameters += "param#{n}, "}
+
+    raw_code = ["Given /^step with many parameters$/ do |#{parameters}|", "end"]
     step_definition = StepDefinition.new("location:1", raw_code)
-    step_definition.rules_hash.include?("Too many parameters for Step Definition").should be_true
-    step_definition.rules_hash["Too many parameters for Step Definition"].should == 1
+    validate_rule(step_definition, rule)
   end
 
   it "should punish Step Definitions that have nested steps" do
     raw_code = ["Given /^step with nested step call$/ do", "steps \"And I am a nested step\"", "end"]
     step_definition = StepDefinition.new("location:1", raw_code)
-    step_definition.rules_hash.include?("Nested Step call").should be_true
-    step_definition.rules_hash["Nested Step call"].should == 1
+    validate_rule(step_definition, STEP_DEFINITION_RULES[:nested_step])
   end
 
   it "should punish Step Definitions that have recursive nested steps" do
     raw_code = ["Given /^step with recursive nested step call$/ do", "steps \"And step with recursive nested step call\"", "end"]
     step_definition = StepDefinition.new("location:1", raw_code)
-    step_definition.rules_hash.include?("Recursive Nested Step call").should be_true
-    step_definition.rules_hash["Recursive Nested Step call"].should == 1
+    validate_rule(step_definition, STEP_DEFINITION_RULES[:recursive_nested_step])
   end
 
   it "should punish each commented line in a Step Definition" do
@@ -176,7 +184,6 @@ describe "StepDefinitionRules" do
                 "#steps \"And step with recursive nested step call\"",
                 "end"]
     step_definition = StepDefinition.new("location:1", raw_code)
-    step_definition.rules_hash.include?("Commented code in Step Definition").should be_true
-    step_definition.rules_hash["Commented code in Step Definition"].should == 2
+    validate_rule(step_definition, STEP_DEFINITION_RULES[:commented_code])
   end
 end

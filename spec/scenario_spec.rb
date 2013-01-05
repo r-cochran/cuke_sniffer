@@ -153,7 +153,7 @@ describe Scenario do
     ]
 
     scenario = Scenario.new("location:1", raw_code)
-    scenario.examples_table.should == ["|var_name|", "|one|", "#|two|", "|three|"]
+    scenario.examples_table.should == %w(|var_name| |one| #|two| |three|)
   end
 
   it "should only include steps and not white space" do
@@ -187,16 +187,19 @@ describe Scenario do
 end
 
 describe "ScenarioRules" do
+
+  def validate_rule(scenario, rule)
+    phrase = rule[:phrase].gsub(/{.*}/, "Scenario")
+
+    scenario.rules_hash.include?(phrase).should be_true
+    scenario.rules_hash[phrase].should > 0
+    scenario.score.should >= rule[:score]
+  end
+
   it "should punish Scenarios without a name" do
-    scenario_block = [
-        "Scenario:",
-        "Given I am making a scenario",
-        "When I make the scenario",
-        "Then the scenario is made",
-    ]
+    scenario_block = %w(Scenario:)
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("No Scenario Description!").should be_true
-    scenario.rules_hash["No Scenario Description!"].should > 0
+    validate_rule(scenario, SHARED_RULES[:no_description])
   end
 
   it "should punish Scenarios with no steps" do
@@ -204,8 +207,7 @@ describe "ScenarioRules" do
         "Scenario: Empty Scenario",
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Scenario with no steps!").should be_true
-    scenario.rules_hash["Scenario with no steps!"].should > 0
+    validate_rule(scenario, SCENARIO_RULES[:no_steps])
   end
 
   it "should punish Scenarios with numbers in its name" do
@@ -213,31 +215,29 @@ describe "ScenarioRules" do
         "Scenario: Scenario with some digits 123"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Scenario has number(s) in the title").should be_true
-    scenario.rules_hash["Scenario has number(s) in the title"].should > 0
+    validate_rule(scenario, SHARED_RULES[:numbers_in_description])
   end
 
   it "should punish Scenarios with long names" do
+    rule = SHARED_RULES[:long_name]
     scenario_description = ""
-    180.times{scenario_description << "A"}
+    rule[:max].times{scenario_description << "A"}
     scenario_block = [
         "Scenario: #{scenario_description}"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Scenario title is too long").should be_true
-    scenario.rules_hash["Scenario title is too long"].should > 0
+    validate_rule(scenario, rule)
   end
 
   it "should punish Scenarios with too many steps" do
+    rule = SCENARIO_RULES[:too_many_steps]
     scenario_block = [
         "Scenario: Scenario with too many steps"
     ]
-
-    7.times {scenario_block << "And I have too many steps"}
-
+    rule[:max].times {scenario_block << "And I have too many steps"}
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Scenario has too many steps").should be_true
-    scenario.rules_hash["Scenario has too many steps"].should == 1
+
+    validate_rule(scenario, rule)
   end
 
   it "should punish Scenarios with steps that are out of order: Then/When" do
@@ -247,8 +247,8 @@ describe "ScenarioRules" do
         "When comes second"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Scenario does not follow proper Given/When/Then conventions").should be_true
-    scenario.rules_hash["Scenario does not follow proper Given/When/Then conventions"].should > 0
+
+    validate_rule(scenario, SCENARIO_RULES[:out_of_order_steps])
   end
 
   it "should punish Scenarios with steps that are out of order: Then/When/Given" do
@@ -259,8 +259,8 @@ describe "ScenarioRules" do
         "Given comes third"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Scenario does not follow proper Given/When/Then conventions").should be_true
-    scenario.rules_hash["Scenario does not follow proper Given/When/Then conventions"].should > 0
+
+    validate_rule(scenario, SCENARIO_RULES[:out_of_order_steps])
   end
 
   it "should punish Scenarios with steps that are out of order: Given/Then/And/When" do
@@ -272,19 +272,16 @@ describe "ScenarioRules" do
         "When comes third"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Scenario does not follow proper Given/When/Then conventions").should be_true
-    scenario.rules_hash["Scenario does not follow proper Given/When/Then conventions"].should > 0
+    validate_rule(scenario, SCENARIO_RULES[:out_of_order_steps])
   end
 
   it "should punish Scenarios with And as its first step" do
     scenario_block = [
         "Scenario: Scenario with And as its first step",
         "And is not a valid first step",
-        "When comes first"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("First step began with And/But").should be_true
-    scenario.rules_hash["First step began with And/But"].should > 0
+    validate_rule(scenario, SCENARIO_RULES[:invalid_first_step])
   end
 
   it "should punish Scenarios with But as its first step" do
@@ -294,21 +291,7 @@ describe "ScenarioRules" do
         "When comes first"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("First step began with And/But").should be_true
-    scenario.rules_hash["First step began with And/But"].should > 0
-  end
-
-  it "should punish Scenarios with only And steps" do
-    scenario_block = [
-        "Scenario: Scenario with multiple And steps",
-        "And is not a valid first step",
-        "And comes first"
-    ]
-    scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("First step began with And/But").should be_true
-    scenario.rules_hash.include?("Scenario does not follow proper Given/When/Then conventions").should be_true
-    scenario.rules_hash["First step began with And/But"].should == 1
-    scenario.rules_hash["Scenario does not follow proper Given/When/Then conventions"].should == 1
+    validate_rule(scenario, SCENARIO_RULES[:invalid_first_step])
   end
 
   it "should punish Scenarios that use the * step" do
@@ -317,8 +300,7 @@ describe "ScenarioRules" do
         "* is an awesome operator"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Steps includes a *").should be_true
-    scenario.rules_hash["Steps includes a *"].should == 1
+    validate_rule(scenario, SCENARIO_RULES[:asterisk_step])
   end
 
   it "should punish each step in a Scenario that uses *" do
@@ -332,7 +314,7 @@ describe "ScenarioRules" do
     ]
     scenario = Scenario.new("location:1", scenario_block)
     scenario.score.should >= 4
-    scenario.rules_hash["Steps includes a *"].should == 2
+    scenario.rules_hash[SCENARIO_RULES[:asterisk_step][:phrase]].should == 2
   end
 
   it "should punish Scenarios with commented steps" do
@@ -343,8 +325,7 @@ describe "ScenarioRules" do
         "Then I am third"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Commented Step").should be_true
-    scenario.rules_hash["Commented Step"].should == 1
+    validate_rule(scenario, SCENARIO_RULES[:commented_step])
   end
 
   it "should punish each step in a Scenario that is commented" do
@@ -355,9 +336,7 @@ describe "ScenarioRules" do
         "#Then I am third"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Commented Step").should be_true
-    scenario.rules_hash["Commented Step"].should == 3
-    scenario.score.should >= 9
+    scenario.rules_hash[SCENARIO_RULES[:commented_step][:phrase]].should == 3
   end
 
   it "should punish Scenario Outlines with commented examples" do
@@ -372,8 +351,7 @@ describe "ScenarioRules" do
         "|b|"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Commented Example").should be_true
-    scenario.rules_hash["Commented Example"].should == 1
+    validate_rule(scenario, SCENARIO_RULES[:commented_example])
   end
 
   it "should punish each commented example in a Scenario Outline" do
@@ -388,9 +366,7 @@ describe "ScenarioRules" do
         "#|b|"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Commented Example").should be_true
-    scenario.rules_hash["Commented Example"].should == 2
-    scenario.score.should >= 6
+    scenario.rules_hash.include?(SCENARIO_RULES[:commented_example][:phrase]).should be_true
   end
 
   it "should punish Scenario Outlines with no examples" do
@@ -403,8 +379,7 @@ describe "ScenarioRules" do
         "|var_a|",
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Scenario Outline with only no examples").should be_true
-    scenario.rules_hash["Scenario Outline with only no examples"].should == 1
+    validate_rule(scenario, SCENARIO_RULES[:no_examples])
   end
 
   it "should punish Scenario Outlines with only one example" do
@@ -418,8 +393,7 @@ describe "ScenarioRules" do
         "|a|"
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Scenario Outline with only one example").should be_true
-    scenario.rules_hash["Scenario Outline with only one example"].should == 1
+    validate_rule(scenario, SCENARIO_RULES[:one_example])
   end
 
   it "should punish Scenario Outlines without the Examples table" do
@@ -430,11 +404,11 @@ describe "ScenarioRules" do
         "Then I am third",
     ]
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Scenario Outline with no examples table").should be_true
-    scenario.rules_hash["Scenario Outline with no examples table"].should == 1
+    validate_rule(scenario, SCENARIO_RULES[:no_examples_table])
   end
 
   it "should punish Scenario Outlines with too many examples" do
+    rule = SCENARIO_RULES[:too_many_examples]
     scenario_block = [
         "Scenario Outline: Scenario with too many examples",
         "Given I am first",
@@ -443,22 +417,19 @@ describe "ScenarioRules" do
         "Examples:",
         "|var_a|"
     ]
-
-    8.times{|n| scenario_block << "|#{n}|"}
-
+    rule[:max].times{|n| scenario_block << "|#{n}|"}
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Scenario Outline with too many examples").should be_true
-    scenario.rules_hash["Scenario Outline with too many examples"].should == 1
+    validate_rule(scenario, SCENARIO_RULES[:too_many_examples])
   end
 
   it "should punish Scenarios with too many tags" do
+    rule = SHARED_RULES[:too_many_tags]
     scenario_block = []
-    8.times{|n| scenario_block << "@tag_#{n}"}
+    rule[:max].times{|n| scenario_block << "@tag_#{n}"}
     scenario_block << "Scenario: Scenario with many tags"
 
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Scenario has too many tags").should be_true
-    scenario.rules_hash["Scenario has too many tags"].should == 1
+    validate_rule(scenario, rule)
   end
 
   it "should punish Scenarios that use implementation words(page/site/ect)" do
@@ -470,10 +441,10 @@ describe "ScenarioRules" do
     ]
 
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Implementation word used: page").should be_true
-    scenario.rules_hash.include?("Implementation word used: site").should be_true
-    scenario.rules_hash["Implementation word used: page"].should == 2
-    scenario.rules_hash["Implementation word used: site"].should == 1
+    scenario.rules_hash.include?("Implementation word used: page.").should be_true
+    scenario.rules_hash.include?("Implementation word used: site.").should be_true
+    scenario.rules_hash["Implementation word used: page."].should == 2
+    scenario.rules_hash["Implementation word used: site."].should == 1
   end
 
   it "should punish Scenarios with steps that use fixed Dates(01/01/0001)" do
@@ -481,9 +452,7 @@ describe "ScenarioRules" do
         "Scenario: Scenario with dates used",
         "Given Today is 11/12/2013",
     ]
-
     scenario = Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?("Date used: 11/12/2013").should be_true
-    scenario.rules_hash["Date used: 11/12/2013"].should == 1
+    validate_rule(scenario, SCENARIO_RULES[:date_used])
   end
 end

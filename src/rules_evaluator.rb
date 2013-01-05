@@ -10,11 +10,18 @@ class RulesEvaluator
   def evaluate_score
   end
 
-  def store_rule(score, description)
-    @score += score
-    @rules_hash[description] ||= 0
-    @rules_hash[description] += 1
+  def store_rule(rule)
+    if rule[:enabled]
+      @score += rule[:score]
+      @rules_hash[rule[:phrase]] ||= 0
+      @rules_hash[rule[:phrase]] += 1
+    end
   end
+
+  def store_updated_rule(rule, phrase)
+    store_rule({:enabled => rule[:enabled], :score => rule[:score], :phrase => phrase})
+  end
+
 
   def is_comment?(line)
     if line =~ /^\#.*$/

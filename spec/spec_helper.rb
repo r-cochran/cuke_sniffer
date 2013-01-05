@@ -2,6 +2,7 @@ gem 'rspec'
 require 'rspec'
 
 require '../src/constants'
+require '../src/rule_config'
 require '../src/rules_evaluator'
 require '../src/feature_rules_evaluator'
 require '../src/step_definition'

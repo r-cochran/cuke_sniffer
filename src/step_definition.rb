@@ -73,10 +73,6 @@ class StepDefinition < RulesEvaluator
 
   def evaluate_score
     super
-    evaluate_step_definition_score
-  end
-
-  def evaluate_step_definition_score
     rule_no_code
     rule_too_many_parameters
     rule_nested_steps
@@ -85,26 +81,27 @@ class StepDefinition < RulesEvaluator
   end
 
   def rule_no_code
-    store_rule(5, "Step definition has no code") if code.empty?
+    store_rule(STEP_DEFINITION_RULES[:no_code]) if code.empty?
   end
 
   def rule_too_many_parameters
-    store_rule(5, "Too many parameters for Step Definition") if parameters.size >= 3
+    rule = STEP_DEFINITION_RULES[:too_many_parameters]
+    store_rule(rule) if parameters.size >= rule[:max]
   end
 
   def rule_nested_steps
-    store_rule(1, "Nested Step call") unless nested_steps.empty?
+    store_rule(STEP_DEFINITION_RULES[:nested_step]) unless nested_steps.empty?
   end
 
   def rule_recursive_nested_step
     nested_steps.each_value do |nested_step|
-      store_rule(100, "Recursive Nested Step call") if nested_step =~ regex
+      store_rule(STEP_DEFINITION_RULES[:recursive_nested_step]) if nested_step =~ regex
     end
   end
 
   def rule_commented_code
     code.each do |line|
-      store_rule(2, "Commented code in Step Definition") if is_comment?(line)
+      store_rule(STEP_DEFINITION_RULES[:commented_code]) if is_comment?(line)
     end
   end
 

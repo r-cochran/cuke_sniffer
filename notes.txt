@@ -2,9 +2,11 @@ Future Rules:
 Nested steps that go 2+ layers deep
 Number of Feature/Step files
 Unused Inline/Example table variable
+Unused step definition parameters
 Identical backgrounds across features
 Verifying more than one end case, more than 1 and after a Then
 Multiple Given/When/Then's
+Scenarios with the same name as the feature
 Scenarios with same name in feature
 Comma's in title
 Unimplemented steps
@@ -13,13 +15,11 @@ Puts statements in steps
 method definitions found in step definition
 Commented tags
 Tag followed by comment before scenario (super difficult)
+Incomplete Examples Table(Nothing following the Examples: line) Causes fatal lexing errors
+Empty file(no content for steps.rb or .feature files)
+Empty Feature file(no feature declaration)
 
 Future Problems/Issues log:
 Tagged Examples Table
 Multiple example tables
 
-(1000)STAHP!        - Horrible, Horrible convention.  You should be fired for this.
-(100) Fatal         - will prevent suite from executing properly: Recursive Nested Step
-(25)  Error         - will cause problem with debugging: Nested steps
-(10)  Warning       - readibility/misuse of cucumber: Scenarios that use *
-(1)   Informational - Formatting

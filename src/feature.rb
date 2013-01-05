@@ -66,7 +66,10 @@ class Feature < FeatureRulesEvaluator
     super
     include_sub_scores(@background) unless @background.nil?
     include_scenario_scores
-    evaluate_feature_scores
+    rule_no_scenarios
+    rule_too_many_scenarios
+    rule_background_with_no_scenarios
+    rule_background_with_one_scenario
   end
 
   def include_sub_scores(sub_class)
@@ -83,27 +86,21 @@ class Feature < FeatureRulesEvaluator
     end
   end
 
-  def evaluate_feature_scores
-    rule_no_scenarios
-    rule_too_many_scenarios
-    rule_background_with_no_scenarios
-    rule_background_with_one_scenario
-  end
-
   def rule_no_scenarios
-    store_rule(3, "Feature with no scenarios") if @scenarios.empty?
+    store_rule(FEATURE_RULES[:no_scenarios]) if @scenarios.empty?
   end
 
   def rule_too_many_scenarios
-    store_rule(3, "Feature with too many scenarios") if @scenarios.size >= 10
+    rule = FEATURE_RULES[:too_many_scenarios]
+    store_rule(rule) if @scenarios.size >= rule[:max]
   end
 
   def rule_background_with_no_scenarios
-    store_rule(5, "Feature has background with no scenarios") if @scenarios.empty? and !@background.nil?
+    store_rule( FEATURE_RULES[:background_with_no_scenarios]) if @scenarios.empty? and !@background.nil?
   end
 
   def rule_background_with_one_scenario
-    store_rule(5, "Feature has background with one scenarios") if @scenarios.size == 1 and !@background.nil?
+    store_rule(FEATURE_RULES[:background_with_one_scenario]) if @scenarios.size == 1 and !@background.nil?
   end
 
 end

@@ -25,25 +25,29 @@ class FeatureRulesEvaluator < RulesEvaluator
   def evaluate_score
     super
     rule_too_many_tags(self.class.to_s)
-    rule_empty_name(self.class.to_s)
+    rule_no_description(self.class.to_s)
     rule_numbers_in_name(self.class.to_s)
     rule_long_name(self.class.to_s)
   end
 
   def rule_too_many_tags(type)
-    store_rule(3, "#{type} has too many tags") if tags.size >= 8
+    rule = SHARED_RULES[:too_many_tags]
+    store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if tags.size >= rule[:max]
   end
 
-  def rule_empty_name(type)
-    store_rule(3, "No #{type} Description!") if name.empty?
+  def rule_no_description(type)
+    rule = SHARED_RULES[:no_description]
+    store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if name.empty?
   end
 
   def rule_numbers_in_name(type)
-    store_rule(3, "#{type} has number(s) in the title") if name =~ /\d/
+    rule = SHARED_RULES[:numbers_in_description]
+    store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if name =~ /\d/
   end
 
   def rule_long_name(type)
-    store_rule(0.5, "#{type} title is too long") if name.size >= 180
+    rule = SHARED_RULES[:long_name]
+    store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type))  if name.size >= rule[:max]
   end
 
   def == (comparison_object)
