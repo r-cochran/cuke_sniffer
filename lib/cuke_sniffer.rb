@@ -5,6 +5,7 @@ require 'feature_rules_evaluator'
 require 'step_definition'
 require 'feature'
 require 'scenario'
+require 'template_harness'
 
 class CukeSniffer
   attr_accessor :features, :step_definitions, :summary
@@ -12,30 +13,34 @@ class CukeSniffer
   def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd)
     @features_location = features_location
     @step_definitions_location = step_definitions_location
-    @features = build_features_from_folder(features_location)
-    @step_definitions = build_step_definitions_from_folder(step_definitions_location)
+    @features = []
+    @step_definitions = []
+    build_file_list_from_folder(features_location, ".feature").each { |location| @features << Feature.new(location) }
+    build_file_list_from_folder(step_definitions_location, "steps.rb").each { |location| @step_definitions << build_step_definitions(location) }
+    @step_definitions.flatten!
     @summary = {
         :total_score => 0,
         :features => {},
         :step_definitions => {},
         :improvement_list => {}
     }
+    catalog_step_calls
     assess_score
   end
 
-  def build_features_from_folder(folder_path)
-    features = []
-    Dir.entries(folder_path).each_entry do |file_name|
+  def build_file_list_from_folder(folder_name, extension)
+    list = []
+    Dir.entries(folder_name).each_entry do |file_name|
       unless FILE_IGNORE_LIST.include?(file_name)
-        file_name = "#{folder_path}/#{file_name}"
+        file_name = "#{folder_name}/#{file_name}"
         if File.directory?(file_name)
-          features << build_features_from_folder(file_name)
-        elsif file_name.include?(".feature")
-          features << Feature.new(file_name)
+          list << build_file_list_from_folder(file_name, extension)
+        elsif file_name.include?(extension)
+          list << file_name
         end
       end
     end
-    features.flatten
+    list.flatten
   end
 
   def build_step_definitions(file_name)
@@ -61,24 +66,8 @@ class CukeSniffer
     step_definitions
   end
 
-  def build_step_definitions_from_folder(folder_name)
-    list_of_steps = []
-    Dir.entries(folder_name).each_entry do |file_name|
-      unless FILE_IGNORE_LIST.include?(file_name)
-        file_name = "#{folder_name}/#{file_name}"
-        if File.directory?(file_name)
-          list_of_steps << build_step_definitions_from_folder(file_name)
-        elsif file_name.include?("steps.rb")
-          list_of_steps << build_step_definitions(file_name)
-        end
-      end
-    end
-    list_of_steps.flatten
-  end
-
   def assess_array(array)
-    min = nil
-    max = nil
+    min, max, min_file, max_file = nil
     total = 0
     array.each do |node|
       score = node.score
@@ -87,14 +76,16 @@ class CukeSniffer
         @summary[:improvement_list][key] ||= 0
         @summary[:improvement_list][key] += node.rules_hash[key]
       end
-      min = score if (min.nil? or score < min)
-      max = score if (max.nil? or score > max)
+      min, min_file = score, node.location if (min.nil? or score < min)
+      max, max_file = score, node.location if (max.nil? or score > max)
       total += score
     end
     {
         :total => array.count,
         :min => min,
+        :min_file => min_file,
         :max => max,
+        :max_file => max_file,
         :average => (total.to_f/array.count.to_f).round(2)
     }
   end
@@ -106,9 +97,9 @@ class CukeSniffer
   end
 
   def sort_improvement_list
-    sorted_array = @summary[:improvement_list].sort_by {|improvement, occurrence| occurrence}
+    sorted_array = @summary[:improvement_list].sort_by { |improvement, occurrence| occurrence }
     @summary[:improvement_list] = {}
-    sorted_array.reverse.each{|node|
+    sorted_array.reverse.each { |node|
       @summary[:improvement_list][node[0]] = node[1]
     }
   end
@@ -120,15 +111,15 @@ class CukeSniffer
     output = "Suite Summary
   Total Score: #{@summary[:total_score]}
     Features (#@features_location)
-      Min: #{feature_results[:min]}
-      Max: #{feature_results[:max]}
+      Min: #{feature_results[:min]} (#{feature_results[:min_file]})
+      Max: #{feature_results[:max]} (#{feature_results[:max_file]})
       Average: #{feature_results[:average]}
     Step Definitions (#@step_definitions_location)
-      Min: #{step_definition_results[:min]}
-      Max: #{step_definition_results[:max]}
+      Min: #{step_definition_results[:min]} (#{step_definition_results[:min_file]})
+      Max: #{step_definition_results[:max]} (#{step_definition_results[:max_file]})
       Average: #{step_definition_results[:average]}
   Improvements to make:"
-    create_improvement_list.each{|item| output << "\n    #{item}"}
+    create_improvement_list.each { |item| output << "\n    #{item}" }
     output
   end
 
@@ -175,18 +166,9 @@ class CukeSniffer
     dead_steps
   end
 
-  #DO NOT LOOK A THIS I MUST HIDE MY SHAME
-  def to_html(file_name = "cuke_sniffer_results.html")
-    html = File.open(file_name, 'w')
-    html.puts("<html>")
-    html.puts("<title>CukeSniffer Results</title>")
-    html.puts("<head>")
-    html.puts("</head>")
-    html.puts("<body>")
-    create_improvement_list.each{|item| html.puts(item + "<br>")}
-    html.puts("</body>")
-    html.puts("</html>")
-    html.close
+  def output_html(file_name = "cuke_sniffer_results.html")
+    harness = TemplateHarness.new
+    harness.print(@features, @step_definitions, @summary)
   end
 
 end

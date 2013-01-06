@@ -52,7 +52,7 @@ describe CukeSniffer do
   it "should output results" do
     cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
     puts cuke_sniffer.output_results
-    cuke_sniffer.output_results.should =~ /Suite Summary\n\s*Total Score: [.0-9]*\n\s*Features \(.*\)\n\s*Min: [.0-9]*\n\s*Max: \d*\n\s*Average: [.0-9]*\n\s*Step Definitions \(.*\)\n\s*Min: [.0-9]*\n\s*Max: [.0-9]*\n\s*Average: [.0-9]*\n\s*Improvements to make:\n.*/
+    cuke_sniffer.output_results.should =~ /Suite Summary\n\s*Total Score: [.0-9]*\n\s*Features \(.*\)\n\s*Min: [.0-9]* \(.*\)\n\s*Max: \d* \(.*\)\n\s*Average: [.0-9]*\n\s*Step Definitions \(.*\)\n\s*Min: [.0-9]* \(.*\)\n\s*Max: [.0-9] \(.*\)*\n\s*Average: [.0-9]*\n\s*Improvements to make:\n.*/
   end
 
   it "should catalog all calls a scenario and nested step definition calls" do
@@ -122,18 +122,6 @@ describe CukeSniffer do
     File.delete(file_name)
   end
 
-  it "should create a hash table of features from a folder where the key is the file name and the value is the feature object" do
-    cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
-    folder_path = "../features/scenarios"
-    feature_hash = cuke_sniffer.build_features_from_folder(folder_path)
-    expected_hash = [
-        Feature.new("../features/scenarios/complex_calculator.feature"),
-        Feature.new("../features/scenarios/nested_directory/nested_feature.feature"),
-        Feature.new("../features/scenarios/simple_calculator.feature"),
-    ]
-    feature_hash.should == expected_hash
-  end
-
   it "should read every line of multiple step definition and segment those lines into steps." do
     cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
     file_name = "my_steps.rb"
@@ -174,25 +162,6 @@ describe CukeSniffer do
     File.delete(file_name)
   end
 
-  it "should create a list of step definition objects from a step definitions folder and its sub folders" do
-    cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
-    folder_name = "../features/step_definitions"
-    step_definitions = cuke_sniffer.build_step_definitions_from_folder(folder_name)
-
-    expected_step_definitions = [
-        StepDefinition.new("../features/step_definitions/complex_calculator_steps.rb:1", ["Given /^the first number is \"([^\"]*)\"$/ do |first_number|", "@first_number = first_number.to_i", "end"]),
-        StepDefinition.new("../features/step_definitions/complex_calculator_steps.rb:5", ["When /^the second number is \"([^\"]*)\"$/ do |second_number|", "@second_number = second_number.to_i", "end"]),
-        StepDefinition.new("../features/step_definitions/complex_calculator_steps.rb:9", ["Then /^the result is \"([^\"]*)\"$/ do |result|", "result.to_i.should == @first_number + @second_number", "end"]),
-        StepDefinition.new("../features/step_definitions/nested_steps/nested_steps.rb:1", ["Given /^I am a nested step$/ do", "puts \"i have no functionality\"", "end"]),
-        StepDefinition.new("../features/step_definitions/simple_calculator_steps.rb:1", ["Given /^the first number is 1$/ do", "steps \"Given the first number is \\\"1\\\"\"", "end"]),
-        StepDefinition.new("../features/step_definitions/simple_calculator_steps.rb:5", ["When /^the second number is 1$/ do", "@second_number = 1", "end"]),
-        StepDefinition.new("../features/step_definitions/simple_calculator_steps.rb:9", ["When /^the calculator adds$/ do", "@result = @first_number + @second_number", "end"]),
-        StepDefinition.new("../features/step_definitions/simple_calculator_steps.rb:13", ["Then /^the result is 2$/ do", "@result.should == 2", "end"]),
-    ]
-
-    step_definitions.should == expected_step_definitions
-  end
-
   it "should put the list of improvements in a descending order" do
     cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
     cuke_sniffer.features = []
@@ -202,9 +171,7 @@ describe CukeSniffer do
     cuke_sniffer.summary = {:total_score => 0, :features => {}, :step_definitions => {}, :improvement_list => {}}
     cuke_sniffer.assess_score
 
-    puts cuke_sniffer.output_results
     cuke_sniffer.summary[:improvement_list].values.should == [3, 2, 1]
   end
-
 
 end

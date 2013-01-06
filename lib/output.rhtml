@@ -1,0 +1,103 @@
+<script>
+    function swap(item,off)
+    {
+        var x = item.getElementsByTagName("div")[off];
+        x.style.display = (x.style.display == "block") ? 'none' : "block";
+    }
+    function swapAll(items,link)
+    {
+        var divs = document.getElementsByTagName("div");
+        if(link.innerHTML=="+")
+            link.innerHTML="-"
+        else
+            link.innerHTML="+"
+        for(i=0;i<divs.length;i++){
+            var x=divs[i];
+            if(x.getAttribute("class")==items)
+                x.style.display = link.innerHTML=="+" ? "none":"block";
+        }
+    }
+</script>
+<style>
+    body{font-family:arial;font-size:9pt}
+    .features, steps{border:2px solid #bb0000;}
+    .feature{padding:3px;}
+    .even:hover{ }
+    .odd:hover{ }
+    .even{background-color:#eeeeff; border-bottom:1px solid #ccc;}
+    .odd{border-bottom:1px solid #ddd;}
+    .rule{background-color:#ffaaaa; padding:3; }
+    .featurename{font-weight:bold; font-size:10pt;}
+    .featurepath{color:#aaa; font-size:10pt;}
+    .stepfullpath{color:#666; font-size:10pt;}
+    .scenarios, .steps{border-top:1px solid #bbb; padding:4px; padding-left:90px;}
+    .scenario, .step{border-bottom:1px solid #ccc;}
+    ul{color:#888;}
+    .links{font-size:15pt;padding-right:10px;padding-top:10px;cursor: hand;}
+    .title{ width:20%; background-color:#000055;color:#fff; border-left: 2px solid #bb0000; border-top:0px; border-bottom:0px;padding-top:4px}
+    .title span{font-size:20pt; font-weight:bold; width:100%; border-left:2px solid #fff; padding-bottom:3px; padding-left:30px; padding-top:4px}
+</style>
+<div style="border-top: 2px solid #bb0000;"><div style="float:right;border-right: 2px solid #bb0000;">
+  <div style="background-color:#000055;border-right:2px solid #fff; color:#fff;padding:4px; padding-left:40px;font-size:11pt;font-weight:bold;padding-right:10px;"><%=summary[:total_score]%></div></div></div><br style="clear:both">
+<div style="float:left;"class="title"><span>features</span></div><div class="links" style="float:right"><u onclick="swapAll('scenarios',this)">+</u></div><br style="clear:both">
+<div class="features">
+  <%i=0%>
+  <%features.each do |feature| %>
+      <div onclick="swap(this,3)" class="feature <%=i%2==0?"even":"odd"%>"><div style="float:left;padding:4px;font-weight:bold;color:red; width:3%"><%=feature.score%></div><div style="width:30%;padding:4px; float:left;"><font class="featurename"><%=feature.location[feature.location.rindex("/")..-1]%></font></div><div style="width:60%;padding:4px; float:left;"><font class="featurepath"><%=feature.location[0..feature.location.rindex("/")]%></font></div><br style="clear:both;">
+        <div class="scenarios" style="display:none;">
+          <%feature.scenarios.each do |scenario|%>
+              <div class="scenario">
+                <div style="float:left; width:30%;">
+                  <b><%=scenario.name%></b>
+                  <ul><%scenario.steps.each do |step|%>
+                        <%=step.gsub("<","&lt;")%><br>
+                    <%end %></ul>
+                </div>
+                <% if !scenario.rules_hash.empty? %>
+                    <div style="float:left;" class="rule">
+                      <%scenario.rules_hash.each_key do |rulekey|%>
+                          <%=rulekey%><br>
+                      <%end %>
+                    </div>
+                <%end %>
+
+                <br style="clear:both;"></div>
+          <%end %>
+        </div>
+      </div>
+      <%i+=1%>
+  <%end %>
+</div>
+<br><br>
+<div style="float:left;"class="title"><span>steps</span></div><div class="links" style="float:right"><u onclick="swapAll('steps',this)">+</u></div><br style="clear:both">
+<div class="features">
+  <%i=0%>
+  <%steps.each do |step| %>
+      <div onclick="swap(this,4)" class="feature <%=i%2==0?"even":"odd"%>"><div style="float:left;padding:4px;font-weight:bold;color:red;"><%=step.score%></div>
+        <div style="width:55%;padding:4px; float:left;"><font class="featurename"><%="/" + step.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex] + "/"%></font></div>
+        <% if step.calls.empty? %>
+            <div style="float:left; width:10%;padding:4px;"><span class="rule"><b>Dead step!</b></span></div>
+        <% else %>
+            <div style="float:left; width:10%;padding:4px;">&nbsp;</div>
+        <%end%>
+        <div style="width:30%;padding:4px; float:left;"><font class="featurepath"><%=step.location[step.location.rindex("/")..-1]%></font></div><br style="clear:both;">
+        <div class="steps" style="display:none;">
+          <div class="step">
+            <font class="stepfullpath"><%=step.location%> </font><br><br>
+            <div style="float:left; width:40%;">
+              <ul><%step.calls.each do |call|%>
+                    <%=call[0][call[0].rindex("/")..-1]%><br>
+                <%end %></ul>
+            </div>
+            <%step.rules_hash.each_key do |rulekey|%>
+                <div style="float:left;" class="rule"><%=rulekey%></div>
+            <%end %>
+            <% if step.rules_hash.empty? %>
+                No rule violations.
+            <%end%>
+            <br style="clear:both;"></div>
+        </div></div>
+      <%i+=1%>
+  <%end%>
+</div>
+</div>
