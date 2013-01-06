@@ -7,6 +7,27 @@ describe CukeSniffer do
     @step_definitions_location = "../features/step_definitions"
   end
 
+  it "should be able to utilize a single feature file for parsing" do
+    file_name = "single_feature.feature"
+    file = File.open(file_name, "w")
+    file.puts("Feature: I am the cheese that stands alone")
+    file.close
+    cuke_sniffer = CukeSniffer.new(file_name, nil)
+    cuke_sniffer.features.should == [Feature.new(file_name)]
+    File.delete(file_name)
+  end
+
+  it "should be able to utilize a single step definition file for parsing" do
+    file_name = "single_steps.rb"
+    file = File.open(file_name, "w")
+    raw_code = ["Given /^I am a step$/ do", "end"]
+    raw_code.each{|line| file.puts line}
+    file.close
+    cuke_sniffer = CukeSniffer.new(nil, file_name)
+    cuke_sniffer.step_definitions.should == [StepDefinition.new("single.steps.rb:1", raw_code)]
+    File.delete(file_name)
+  end
+
   it "should use the passed locations for features and steps and store those create objects" do
     cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
     fail "features were not initialized" if cuke_sniffer.features == {}

@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+$:.unshift(File.dirname(__FILE__) + '/../lib') unless $:.include?(File.dirname(__FILE__) + '/../lib')
 
 require 'cuke_sniffer'
 
@@ -36,6 +37,4 @@ else
   print_results
 end
 
-
 puts "Completed Sniffing."
-

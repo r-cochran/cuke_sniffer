@@ -25,19 +25,23 @@ class Scenario < FeatureRulesEvaluator
       index += 1
     end
 
-    until index >= scenario.length or scenario[index].include?("Examples:")
-      if(scenario[index] =~ /\|.*\|/)
-        step = scenario[index - 1]
-        @inline_tables[step] = []
-        until index >= scenario.length or scenario[index] =~ STEP_REGEX
-          @inline_tables[step] << scenario[index]
+    begin
+      until index >= scenario.length or scenario[index].include?("Examples:")
+        if (scenario[index] =~ /\|.*\|/)
+          step = scenario[index - 1]
+          @inline_tables[step] = []
+          until index >= scenario.length or scenario[index] =~ STEP_REGEX
+            @inline_tables[step] << scenario[index]
+            index += 1
+          end
+          index += 1
+        else
+          @steps << scenario[index] if scenario[index] =~ STEP_REGEX
           index += 1
         end
-      else
-        @steps << scenario[index] if scenario[index] =~ STEP_REGEX
-        index += 1
       end
-
+    rescue (e)
+      puts e.inspect
     end
 
     if index < scenario.length and scenario[index].include?("Examples:")
@@ -78,11 +82,11 @@ class Scenario < FeatureRulesEvaluator
   end
 
   def evaluate_outline_scores
-      rule_no_examples_table
-      rule_no_examples
-      rule_one_example
-      rule_too_many_examples
-      rule_commented_example
+    rule_no_examples_table
+    rule_no_examples
+    rule_one_example
+    rule_too_many_examples
+    rule_commented_example
   end
 
   def rule_empty_scenario

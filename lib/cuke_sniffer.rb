@@ -15,8 +15,23 @@ class CukeSniffer
     @step_definitions_location = step_definitions_location
     @features = []
     @step_definitions = []
-    build_file_list_from_folder(features_location, ".feature").each { |location| @features << Feature.new(location) }
-    build_file_list_from_folder(step_definitions_location, "steps.rb").each { |location| @step_definitions << build_step_definitions(location) }
+
+    unless features_location.nil?
+      if File.file?(features_location)
+        @features = [Feature.new(features_location)]
+      else
+        build_file_list_from_folder(features_location, ".feature").each { |location| @features << Feature.new(location) }
+      end
+    end
+
+    unless step_definitions_location.nil?
+      if File.file?(step_definitions_location)
+        @step_definitions = [build_step_definitions(step_definitions_location)]
+      else
+        build_file_list_from_folder(step_definitions_location, "steps.rb").each { |location| @step_definitions << build_step_definitions(location) }
+      end
+    end
+
     @step_definitions.flatten!
     @summary = {
         :total_score => 0,
