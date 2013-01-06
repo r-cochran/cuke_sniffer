@@ -18,8 +18,11 @@ Tag followed by comment before scenario (super difficult)
 Incomplete Examples Table(Nothing following the Examples: line) Causes fatal lexing errors
 Empty file(no content for steps.rb or .feature files)
 Empty Feature file(no feature declaration)
+Number use in step
 
 Future Problems/Issues log:
 Tagged Examples Table
 Multiple example tables
+Custom rule file parsed as command line argument
+Displaying parameters use per step definition
 

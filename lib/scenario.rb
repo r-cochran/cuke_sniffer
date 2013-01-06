@@ -1,10 +1,11 @@
 class Scenario < FeatureRulesEvaluator
-  attr_accessor :start_line, :type, :steps, :examples_table
+  attr_accessor :start_line, :type, :steps, :inline_tables, :examples_table
 
   def initialize(location, scenario)
     super(location)
     @start_line = location.match(/:(?<line>\d*)/)[:line].to_i
     @steps = []
+    @inline_tables = {}
     @examples_table = []
     split_scenario(scenario)
     evaluate_score
@@ -25,8 +26,18 @@ class Scenario < FeatureRulesEvaluator
     end
 
     until index >= scenario.length or scenario[index].include?("Examples:")
-      @steps << scenario[index] if scenario[index].match STEP_REGEX
-      index += 1
+      if(scenario[index] =~ /\|.*\|/)
+        step = scenario[index - 1]
+        @inline_tables[step] = []
+        until index >= scenario.length or scenario[index] =~ STEP_REGEX
+          @inline_tables[step] << scenario[index]
+          index += 1
+        end
+      else
+        @steps << scenario[index] if scenario[index] =~ STEP_REGEX
+        index += 1
+      end
+
     end
 
     if index < scenario.length and scenario[index].include?("Examples:")

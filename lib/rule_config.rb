@@ -30,7 +30,7 @@ SHARED_RULES = {
         :enabled => true,
         :phrase => "Implementation word used: {word}.",
         :score => INFO,
-        :words => ["page", "site", "url", "button", "drop down", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up"]
+        :words => ["page", "site", "url", "button", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen"]
     }
 }
 
@@ -53,7 +53,7 @@ FEATURE_RULES = {
     :too_many_scenarios => {
         :enabled => true,
         :phrase => "Feature with too many scenarios.",
-        :score => WARNING,
+        :score => INFO,
         :max => 10,
     },
 }

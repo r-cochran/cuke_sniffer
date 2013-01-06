@@ -1,3 +1,11 @@
+require 'constants'
+require 'rule_config'
+require 'rules_evaluator'
+require 'feature_rules_evaluator'
+require 'step_definition'
+require 'feature'
+require 'scenario'
+
 class CukeSniffer
   attr_accessor :features, :step_definitions, :summary
 
@@ -13,7 +21,6 @@ class CukeSniffer
         :improvement_list => {}
     }
     assess_score
-    output_results
   end
 
   def build_features_from_folder(folder_path)
@@ -88,13 +95,22 @@ class CukeSniffer
         :total => array.count,
         :min => min,
         :max => max,
-        :average => total.to_f/array.count.to_f
+        :average => (total.to_f/array.count.to_f).round(2)
     }
   end
 
   def assess_score
     @summary[:features] = assess_array(@features)
     @summary[:step_definitions] = assess_array(@step_definitions) unless @step_definitions.empty?
+    sort_improvement_list
+  end
+
+  def sort_improvement_list
+    sorted_array = @summary[:improvement_list].sort_by {|improvement, occurrence| occurrence}
+    @summary[:improvement_list] = {}
+    sorted_array.reverse.each{|node|
+      @summary[:improvement_list][node[0]] = node[1]
+    }
   end
 
   def output_results
@@ -112,7 +128,13 @@ class CukeSniffer
       Max: #{step_definition_results[:max]}
       Average: #{step_definition_results[:average]}
   Improvements to make:"
-    @summary[:improvement_list].each_key { |improvement| output << "\n    (#{summary[:improvement_list][improvement]})#{improvement}" }
+    create_improvement_list.each{|item| output << "\n    #{item}"}
+    output
+  end
+
+  def create_improvement_list
+    output = []
+    @summary[:improvement_list].each_key { |improvement| output << "(#{summary[:improvement_list][improvement]})#{improvement}" }
     output
   end
 
@@ -151,6 +173,20 @@ class CukeSniffer
       dead_steps << step_definition if step_definition.calls.empty?
     end
     dead_steps
+  end
+
+  #DO NOT LOOK A THIS I MUST HIDE MY SHAME
+  def to_html(file_name = "cuke_sniffer_results.html")
+    html = File.open(file_name, 'w')
+    html.puts("<html>")
+    html.puts("<title>CukeSniffer Results</title>")
+    html.puts("<head>")
+    html.puts("</head>")
+    html.puts("<body>")
+    create_improvement_list.each{|item| html.puts(item + "<br>")}
+    html.puts("</body>")
+    html.puts("</html>")
+    html.close
   end
 
 end

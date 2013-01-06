@@ -184,6 +184,17 @@ describe Scenario do
     scenario = Scenario.new("location:1", raw_code)
     scenario.name.should == "I am a commented Scenario"
   end
+
+  it "should capture inline tables and associate them with the step using the table" do
+    raw_code = [
+        "Scenario: It has an inline table",
+        "Given the in line table is here",
+        "|one|two|three|",
+        "|1|2|3|"
+    ]
+    scenario = Scenario.new("location:1", raw_code)
+    scenario.inline_tables["Given the in line table is here"].should == %w(|one|two|three| |1|2|3|)
+  end
 end
 
 describe "ScenarioRules" do

@@ -51,6 +51,7 @@ describe CukeSniffer do
 
   it "should output results" do
     cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
+    puts cuke_sniffer.output_results
     cuke_sniffer.output_results.should =~ /Suite Summary\n\s*Total Score: [.0-9]*\n\s*Features \(.*\)\n\s*Min: [.0-9]*\n\s*Max: \d*\n\s*Average: [.0-9]*\n\s*Step Definitions \(.*\)\n\s*Min: [.0-9]*\n\s*Max: [.0-9]*\n\s*Average: [.0-9]*\n\s*Improvements to make:\n.*/
   end
 
@@ -191,5 +192,19 @@ describe CukeSniffer do
 
     step_definitions.should == expected_step_definitions
   end
+
+  it "should put the list of improvements in a descending order" do
+    cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
+    cuke_sniffer.features = []
+    step_definition = StepDefinition.new("location:1", ["Given // do", "end"])
+    step_definition.rules_hash = {"Middle" => 2, "First" => 1, "Last" => 3}
+    cuke_sniffer.step_definitions = [step_definition]
+    cuke_sniffer.summary = {:total_score => 0, :features => {}, :step_definitions => {}, :improvement_list => {}}
+    cuke_sniffer.assess_score
+
+    puts cuke_sniffer.output_results
+    cuke_sniffer.summary[:improvement_list].values.should == [3, 2, 1]
+  end
+
 
 end
