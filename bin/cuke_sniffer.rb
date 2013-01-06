@@ -12,7 +12,7 @@ Other Options for Running include:
   exit
 end
 @cuke_sniffer = nil
-if File.directory?(ARGV[0]) and File.directory?(ARGV[1])
+if (ARGV[0] != nil and File.directory?(ARGV[0])) and (ARGV[1] != nil and File.directory?(ARGV[1]))
   @cuke_sniffer = CukeSniffer.new(ARGV[0], ARGV[1])
 else
   @cuke_sniffer = CukeSniffer.new
