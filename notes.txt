@@ -25,4 +25,6 @@ Tagged Examples Table
 Multiple example tables
 Custom rule file parsed as command line argument
 Displaying parameters use per step definition
-
+should be able to parse Feature title that doesn't (the missing colon) match and throw rule
+Level of Cohesion for methods tracking
+Semantics

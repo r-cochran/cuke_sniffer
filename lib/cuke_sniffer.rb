@@ -181,8 +181,14 @@ class CukeSniffer
     dead_steps
   end
 
+  def sort_by_score(array)
+    array.sort_by{|item| item.score}.reverse
+  end
+
   def output_html(file_name = "cuke_sniffer_results.html")
     harness = TemplateHarness.new
+    @features = sort_by_score(@features)
+    @step_definitions = sort_by_score(@step_definitions)
     harness.print(@features, @step_definitions, @summary)
   end
 
