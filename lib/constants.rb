@@ -17,3 +17,13 @@ START_COMPLEX_STEP_REGEX = /^steps\s%{\s*$/
 END_COMPLEX_STEP_REGEX = /^}$/
 START_COMPLEX_WITH_STEP_REGEX = /^steps\s%{#{STEP_STYLES}(?<step_string>.*)/
 END_COMPLEX_WITH_STEP_REGEX = /^#{STEP_STYLES}(?<step_string>.*)}$/
+
+HELP_CMD_TEXT = "Welcome to CukeSniffer!
+Calling CukeSniffer with no arguments will run it against the current directory.
+Other Options for Running include:
+  <feature_file_path>, <step_def_file_path> : Runs CukeSniffer against the
+                                              specified paths.
+  -o, --out html (name)                     : Runs CukeSniffer then outputs an
+                                              html file in the current
+                                              directory (with optional name).
+  -h, --help                                : You get this lovely document."
