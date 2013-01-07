@@ -75,7 +75,7 @@
         font-size: 10pt;
     }
 
-    .scenarios, .steps {
+    .scenarios, .steps, .tags {
         border-top: 1px solid #bbb;
         padding: 4px;
         padding-left: 90px;
@@ -170,10 +170,22 @@
             <font class="featurepath"><%= feature.location[0..feature.location.rindex("/")] %></font></div>
           <br style="clear:both;">
 
+
+
           <div class="scenarios" style="display:none;">
+            <% feature.scenarios = [feature.background, feature.scenarios].flatten unless feature.background.nil? %>
             <% feature.scenarios.each do |scenario| %>
                 <div class="scenario">
                   <div style="float:left; width:30%;">
+                    <% unless scenario.tags.empty? %>
+                    <b>
+                      <% scenario.tags.each do |tag| %>
+                      <%= tag  %>
+                      <%=", " unless tag == scenario.tags.last %>
+                      <% end %>
+                    </b>
+                    <br>
+                    <% end %>
                     <b><%= scenario.type %>: <%= scenario.name %></b>
                     <ul>
                       <% scenario.steps.each do |step| %>
@@ -216,7 +228,21 @@
         <div onclick="swap(this,4)" class="feature <%= i%2==0 ? "even" : "odd" %>">
           <div style="float:left;padding:4px;font-weight:bold;color:red;"><%= step.score %></div>
           <div style="width:55%;padding:4px; float:left;">
-            <font class="featurename"><%= "/" + step.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex] + "/" %></font>
+
+            <% parameters = "" %>
+            <%  step.parameters.each do |param| %>
+                <% if param == step.parameters.first %>
+                <% parameters << "| " %>
+                    <% end %>
+                <% parameters << param %>
+
+                <% if param == step.parameters.last %>
+                    <% parameters << " |" %>
+                <% else %>
+                    <% parameters << ", " %>
+                <% end %>
+                <% end %>
+            <font class="featurename"><%= "/" + step.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex] + "/ do " + parameters %></font>
           </div>
           <% if step.calls.empty? %>
               <div style="float:left; width:10%;padding:4px;"><span class="rule"><b>Dead step!</b></span></div>

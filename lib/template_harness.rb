@@ -4,7 +4,9 @@ class TemplateHarness
 
  def readFile
    content=""
-   File.open("lib/output.rhtml", "r") do |infile|
+   spec = Gem::Specification.find_by_name("cuke_sniffer")
+   gem_root = spec.gem_dir
+   File.open(gem_root + "/lib/output.rhtml", "r") do |infile|
      while (line = infile.gets)
        content+=line
      end
