@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
              "lib/rule_config.rb",
              "lib/scenario.rb",
              "lib/step_definition.rb",
+             "lib/markup.rhtml",
              "bin/cuke_sniffer.rb"
              ]
   s.homepage = 'https://github.com/r-cochran/cuke_sniffer'

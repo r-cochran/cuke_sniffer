@@ -1,3 +1,4 @@
+require 'erb'
 require 'constants'
 require 'rule_config'
 require 'rules_evaluator'
@@ -172,7 +173,6 @@ class CukeSniffer
   end
 
   def get_dead_steps
-    catalog_step_calls
     dead_steps = []
     @step_definitions.each do |step_definition|
       dead_steps << step_definition if step_definition.calls.empty?
@@ -181,14 +181,28 @@ class CukeSniffer
   end
 
   def sort_by_score(array)
-    array.sort_by{|item| item.score}.reverse
+    array.sort_by { |item| item.score }.reverse
   end
 
-  def output_html(file_name = "cuke_sniffer_results.html")
+  def extract_markup
+    markup_location = "markup.rhtml"
+    begin markup_location = "#{Gem::Specification.find_by_name("cuke_sniffer").gem_dir}/lib/#{markup_location}"
+      rescue Exception => e
+    end
+    markup = ""
+    File.open(markup_location).lines.each do |line| markup << line end
+    markup
+  end
+
+  def output_html(file_name = "cuke_sniffer_results.html", cuke_sniffer = self)
     @features = sort_by_score(@features)
     @step_definitions = sort_by_score(@step_definitions)
-    puts "code for html goes here"
-  end
 
+    markup_erb = ERB.new extract_markup
+    output = markup_erb.result(binding)
+    File.open(file_name, 'w') do |f|
+      f.write(output)
+    end
+  end
 end
 

@@ -1,0 +1,186 @@
+<script>
+    function toggleDisplayById(id, htmlObject) {
+        updateDisplay(document.getElementById(id));
+        toggleDisplayIndicator(htmlObject)
+    }
+    function updateDisplay(object) {
+        object.style.display = (object.style.display == "block") ? 'none' : "block";
+    }
+
+    function toggleDisplayIndicator(htmlObject) {
+        var char_result = htmlObject.innerHTML.indexOf("+") > -1 ? "-" : "+"
+        htmlObject.innerHTML = htmlObject.innerHTML.replace(/(\+|\-)/, char_result)
+    }
+</script>
+
+<style>
+    body {
+        font-family: arial;
+    }
+
+    .cuke_sniffer {
+        float: left;
+        color: green;
+        font-weight: bold;
+        padding-left: 10px;
+    }
+
+    .title {
+        width: 30%;
+        background-color: green;
+        color: #fff;
+        border-left: 2px solid #adff2f;
+        border-top: 0px;
+        border-bottom: 0px;
+        padding-top: 4px
+    }
+
+    .subTitle {
+        background-color: #87cefa;
+        color: black;
+        font-weight: bold;
+        border-left: 2px solid #adff2f;
+        border-top: 0px;
+        border-bottom: 0px;
+        padding-top: 4px
+    }
+
+    .title span {
+        font-size: 20pt;
+        font-weight: bold;
+        width: 100%;
+        border-left: 2px solid #fff;
+        padding-bottom: 3px;
+        padding-left: 30px;
+        padding-top: 4px
+    }
+
+    .collapseDiv {
+        border: 2px solid #adff2f;
+    }
+
+    .padded {
+        padding-left: 2%;
+    }
+
+    .feature {
+        border-bottom: 2px solid #87cefa;
+        border-left: 2px solid #87cefa;
+    }
+</style>
+
+<div>
+  <div class="cuke_sniffer">CukeSniffer</div>
+  <br style="clear:both">
+
+  <div style="border-top: 2px solid #adff2f;">
+    <div style="float:right;border-right: 2px solid #adff2f;">
+      <div style="background-color:green;border-right:3px solid; color:white; padding:4px; padding-left:40px;font-size:11pt;font-weight:bold;padding-right:10px;"><%= cuke_sniffer.summary[:total_score] %>
+        Total Score
+      </div>
+    </div>
+  </div>
+  <br style="clear:both">
+
+  <div style="float:left" class="title" onclick="toggleDisplayById('summary',this)"><span>- Summary</span></div>
+  <br><br>
+
+  <div class="collapseDiv" id="summary" style="display:block">
+    <div class="padded">
+      <div class="subTitle">Features:</div>
+      <div class="padded">
+        Files:   <%= cuke_sniffer.features.count %>
+        <br>
+        Min:     <%= cuke_sniffer.summary[:features][:min] %>
+        <br>
+        Max:     <%= cuke_sniffer.summary[:features][:max] %>
+        <br>
+        Average: <%= cuke_sniffer.summary[:features][:average] %>
+        <br>
+      </div>
+      <br>
+
+      <div class="subTitle">Step Definitions::</div>
+      <div class="padded">
+        Files:   <%= cuke_sniffer.features.count %>
+        <br>
+        Min: <%= cuke_sniffer.summary[:step_definitions][:min] %>
+        <br>
+        Max: <%= cuke_sniffer.summary[:step_definitions][:max] %>
+        <br>
+        Average: <%= cuke_sniffer.summary[:step_definitions][:average] %>
+        <br>
+      </div>
+      <br>
+
+      <div class="subTitle">Things to improve:</div>
+      <div class="padded">
+        <% cuke_sniffer.summary[:improvement_list].each_key do |improvement| %>
+            (<%= cuke_sniffer.summary[:improvement_list][improvement] %>) <%= improvement %>
+            <br>
+        <% end %>
+      </div>
+      <br>
+
+      <div class="subTitle">Dead Steps:</div>
+      <div class="padded">
+        <% cuke_sniffer.get_dead_steps.each do |dead_step| %>
+            <%= dead_step.regex.to_s.gsub("(?-mix:", "/").gsub(")", "/") %>
+            <% unless dead_step.parameters.empty? %>
+                do |
+                <% dead_step.parameters.each do |parameter| %>
+                    <%= parameter %><%= ", " unless parameter == dead_step.parameters.last %>
+                <% end %>
+                |
+            <% end %>
+            <div class="padded">
+              <%= dead_step.location %>
+            </div>
+        <% end %>
+      </div>
+      <br>
+
+    </div>
+  </div>
+  <br><br>
+
+  <div style="float:left" class="title" onclick="toggleDisplayById('features',this)"><span>+ Features</span></div>
+  <br><br>
+
+  <div class="collapseDiv" id="features" style="display:none">
+    <div class="padded">
+      <% feature_counter = 0 %>
+      <% cuke_sniffer.features.each do |feature| %>
+          <div class="feature">
+            <div onclick="toggleDisplayById('feature_<%=feature_counter%>',this)">
+              <b>+ <%= feature.name %></b>
+              <div class="padded" id="feature_<%= feature_counter %>" style="display:none">
+                Location: <%= feature.location %>
+                <br>
+                <% unless feature.tags.empty? %>
+                    Tags: <%= feature.tags.to_s.gsub(/(\"|\,|\[|\])/, "") %>
+                    <br>
+                <% end %>
+                <br>
+              </div>
+            </div>
+            <br>
+          </div>
+          <br>
+          <% feature_counter += 1 %>
+      <% end %>
+    </div>
+  </div>
+  <br><br>
+
+  <div style="float:left" class="title" onclick="toggleDisplayById('stepDefiniions',this)">
+    <span>+ Step Definitions</span></div>
+  <br><br>
+
+  <div class="collapseDiv" id="stepDefiniions" style="display:none">
+    <div class="details">
+      <%= cuke_sniffer.step_definitions.inspect %>
+    </div>
+  </div>
+
+</div>
