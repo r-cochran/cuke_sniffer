@@ -5,7 +5,6 @@ require 'feature_rules_evaluator'
 require 'step_definition'
 require 'feature'
 require 'scenario'
-require 'template_harness'
 
 class CukeSniffer
   attr_accessor :features, :step_definitions, :summary
@@ -186,10 +185,9 @@ class CukeSniffer
   end
 
   def output_html(file_name = "cuke_sniffer_results.html")
-    harness = TemplateHarness.new
     @features = sort_by_score(@features)
     @step_definitions = sort_by_score(@step_definitions)
-    harness.print(@features, @step_definitions, @summary)
+    puts "code for html goes here"
   end
 
 end
