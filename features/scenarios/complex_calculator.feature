@@ -1,4 +1,3 @@
-@banana_phone @taco_bandit @again
 Feature: Complex Calculator
 
   Scenario: Add two numbers
