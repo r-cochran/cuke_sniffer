@@ -27,19 +27,19 @@ require 'spec_helper'
       feature.name.should == "My features are in this"
     end
 
-    it "should to able to capture a feature description that spans multiple lines" do
+    it "should capture a feature description that spans multiple lines" do
       build_file(["Feature: I am a feature description", "that appears on multiple lines", "because it is legal in cucumber", ""])
       feature = Feature.new(@file_name)
       feature.name.should == "I am a feature description that appears on multiple lines because it is legal in cucumber"
     end
 
-    it "should be able to parse Features files where there is no space between the 'Feature:' declaration and its description" do
+    it "should  parse Features files where there is no space between the 'Feature:' declaration and its description" do
       build_file(%w(Feature:Name))
       feature = Feature.new(@file_name)
       feature.name.should == "Name"
     end
 
-    it "should gather all feature level tags" do
+    it "should gather all feature tags" do
       build_file(["@tag1 @tag2", "@tag3", '#@tag4', "Feature: My Features are in this"])
       feature = Feature.new(@file_name)
       feature.tags.should == ["@tag1", "@tag2", "@tag3", '#@tag4']
@@ -59,13 +59,7 @@ require 'spec_helper'
       feature.scenarios.empty?.should == true
     end
 
-    it "should gather a scenario with its tags and create a scenario object and add feature level tags to the scenario" do
-      build_file(["@feature_tag", "Feature: My features are in this", "", "@scenario_tag", "Scenario: My Test Scenario"])
-      feature = Feature.new(@file_name)
-      feature.scenarios[0].tags.should == %w(@scenario_tag @feature_tag)
-    end
-
-    it "should be able to create a feature file without scenarios" do
+    it "can create a feature file without scenarios" do
       build_file(["Feature: I am a feature without scenarios", ""])
       feature = Feature.new(@file_name)
       feature.scenarios.should == []
@@ -90,6 +84,12 @@ require 'spec_helper'
       feature.evaluate_score
       feature.score.should == 1
       feature.rules_hash.should == {"Rule Descriptor" => 1}
+    end
+
+    it "should have access to feature specific rules" do
+      build_file(["Feature: ", "", "Scenario: ", "Given blah", "When blam", "Then blammo"])
+      feature = Feature.new(@file_name)
+      feature.feature_rules_hash.should == {"Feature has no description." => 1}
     end
 
   end

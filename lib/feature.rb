@@ -1,10 +1,11 @@
 class Feature < FeatureRulesEvaluator
 
-  attr_accessor :background, :scenarios
+  attr_accessor :background, :scenarios, :feature_rules_hash
 
   def initialize(file_name)
     super(file_name)
     @scenarios = []
+    @feature_rules_hash = {}
     split_feature(file_name)
     evaluate_score
   end
@@ -49,7 +50,6 @@ class Feature < FeatureRulesEvaluator
 
   def add_scenario_to_feature(code_block, index_of_title)
     scenario = Scenario.new(index_of_title, code_block)
-    scenario.tags += tags
     if scenario.type == "Background"
       @background = scenario
     else
@@ -64,12 +64,13 @@ class Feature < FeatureRulesEvaluator
 
   def evaluate_score
     super
-    include_sub_scores(@background) unless @background.nil?
-    include_scenario_scores
     rule_no_scenarios
     rule_too_many_scenarios
     rule_background_with_no_scenarios
     rule_background_with_one_scenario
+    @feature_rules_hash = @rules_hash.clone
+    include_sub_scores(@background) unless @background.nil?
+    include_scenario_scores
   end
 
   def include_sub_scores(sub_class)

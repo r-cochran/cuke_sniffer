@@ -19,6 +19,7 @@ Incomplete Examples Table(Nothing following the Examples: line) Causes fatal lex
 Empty file(no content for steps.rb or .feature files)
 Empty Feature file(no feature declaration)
 Number use in step
+One word name scenario
 
 Future Problems/Issues log:
 Tagged Examples Table

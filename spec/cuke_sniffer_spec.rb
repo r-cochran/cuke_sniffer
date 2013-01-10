@@ -70,12 +70,6 @@ describe CukeSniffer do
     cuke_sniffer.summary[:improvement_list].should_not == {}
   end
 
-  it "should output results" do
-    cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
-    puts cuke_sniffer.output_results
-    cuke_sniffer.output_results.should =~ /Suite Summary\n\s*Total Score: [.0-9]*\n\s*Features \(.*\)\n\s*Min: [.0-9]* \(.*\)\n\s*Max: \d* \(.*\)\n\s*Average: [.0-9]*\n\s*Step Definitions \(.*\)\n\s*Min: [.0-9]* \(.*\)\n\s*Max: [.0-9] \(.*\)*\n\s*Average: [.0-9]*\n\s*Improvements to make:\n.*/
-  end
-
   it "should catalog all calls a scenario and nested step definition calls" do
     cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
     scenario_block = [
