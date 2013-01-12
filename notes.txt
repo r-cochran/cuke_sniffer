@@ -20,6 +20,8 @@ Empty file(no content for steps.rb or .feature files)
 Empty Feature file(no feature declaration)
 Number use in step
 One word name scenario
+Lines of code in step definition
+
 
 Future Problems/Issues log:
 Tagged Examples Table
@@ -29,3 +31,7 @@ Displaying parameters use per step definition
 should be able to parse Feature title that doesn't (the missing colon) match and throw rule
 Level of Cohesion for methods tracking
 Semantics
+The worse the feature, the darker the title bar.
+Time generated in html
+Output the rule set at bottom of html
+force text wrap on table columns so that not

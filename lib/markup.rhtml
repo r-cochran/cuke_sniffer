@@ -3,7 +3,6 @@
         updateDisplayStatus(item.getElementsByTagName("div")[off]);
     }
     function toggleById(item, link) {
-        document.getElementById(item).scrollIntoView(true);
         updateDisplayStatus(document.getElementById(item));
         toggleText(link)
     }
@@ -14,6 +13,7 @@
         var char_result = link.innerHTML.indexOf("+") > -1 ? "-" : "+"
         link.innerHTML = link.innerHTML.replace(/(\+|\-)/, char_result)
     }
+
 </script>
 <style>
     body {
@@ -104,7 +104,6 @@
        step_definition_results = cuke_sniffer.summary[:step_definitions]
     %>
     <br>
-
     <div><span class="sub_title">Features</span><br></div>
     <div class="padded">Min: <%= feature_results[:min] %> (<%= feature_results[:min_file] %>)<br>
       Max: <%= feature_results[:max] %> (<%= feature_results[:max_file] %>)<br>
@@ -141,7 +140,6 @@
               </td>
             </tr>
           </table>
-          <br>
       <% end %>
       <br>
     </div>
@@ -239,9 +237,8 @@
   <div class="shrink_section" id="step_definitions">
     <% i=0 %>
     <% cuke_sniffer.step_definitions.each do |step_definition| %>
-        <!--
-        <% next if step_definition.score == 0 %>-->
         <div onclick="toggle(this,4)" class="feature <%= i%2==0 ? "even" : "odd" %>">
+          <% next if step_definition.score <= 0 and !step_definition.calls.empty? %>
           <div style="float:left;padding:4px;font-weight:bold;color:red;"><%= step_definition.score %></div>
           <div style="width:55%;padding:4px; float:left;">
 

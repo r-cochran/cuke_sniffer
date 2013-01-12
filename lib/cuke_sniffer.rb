@@ -16,15 +16,19 @@ class CukeSniffer
     @features = []
     @step_definitions = []
 
+    puts "\nFeatures:"
     unless features_location.nil?
+      print '.'
       if File.file?(features_location)
         @features = [Feature.new(features_location)]
       else
-        build_file_list_from_folder(features_location, ".feature").each { |location| @features << Feature.new(location) }
+        build_file_list_from_folder(features_location, ".feature").each { |location| @features << Feature.new(location)}
       end
     end
 
+    puts("\nStep Definitions:")
     unless step_definitions_location.nil?
+      print '.'
       if File.file?(step_definitions_location)
         @step_definitions = [build_step_definitions(step_definitions_location)]
       else
@@ -144,15 +148,28 @@ class CukeSniffer
     output
   end
 
-  def catalog_step_calls
+  def get_all_steps
+    steps = {}
     @features.each do |feature|
       feature.scenarios.each do |scenario|
-        scenario_line = scenario.start_line
+        counter = 1
         scenario.steps.each do |step|
-          scenario_line += 1
-          update_step_definition(scenario.location.gsub(scenario.start_line.to_s, scenario_line.to_s), step)
+          location = scenario.location.gsub(":#{scenario.start_line}", ":#{scenario.start_line + counter}")
+          steps[location] = step
+          counter += 1
         end
       end
+    end
+    steps
+  end
+
+  def catalog_step_calls
+    steps = get_all_steps
+    @step_definitions.each do |step_definition|
+      calls = steps.find_all { |location, step| step.gsub(STEP_STYLES, "") =~ step_definition.regex }
+      calls.each { |call|
+        step_definition.add_call(call[0], call[1])
+      }
     end
 
     @step_definitions.each do |definition|
@@ -186,11 +203,14 @@ class CukeSniffer
 
   def extract_markup
     markup_location = "markup.rhtml"
-    begin markup_location = "#{Gem::Specification.find_by_name("cuke_sniffer").gem_dir}/lib/#{markup_location}"
-      rescue Exception => e
+    begin
+      markup_location = "#{Gem::Specification.find_by_name("cuke_sniffer").gem_dir}/lib/#{markup_location}"
+    rescue Exception => e
     end
     markup = ""
-    File.open(markup_location).lines.each do |line| markup << line end
+    File.open(markup_location).lines.each do |line|
+      markup << line
+    end
     markup
   end
 
