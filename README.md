@@ -57,7 +57,16 @@ Example Output
         (1)Recursive nested step call.
         (1)Scenario has no description.
         (1)Feature has numbers in the description.
-
+----        
+Summary
+![summary](http://i.imgur.com/ShwXD.png)
+----
+Expanded
+![expand_1](http://i.imgur.com/vPkDq.png)
+----
+Expanded for more details
+![expand_2](http://i.imgur.com/CLPGf.png)
+----
 
 Submitting Issues
 -----
