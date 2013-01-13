@@ -1,11 +1,15 @@
-gem 'rspec'
+# encoding: utf-8
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+
+
 require 'rspec'
 
-require '../lib/constants'
-require '../lib/rule_config'
-require '../lib/rules_evaluator'
-require '../lib/feature_rules_evaluator'
-require '../lib/step_definition'
-require '../lib/feature'
-require '../lib/scenario'
-require '../lib/cuke_sniffer'
+require 'constants'
+require 'rule_config'
+require 'rules_evaluator'
+require 'feature_rules_evaluator'
+require 'step_definition'
+require 'feature'
+require 'scenario'
+require 'cuke_sniffer'
