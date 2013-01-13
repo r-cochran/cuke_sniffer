@@ -3,7 +3,7 @@ class Scenario < FeatureRulesEvaluator
 
   def initialize(location, scenario)
     super(location)
-    @start_line = location.match(/:(?<line>\d*)/)[:line].to_i
+    @start_line = location.match(/:(?<line>\d*)$/)[:line].to_i
     @steps = []
     @inline_tables = {}
     @examples_table = []
@@ -25,23 +25,19 @@ class Scenario < FeatureRulesEvaluator
       index += 1
     end
 
-    begin
-      until index >= scenario.length or scenario[index].include?("Examples:")
-        if (scenario[index] =~ /\|.*\|/)
-          step = scenario[index - 1]
-          @inline_tables[step] = []
-          until index >= scenario.length or scenario[index] =~ STEP_REGEX
-            @inline_tables[step] << scenario[index]
-            index += 1
-          end
-          index += 1
-        else
-          @steps << scenario[index] if scenario[index] =~ STEP_REGEX
+    until index >= scenario.length or scenario[index].include?("Examples:")
+      if scenario[index] =~ /\|.*\|/
+        step = scenario[index - 1]
+        @inline_tables[step] = []
+        until index >= scenario.length or scenario[index] =~ STEP_REGEX
+          @inline_tables[step] << scenario[index]
           index += 1
         end
+        index += 1
+      else
+        @steps << scenario[index] if scenario[index] =~ STEP_REGEX
+        index += 1
       end
-    rescue (e)
-      puts e.inspect
     end
 
     if index < scenario.length and scenario[index].include?("Examples:")

@@ -11,12 +11,12 @@ STEP_STYLES = /(?<style>Given|When|Then|And|Or|But|Transform|\*)\s/
 STEP_REGEX = /^#{COMMENT_REGEX}#{STEP_STYLES}(?<step_string>.*)/
 STEP_DEFINITION_REGEX = /^#{STEP_STYLES}\/(?<step>.+)\/\sdo\s?(\|(?<parameters>.*)\|)?$/
 
-SIMPLE_NESTED_STEP_REGEX = /^steps\s"#{STEP_STYLES}(?<step_string>.*)"/
-SAME_LINE_COMPLEX_STEP_REGEX = /^steps\s%{#{STEP_STYLES}(?<step_string>.*)}/
-START_COMPLEX_STEP_REGEX = /^steps\s%{\s*$/
-END_COMPLEX_STEP_REGEX = /^}$/
-START_COMPLEX_WITH_STEP_REGEX = /^steps\s%{#{STEP_STYLES}(?<step_string>.*)/
-END_COMPLEX_WITH_STEP_REGEX = /^#{STEP_STYLES}(?<step_string>.*)}$/
+SIMPLE_NESTED_STEP_REGEX = /steps\s"#{STEP_STYLES}(?<step_string>.*)"/
+SAME_LINE_COMPLEX_STEP_REGEX = /^steps\s%Q?{#{STEP_STYLES}(?<step_string>.*)}/
+START_COMPLEX_STEP_REGEX = /steps\s%Q?\{\s*/
+END_COMPLEX_STEP_REGEX = /}/
+START_COMPLEX_WITH_STEP_REGEX = /steps\s%Q?\{#{STEP_STYLES}(?<step_string>.*)/
+END_COMPLEX_WITH_STEP_REGEX = /#{STEP_STYLES}(?<step_string>.*)}/
 
 HELP_CMD_TEXT = "Welcome to CukeSniffer!
 Calling CukeSniffer with no arguments will run it against the current directory.

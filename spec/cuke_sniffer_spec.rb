@@ -98,32 +98,6 @@ describe CukeSniffer do
     cuke_sniffer.step_definitions[0].calls.count.should == 2
   end
 
-  it "should not catalog a nested step called by a dead step" do
-    cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
-    scenario_block = [
-        "Scenario: Empty Scenario",
-    ]
-    scenario = Scenario.new("ScenarioLocation:3", scenario_block)
-
-    my_feature = Feature.new("#@features_location/simple_calculator.feature")
-    my_feature.scenarios = [scenario]
-    cuke_sniffer.features = [my_feature]
-
-    raw_code = ["When /^dead step$/ do", "end"]
-    live_step_definition = StepDefinition.new("LiveStep:1", raw_code)
-
-    raw_code = ["When /^nested step$/ do",
-                "steps \"When dead step\"",
-                "end"]
-    nested_step_definition = StepDefinition.new("NestedStep:1", raw_code)
-
-    my_step_definitions = [live_step_definition, nested_step_definition]
-
-    cuke_sniffer.step_definitions = my_step_definitions
-    cuke_sniffer.catalog_step_calls
-    cuke_sniffer.step_definitions[0].calls.count.should == 0
-  end
-
   it "should identify dead step definitions" do
     lines = ["Given /^I am a dead step$/ do", "", "end"]
     file_name = "dead_steps.rb"

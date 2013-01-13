@@ -56,7 +56,7 @@ class StepDefinition < RulesEvaluator
       if regex
         match = regex.match(line)
         nested_step_line = (@start_line + counter)
-        @nested_steps[location.gsub(@start_line.to_s, nested_step_line.to_s)] = match[:step_string]
+        @nested_steps[location.gsub(/:\d*/, ":" + nested_step_line.to_s)] = match[:step_string]
       end
       counter += 1
     end

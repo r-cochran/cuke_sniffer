@@ -10,15 +10,15 @@
         object.style.display = (object.style.display == "block") ? 'none' : "block";
     }
     function toggleText(link) {
-        var char_result = link.innerHTML.indexOf("+") > -1 ? "-" : "+"
+        var char_result = link.innerHTML.indexOf("+") > -1 ? "-" : "+";
         link.innerHTML = link.innerHTML.replace(/(\+|\-)/, char_result)
     }
 
 </script>
 <style>
     body {
+        font-size: 12pt;
         font-family: arial;
-        font-size: 12pt
     }
 
     .padded {
@@ -56,8 +56,8 @@
         width: 25%;
         background-color: green;
         color: white;
-        border-top: 0px;
-        border-bottom: 0px;
+        border-top: 0;
+        border-bottom: 0;
         padding-top: 4px;
         font-weight: bold;
         font-size: 15pt;
@@ -66,7 +66,7 @@
 
     .rule {
         background-color: #ffaaaa;
-        padding: 3;
+        padding: 3px;
         font-size: 13px;
     }
 
@@ -78,6 +78,15 @@
         padding-bottom: 3px;
         padding-left: 30px;
         padding-top: 4px
+    }
+
+    .even {
+        background-color: #eeeeff;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .odd {
+        border-bottom: 1px solid #ddd;
     }
 </style>
 <div style="float:left; color: green; font-weight: bold; padding-left:10px;">
@@ -93,17 +102,20 @@
 </div>
 <br style="clear:both">
 <div style="float:left;" class="title">
-  <span style="border-left-color:green;cursor: hand;" onclick="toggleById('summary',this)">- Summary</span>
+  <a href=#summary style="color: white;font-style: normal;">
+    <span style="border-left-color:green;cursor: hand;" onclick="toggleById('summary',this)">- Summary</span>
+  </a>
 </div>
 <br style="clear:both">
 
 <div class="sections">
-  <div class="shrink_section" id="summary" style="display:block">
+  <div name="summary" class="shrink_section" id="summary" style="display:block">
     <%
        feature_results = cuke_sniffer.summary[:features]
        step_definition_results = cuke_sniffer.summary[:step_definitions]
     %>
     <br>
+
     <div><span class="sub_title">Features</span><br></div>
     <div class="padded">Min: <%= feature_results[:min] %> (<%= feature_results[:min_file] %>)<br>
       Max: <%= feature_results[:max] %> (<%= feature_results[:max_file] %>)<br>
@@ -117,25 +129,25 @@
       Average: <%= step_definition_results[:average] %> </div>
     <br>
 
-    <div><span class="sub_title">Improvements to make:</span><br></div>
+    <% list = summary[:improvement_list] %>
+    <div><span class="sub_title">Improvements to make: <%= list.size %></span><br></div>
     <div class="padded">
-      <% list = summary[:improvement_list] %>
       <% list.each_key do |improvement| %>
           (<%= list[improvement] %>) <%= improvement %>
           <br>
       <% end %>
       <br>
     </div>
-    <div><span class="sub_title">Dead Steps:</span><br></div>
+    <% dead_steps_list = cuke_sniffer.get_dead_steps %>
+    <div><span class="sub_title">Dead Steps: <%= dead_steps_list.size %></span><br></div>
     <div class="padded">
-      <br>
-      <% cuke_sniffer.get_dead_steps.each do |dead_step| %>
+      <% dead_steps_list.each do |dead_step| %>
           <table>
             <tr>
-              <td style="width:300">
+              <td style="width:300px">
                 /<%= dead_step.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex] %>/
               </td>
-              <td style="width:600">
+              <td style="width:600px">
                 <%= dead_step.location %>
               </td>
             </tr>
@@ -147,16 +159,18 @@
 </div>
 <br><br>
 <div style="float:left;" class="title">
-  <span style="border-left-color:green;cursor: hand;" onclick="toggleById('feature_details',this)">+ Features</span>
+  <a href=#feature_details style="color: white;font-style: normal;">
+    <span style="border-left-color:green;cursor: hand;" onclick="toggleById('feature_details',this)">+ Features</span>
+  </a>
 </div>
 <div class="links" style="float:right"></div>
 <br style="clear:both">
 <div class="sections">
-  <div class="shrink_section" id="feature_details">
+  <div name="feature_details" class="shrink_section" id="feature_details">
     <% i=0 %>
     <% cuke_sniffer.features.each do |feature| %>
         <% next if feature.score == 0 %>
-        <div onclick="toggle(this,3)" class="feature <%= i%2==0 ? "even" : "odd" %>">
+        <div style="cursor: hand;" onclick="toggle(this,3)" class="feature <%= i%2==0 ? "even" : "odd" %>">
           <div style="float:left;padding:4px;font-weight:bold;color:red; width:3%"><%= feature.score %></div>
 
           <div style=" float:left;">
@@ -190,13 +204,12 @@
             </table>
             <br>
             <% feature.scenarios = [feature.background, feature.scenarios].flatten unless feature.background.nil? %>
-            <% scenario_counter = 0 %>
             <table style="border-bottom:2px solid lightgreen">
               <% feature.scenarios.each do |scenario| %>
                   <% next if scenario.rules_hash.empty? %>
                   <tr>
                     <td style="border-top:2px solid lightblue;width: 600px;vertical-align:top;">
-                      <b style="padding:1%"><%= scenario.type %>: <%= scenario.name %></b>
+                      <b style="padding:1%;"><%= scenario.type %>: <%= scenario.name %></b>
                       <br>
                       <% scenario.steps.each do |step| %>
                           <div style="text-indent:15px">
@@ -229,15 +242,17 @@
 </div>
 <br><br>
 <div style="float:left;" class="title">
-  <span style="border-left-color:green;cursor: hand;" onclick="toggleById('step_definitions',this)">+ Step Definitions</span>
+  <a href=#step_definitions style="color: white;font-style: normal;">
+    <span style="border-left-color:green;cursor: hand;" onclick="toggleById('step_definitions',this)">+ Step Definitions</span>
+  </a>
 </div>
 <div class="links" style="float:right"></div>
 <br style="clear:both">
 <div class="sections">
-  <div class="shrink_section" id="step_definitions">
+  <div name="step_definitions" class="shrink_section" id="step_definitions">
     <% i=0 %>
     <% cuke_sniffer.step_definitions.each do |step_definition| %>
-        <div onclick="toggle(this,4)" class="feature <%= i%2==0 ? "even" : "odd" %>">
+        <div style="cursor: hand;" onclick="toggle(this,4)" class="feature <%= i%2==0 ? "even" : "odd" %>">
           <% next if step_definition.score <= 0 and !step_definition.calls.empty? %>
           <div style="float:left;padding:4px;font-weight:bold;color:red;"><%= step_definition.score %></div>
           <div style="width:55%;padding:4px; float:left;">
@@ -271,7 +286,7 @@
             <table>
               <tr>
                 <td style="width: 600px;vertical-align:top;">
-                  <b>Calls:</b>
+                  <b>Calls: <%= step_definition.calls.size %></b>
                   <% step_definition.calls.each_key do |call| %>
                       <div style="text-indent: 15px;"><%= step_definition.calls[call] %></div>
                       <div style="text-indent: 30px;"><%= call %></div>

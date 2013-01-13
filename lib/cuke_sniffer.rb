@@ -18,21 +18,25 @@ class CukeSniffer
 
     puts "\nFeatures:"
     unless features_location.nil?
-      print '.'
       if File.file?(features_location)
         @features = [Feature.new(features_location)]
       else
-        build_file_list_from_folder(features_location, ".feature").each { |location| @features << Feature.new(location)}
+        build_file_list_from_folder(features_location, ".feature").each { |location|
+          @features << Feature.new(location)
+          print '.'
+        }
       end
     end
 
     puts("\nStep Definitions:")
     unless step_definitions_location.nil?
-      print '.'
       if File.file?(step_definitions_location)
         @step_definitions = [build_step_definitions(step_definitions_location)]
       else
-        build_file_list_from_folder(step_definitions_location, "steps.rb").each { |location| @step_definitions << build_step_definitions(location) }
+        build_file_list_from_folder(step_definitions_location, "steps.rb").each { |location|
+          @step_definitions << build_step_definitions(location)
+          print '.'
+        }
       end
     end
 
@@ -43,7 +47,9 @@ class CukeSniffer
         :step_definitions => {},
         :improvement_list => {}
     }
+    puts "\nCataloging Step Calls: "
     catalog_step_calls
+    puts "\nAssessing Score: "
     assess_score
   end
 
@@ -154,10 +160,15 @@ class CukeSniffer
       feature.scenarios.each do |scenario|
         counter = 1
         scenario.steps.each do |step|
-          location = scenario.location.gsub(":#{scenario.start_line}", ":#{scenario.start_line + counter}")
+          location = scenario.location.gsub(/:\d*/, ":#{scenario.start_line + counter}")
           steps[location] = step
           counter += 1
         end
+      end
+    end
+    @step_definitions.each do |definition|
+      definition.nested_steps.each_key do |key|
+        steps[key] = definition.nested_steps[key]
       end
     end
     steps
@@ -166,17 +177,11 @@ class CukeSniffer
   def catalog_step_calls
     steps = get_all_steps
     @step_definitions.each do |step_definition|
+      print '.'
       calls = steps.find_all { |location, step| step.gsub(STEP_STYLES, "") =~ step_definition.regex }
       calls.each { |call|
         step_definition.add_call(call[0], call[1])
       }
-    end
-
-    @step_definitions.each do |definition|
-      next if definition.calls.empty?
-      definition.nested_steps.each_key do |key|
-        update_step_definition(key, definition.nested_steps[key])
-      end
     end
   end
 

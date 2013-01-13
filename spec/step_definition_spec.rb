@@ -54,7 +54,7 @@ describe StepDefinition do
   it "should evaluate 1 complex nested step with open on the same line" do
     nested_step = "the first number is \"1\""
     raw_code = ["Given /^the first number is 1$/ do |first_number|",
-                "steps %{And #{nested_step}",
+                "steps %Q{And #{nested_step}",
                 "}",
                 "end"]
     step_definition = StepDefinition.new("location:1", raw_code)
@@ -64,7 +64,7 @@ describe StepDefinition do
   it "should evaluate 1 complex nested step with the close on the same line" do
     nested_step = "the first number is \"1\""
     raw_code = ["Given /^the first number is 1$/ do |first_number|",
-                "steps %{",
+                "steps %Q{",
                 "And #{nested_step}}",
                 "end"]
     step_definition = StepDefinition.new("location:1", raw_code)
@@ -74,7 +74,7 @@ describe StepDefinition do
   it "should evaluate 1 complex nested steps on its own line" do
     nested_step = "the first number is \"1\""
     raw_code = ["Given /^the first number is 1$/ do |first_number|",
-                "steps %{",
+                "steps %Q{",
                 "And #{nested_step}",
                 "}",
                 "end"]
@@ -85,7 +85,7 @@ describe StepDefinition do
   it "should evaluate many complex nested step with steps on their own line" do
     nested_step = "the first number is \"1\""
     raw_code = ["Given /^the first number is 1$/ do |first_number|",
-                "steps %{",
+                "steps %Q{",
                 "And #{nested_step}",
                 "And #{nested_step}",
                 "}",
