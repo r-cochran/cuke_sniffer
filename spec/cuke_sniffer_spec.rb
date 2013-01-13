@@ -3,8 +3,8 @@ require 'spec_helper'
 describe CukeSniffer do
 
   before(:each) do
-    @features_location = "../features/scenarios"
-    @step_definitions_location = "../features/step_definitions"
+    @features_location = File.dirname(__FILE__) + "/../features/scenarios"
+    @step_definitions_location = File.dirname(__FILE__) + "/../features/step_definitions"
   end
 
   it "should be able to utilize a single feature file for parsing" do
