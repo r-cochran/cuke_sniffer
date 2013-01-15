@@ -82,7 +82,7 @@ module CukeSniffer
       },
       :asterisk_step => {
         :enabled => true,
-        :phrase => "Steps includes a * instead of Given/When/Then/And/But.",
+        :phrase => "Step includes a * instead of Given/When/Then/And/But.",
         :score => WARNING,
       },
       :commented_step => {
@@ -97,7 +97,7 @@ module CukeSniffer
       },
       :no_examples => {
         :enabled => true,
-        :phrase => "Scenario Outline with only no examples.",
+        :phrase => "Scenario Outline with no examples.",
         :score => FATAL,
       },
       :one_example => {
