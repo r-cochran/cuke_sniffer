@@ -1,10 +1,13 @@
 require 'spec_helper'
+require 'cuke_sniffer/feature'
+require 'cuke_sniffer/scenario'
+require 'cuke_sniffer/step_definition'
 
 describe CukeSniffer do
 
   before(:each) do
-    @features_location = File.dirname(__FILE__) + "/../features/scenarios"
-    @step_definitions_location = File.dirname(__FILE__) + "/../features/step_definitions"
+    @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
+    @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
   end
 
   it "should be able to utilize a single feature file for parsing" do
@@ -12,8 +15,8 @@ describe CukeSniffer do
     file = File.open(file_name, "w")
     file.puts("Feature: I am the cheese that stands alone")
     file.close
-    cuke_sniffer = CukeSniffer.new(file_name, nil)
-    cuke_sniffer.features.should == [Feature.new(file_name)]
+    cuke_sniffer = CukeSniffer::CLI.new(file_name, nil)
+    cuke_sniffer.features.should == [CukeSniffer::Feature.new(file_name)]
     File.delete(file_name)
   end
 
@@ -23,19 +26,19 @@ describe CukeSniffer do
     raw_code = ["Given /^I am a step$/ do", "end"]
     raw_code.each{|line| file.puts line}
     file.close
-    cuke_sniffer = CukeSniffer.new(nil, file_name)
-    cuke_sniffer.step_definitions.should == [StepDefinition.new("single.steps.rb:1", raw_code)]
+    cuke_sniffer = CukeSniffer::CLI.new(nil, file_name)
+    cuke_sniffer.step_definitions.should == [CukeSniffer::StepDefinition.new("single.steps.rb:1", raw_code)]
     File.delete(file_name)
   end
 
   it "should use the passed locations for features and steps and store those create objects" do
-    cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
     fail "features were not initialized" if cuke_sniffer.features == {}
     fail "step definitions were not initialized" if cuke_sniffer.step_definitions == []
   end
 
   it "should summarize the content of a cucumber suite including the min, max, and average scores of both Features and Step Definitions" do
-    cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
     cuke_sniffer.summary = {
         :total_score => 0,
         :features => {
@@ -71,25 +74,25 @@ describe CukeSniffer do
   end
 
   it "should catalog all calls a scenario and nested step definition calls" do
-    cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
     scenario_block = [
         "Scenario: Empty Scenario",
         "Given live step",
         "When nested step"
     ]
-    scenario = Scenario.new("ScenarioLocation:3", scenario_block)
+    scenario = CukeSniffer::Scenario.new("ScenarioLocation:3", scenario_block)
 
-    my_feature = Feature.new("#@features_location/simple_calculator.feature")
+    my_feature = CukeSniffer::Feature.new("#@features_location/simple_calculator.feature")
     my_feature.scenarios = [scenario]
     cuke_sniffer.features = [my_feature]
 
     raw_code = ["When /^live step$/ do", "end"]
-    live_step_definition = StepDefinition.new("LiveStep:1", raw_code)
+    live_step_definition = CukeSniffer::StepDefinition.new("LiveStep:1", raw_code)
 
     raw_code = ["When /^nested step$/ do",
                 "steps \"When live step\"",
                 "end"]
-    nested_step_definition = StepDefinition.new("NestedStep:1", raw_code)
+    nested_step_definition = CukeSniffer::StepDefinition.new("NestedStep:1", raw_code)
 
     my_step_definitions = [live_step_definition, nested_step_definition]
 
@@ -105,14 +108,14 @@ describe CukeSniffer do
     lines.each{|line| file.puts(line)}
     file.close
 
-    cuke_sniffer = CukeSniffer.new(@features_location, Dir.getwd)
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, Dir.getwd)
     dead_steps = cuke_sniffer.get_dead_steps
     dead_steps.empty?.should be_false
     File.delete(file_name)
   end
 
   it "should read every line of multiple step definition and segment those lines into steps." do
-    cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
     file_name = "my_steps.rb"
     file = File.open(file_name, "w")
     file.puts("Given /^I am a step$/ do")
@@ -134,7 +137,7 @@ describe CukeSniffer do
   end
 
   it "should create a list of step definition objects from a step definition file." do
-    cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
     file_name = "my_steps.rb"
     file = File.open(file_name, "w")
     file.puts("Given /^I am a step$/ do")
@@ -143,7 +146,7 @@ describe CukeSniffer do
     file.close
 
     expected_step_definitions = [
-        StepDefinition.new("my_steps.rb:0", ["Given /^I am a step$/ do", "puts 'stuff'", "end"])
+        CukeSniffer::StepDefinition.new("my_steps.rb:0", ["Given /^I am a step$/ do", "puts 'stuff'", "end"])
     ]
     step_definitions = cuke_sniffer.build_step_definitions(file_name)
 
@@ -152,9 +155,9 @@ describe CukeSniffer do
   end
 
   it "should put the list of improvements in a descending order" do
-    cuke_sniffer = CukeSniffer.new(@features_location, @step_definitions_location)
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
     cuke_sniffer.features = []
-    step_definition = StepDefinition.new("location:1", ["Given // do", "end"])
+    step_definition = CukeSniffer::StepDefinition.new("location:1", ["Given // do", "end"])
     step_definition.rules_hash = {"Middle" => 2, "First" => 1, "Last" => 3}
     cuke_sniffer.step_definitions = [step_definition]
     cuke_sniffer.summary = {:total_score => 0, :features => {}, :step_definitions => {}, :improvement_list => {}}

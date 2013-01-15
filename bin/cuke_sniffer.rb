@@ -8,9 +8,9 @@ end
 
 @cuke_sniffer = nil
 if (ARGV[0] != nil and File.directory?(ARGV[0])) and (ARGV[1] != nil and File.directory?(ARGV[1]))
-  @cuke_sniffer = CukeSniffer.new(ARGV[0], ARGV[1])
+  @cuke_sniffer = CukeSniffer::CLI.new(ARGV[0], ARGV[1])
 else
-  @cuke_sniffer = CukeSniffer.new
+  @cuke_sniffer = CukeSniffer::CLI.new
 end
 
 def print_results
