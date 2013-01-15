@@ -1,6 +1,10 @@
 require 'spec_helper'
+require 'cuke_sniffer/scenario'
+require 'cuke_sniffer/rule_config'
 
-describe Scenario do
+include CukeSniffer::RuleConfig
+
+describe CukeSniffer::Scenario do
 
   it "should retain the passed location, name, and the steps of the scenario step after initialization" do
     scenario = [
@@ -10,7 +14,7 @@ describe Scenario do
         "Then the scenario is made",
     ]
     location = "path/path/path/my_feature.feature:1"
-    step_definition = Scenario.new(location, scenario)
+    step_definition = CukeSniffer::Scenario.new(location, scenario)
     step_definition.location.should == location
     step_definition.name.should == "Test Scenario"
     step_definition.steps.should == ["Given I am making a scenario",
@@ -26,7 +30,7 @@ describe Scenario do
         "Then the scenario is made",
     ]
     location = "path/path/path/my_feature.feature:1"
-    step_definition = Scenario.new(location, scenario)
+    step_definition = CukeSniffer::Scenario.new(location, scenario)
     step_definition.location.should == location
     step_definition.name.should == "Test Scenario"
     step_definition.steps.should == ["Given I am making a scenario",
@@ -42,7 +46,7 @@ describe Scenario do
         "Then the scenario is made",
     ]
     location = "path/path/path/my_feature.feature:1"
-    step_definition = Scenario.new(location, scenario)
+    step_definition = CukeSniffer::Scenario.new(location, scenario)
     step_definition.location.should == location
     step_definition.name.should == "Test Scenario"
     step_definition.steps.should == ["Given I am making a scenario",
@@ -61,7 +65,7 @@ describe Scenario do
         "Then the scenario is made",
     ]
     location = "path/path/path/my_feature.feature:1"
-    step_definition = Scenario.new(location, scenario)
+    step_definition = CukeSniffer::Scenario.new(location, scenario)
     step_definition.location.should == location
     step_definition.name.should == "Test Scenario"
     step_definition.tags.should == ["@tag1", "@tag2", "@tag3", "#comment before scenario"]
@@ -81,7 +85,7 @@ describe Scenario do
         "|a|"
     ]
     location = "path/path/path/my_feature.feature:1"
-    scenario = Scenario.new(location, scenario_block)
+    scenario = CukeSniffer::Scenario.new(location, scenario_block)
     scenario.location.should == location
     scenario.name.should == "Test Scenario"
     scenario.steps.should == ["Given I am making a scenario",
@@ -94,7 +98,7 @@ describe Scenario do
     scenario_block = [
         "Scenario: Test Scenario",
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.type.should == "Scenario"
   end
 
@@ -102,7 +106,7 @@ describe Scenario do
     scenario_block = [
         "Scenario Outline: Test Scenario",
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.type.should == "Scenario Outline"
   end
 
@@ -110,7 +114,7 @@ describe Scenario do
     scenario_block = [
         "Scenario: Test Scenario with empty scenario rule firing",
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.score = 0
     scenario.evaluate_score
     scenario.score.should > 0
@@ -120,7 +124,7 @@ describe Scenario do
     scenario_block = [
         "Scenario: Test Scenario to fire empty scenario rule",
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.rules_hash = {}
     scenario.evaluate_score
     scenario.rules_hash.should_not == {}
@@ -136,7 +140,7 @@ describe Scenario do
         "When I make the scenario",
         "Then the scenario is made",
     ]
-    scenario = Scenario.new("location:1", scenario)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario)
     scenario.name.should == "Test My Multi-line Scenario"
   end
 
@@ -152,7 +156,7 @@ describe Scenario do
         ""
     ]
 
-    scenario = Scenario.new("location:1", raw_code)
+    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
     scenario.examples_table.should == %w(|var_name| |one| #|two| |three|)
   end
 
@@ -169,7 +173,7 @@ describe Scenario do
         ""
     ]
 
-    scenario = Scenario.new("location:1", raw_code)
+    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
     scenario.steps.should == ["Given I am a thing", "And I am also a thing","#      When I skip a line", "Then I should have an interesting scenario"]
   end
 
@@ -181,7 +185,7 @@ describe Scenario do
         "#Then we are all commented"
     ]
 
-    scenario = Scenario.new("location:1", raw_code)
+    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
     scenario.name.should == "I am a commented Scenario"
   end
 
@@ -192,7 +196,7 @@ describe Scenario do
         "|one|two|three|",
         "|1|2|3|"
     ]
-    scenario = Scenario.new("location:1", raw_code)
+    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
     scenario.inline_tables["Given the in line table is here"].should == %w(|one|two|three| |1|2|3|)
   end
 end
@@ -209,7 +213,7 @@ describe "ScenarioRules" do
 
   it "should punish Scenarios without a name" do
     scenario_block = %w(Scenario:)
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, SHARED_RULES[:no_description])
   end
 
@@ -217,7 +221,7 @@ describe "ScenarioRules" do
     scenario_block = [
         "Scenario: Empty Scenario",
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, SCENARIO_RULES[:no_steps])
   end
 
@@ -225,7 +229,7 @@ describe "ScenarioRules" do
     scenario_block = [
         "Scenario: Scenario with some digits 123"
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, SHARED_RULES[:numbers_in_description])
   end
 
@@ -236,7 +240,7 @@ describe "ScenarioRules" do
     scenario_block = [
         "Scenario: #{scenario_description}"
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, rule)
   end
 
@@ -246,7 +250,7 @@ describe "ScenarioRules" do
         "Scenario: Scenario with too many steps"
     ]
     rule[:max].times {scenario_block << "And I have too many steps"}
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
 
     validate_rule(scenario, rule)
   end
@@ -257,7 +261,7 @@ describe "ScenarioRules" do
         "Then comes first",
         "When comes second"
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
 
     validate_rule(scenario, SCENARIO_RULES[:out_of_order_steps])
   end
@@ -269,7 +273,7 @@ describe "ScenarioRules" do
         "When comes second",
         "Given comes third"
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
 
     validate_rule(scenario, SCENARIO_RULES[:out_of_order_steps])
   end
@@ -282,7 +286,7 @@ describe "ScenarioRules" do
         "And is ignored",
         "When comes third"
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, SCENARIO_RULES[:out_of_order_steps])
   end
 
@@ -291,7 +295,7 @@ describe "ScenarioRules" do
         "Scenario: Scenario with And as its first step",
         "And is not a valid first step",
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, SCENARIO_RULES[:invalid_first_step])
   end
 
@@ -301,7 +305,7 @@ describe "ScenarioRules" do
         "But is not a valid first step",
         "When comes first"
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, SCENARIO_RULES[:invalid_first_step])
   end
 
@@ -310,7 +314,7 @@ describe "ScenarioRules" do
         "Scenario: Scenario with *",
         "* is an awesome operator"
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, SCENARIO_RULES[:asterisk_step])
   end
 
@@ -323,7 +327,7 @@ describe "ScenarioRules" do
         "* is an awesome operator",
         "Then I am third"
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.score.should >= 4
     scenario.rules_hash[SCENARIO_RULES[:asterisk_step][:phrase]].should == 2
   end
@@ -335,7 +339,7 @@ describe "ScenarioRules" do
         "When I am second",
         "Then I am third"
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, SCENARIO_RULES[:commented_step])
   end
 
@@ -346,7 +350,7 @@ describe "ScenarioRules" do
         "#When I am second",
         "#Then I am third"
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.rules_hash[SCENARIO_RULES[:commented_step][:phrase]].should == 3
   end
 
@@ -361,7 +365,7 @@ describe "ScenarioRules" do
         "#|a|",
         "|b|"
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, SCENARIO_RULES[:commented_example])
   end
 
@@ -376,7 +380,7 @@ describe "ScenarioRules" do
         "#|a|",
         "#|b|"
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.rules_hash.include?(SCENARIO_RULES[:commented_example][:phrase]).should be_true
   end
 
@@ -389,7 +393,7 @@ describe "ScenarioRules" do
         "Examples:",
         "|var_a|",
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, SCENARIO_RULES[:no_examples])
   end
 
@@ -403,7 +407,7 @@ describe "ScenarioRules" do
         "|var_a|",
         "|a|"
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, SCENARIO_RULES[:one_example])
   end
 
@@ -414,7 +418,7 @@ describe "ScenarioRules" do
         "When I am second",
         "Then I am third",
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, SCENARIO_RULES[:no_examples_table])
   end
 
@@ -429,7 +433,7 @@ describe "ScenarioRules" do
         "|var_a|"
     ]
     rule[:max].times{|n| scenario_block << "|#{n}|"}
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, SCENARIO_RULES[:too_many_examples])
   end
 
@@ -439,7 +443,7 @@ describe "ScenarioRules" do
     rule[:max].times{|n| scenario_block << "@tag_#{n}"}
     scenario_block << "Scenario: Scenario with many tags"
 
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, rule)
   end
 
@@ -451,7 +455,7 @@ describe "ScenarioRules" do
         "Then I am on the home page",
     ]
 
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.rules_hash.include?("Implementation word used: page.").should be_true
     scenario.rules_hash.include?("Implementation word used: site.").should be_true
     scenario.rules_hash["Implementation word used: page."].should == 2
@@ -463,7 +467,7 @@ describe "ScenarioRules" do
         "Scenario: Scenario with dates used",
         "Given Today is 11/12/2013",
     ]
-    scenario = Scenario.new("location:1", scenario_block)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, SCENARIO_RULES[:date_used])
   end
 end

@@ -1,13 +1,17 @@
 require 'spec_helper'
+require 'cuke_sniffer/step_definition'
+require 'cuke_sniffer/rule_config'
 
-describe StepDefinition do
+include CukeSniffer::RuleConfig
+
+describe CukeSniffer::StepDefinition do
 
   it "should retain the passed location of the step after initialization" do
     raw_code = ["When /^the second number is 1$/ do",
                 "@second_number = 1",
                 "end"]
     location = "path/path/path/my_steps.rb:1"
-    step_definition = StepDefinition.new(location, raw_code)
+    step_definition = CukeSniffer::StepDefinition.new(location, raw_code)
     step_definition.location.should == location
   end
 
@@ -15,7 +19,7 @@ describe StepDefinition do
     raw_code = ["When /^the second number is 1$/ do",
                 "@second_number = 1",
                 "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     step_definition.regex.should == /^the second number is 1$/
     step_definition.parameters.should == []
     step_definition.code.should == ["@second_number = 1"]
@@ -25,7 +29,7 @@ describe StepDefinition do
     raw_code = ["Given /^the first number is \"([^\"]*)\"$/ do |first_number|",
                 "@second_number = 1",
                 "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     step_definition.regex.should == /^the first number is "([^"]*)"$/
     step_definition.parameters.should == %w"first_number"
     step_definition.code.should == ["@second_number = 1"]
@@ -35,7 +39,7 @@ describe StepDefinition do
     raw_code = ["Given /^the first number is \"([^\"]*)\"$/ do |first_number|",
                 "@second_number = 1",
                 "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     location = "myFile.rb:line 3"
     step_string = "the first number is \"1\""
     step_definition.add_call(location, step_string)
@@ -47,7 +51,7 @@ describe StepDefinition do
     raw_code = ["Given /^the first number is 1$/ do |first_number|",
                 "steps \"And #{nested_step}\"",
                 "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     step_definition.nested_steps.should == {"location:2" => nested_step}
   end
 
@@ -57,7 +61,7 @@ describe StepDefinition do
                 "steps %Q{And #{nested_step}",
                 "}",
                 "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     step_definition.nested_steps.should == {"location:2" => nested_step}
   end
 
@@ -67,7 +71,7 @@ describe StepDefinition do
                 "steps %Q{",
                 "And #{nested_step}}",
                 "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     step_definition.nested_steps.should == {"location:3" => nested_step}
   end
 
@@ -78,7 +82,7 @@ describe StepDefinition do
                 "And #{nested_step}",
                 "}",
                 "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     step_definition.nested_steps.should == {"location:3" => nested_step}
   end
 
@@ -90,7 +94,7 @@ describe StepDefinition do
                 "And #{nested_step}",
                 "}",
                 "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     step_definition.nested_steps.should == {"location:3" => nested_step, "location:4" => nested_step}
   end
 
@@ -102,7 +106,7 @@ describe StepDefinition do
                 "And #{nested_step}",
                 "And #{nested_step}}",
                 "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     step_definition.nested_steps.should == {
         "location:2" => nested_step,
         "location:3" => nested_step,
@@ -114,7 +118,7 @@ describe StepDefinition do
   it "should evaluate the step definition and the score should be greater than 0" do
     raw_code = ["Given /^step with no code$/ do",
                 "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     step_definition.score = 0
     step_definition.evaluate_score
     step_definition.score.should > 0
@@ -123,7 +127,7 @@ describe StepDefinition do
   it "should evaluate the step definition and then update a list of rules/occurrences" do
     raw_code = ["Given /^step with no code$/ do",
                 "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     step_definition.rules_hash = {}
     step_definition.evaluate_score
     step_definition.rules_hash.should_not == {}
@@ -132,7 +136,7 @@ describe StepDefinition do
   it "should have a score and rule list immediately after being created" do
     raw_code = ["Given /^step with no code$/ do",
                 "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     step_definition.score.should > 0
     step_definition.rules_hash.should_not == {}
   end
@@ -152,7 +156,7 @@ describe "StepDefinitionRules" do
   it "should punish Step Definitions with no code" do
     raw_code = ["Given /^step with no code$/ do",
                 "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
    validate_rule(step_definition, STEP_DEFINITION_RULES[:no_code])
   end
 
@@ -162,19 +166,19 @@ describe "StepDefinitionRules" do
     rule[:max].times{|n| parameters += "param#{n}, "}
 
     raw_code = ["Given /^step with many parameters$/ do |#{parameters}|", "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     validate_rule(step_definition, rule)
   end
 
   it "should punish Step Definitions that have nested steps" do
     raw_code = ["Given /^step with nested step call$/ do", "steps \"And I am a nested step\"", "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     validate_rule(step_definition, STEP_DEFINITION_RULES[:nested_step])
   end
 
   it "should punish Step Definitions that have recursive nested steps" do
     raw_code = ["Given /^step with recursive nested step call$/ do", "steps \"And step with recursive nested step call\"", "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     validate_rule(step_definition, STEP_DEFINITION_RULES[:recursive_nested_step])
   end
 
@@ -183,7 +187,7 @@ describe "StepDefinitionRules" do
                 "#steps \"And step with recursive nested step call\"",
                 "#steps \"And step with recursive nested step call\"",
                 "end"]
-    step_definition = StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     validate_rule(step_definition, STEP_DEFINITION_RULES[:commented_code])
   end
 end
