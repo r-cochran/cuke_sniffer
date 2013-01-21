@@ -4,10 +4,10 @@ require 'cuke_sniffer/constants'
 module CukeSniffer
   class CLI
     include CukeSniffer::Constants
-    
+
     attr_accessor :features, :step_definitions, :summary
 
-    def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd)
+    def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd + '/step_definition')
       @features_location = features_location
       @step_definitions_location = step_definitions_location
       @features = []
@@ -30,7 +30,7 @@ module CukeSniffer
         if File.file?(step_definitions_location)
           @step_definitions = [build_step_definitions(step_definitions_location)]
         else
-          build_file_list_from_folder(step_definitions_location, "steps.rb").each { |location|
+          build_file_list_from_folder(step_definitions_location, ".rb").each { |location|
             @step_definitions << build_step_definitions(location)
             print '.'
           }
