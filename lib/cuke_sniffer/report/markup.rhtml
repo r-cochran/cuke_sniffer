@@ -116,14 +116,14 @@
     %>
     <br>
 
-    <div><span class="sub_title">Features</span><br></div>
+    <div><span class="sub_title">Features: <%= cuke_sniffer.features.count %> files</span><br></div>
     <div class="padded">Min: <%= feature_results[:min] %> (<%= feature_results[:min_file] %>)<br>
       Max: <%= feature_results[:max] %> (<%= feature_results[:max_file] %>)<br>
       Average: <%= feature_results[:average] %>
     </div>
     <br>
 
-    <div><span class="sub_title">Step Definitions</span><br></div>
+    <div><span class="sub_title">Step Definitions: <%= cuke_sniffer.step_definitions.count  %> definitions</span><br></div>
     <div class="padded">Min: <%= step_definition_results[:min] %> (<%= step_definition_results[:min_file] %>)<br>
       Max: <%= step_definition_results[:max] %> (<%= step_definition_results[:max_file] %>)<br>
       Average: <%= step_definition_results[:average] %> </div>

@@ -6,7 +6,7 @@ module CukeSniffer
 
     attr_accessor :features, :step_definitions, :summary
 
-    def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd + '/step_definition')
+    def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd)
       @features_location = features_location
       @step_definitions_location = step_definitions_location
       @features = []
@@ -15,10 +15,10 @@ module CukeSniffer
       puts "\nFeatures:"
       unless features_location.nil?
         if File.file?(features_location)
-          @features = [Feature.new(features_location)]
+          @features = [CukeSniffer::Feature.new(features_location)]
         else
           build_file_list_from_folder(features_location, ".feature").each { |location|
-            @features << Feature.new(location)
+            @features << CukeSniffer::Feature.new(location)
             print '.'
           }
         end
@@ -76,14 +76,14 @@ module CukeSniffer
       found_first_step = false
       until counter >= step_file_lines.length
         if step_file_lines[counter] =~ STEP_DEFINITION_REGEX and !step_code.empty? and found_first_step
-          step_definitions << StepDefinition.new("#{file_name}:#{counter+1 - step_code.count}", step_code)
+          step_definitions << CukeSniffer::StepDefinition.new("#{file_name}:#{counter+1 - step_code.count}", step_code)
           step_code = []
         end
         found_first_step = true if step_file_lines[counter] =~ STEP_DEFINITION_REGEX
         step_code << step_file_lines[counter].strip
         counter+=1
       end
-      step_definitions << StepDefinition.new("#{file_name}:#{counter+1}", step_code) unless step_code.empty?
+      step_definitions << CukeSniffer::StepDefinition.new("#{file_name}:#{counter+1}", step_code) unless step_code.empty? or !found_first_step
       step_definitions
     end
 
@@ -128,7 +128,6 @@ module CukeSniffer
     def output_results
       feature_results = @summary[:features]
       step_definition_results = @summary[:step_definitions]
-      #todo this string is completely dependent on the tabbing in the string
       output = "Suite Summary
   Total Score: #{@summary[:total_score]}
     Features (#@features_location)
