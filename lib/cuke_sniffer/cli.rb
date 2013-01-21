@@ -1,5 +1,4 @@
 require 'erb'
-require 'cuke_sniffer/constants'
 
 module CukeSniffer
   class CLI
@@ -57,7 +56,7 @@ module CukeSniffer
           file_name = "#{folder_name}/#{file_name}"
           if File.directory?(file_name)
             list << build_file_list_from_folder(file_name, extension)
-          elsif file_name.include?(extension)
+          elsif file_name.downcase.include?(extension)
             list << file_name
           end
         end
