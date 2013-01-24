@@ -199,6 +199,33 @@ describe CukeSniffer::Scenario do
     scenario = CukeSniffer::Scenario.new("location:1", raw_code)
     scenario.inline_tables["Given the in line table is here"].should == %w(|one|two|three| |1|2|3|)
   end
+
+  it "should not clip steps after an inline table" do
+    raw_code = [
+        "Scenario: It has an inline table",
+        "Given the in line table is here",
+        "|one|two|three|",
+        "|1|2|3|",
+        "And I am still here"
+    ]
+    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
+    scenario.steps.should == ["Given the in line table is here", "And I am still here"]
+  end
+
+  it "should not clip steps after multiple inline table" do
+    raw_code = [
+        "Scenario: It has an inline table",
+        "Given the in line table is here",
+        "|one|two|three|",
+        "|1|2|3|",
+        "And I am still here",
+        "| are you sure |",
+        "| really sure |",
+        "Then I am at the end"
+    ]
+    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
+    scenario.steps.should == ["Given the in line table is here", "And I am still here", "Then I am at the end"]
+  end
 end
 
 describe "ScenarioRules" do

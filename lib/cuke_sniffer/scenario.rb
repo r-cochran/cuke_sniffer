@@ -40,7 +40,6 @@ module CukeSniffer
             @inline_tables[step] << scenario[index]
             index += 1
           end
-          index += 1
         else
           @steps << scenario[index] if scenario[index] =~ STEP_REGEX
           index += 1
