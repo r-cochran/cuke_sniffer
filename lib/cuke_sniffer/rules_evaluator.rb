@@ -6,9 +6,18 @@ module CukeSniffer
       @location = location
       @score = 0
       @rules_hash = {}
+      @class_type = self.class.to_s.gsub(/.*::/, "")
     end
 
     def evaluate_score
+    end
+
+    def good?
+      score <= Constants::THRESHOLDS[@class_type]
+    end
+
+    def problem_percentage
+      score.to_f / Constants::THRESHOLDS[@class_type].to_f
     end
 
     def store_rule(rule)

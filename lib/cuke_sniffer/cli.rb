@@ -49,6 +49,14 @@ module CukeSniffer
       assess_score
     end
 
+    def good?
+      @summary[:total_score] <= Constants::THRESHOLDS["Project"]
+    end
+
+    def problem_percentage
+      @summary[:total_score].to_f / Constants::THRESHOLDS["Project"].to_f
+    end
+
     def build_file_list_from_folder(folder_name, extension)
       list = []
       Dir.entries(folder_name).each_entry do |file_name|

@@ -1,4 +1,4 @@
-include CukeSniffer::RuleConfig
+require 'spec_helper'
 
 describe CukeSniffer::StepDefinition do
 
@@ -154,6 +154,37 @@ describe CukeSniffer::StepDefinition do
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     step_definition.nested_steps.should == {"location:3" => nested_step_set_one, "location:4" => nested_step_set_one, "location:8" => nested_step_set_two, "location:9" => nested_step_set_two, "location:10" => nested_step_set_two,}
+  end
+
+  it "should determine if it is above the scenario threshold" do
+    raw_code = ["Given /^step with no code$/ do",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    start_threshold = CukeSniffer::Constants::THRESHOLDS["StepDefinition"]
+    CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = 2
+    step_definition.good?.should == false
+    CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = start_threshold
+  end
+
+  it "should determine if it is below the step definition threshold" do
+    raw_code = ["Given /^step with no code$/ do",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    start_threshold = CukeSniffer::Constants::THRESHOLDS["StepDefinition"]
+    CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = 200
+    step_definition.good?.should == true
+    CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = start_threshold
+  end
+
+  it "should determine the percentage of problems compared to the step definition threshold" do
+    raw_code = ["Given /^step with no code$/ do",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    start_threshold = CukeSniffer::Constants::THRESHOLDS["StepDefinition"]
+    CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = 2
+    step_definition.score = 3
+    step_definition.problem_percentage.should == (3.0/2.0)
+    CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = start_threshold
   end
 end
 

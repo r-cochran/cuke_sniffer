@@ -5,8 +5,8 @@ module CukeSniffer
 
     FATAL = 100       #will prevent suite from executing properly
     ERROR = 25        #will cause problem with debugging
-    WARNING = 10  #readibility/misuse of cucumber
-    INFO = 1            #Small improvements that can be made
+    WARNING = 10      #readibility/misuse of cucumber
+    INFO = 1          #Small improvements that can be made
 
     SHARED_RULES = {
       :too_many_tags => {

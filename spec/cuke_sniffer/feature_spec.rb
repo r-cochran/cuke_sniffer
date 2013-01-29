@@ -1,8 +1,4 @@
 require 'spec_helper'
-require 'cuke_sniffer/feature'
-require 'cuke_sniffer/rule_config'
-
-include CukeSniffer::RuleConfig
 
 describe CukeSniffer::Feature do
 
@@ -94,6 +90,34 @@ describe CukeSniffer::Feature do
     build_file(["Feature: ", "", "Scenario: ", "Given blah", "When blam", "Then blammo"])
     feature = CukeSniffer::Feature.new(@file_name)
     feature.feature_rules_hash.should == {"Feature has no description." => 1}
+  end
+
+  it "should determine if it is above the feature threshold" do
+    build_file(["Feature: ", "", "Scenario: ", "Given blah", "When blam", "Then blammo"])
+    feature = CukeSniffer::Feature.new(@file_name)
+    start_threshold = CukeSniffer::Constants::THRESHOLDS["Feature"]
+    CukeSniffer::Constants::THRESHOLDS["Feature"] = 2
+    feature.good?.should == false
+    CukeSniffer::Constants::THRESHOLDS["Feature"] = start_threshold
+  end
+
+  it "should determine if it is below the feature threshold" do
+    build_file(["Feature: I am a feature", "", "Scenario: ", "Given blah", "When blam", "Then blammo"])
+    feature = CukeSniffer::Feature.new(@file_name)
+    start_threshold = CukeSniffer::Constants::THRESHOLDS["Feature"]
+    CukeSniffer::Constants::THRESHOLDS["Feature"] = 2
+    feature.good?.should == true
+    CukeSniffer::Constants::THRESHOLDS["Feature"] = start_threshold
+  end
+
+  it "should determine the percentage of problems compared to the feature threshold" do
+    build_file(["Feature: I am a feature", "", "Scenario: ", "Given blah", "When blam", "Then blammo"])
+    feature = CukeSniffer::Feature.new(@file_name)
+    start_threshold = CukeSniffer::Constants::THRESHOLDS["Feature"]
+    CukeSniffer::Constants::THRESHOLDS["Feature"] = 2
+    feature.feature_score = 3
+    feature.problem_percentage.should == (3.0/2.0)
+    CukeSniffer::Constants::THRESHOLDS["Feature"] = start_threshold
   end
 
 end

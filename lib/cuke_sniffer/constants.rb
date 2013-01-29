@@ -11,5 +11,12 @@ module CukeSniffer
     STEP_STYLES = /(?<style>Given|When|Then|And|Or|But|Transform|\*)\s/
     STEP_REGEX = /^#{COMMENT_REGEX}#{STEP_STYLES}(?<step_string>.*)/
     STEP_DEFINITION_REGEX = /^#{STEP_STYLES}\/(?<step>.+)\/\sdo\s?(\|(?<parameters>.*)\|)?$/
+
+    THRESHOLDS = {
+        "Project" => 1000,
+        "Feature" => 30,
+        "Scenario" => 30,
+        "StepDefinition" => 20
+    }
   end
 end

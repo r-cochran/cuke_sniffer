@@ -5,7 +5,7 @@ module CukeSniffer
 
     SCENARIO_TITLE_REGEX = /#{COMMENT_REGEX}#{SCENARIO_TITLE_STYLES}(?<name>.*)/
 
-    attr_accessor :background, :scenarios, :feature_rules_hash
+    attr_accessor :background, :scenarios, :feature_score, :feature_rules_hash
 
     def initialize(file_name)
       super(file_name)
@@ -67,12 +67,21 @@ module CukeSniffer
       comparison_object.scenarios == scenarios
     end
 
+    def good?
+      @feature_score <= Constants::THRESHOLDS[@class_type]
+    end
+
+    def problem_percentage
+      @feature_score.to_f / Constants::THRESHOLDS[@class_type].to_f
+    end
+
     def evaluate_score
       super
       rule_no_scenarios
       rule_too_many_scenarios
       rule_background_with_no_scenarios
       rule_background_with_one_scenario
+      @feature_score = score
       @feature_rules_hash = rules_hash.clone
       include_sub_scores(@background) unless @background.nil?
       include_scenario_scores

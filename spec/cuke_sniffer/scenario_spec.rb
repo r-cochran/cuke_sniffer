@@ -1,6 +1,4 @@
 require 'spec_helper'
-require 'cuke_sniffer/scenario'
-require 'cuke_sniffer/rule_config'
 
 include CukeSniffer::RuleConfig
 
@@ -226,6 +224,55 @@ describe CukeSniffer::Scenario do
     scenario = CukeSniffer::Scenario.new("location:1", raw_code)
     scenario.steps.should == ["Given the in line table is here", "And I am still here", "Then I am at the end"]
   end
+
+  it "should determine if it is above the scenario threshold" do
+    raw_code = [
+        "Scenario: Above scenario threshold",
+        "#Given I am a good scenario",
+        "#When I do a behavior inducing action",
+        "#Then that action is verified"
+    ]
+
+    start_threshold = CukeSniffer::Constants::THRESHOLDS["Scenario"]
+    CukeSniffer::Constants::THRESHOLDS["Scenario"] = 2
+    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
+    scenario.good?.should == false
+    CukeSniffer::Constants::THRESHOLDS["Scenario"] = start_threshold
+  end
+
+  it "should determine if it is below the scenario threshold" do
+    raw_code = [
+        "Scenario: Below scenario threshold",
+        "Given I am a good scenario",
+        "When I do a behavior inducing action",
+        "Then that action is verified"
+    ]
+
+    start_threshold = CukeSniffer::Constants::THRESHOLDS["Scenario"]
+    CukeSniffer::Constants::THRESHOLDS["Scenario"] = 2
+    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
+    scenario.good?.should == true
+    CukeSniffer::Constants::THRESHOLDS["Scenario"] = start_threshold
+  end
+
+  it "should determine the percentage of problems compared to the scenario threshold" do
+    raw_code = [
+        "Scenario: Above scenario threshold",
+        "#Given I am a good scenario",
+        "#When I do a behavior inducing action",
+        "#Then that action is verified"
+    ]
+
+    start_threshold = CukeSniffer::Constants::THRESHOLDS["Scenario"]
+    CukeSniffer::Constants::THRESHOLDS["Scenario"] = 2
+    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
+    scenario.score = 3
+    scenario.problem_percentage.should == (3.0/2.0).to_f
+    CukeSniffer::Constants::THRESHOLDS["Scenario"] = start_threshold
+  end
+
+
+
 end
 
 describe "ScenarioRules" do

@@ -1,7 +1,4 @@
 require 'spec_helper'
-require 'cuke_sniffer/feature'
-require 'cuke_sniffer/scenario'
-require 'cuke_sniffer/step_definition'
 
 describe CukeSniffer do
 
@@ -164,6 +161,31 @@ describe CukeSniffer do
     cuke_sniffer.assess_score
 
     cuke_sniffer.summary[:improvement_list].values.should == [3, 2, 1]
+  end
+
+  it "should determine if it is above the scenario threshold" do
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
+    start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
+    CukeSniffer::Constants::THRESHOLDS["Project"] = 2
+    cuke_sniffer.good?.should == false
+    CukeSniffer::Constants::THRESHOLDS["Project"] = start_threshold
+  end
+
+  it "should determine if it is below the step definition threshold" do
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
+    start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
+    CukeSniffer::Constants::THRESHOLDS["Project"] = 200
+    cuke_sniffer.good?.should == true
+    CukeSniffer::Constants::THRESHOLDS["Project"] = start_threshold
+  end
+
+  it "should determine the percentage of problems compared to the step definition threshold" do
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
+    start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
+    CukeSniffer::Constants::THRESHOLDS["Project"] = 2
+    cuke_sniffer.summary[:total_score] = 3
+    cuke_sniffer.problem_percentage.should == (3.0/2.0)
+    CukeSniffer::Constants::THRESHOLDS["Project"] = start_threshold
   end
 
 end
