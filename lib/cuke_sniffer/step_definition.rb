@@ -1,11 +1,14 @@
-require 'cuke_sniffer/constants'
-require 'cuke_sniffer/rule_config'
-
 module CukeSniffer
   class StepDefinition < RulesEvaluator
     include CukeSniffer::Constants
     include CukeSniffer::RuleConfig
-    
+
+    SIMPLE_NESTED_STEP_REGEX = /steps\s"#{STEP_STYLES}(?<step_string>.*)"/
+    SAME_LINE_COMPLEX_STEP_REGEX = /^steps\s%Q?{#{STEP_STYLES}(?<step_string>.*)}/
+    START_COMPLEX_STEP_REGEX = /steps\s%Q?\{\s*/
+    END_COMPLEX_STEP_REGEX = /}/
+    START_COMPLEX_WITH_STEP_REGEX = /steps\s%Q?\{#{STEP_STYLES}(?<step_string>.*)/
+    END_COMPLEX_WITH_STEP_REGEX = /#{STEP_STYLES}(?<step_string>.*)}/
     attr_accessor :start_line, :regex, :code, :parameters, :calls, :nested_steps
 
     def initialize(location, raw_code)

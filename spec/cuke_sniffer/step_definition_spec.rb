@@ -1,7 +1,3 @@
-require 'spec_helper'
-require 'cuke_sniffer/step_definition'
-require 'cuke_sniffer/rule_config'
-
 include CukeSniffer::RuleConfig
 
 describe CukeSniffer::StepDefinition do
@@ -141,6 +137,24 @@ describe CukeSniffer::StepDefinition do
     step_definition.rules_hash.should_not == {}
   end
 
+  it "should evaluate multiple sets of complex nested steps across multiple lines" do
+    nested_step_set_one = "the first number is \"1\""
+    nested_step_set_two = "the second number is \"55\""
+    raw_code = ["Given /^the first number is 1$/ do |first_number|",
+                "steps %Q{",
+                "And #{nested_step_set_one}",
+                "And #{nested_step_set_one}",
+                "}",
+                "#commented code",
+                "steps %Q{",
+                "And #{nested_step_set_two}",
+                "And #{nested_step_set_two}",
+                "And #{nested_step_set_two}",
+                "}",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    step_definition.nested_steps.should == {"location:3" => nested_step_set_one, "location:4" => nested_step_set_one, "location:8" => nested_step_set_two, "location:9" => nested_step_set_two, "location:10" => nested_step_set_two,}
+  end
 end
 
 describe "StepDefinitionRules" do

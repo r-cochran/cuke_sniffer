@@ -1,12 +1,9 @@
-require 'cuke_sniffer/constants'
-require 'cuke_sniffer/rule_config'
-require 'cuke_sniffer/feature_rules_evaluator'
-require 'cuke_sniffer/scenario'
-
 module CukeSniffer
   class Feature < FeatureRulesEvaluator
     include CukeSniffer::Constants
     include CukeSniffer::RuleConfig
+
+    SCENARIO_TITLE_REGEX = /#{COMMENT_REGEX}#{SCENARIO_TITLE_STYLES}(?<name>.*)/
 
     attr_accessor :background, :scenarios, :feature_rules_hash
 
@@ -26,7 +23,7 @@ module CukeSniffer
       feature_file.close
 
       index = 0
-      until feature_lines[index].match FEATURE_NAME_REGEX
+      until feature_lines[index].match /Feature:\s*(?<name>.*)/
         update_tag_list(feature_lines[index])
         index += 1
       end
@@ -76,7 +73,7 @@ module CukeSniffer
       rule_too_many_scenarios
       rule_background_with_no_scenarios
       rule_background_with_one_scenario
-      @feature_rules_hash = @rules_hash.clone
+      @feature_rules_hash = rules_hash.clone
       include_sub_scores(@background) unless @background.nil?
       include_scenario_scores
     end
