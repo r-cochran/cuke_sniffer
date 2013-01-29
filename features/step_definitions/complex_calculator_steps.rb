@@ -9,3 +9,32 @@ end
 Then /^the result is "([^"]*)"$/ do |result|
   result.to_i.should == @first_number + @second_number
 end
+
+Then /^tacoasdfasdfasdasdasdfasasdfasdfasdfaadsfasdfadsdfafda$/ do |result|
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+  #result.to_i.should == @first_number + @second_number
+end
+
+Then /^tac$/ do |result|
+  result.to_i.should == @first_number + @second_number
+end

@@ -4,12 +4,13 @@ module CukeSniffer
   class CLI
     include CukeSniffer::Constants
 
-    attr_accessor :features, :step_definitions, :summary
+    attr_accessor :features, :scenarios, :step_definitions, :summary
 
     def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd)
       @features_location = features_location
       @step_definitions_location = step_definitions_location
       @features = []
+      @scenarios = []
       @step_definitions = []
 
       puts "\nFeatures:"
@@ -23,6 +24,9 @@ module CukeSniffer
           }
         end
       end
+
+      @scenarios = get_all_scenarios(@features)
+
 
       puts("\nStep Definitions:")
       unless step_definitions_location.nil?
@@ -38,10 +42,10 @@ module CukeSniffer
 
       @step_definitions.flatten!
       @summary = {
-        :total_score => 0,
-        :features => {},
-        :step_definitions => {},
-        :improvement_list => {}
+          :total_score => 0,
+          :features => {},
+          :step_definitions => {},
+          :improvement_list => {}
       }
       puts "\nCataloging Step Calls: "
       catalog_step_calls
@@ -98,6 +102,8 @@ module CukeSniffer
     def assess_array(array)
       min, max, min_file, max_file = nil
       total = 0
+      good = 0
+      bad = 0
       array.each do |node|
         score = node.score
         @summary[:total_score] += score
@@ -107,22 +113,39 @@ module CukeSniffer
         end
         min, min_file = score, node.location if (min.nil? or score < min)
         max, max_file = score, node.location if (max.nil? or score > max)
+        if node.good?
+          good += 1
+        else
+          bad += 1
+        end
         total += score
       end
       {
-        :total => array.count,
-        :min => min,
-        :min_file => min_file,
-        :max => max,
-        :max_file => max_file,
-        :average => (total.to_f/array.count.to_f).round(2)
+          :total => array.count,
+          :min => min,
+          :min_file => min_file,
+          :max => max,
+          :max_file => max_file,
+          :average => (total.to_f/array.count.to_f).round(2),
+          :good => good,
+          :bad => bad,
       }
     end
 
     def assess_score
       @summary[:features] = assess_array(@features)
+      @summary[:scenarios] = assess_array(@scenarios)
       @summary[:step_definitions] = assess_array(@step_definitions) unless @step_definitions.empty?
       sort_improvement_list
+    end
+
+    def get_all_scenarios(features)
+      scenarios = []
+      features.each do |feature|
+        scenarios << feature.background unless feature.background.nil?
+        scenarios << feature.scenarios
+      end
+      scenarios.flatten
     end
 
     def sort_improvement_list

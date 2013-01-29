@@ -70,6 +70,11 @@
         font-size: 13px;
     }
 
+    .summary_col {
+        width: 20%;
+        font-size: 14pt;
+    }
+
     span {
         font-size: 20pt;
         font-weight: bold;
@@ -101,55 +106,83 @@
 <br style="clear:both">
 
 <div class="sections">
-  <div name="summary" class="shrink_section" id="summary" style="display:block">
-    <%
-       feature_results = cuke_sniffer.summary[:features]
-       step_definition_results = cuke_sniffer.summary[:step_definitions]
-    %>
-    <br>
+<div name="summary" class="shrink_section" id="summary" style="display:block">
+  <%
+     feature_results = cuke_sniffer.summary[:features]
+     scenario_results = cuke_sniffer.summary[:scenarios]
+     step_definition_results = cuke_sniffer.summary[:step_definitions]
+  %>
+  <br>
+  <table style="padding-left: 3%;">
+    <tr>
+      <td class="summary_col"></td>
+      <td class="summary_col">Features</td>
+      <td class="summary_col">Scenarios</td>
+      <td class="summary_col">Step Definitions</td>
+    </tr>
+    <tr></tr>
+    <tr>
+      <td class="summary_col">Count</td>
+      <td class="summary_col"><%= cuke_sniffer.features.count %></td>
+      <td class="summary_col"><%= cuke_sniffer.scenarios.count %></td>
+      <td class="summary_col"><%= cuke_sniffer.step_definitions.count %></td>
+    </tr>
+    <tr>
+      <td class="summary_col">Lowest Score</td>
+      <td class="summary_col"><%= feature_results[:min] %></td>
+      <td class="summary_col"><%= scenario_results[:min] %></td>
+      <td class="summary_col"><%= step_definition_results[:min] %></td>
+    </tr>
+    <tr>
+      <td class="summary_col">Highest Score</td>
+      <td class="summary_col"><%= feature_results[:max] %></td>
+      <td class="summary_col"><%= scenario_results[:max] %></td>
+      <td class="summary_col"><%= step_definition_results[:max] %></td>
+    </tr>
+    <tr>
+      <td class="summary_col">Average Score</td>
+      <td class="summary_col"><%= feature_results[:average] %></td>
+      <td class="summary_col"><%= scenario_results[:average] %></td>
+      <td class="summary_col"><%= step_definition_results[:average] %></td>
+    </tr>
+    <tr></tr>
+    <tr>
+      <td class="summary_col">Good</td>
+      <td class="summary_col"><%= feature_results[:good] %></td>
+      <td class="summary_col"><%= scenario_results[:good] %></td>
+      <td class="summary_col"><%= step_definition_results[:good] %></td>
+    </tr>
+    <tr>
+      <td class="summary_col">Bad</td>
+      <td class="summary_col"><%= feature_results[:bad] %></td>
+      <td class="summary_col"><%= scenario_results[:bad] %></td>
+      <td class="summary_col"><%= step_definition_results[:bad] %></td>
+    </tr>
+  </table>
+  <br><br>
 
-    <div><span class="sub_title">Features: <%= cuke_sniffer.features.count %> files</span><br></div>
-    <div class="padded">Min: <%= feature_results[:min] %> (<%= feature_results[:min_file] %>)<br>
-      Max: <%= feature_results[:max] %> (<%= feature_results[:max_file] %>)<br>
-      Average: <%= feature_results[:average] %>
-    </div>
-    <br>
+  <div style="padding-left:3%;font:bold;font-size:14pt;">Improvement
+    List: <%= cuke_sniffer.summary[:improvement_list].keys.count %></div>
+  <table style="padding-left: 5%;font-size:14pt;">
+    <% cuke_sniffer.summary[:improvement_list].each do |improvement, count| %>
+        <tr>
+          <td><%= count %></td>
+          <td style="width:90%;"><%= improvement %></td>
+        </tr>
+    <% end %>
+  </table>
+  <br>
 
-    <div><span class="sub_title">Step Definitions: <%= cuke_sniffer.step_definitions.count  %> definitions</span><br></div>
-    <div class="padded">Min: <%= step_definition_results[:min] %> (<%= step_definition_results[:min_file] %>)<br>
-      Max: <%= step_definition_results[:max] %> (<%= step_definition_results[:max_file] %>)<br>
-      Average: <%= step_definition_results[:average] %> </div>
-    <br>
-
-    <% list = summary[:improvement_list] %>
-    <div><span class="sub_title">Improvements to make: <%= list.size %></span><br></div>
-    <div class="padded">
-      <% list.each_key do |improvement| %>
-          (<%= list[improvement] %>) <%= improvement %>
-          <br>
-      <% end %>
-      <br>
-    </div>
-    <% dead_steps_list = cuke_sniffer.get_dead_steps %>
-    <div><span class="sub_title">Dead Steps: <%= dead_steps_list.size %></span><br></div>
-    <div class="padded">
-      <% dead_steps_list.each do |dead_step| %>
-          <table>
-            <tr>
-              <td style="width:300px">
-                /<%= dead_step.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex] %>/
-              </td>
-              <td style="width:600px">
-                <%= dead_step.location %>
-              </td>
-            </tr>
-          </table>
-      <% end %>
-      <br>
-    </div>
-  </div>
+  <div style="padding-left:3%;font:bold;font-size:14pt;">Dead Steps: <%= cuke_sniffer.get_dead_steps.count %></div>
+  <% cuke_sniffer.get_dead_steps.each do |dead_step| %>
+      <div style="font:14pt;padding-left:5%;padding-bottom: 1%;">
+        <div><%= "/" + dead_step.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex] + "/" %></div>
+        <div style="padding-left:1%"><%= dead_step.location %></div>
+      </div>
+  <% end %>
 </div>
 <br><br>
+
 <div style="float:left;" class="title">
   <a href=#feature_details style="color: white;font-style: normal;">
     <span style="border-left-color:green;cursor: hand;" onclick="toggleById('feature_details',this)">+ Features</span>
@@ -157,6 +190,7 @@
 </div>
 <div class="links" style="float:right"></div>
 <br style="clear:both">
+
 <div class="sections">
   <div name="feature_details" class="shrink_section" id="feature_details">
     <% i=0 %>
@@ -233,6 +267,7 @@
   </div>
 </div>
 <br><br>
+
 <div style="float:left;" class="title">
   <a href=#step_definitions style="color: white;font-style: normal;">
     <span style="border-left-color:green;cursor: hand;" onclick="toggleById('step_definitions',this)">+ Step Definitions</span>
@@ -240,6 +275,7 @@
 </div>
 <div class="links" style="float:right"></div>
 <br style="clear:both">
+
 <div class="sections">
   <div name="step_definitions" class="shrink_section" id="step_definitions">
     <% i=0 %>
@@ -300,4 +336,5 @@
         <% i+=1 %>
     <% end %>
   </div>
+</div>
 </div>

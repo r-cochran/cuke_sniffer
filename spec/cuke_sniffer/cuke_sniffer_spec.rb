@@ -158,8 +158,8 @@ describe CukeSniffer do
     step_definition.rules_hash = {"Middle" => 2, "First" => 1, "Last" => 3}
     cuke_sniffer.step_definitions = [step_definition]
     cuke_sniffer.summary = {:total_score => 0, :features => {}, :step_definitions => {}, :improvement_list => {}}
+    cuke_sniffer.scenarios = []
     cuke_sniffer.assess_score
-
     cuke_sniffer.summary[:improvement_list].values.should == [3, 2, 1]
   end
 
