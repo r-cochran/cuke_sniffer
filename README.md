@@ -25,12 +25,16 @@ Or,
 From Ruby files
 
     require 'cuke_sniffer'
-    CukeSniffer::CLI.new
+    cuke_sniffer = CukeSniffer::CLI.new
+    cuke_sniffer.output_results
+    
     
 Or, 
 
     require 'cuke_sniffer'
-    CukeSniffer::CLI.new(<your_features_folder>, <your_step_definitions_folder>)
+    cuke_sniffer = CukeSniffer::CLI.new(<your_features_folder>, <your_step_definitions_folder>)
+    cuke_sniffer.output_html
+    
     
 Example Output
 ----
