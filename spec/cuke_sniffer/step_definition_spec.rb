@@ -156,6 +156,26 @@ describe CukeSniffer::StepDefinition do
     step_definition.nested_steps.should == {"location:3" => nested_step_set_one, "location:4" => nested_step_set_one, "location:8" => nested_step_set_two, "location:9" => nested_step_set_two, "location:10" => nested_step_set_two,}
   end
 
+  it "should capture nested steps with inline code as a variable without code inserts" do
+    raw_code = ["Given /^the first number is 1$/ do |first_number|",
+                "steps %Q{",
+                "And I have a need for \#{variables}",
+                "}",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    step_definition.nested_steps.should == {"location:3" => "I have a need for variable"}
+  end
+
+  it "should capture nested steps with multiple inline code as a variable without code inserts" do
+    raw_code = ["Given /^the first number is 1$/ do |first_number|",
+                "steps %Q{",
+                "And I have a need for \#{variables} and \#{more variables}",
+                "}",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    step_definition.nested_steps.should == {"location:3" => "I have a need for variable and variable"}
+  end
+
   it "should determine if it is above the scenario threshold" do
     raw_code = ["Given /^step with no code$/ do",
                 "end"]

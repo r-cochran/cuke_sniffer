@@ -3,12 +3,12 @@ module CukeSniffer
     include CukeSniffer::Constants
     include CukeSniffer::RuleConfig
 
-    SIMPLE_NESTED_STEP_REGEX = /steps\s"#{STEP_STYLES}(?<step_string>.*)"/
-    SAME_LINE_COMPLEX_STEP_REGEX = /^steps\s%Q?{#{STEP_STYLES}(?<step_string>.*)}/
-    START_COMPLEX_STEP_REGEX = /steps\s%Q?\{\s*/
-    END_COMPLEX_STEP_REGEX = /}/
-    START_COMPLEX_WITH_STEP_REGEX = /steps\s%Q?\{#{STEP_STYLES}(?<step_string>.*)/
-    END_COMPLEX_WITH_STEP_REGEX = /#{STEP_STYLES}(?<step_string>.*)}/
+    SIMPLE_NESTED_STEP_REGEX = /steps\s"#{STEP_STYLES}(?<step_string>.*)"$/
+    SAME_LINE_COMPLEX_STEP_REGEX = /^steps\s%Q?{#{STEP_STYLES}(?<step_string>.*)}$/
+    START_COMPLEX_STEP_REGEX = /^steps\s%Q?\{\s*/
+    END_COMPLEX_STEP_REGEX = /}$/
+    START_COMPLEX_WITH_STEP_REGEX = /steps\s%Q?\{#{STEP_STYLES}(?<step_string>.*)$/
+    END_COMPLEX_WITH_STEP_REGEX = /#{STEP_STYLES}(?<step_string>.*)}$/
     attr_accessor :start_line, :regex, :code, :parameters, :calls, :nested_steps
 
     def initialize(location, raw_code)
@@ -44,26 +44,41 @@ module CukeSniffer
       @code.each do |line|
         regex = nil
         case line
-        when SIMPLE_NESTED_STEP_REGEX
-          regex = SIMPLE_NESTED_STEP_REGEX
-        when SAME_LINE_COMPLEX_STEP_REGEX
-          regex = SAME_LINE_COMPLEX_STEP_REGEX
-        when START_COMPLEX_WITH_STEP_REGEX
-          multi_line_step_flag = true
-          regex = START_COMPLEX_WITH_STEP_REGEX
-        when START_COMPLEX_STEP_REGEX
-          multi_line_step_flag = true
-        when END_COMPLEX_WITH_STEP_REGEX
-          regex = END_COMPLEX_WITH_STEP_REGEX
-          multi_line_step_flag = false
-        when STEP_REGEX
-          regex = STEP_REGEX if multi_line_step_flag
-        when END_COMPLEX_STEP_REGEX
-          multi_line_step_flag = false
-        else
+          when SIMPLE_NESTED_STEP_REGEX
+            regex = SIMPLE_NESTED_STEP_REGEX
+          when SAME_LINE_COMPLEX_STEP_REGEX
+            regex = SAME_LINE_COMPLEX_STEP_REGEX
+          when START_COMPLEX_WITH_STEP_REGEX
+            multi_line_step_flag = true
+            regex = START_COMPLEX_WITH_STEP_REGEX
+          when START_COMPLEX_STEP_REGEX
+            multi_line_step_flag = true
+          when END_COMPLEX_WITH_STEP_REGEX
+            if line =~ /[#]{.*}$/ && multi_line_step_flag
+              regex = STEP_REGEX
+            else
+              regex = END_COMPLEX_WITH_STEP_REGEX
+              multi_line_step_flag = false
+            end
+          when STEP_REGEX
+            regex = STEP_REGEX if multi_line_step_flag
+          when END_COMPLEX_STEP_REGEX
+            multi_line_step_flag = false
+          else
         end
 
         if regex
+          index = 0
+          while line.include?('#{') and index <= line.length
+            index = line.index('#{')
+            replace_string = ""
+            while index <= line.length and line[index - 1] != "}"
+              replace_string << line[index]
+              index += 1
+            end
+            line.gsub!(replace_string, "variable")
+          end
+
           match = regex.match(line)
           nested_step_line = (@start_line + counter)
           @nested_steps[location.gsub(/:\d*/, ":" + nested_step_line.to_s)] = match[:step_string]

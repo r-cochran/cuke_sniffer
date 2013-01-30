@@ -11,5 +11,10 @@ When /^the calculator adds$/ do
 end
 
 Then /^the result is 2$/ do
-  @result.should == 2
+  #@result.should == 2
+  steps "And not so dead step of #{1+1} and #{bananaphone}"
+end
+
+Then /^not so dead step of (.*) and (.*)$/ do |test, test2|
+  #@result.should == 2
 end
