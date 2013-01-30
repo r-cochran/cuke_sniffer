@@ -225,7 +225,8 @@ module CukeSniffer
       @step_definitions.each do |step_definition|
         dead_steps << step_definition if step_definition.calls.empty?
       end
-      dead_steps
+
+      dead_steps.sort_by{|step| step.location}
     end
 
     def sort_by_score(array)
