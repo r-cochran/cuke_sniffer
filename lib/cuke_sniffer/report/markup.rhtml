@@ -21,22 +21,12 @@
         font-family: arial;
     }
 
-    .padded {
-        padding-left: 3%;
-    }
-
     .sections {
         border: 2px solid #90ee90;
     }
 
     .shrink_section {
         display: none;
-    }
-
-    .sub_title {
-        font-weight: bold;
-        font-size: 13pt;
-        padding: 1%;
     }
 
     .scenarios, .steps, {
@@ -73,6 +63,14 @@
     .summary_col {
         width: 20%;
         font-size: 14pt;
+    }
+
+    .major_summary_col {
+        width: 20%;
+        font-size: 14pt;
+        padding:0%;
+        border-bottom: solid lightgreen 3px;
+        padding-bottom: 3%;
     }
 
     span {
@@ -115,17 +113,22 @@
   <br>
   <table style="padding-left: 3%;">
     <tr>
-      <td class="summary_col"></td>
-      <td class="summary_col">Features</td>
-      <td class="summary_col">Scenarios</td>
-      <td class="summary_col">Step Definitions</td>
+      <td class="major_summary_col"></td>
+      <td class="major_summary_col">Features</td>
+      <td class="major_summary_col">Scenarios</td>
+      <td class="major_summary_col">Step Definitions</td>
     </tr>
-    <tr></tr>
     <tr>
-      <td class="summary_col">Count</td>
-      <td class="summary_col"><%= cuke_sniffer.features.count %></td>
-      <td class="summary_col"><%= cuke_sniffer.scenarios.count %></td>
-      <td class="summary_col"><%= cuke_sniffer.step_definitions.count %></td>
+      <td class="summary_col">Total Score</td>
+      <td class="summary_col"><%= feature_results[:total_score] %></td>
+      <td class="summary_col"><%= scenario_results[:total_score] %></td>
+      <td class="summary_col"><%= step_definition_results[:total_score] %></td>
+    </tr>
+    <tr>
+      <td class="major_summary_col">Count</td>
+      <td class="major_summary_col"><%= cuke_sniffer.features.count %></td>
+      <td class="major_summary_col"><%= cuke_sniffer.scenarios.count %></td>
+      <td class="major_summary_col"><%= cuke_sniffer.step_definitions.count %></td>
     </tr>
     <tr>
       <td class="summary_col">Lowest Score</td>
@@ -140,48 +143,80 @@
       <td class="summary_col"><%= step_definition_results[:max] %></td>
     </tr>
     <tr>
-      <td class="summary_col">Average Score</td>
-      <td class="summary_col"><%= feature_results[:average] %></td>
-      <td class="summary_col"><%= scenario_results[:average] %></td>
-      <td class="summary_col"><%= step_definition_results[:average] %></td>
+      <td class="major_summary_col">Average Score</td>
+      <td class="major_summary_col"><%= feature_results[:average] %></td>
+      <td class="major_summary_col"><%= scenario_results[:average] %></td>
+      <td class="major_summary_col"><%= step_definition_results[:average] %></td>
     </tr>
-    <tr></tr>
+    <tr>
+      <td class="summary_col">Threshold</td>
+      <td class="summary_col"><%= feature_results[:threshold] %></td>
+      <td class="summary_col"><%= scenario_results[:threshold] %></td>
+      <td class="summary_col"><%= step_definition_results[:threshold] %></td>
+    </tr>
     <tr>
       <td class="summary_col">Good</td>
-      <td class="summary_col"><%= feature_results[:good] %></td>
-      <td class="summary_col"><%= scenario_results[:good] %></td>
-      <td class="summary_col"><%= step_definition_results[:good] %></td>
+      <td class="summary_col"><%= feature_results[:good].to_f/feature_results[:total].to_f*100 %>%</td>
+      <td class="summary_col"><%= scenario_results[:good].to_f/scenario_results[:total].to_f*100 %>%</td>
+      <td class="summary_col"><%= step_definition_results[:good].to_f/step_definition_results[:total].to_f*100 %>%</td>
     </tr>
     <tr>
       <td class="summary_col">Bad</td>
-      <td class="summary_col"><%= feature_results[:bad] %></td>
-      <td class="summary_col"><%= scenario_results[:bad] %></td>
-      <td class="summary_col"><%= step_definition_results[:bad] %></td>
+      <td class="summary_col"><%= feature_results[:bad].to_f/feature_results[:total].to_f*100 %>%</td>
+      <td class="summary_col"><%= scenario_results[:bad].to_f/scenario_results[:total].to_f*100 %>%</td>
+      <td class="summary_col"><%= step_definition_results[:bad].to_f/step_definition_results[:total].to_f*100 %>%</td>
     </tr>
   </table>
-  <br><br>
-
-  <div style="padding-left:3%;font:bold;font-size:14pt;">Improvement
-    List: <%= cuke_sniffer.summary[:improvement_list].keys.count %></div>
-  <table style="padding-left: 5%;font-size:14pt;">
-    <% cuke_sniffer.summary[:improvement_list].each do |improvement, count| %>
-        <tr>
-          <td><%= count %></td>
-          <td style="width:90%;"><%= improvement %></td>
-        </tr>
-    <% end %>
-  </table>
-  <br>
-
-  <div style="padding-left:3%;font:bold;font-size:14pt;">Dead Steps: <%= cuke_sniffer.get_dead_steps.count %></div>
-  <% cuke_sniffer.get_dead_steps.each do |dead_step| %>
-      <div style="font:14pt;padding-left:5%;padding-bottom: 1%;">
-        <div><%= "/" + dead_step.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex] + "/" %></div>
-        <div style="padding-left:1%"><%= dead_step.location %></div>
-      </div>
-  <% end %>
 </div>
 <br><br>
+
+<div style="float:left;" class="title">
+  <a href=#improvement_list style="color: white;font-style: normal;">
+    <span style="border-left-color:green;cursor: hand;" onclick="toggleById('improvement_list',this)">+ Improvement List</span>
+  </a>
+</div>
+<div class="links" style="float:right"></div>
+<br style="clear:both">
+
+<div class="sections">
+  <div name="improvement_list" class="shrink_section" id="improvement_list">
+    <div style="padding-left:3%;font:bold;font-size:14pt;">Types of
+      improvements: <%= cuke_sniffer.summary[:improvement_list].keys.count %></div>
+    <table style="padding-left: 5%;font-size:14pt;">
+      <% cuke_sniffer.summary[:improvement_list].each do |improvement, count| %>
+          <tr>
+            <td><%= count %></td>
+            <td style="width:90%;"><%= improvement %></td>
+          </tr>
+      <% end %>
+    </table>
+    <br>
+  </div>
+</div>
+<br><br>
+
+<div style="float:left;" class="title">
+  <a href=#dead_steps style="color: white;font-style: normal;">
+    <span style="border-left-color:green;cursor: hand;" onclick="toggleById('dead_steps',this)">+ Dead Steps</span>
+  </a>
+</div>
+<div class="links" style="float:right"></div>
+<br style="clear:both">
+
+<div class="sections">
+  <div name="dead_steps" class="shrink_section" id="dead_steps">
+    <div style="font:bold;padding-left:3%;font:bold;font-size:14pt;">Total Dead
+      Steps: <%= cuke_sniffer.get_dead_steps.count %></div>
+    <% cuke_sniffer.get_dead_steps.each do |dead_step| %>
+        <div style="font:14pt;padding-left:5%;padding-bottom: 1%;">
+          <div><%= "/" + dead_step.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex] + "/" %></div>
+          <div style="padding-left:1%"><%= dead_step.location %></div>
+        </div>
+    <% end %>
+  </div>
+</div>
+<br><br>
+
 
 <div style="float:left;" class="title">
   <a href=#feature_details style="color: white;font-style: normal;">
@@ -195,14 +230,14 @@
   <div name="feature_details" class="shrink_section" id="feature_details">
     <% i=0 %>
     <% cuke_sniffer.features.each do |feature| %>
-        <% next if feature.score == 0 %>
+        <% next if feature.score == 0 and feature.scenarios_score == 0 %>
         <div style="cursor: hand;" onclick="toggle(this,3)" class="feature <%= i%2==0 ? "even" : "odd" %>">
-          <div style="float:left;padding:4px;font-weight:bold;color:red; width:3%"><%= feature.score %></div>
+          <div style="float:left;padding:4px;font-weight:bold;color:red; width:3%"><%= feature.score + feature.scenarios_score %></div>
 
           <div style=" float:left;">
-            <font class="featurename"><%= feature.location[feature.location.rindex("/")..-1] %></font></div>
+            <font class="featurename"><%= feature.name %></font></div>
           <div style="width:60%;padding:4px; float:right">
-            <font class="featurepath"><%= feature.location[0..feature.location.rindex("/")] %></font></div>
+            <font class="featurepath"></font></div>
           <br style="clear:both;">
 
           <div class="scenarios" style="display:none;">
@@ -210,16 +245,16 @@
             <table>
               <tr>
                 <td style="width: 600px;vertical-align:top;">
-                  <b style="text-indent:5px">Feature: <%= feature.name %></b>
+                  <b style="text-indent:5px"><%= feature.location %></b>
                   <br>
                   <b style="text-indent:5px">Scenarios: <%= feature.scenarios.size %></b>
                 </td>
                 <td style="width: 600px;vertical-align:top;">
-                  <% unless feature.feature_rules_hash.empty? %>
+                  <% unless feature.rules_hash.empty? %>
                       <b>Feature Improvements:</b>
 
                       <div style="padding: 1%">
-                        <% feature.feature_rules_hash.each_key do |rule| %>
+                        <% feature.rules_hash.each_key do |rule| %>
                             <%= rule %>
                             <br>
                         <% end %>
@@ -247,7 +282,7 @@
                     <td style="border-top:2px solid lightblue;width: 600px;vertical-align:top;">
                       <b>Score: <%= scenario.score %></b>
                       <br>
-                      <%= scenario.location %>
+                      <b>Line: <%= scenario.start_line %></b>
                       <br>
                       <b>Scenario Improvements:</b>
                       <br>
@@ -306,11 +341,13 @@
               <div style="float:left; width:10%;padding:4px;">&nbsp;</div>
           <% end %>
           <div style="width:30%;padding:4px; float:left;">
-            <font class="featurepath"><%= step_definition.location[step_definition.location.rindex("/")..-1] %></font>
+
           </div>
           <br style="clear:both;">
 
           <div class="steps" style="display:none;">
+            <font class="featurepath"><%= step_definition.location %></font>
+            <br>
             <table>
               <tr>
                 <td style="width: 600px;vertical-align:top;">

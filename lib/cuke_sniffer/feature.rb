@@ -5,12 +5,13 @@ module CukeSniffer
 
     SCENARIO_TITLE_REGEX = /#{COMMENT_REGEX}#{SCENARIO_TITLE_STYLES}(?<name>.*)/
 
-    attr_accessor :background, :scenarios, :feature_score, :feature_rules_hash
+    attr_accessor :background, :scenarios, :scenarios_score
 
     def initialize(file_name)
       super(file_name)
       @scenarios = []
       @feature_rules_hash = {}
+      @scenarios_score = 0
       split_feature(file_name)
       evaluate_score
     end
@@ -67,37 +68,19 @@ module CukeSniffer
       comparison_object.scenarios == scenarios
     end
 
-    def good?
-      @feature_score <= Constants::THRESHOLDS[@class_type]
-    end
-
-    def problem_percentage
-      @feature_score.to_f / Constants::THRESHOLDS[@class_type].to_f
-    end
-
     def evaluate_score
       super
       rule_no_scenarios
       rule_too_many_scenarios
       rule_background_with_no_scenarios
       rule_background_with_one_scenario
-      @feature_score = score
-      @feature_rules_hash = rules_hash.clone
-      include_sub_scores(@background) unless @background.nil?
-      include_scenario_scores
+      get_scenarios_score
     end
 
-    def include_sub_scores(sub_class)
-      @score += sub_class.score
-      sub_class.rules_hash.each_key do |rule_descriptor|
-        rules_hash[rule_descriptor] ||= 0
-        rules_hash[rule_descriptor] += sub_class.rules_hash[rule_descriptor]
-      end
-    end
-
-    def include_scenario_scores
-      scenarios.each do |scenario|
-        include_sub_scores(scenario)
+    def get_scenarios_score
+      @scenarios_score += @background.score unless @background.nil?
+      @scenarios.each do |scenario|
+        @scenarios_score += scenario.score
       end
     end
 

@@ -99,14 +99,16 @@ module CukeSniffer
       step_definitions
     end
 
-    def assess_array(array)
+    def assess_array(array, type)
       min, max, min_file, max_file = nil
       total = 0
       good = 0
       bad = 0
+      total_score = 0
       array.each do |node|
         score = node.score
         @summary[:total_score] += score
+        total_score += score
         node.rules_hash.each_key do |key|
           @summary[:improvement_list][key] ||= 0
           @summary[:improvement_list][key] += node.rules_hash[key]
@@ -122,20 +124,22 @@ module CukeSniffer
       end
       {
           :total => array.count,
+          :total_score => total_score,
           :min => min,
           :min_file => min_file,
           :max => max,
           :max_file => max_file,
           :average => (total.to_f/array.count.to_f).round(2),
+          :threshold => THRESHOLDS[type],
           :good => good,
           :bad => bad,
       }
     end
 
     def assess_score
-      @summary[:features] = assess_array(@features)
-      @summary[:scenarios] = assess_array(@scenarios)
-      @summary[:step_definitions] = assess_array(@step_definitions) unless @step_definitions.empty?
+      @summary[:features] = assess_array(@features, "Feature")
+      @summary[:scenarios] = assess_array(@scenarios, "Scenario")
+      @summary[:step_definitions] = assess_array(@step_definitions, "StepDefinition") unless @step_definitions.empty?
       sort_improvement_list
     end
 
@@ -186,7 +190,7 @@ module CukeSniffer
         feature.scenarios.each do |scenario|
           counter = 1
           scenario.steps.each do |step|
-            location = scenario.location.gsub(/:\d*/, ":#{scenario.start_line + counter}")
+            location = scenario.location.gsub(/:\d*$/, ":#{scenario.start_line + counter}")
             steps[location] = step
             counter += 1
           end

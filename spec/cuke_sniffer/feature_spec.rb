@@ -65,31 +65,10 @@ describe CukeSniffer::Feature do
     feature.scenarios.should == []
   end
 
-  it "should include the scores of a background in a feature" do
-    build_file(["Feature: Feature with background", "", "Background: I am a background", "And I want to be a test"])
-    feature = CukeSniffer::Feature.new(@file_name)
-    feature.rules_hash.include?(SCENARIO_RULES[:invalid_first_step][:phrase]).should be_true
-  end
-
-  it "should have a score and rules hash made up of the feature and its scenarios" do
-    feature = CukeSniffer::Feature.new(@file_name)
-    feature.score = 0
-    feature.rules_hash = {}
-
-    my_scenario = CukeSniffer::Scenario.new("location:1", ["Scenario: Trigger a rule"])
-    my_scenario.score = 1
-    my_scenario.rules_hash = {"Rule Descriptor" => 1}
-    feature.scenarios[0] = my_scenario
-
-    feature.evaluate_score
-    feature.score.should == 1
-    feature.rules_hash.should == {"Rule Descriptor" => 1}
-  end
-
   it "should have access to feature specific rules" do
     build_file(["Feature: ", "", "Scenario: ", "Given blah", "When blam", "Then blammo"])
     feature = CukeSniffer::Feature.new(@file_name)
-    feature.feature_rules_hash.should == {"Feature has no description." => 1}
+    feature.rules_hash.should == {"Feature has no description." => 1}
   end
 
   it "should determine if it is above the feature threshold" do
@@ -115,7 +94,7 @@ describe CukeSniffer::Feature do
     feature = CukeSniffer::Feature.new(@file_name)
     start_threshold = CukeSniffer::Constants::THRESHOLDS["Feature"]
     CukeSniffer::Constants::THRESHOLDS["Feature"] = 2
-    feature.feature_score = 3
+    feature.score = 3
     feature.problem_percentage.should == (3.0/2.0)
     CukeSniffer::Constants::THRESHOLDS["Feature"] = start_threshold
   end
