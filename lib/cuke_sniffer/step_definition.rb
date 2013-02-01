@@ -87,6 +87,15 @@ module CukeSniffer
       end
     end
 
+    def condensed_call_list
+      condensed_list = {}
+      @calls.each{|call, step_string|
+        condensed_list[step_string] ||= []
+        condensed_list[step_string] << call
+      }
+      condensed_list
+    end
+
     def ==(comparison_object)
       super(comparison_object)
       comparison_object.regex == regex

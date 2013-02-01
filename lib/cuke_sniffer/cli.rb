@@ -4,7 +4,7 @@ module CukeSniffer
   class CLI
     include CukeSniffer::Constants
 
-    attr_accessor :features, :scenarios, :step_definitions, :summary
+    attr_accessor :features_location,:step_definitions_location, :features, :scenarios, :step_definitions, :summary
 
     def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd)
       @features_location = features_location
@@ -26,7 +26,6 @@ module CukeSniffer
       end
 
       @scenarios = get_all_scenarios(@features)
-
 
       puts("\nStep Definitions:")
       unless step_definitions_location.nil?
@@ -210,17 +209,8 @@ module CukeSniffer
         print '.'
         calls = steps.find_all { |location, step| step.gsub(STEP_STYLES, "") =~ step_definition.regex }
         calls.each { |call|
-          step_definition.add_call(call[0], call[1])
+          step_definition.add_call(call[0], call[1].gsub(STEP_STYLES, ""))
         }
-      end
-    end
-
-    def update_step_definition(location, step)
-      @step_definitions.each do |step_definition|
-        if step.gsub(STEP_STYLES, "") =~ step_definition.regex
-          step_definition.add_call(location, step)
-          break
-        end
       end
     end
 
@@ -233,10 +223,6 @@ module CukeSniffer
       dead_steps.sort_by{|step| step.location}
     end
 
-    def sort_by_score(array)
-      array.sort_by { |item| item.score }.reverse
-    end
-
     def extract_markup
       markup_location = File.join(File.dirname(__FILE__), 'report', 'markup.rhtml')
       markup = ""
@@ -247,8 +233,8 @@ module CukeSniffer
     end
 
     def output_html(file_name = "cuke_sniffer_results.html", cuke_sniffer = self)
-      @features = sort_by_score(@features)
-      @step_definitions = sort_by_score(@step_definitions)
+      @features = @features.sort_by { |feature| feature.total_score }.reverse
+      @step_definitions = @step_definitions.sort_by { |step_definition| step_definition.score }.reverse
 
       markup_erb = ERB.new extract_markup
       output = markup_erb.result(binding)

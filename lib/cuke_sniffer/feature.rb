@@ -5,13 +5,14 @@ module CukeSniffer
 
     SCENARIO_TITLE_REGEX = /#{COMMENT_REGEX}#{SCENARIO_TITLE_STYLES}(?<name>.*)/
 
-    attr_accessor :background, :scenarios, :scenarios_score
+    attr_accessor :background, :scenarios, :scenarios_score, :total_score
 
     def initialize(file_name)
       super(file_name)
       @scenarios = []
       @feature_rules_hash = {}
       @scenarios_score = 0
+      @total_score = 0
       split_feature(file_name)
       evaluate_score
     end
@@ -75,6 +76,7 @@ module CukeSniffer
       rule_background_with_no_scenarios
       rule_background_with_one_scenario
       get_scenarios_score
+      @total_score = score + @scenarios_score
     end
 
     def get_scenarios_score

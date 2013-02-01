@@ -68,7 +68,7 @@
     .major_summary_col {
         width: 20%;
         font-size: 14pt;
-        padding:0%;
+        padding: 0%;
         border-bottom: solid lightgreen 3px;
         padding-bottom: 3%;
     }
@@ -156,15 +156,15 @@
     </tr>
     <tr>
       <td class="summary_col">Good</td>
-      <td class="summary_col"><%= feature_results[:good].to_f/feature_results[:total].to_f*100 %>%</td>
-      <td class="summary_col"><%= scenario_results[:good].to_f/scenario_results[:total].to_f*100 %>%</td>
-      <td class="summary_col"><%= step_definition_results[:good].to_f/step_definition_results[:total].to_f*100 %>%</td>
+      <td class="summary_col"><%= (feature_results[:good].to_f/feature_results[:total].to_f*100).round(2) %>%</td>
+      <td class="summary_col"><%= (scenario_results[:good].to_f/scenario_results[:total].to_f*100).round(2) %>%</td>
+      <td class="summary_col"><%= (step_definition_results[:good].to_f/step_definition_results[:total].to_f*100).round(2) %>%</td>
     </tr>
     <tr>
       <td class="summary_col">Bad</td>
-      <td class="summary_col"><%= feature_results[:bad].to_f/feature_results[:total].to_f*100 %>%</td>
-      <td class="summary_col"><%= scenario_results[:bad].to_f/scenario_results[:total].to_f*100 %>%</td>
-      <td class="summary_col"><%= step_definition_results[:bad].to_f/step_definition_results[:total].to_f*100 %>%</td>
+      <td class="summary_col"><%= (feature_results[:bad].to_f/feature_results[:total].to_f*100).round(2) %>%</td>
+      <td class="summary_col"><%= (scenario_results[:bad].to_f/scenario_results[:total].to_f*100).round(2) %>%</td>
+      <td class="summary_col"><%= (step_definition_results[:bad].to_f/step_definition_results[:total].to_f*100).round(2) %>%</td>
     </tr>
   </table>
 </div>
@@ -185,8 +185,8 @@
     <table style="padding-left: 5%;font-size:14pt;">
       <% cuke_sniffer.summary[:improvement_list].each do |improvement, count| %>
           <tr>
-            <td><%= count %></td>
-            <td style="width:90%;"><%= improvement %></td>
+            <td style="width: 20px"><%= count %></td>
+            <td style="width: 400px"><%= improvement %></td>
           </tr>
       <% end %>
     </table>
@@ -241,15 +241,15 @@
           <br style="clear:both;">
 
           <div class="scenarios" style="display:none;">
-
+            <b style="text-indent:5px"><%= feature.location.gsub(cuke_sniffer.features_location, "") %></b>
             <table>
               <tr>
                 <td style="width: 600px;vertical-align:top;">
-                  <b style="text-indent:5px"><%= feature.location %></b>
-                  <br>
                   <b style="text-indent:5px">Scenarios: <%= feature.scenarios.size %></b>
                 </td>
                 <td style="width: 600px;vertical-align:top;">
+                  <b style="text-indent:5px">Score: <%= feature.score %></b>
+                  <br>
                   <% unless feature.rules_hash.empty? %>
                       <b>Feature Improvements:</b>
 
@@ -346,15 +346,19 @@
           <br style="clear:both;">
 
           <div class="steps" style="display:none;">
-            <font class="featurepath"><%= step_definition.location %></font>
+            <b class="featurepath"><%= step_definition.location.gsub(cuke_sniffer.step_definitions_location, "") %></b>
             <br>
             <table>
               <tr>
                 <td style="width: 600px;vertical-align:top;">
                   <b>Calls: <%= step_definition.calls.size %></b>
-                  <% step_definition.calls.each_key do |call| %>
-                      <div style="text-indent: 15px;"><%= step_definition.calls[call] %></div>
-                      <div style="text-indent: 30px;"><%= call %></div>
+                  <% calls = step_definition.condensed_call_list %>
+                  <% calls.each_key do |step_string| %>
+                      <div style="text-indent: 15px;"><%= step_string %></div>
+                      <% calls[step_string].each do |call| %>
+                          <div style="text-indent: 30px;"><%= call %></div>
+                      <% end %>
+                      <br>
                   <% end %>
                 </td>
                 <td style="width: 600px;vertical-align:top;">
