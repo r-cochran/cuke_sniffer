@@ -34,7 +34,7 @@ describe CukeSniffer::Feature do
   end
 
   it "should  parse Features files where there is no space between the 'Feature:' declaration and its description" do
-    build_file(%w(CukeSniffer::Feature:Name))
+    build_file(%w(Feature:Name))
     feature = CukeSniffer::Feature.new(@file_name)
     feature.name.should == "Name"
   end

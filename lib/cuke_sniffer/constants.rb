@@ -2,7 +2,7 @@ module CukeSniffer
   module Constants
     FILE_IGNORE_LIST = %w(. .. .svn)
     DATE_REGEX = /(?<date>\d{2}\/\d{2}\/\d{4})/
-    COMMENT_REGEX = /#?.*/
+    COMMENT_REGEX = /#?\s*/
 
     TAG_REGEX = /(?<tag>@\S*)/
 

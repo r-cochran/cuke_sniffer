@@ -271,8 +271,6 @@ describe CukeSniffer::Scenario do
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = start_threshold
   end
 
-
-
 end
 
 describe "ScenarioRules" do

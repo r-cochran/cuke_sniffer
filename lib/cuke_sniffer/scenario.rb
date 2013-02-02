@@ -33,7 +33,7 @@ module CukeSniffer
       end
 
       until index >= scenario.length or scenario[index].include?("Examples:")
-        if scenario[index] =~ /\|.*\|/
+        if scenario[index] =~ /^\|.*\|$/
           step = scenario[index - 1]
           @inline_tables[step] = []
           until index >= scenario.length or scenario[index] =~ STEP_REGEX
