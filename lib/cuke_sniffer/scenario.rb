@@ -33,7 +33,7 @@ module CukeSniffer
       end
 
       until index >= scenario.length or scenario[index].include?("Examples:")
-        if scenario[index] =~ /^\|.*\|$/
+        if scenario[index] =~ /^\|.*\|/
           step = scenario[index - 1]
           @inline_tables[step] = []
           until index >= scenario.length or scenario[index] =~ STEP_REGEX
@@ -64,6 +64,7 @@ module CukeSniffer
     def get_step_order
       order = []
       @steps.each { |line|
+        next if is_comment?(line)
         match = line.match(STEP_REGEX)
         order << match[:style] unless match.nil?
       }
@@ -124,6 +125,7 @@ module CukeSniffer
     def rule_implementation_words
       rule = SHARED_RULES[:implementation_word]
       @steps.each do |step|
+        next if is_comment?(step)
         rule[:words].each do |word|
           store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, word)) if step.include?(word)
         end

@@ -158,13 +158,17 @@
       <td class="summary_col">Good</td>
       <td class="summary_col"><%= (feature_results[:good].to_f/feature_results[:total].to_f*100).round(2) %>%</td>
       <td class="summary_col"><%= (scenario_results[:good].to_f/scenario_results[:total].to_f*100).round(2) %>%</td>
-      <td class="summary_col"><%= (step_definition_results[:good].to_f/step_definition_results[:total].to_f*100).round(2) %>%</td>
+      <td class="summary_col"><%= (step_definition_results[:good].to_f/step_definition_results[:total].to_f*100).round(2) %>
+        %
+      </td>
     </tr>
     <tr>
       <td class="summary_col">Bad</td>
       <td class="summary_col"><%= (feature_results[:bad].to_f/feature_results[:total].to_f*100).round(2) %>%</td>
       <td class="summary_col"><%= (scenario_results[:bad].to_f/scenario_results[:total].to_f*100).round(2) %>%</td>
-      <td class="summary_col"><%= (step_definition_results[:bad].to_f/step_definition_results[:total].to_f*100).round(2) %>%</td>
+      <td class="summary_col"><%= (step_definition_results[:bad].to_f/step_definition_results[:total].to_f*100).round(2) %>
+        %
+      </td>
     </tr>
   </table>
 </div>
@@ -338,7 +342,7 @@
           <% if step_definition.calls.empty? %>
               <div style="float:left; width:10%;padding:4px;"><span class="rule"><b>Dead step!</b></span></div>
           <% else %>
-              <div style="float:left; width:10%;padding:4px;">&nbsp;</div>
+              <div style="float:left; width:10%;padding:4px;">Calls: <%= step_definition.calls.size %></div>
           <% end %>
           <div style="width:30%;padding:4px; float:left;">
 
@@ -351,14 +355,15 @@
             <table>
               <tr>
                 <td style="width: 600px;vertical-align:top;">
-                  <b>Calls: <%= step_definition.calls.size %></b>
-                  <% calls = step_definition.condensed_call_list %>
-                  <% calls.each_key do |step_string| %>
-                      <div style="text-indent: 15px;"><%= step_string %></div>
-                      <% calls[step_string].each do |call| %>
-                          <div style="text-indent: 30px;"><%= call %></div>
+                  <% unless step_definition.parameters.empty? %>
+                      <% calls = step_definition.condensed_call_list %>
+                      <% calls.each_key do |step_string| %>
+                          <div style="text-indent: 15px;"><%= step_string %></div>
+                          <% calls[step_string].each do |call| %>
+                              <div style="text-indent: 30px;"><%= call %></div>
+                          <% end %>
+                          <br>
                       <% end %>
-                      <br>
                   <% end %>
                 </td>
                 <td style="width: 600px;vertical-align:top;">

@@ -271,6 +271,20 @@ describe CukeSniffer::Scenario do
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = start_threshold
   end
 
+  it "should not have a rule ran against a commented step besides the normal rule" do
+    raw_code = [
+        "Scenario: Above scenario threshold",
+        "Given blarg",
+        "#* button button button",
+        "When I do a behavior inducing action",
+        "Then that action is verified"
+    ]
+    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
+    rule = CukeSniffer::RuleConfig::SCENARIO_RULES[:commented_step]
+    scenario.score.should == rule[:score]
+    scenario.rules_hash.should == {rule[:phrase] => 1}
+  end
+
 end
 
 describe "ScenarioRules" do
