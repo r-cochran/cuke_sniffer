@@ -63,15 +63,20 @@ Example Output
         (1)Feature has numbers in the description.
 ----        
 Summary
+-----
 ![summary](http://i.imgur.com/G7GM1gF.png)
-----
+-----
+
 Expanded
+-----
 ![expand_improvement_list](http://i.imgur.com/SiVAVd1.png)
 ![expand_dead_steps](http://i.imgur.com/YNfLORb.png)
 ![expand_features](http://i.imgur.com/D3C7ss7.png)
 ![expand_step_definitions](http://i.imgur.com/md6aKIG.png)
 ----
+
 Expanded for more details
+-----
 ![expand_details_features](http://i.imgur.com/tZtbA8R.png)
 ![expand_details_step_definitions](http://i.imgur.com/O1aBepe.png)
 ----
