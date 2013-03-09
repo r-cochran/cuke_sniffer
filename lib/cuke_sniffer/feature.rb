@@ -13,17 +13,24 @@ module CukeSniffer
       @feature_rules_hash = {}
       @scenarios_score = 0
       @total_score = 0
-      split_feature(file_name)
-      evaluate_score
+      feature_lines = extract_feature_from_file(file_name)
+      if feature_lines == []
+        store_rule(FEATURE_RULES[:empty_feature])
+      else
+        split_feature(file_name, feature_lines)
+        evaluate_score
+      end
     end
 
-    def split_feature(file_name)
+    def extract_feature_from_file(file_name)
       feature_lines = []
-
       feature_file = File.open(file_name)
       feature_file.each_line { |line| feature_lines << line }
       feature_file.close
+      feature_lines
+    end
 
+    def split_feature(file_name, feature_lines)
       index = 0
       until feature_lines[index].match /Feature:\s*(?<name>.*)/
         update_tag_list(feature_lines[index])

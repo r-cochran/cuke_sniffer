@@ -20,6 +20,11 @@ describe CukeSniffer::Feature do
     file.close
   end
 
+  it "should be able to handle an empty feature file" do
+    build_file([])
+    CukeSniffer::Feature.new(@file_name)
+  end
+
   it "should parse a feature file and gather the feature name" do
     build_file(["Feature: My features are in this"])
     feature = CukeSniffer::Feature.new(@file_name)
@@ -123,6 +128,13 @@ describe "FeatureRules" do
     feature.rules_hash.should include phrase
     feature.rules_hash[phrase].should > 0
     feature.score.should >= rule[:score]
+  end
+
+  it "should punish Features with no content" do
+    rule = FEATURE_RULES[:empty_feature]
+    build_file([])
+    feature = CukeSniffer::Feature.new(@file_name)
+    validate_rule(feature, rule)
   end
 
   it "should punish Features with too many tags" do
