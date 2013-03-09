@@ -14,12 +14,19 @@ Installation
 
 Usage
 -----
+Note for JRuby: Make sure you have your
+
+    JRUBY_OPTS=--1.9 
+
 Command Line
 
     cd <your_features_folder>
     cuke_sniffer
     
-    
+JRuby
+
+    cuke_sniffer.rb
+        
 Or,
 
     cuke_sniffer <your_features_folder> <your_step_definitions_folder>
