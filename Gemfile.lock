@@ -4,7 +4,7 @@ PATH
     cuke_sniffer (0.0.2)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     builder (3.1.4)
     cucumber (1.2.1)

@@ -70,6 +70,27 @@ describe CukeSniffer do
     cuke_sniffer.summary[:improvement_list].should_not == {}
   end
 
+  it "should return all step calls in a problem from a feature including backgrounds and scenarios" do
+    feature = [
+        "Feature: I am a feature",
+        "Background: I am a background",
+        "Given I am a background",
+        "",
+        "Scenario: I am a scenario",
+        "When I do an action",
+        "Then that action is verified",
+    ]
+
+    file_name = "my_feature.feature"
+    file = File.open(file_name, 'w')
+    feature.each{|line| file.puts line}
+    file.close
+
+    cuke_sniffer = CukeSniffer::CLI.new(file_name)
+    cuke_sniffer.get_all_steps.values.should == ["Given I am a background", "When I do an action", "Then that action is verified"]
+    File.delete(file_name)
+  end
+
   it "should catalog all calls a scenario and nested step definition calls" do
     cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
     scenario_block = [

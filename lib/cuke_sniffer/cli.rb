@@ -183,16 +183,27 @@ module CukeSniffer
       output
     end
 
+    def extract_steps_hash(scenario)
+      steps_hash = {}
+      counter = 1
+      scenario.steps.each do |step|
+        location = scenario.location.gsub(/:\d*$/, ":#{scenario.start_line + counter}")
+        steps_hash[location] = step
+        counter += 1
+      end
+      steps_hash
+    end
+
     def get_all_steps
       steps = {}
       @features.each do |feature|
+        unless feature.background.nil?
+          background_steps = extract_steps_hash(feature.background)
+          background_steps.each_key{|key| steps[key] = background_steps[key]}
+        end
         feature.scenarios.each do |scenario|
-          counter = 1
-          scenario.steps.each do |step|
-            location = scenario.location.gsub(/:\d*$/, ":#{scenario.start_line + counter}")
-            steps[location] = step
-            counter += 1
-          end
+          scenario_steps = extract_steps_hash(scenario)
+          scenario_steps.each_key{|key| steps[key] = scenario_steps[key]}
         end
       end
       @step_definitions.each do |definition|
