@@ -209,4 +209,13 @@ describe CukeSniffer do
     CukeSniffer::Constants::THRESHOLDS["Project"] = start_threshold
   end
 
+  it "should generate a well formed xml of the content by respectable sections" do
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
+    file_name = "my_xml.xml"
+
+    cuke_sniffer.output_xml(file_name)
+    File.exists?(file_name)
+    #file.delete()
+
+  end
 end

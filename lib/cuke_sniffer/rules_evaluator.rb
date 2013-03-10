@@ -1,6 +1,9 @@
+require 'roxml'
 module CukeSniffer
   class RulesEvaluator
-    attr_accessor :location, :score, :rules_hash
+    include ROXML
+    xml_accessor :score, :location
+    xml_accessor :rules_hash, :as => {:key => "phrase", :value => "score"}, :in => "rules", :from => "rule"
 
     def initialize(location)
       @location = location

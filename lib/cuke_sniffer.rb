@@ -1,3 +1,5 @@
+require 'nokogiri'
+require 'roxml'
 
 require 'cuke_sniffer/constants'
 require 'cuke_sniffer/rule_config'

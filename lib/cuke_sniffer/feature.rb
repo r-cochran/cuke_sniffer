@@ -2,10 +2,13 @@ module CukeSniffer
   class Feature < FeatureRulesEvaluator
     include CukeSniffer::Constants
     include CukeSniffer::RuleConfig
+    include ROXML
+
+    xml_accessor :scenarios, :as => [CukeSniffer::FeatureRulesEvaluator], :in => "scenarios"
 
     SCENARIO_TITLE_REGEX = /#{COMMENT_REGEX}#{SCENARIO_TITLE_STYLES}(?<name>.*)/
 
-    attr_accessor :background, :scenarios, :scenarios_score, :total_score
+    attr_accessor :background, :scenarios, :scenarios_score,:total_score
 
     def initialize(file_name)
       super(file_name)

@@ -1,10 +1,16 @@
 require 'erb'
+require 'roxml'
 
 module CukeSniffer
   class CLI
     include CukeSniffer::Constants
+    include ROXML
 
-    attr_accessor :features_location,:step_definitions_location, :features, :scenarios, :step_definitions, :summary
+    xml_name "cuke_sniffer"
+    xml_accessor :features, :as => [CukeSniffer::Feature], :in => "features"
+    xml_accessor :step_definitions, :as =>[CukeSniffer::StepDefinition], :in => "step_definitions"
+
+    attr_accessor :summary, :features_location,:step_definitions_location, :scenarios
 
     def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd)
       @features_location = features_location
@@ -252,6 +258,15 @@ module CukeSniffer
       File.open(file_name, 'w') do |f|
         f.write(output)
       end
+    end
+
+    def output_xml(file_name = "cuke_sniffer.xml")
+      doc = Nokogiri::XML::Document.new
+      doc.root = self.to_xml
+      open(file_name, "w") do |file|
+        file << doc.serialize
+      end
+
     end
   end
 end

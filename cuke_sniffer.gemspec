@@ -18,5 +18,6 @@ Gem::Specification.new do |s|
              "bin/cuke_sniffer.rb"
              ]
   s.homepage = 'https://github.com/r-cochran/cuke_sniffer'
+  s.add_runtime_dependency 'roxml'
   s.executables = ["cuke_sniffer.rb"]
 end

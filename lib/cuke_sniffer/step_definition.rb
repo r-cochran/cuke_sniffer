@@ -1,7 +1,15 @@
+require 'roxml'
 module CukeSniffer
   class StepDefinition < RulesEvaluator
     include CukeSniffer::Constants
     include CukeSniffer::RuleConfig
+
+    xml_accessor :start_line
+    xml_accessor :regex
+    xml_accessor :parameters, :as => [], :in => "parameters"
+    xml_accessor :nested_steps, :as => {:key => 'location', :value => 'call'}, :in => "nested_steps"
+    xml_accessor :calls, :as => {:key => 'location', :value => 'call'}, :in => "calls"
+    xml_accessor :code, :as => [], :in => "code"
 
     SIMPLE_NESTED_STEP_REGEX = /steps\s"#{STEP_STYLES}(?<step_string>.*)"$/
     SAME_LINE_COMPLEX_STEP_REGEX = /^steps\s%Q?{#{STEP_STYLES}(?<step_string>.*)}$/
@@ -9,7 +17,6 @@ module CukeSniffer
     END_COMPLEX_STEP_REGEX = /}$/
     START_COMPLEX_WITH_STEP_REGEX = /steps\s%Q?\{#{STEP_STYLES}(?<step_string>.*)$/
     END_COMPLEX_WITH_STEP_REGEX = /#{STEP_STYLES}(?<step_string>.*)}$/
-    attr_accessor :start_line, :regex, :code, :parameters, :calls, :nested_steps
 
     def initialize(location, raw_code)
       super(location)
@@ -17,7 +24,7 @@ module CukeSniffer
       @parameters = []
       @calls = {}
       @nested_steps = {}
-      @start_line = location.match(/:(?<line>\d*)/)[:line].to_i
+      @start_line = location.match(/:(?<line>\d*)$/)[:line].to_i
 
       end_match_index = (raw_code.size - 1) - raw_code.reverse.index("end")
       @code = raw_code[1...end_match_index]

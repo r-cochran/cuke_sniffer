@@ -1,12 +1,13 @@
-require 'cuke_sniffer/constants'
-require 'cuke_sniffer/rule_config'
-
 module CukeSniffer
   class Scenario < FeatureRulesEvaluator
     include CukeSniffer::Constants
     include CukeSniffer::RuleConfig
-    
-    attr_accessor :start_line, :type, :steps, :inline_tables, :examples_table
+
+    xml_accessor :start_line
+    xml_accessor :steps, :as => [], :in => "steps"
+    xml_accessor :examples_table, :as => [], :in => "examples"
+
+    attr_accessor :type, :inline_tables
 
     def initialize(location, scenario)
       super(location)
