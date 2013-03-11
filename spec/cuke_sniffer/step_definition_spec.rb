@@ -255,4 +255,52 @@ describe "StepDefinitionRules" do
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     validate_rule(step_definition, STEP_DEFINITION_RULES[:commented_code])
   end
+
+  it "should punish each instance of lazy debugging (puts with single quotes)" do
+    raw_code = ["Given /^step with comments$/ do",
+                "puts 'debug statement'",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    validate_rule(step_definition, STEP_DEFINITION_RULES[:lazy_debugging])
+  end
+
+  it "should punish each instance of lazy debugging (puts with double quotes)" do
+    raw_code = ["Given /^step with comments$/ do",
+                "puts \"debug statement\"",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    validate_rule(step_definition, STEP_DEFINITION_RULES[:lazy_debugging])
+  end
+
+  it "should punish each instance of lazy debugging (puts with literals)" do
+    raw_code = ["Given /^step with comments$/ do",
+                "puts %{debug statement}",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    validate_rule(step_definition, STEP_DEFINITION_RULES[:lazy_debugging])
+  end
+
+  it "should punish each instance of lazy debugging (p with single quotes)" do
+    raw_code = ["Given /^step with comments$/ do",
+                "p 'debug statement'",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    validate_rule(step_definition, STEP_DEFINITION_RULES[:lazy_debugging])
+  end
+
+  it "should punish each instance of lazy debugging (p with double quotes)" do
+    raw_code = ["Given /^step with comments$/ do",
+                "p \"debug statement\"",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    validate_rule(step_definition, STEP_DEFINITION_RULES[:lazy_debugging])
+  end
+
+  it "should punish each instance of lazy debugging (p with literal)" do
+    raw_code = ["Given /^step with comments$/ do",
+                "p %{debug statement}",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    validate_rule(step_definition, STEP_DEFINITION_RULES[:lazy_debugging])
+  end
 end

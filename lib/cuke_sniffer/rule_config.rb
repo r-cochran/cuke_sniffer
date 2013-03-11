@@ -168,6 +168,11 @@ module CukeSniffer
             :phrase => "Commented code in Step Definition.",
             :score => INFO,
         },
+        :lazy_debugging => {
+            :enabled => true,
+            :phrase => "Lazy Debugging through puts, p, or print",
+            :score => WARNING,
+        },
     }
 
   end

@@ -119,6 +119,14 @@ module CukeSniffer
       rule_nested_steps
       rule_recursive_nested_step
       rule_commented_code
+      rule_lazy_debugging
+    end
+
+    def rule_lazy_debugging
+      code.each do |line|
+        next if is_comment?(line)
+        store_rule(STEP_DEFINITION_RULES[:lazy_debugging]) if line.strip =~ /^(p|puts)( |\()('|"|%(q|Q)?\{)/
+      end
     end
 
     def rule_no_code
