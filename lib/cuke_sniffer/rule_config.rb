@@ -129,6 +129,11 @@ module CukeSniffer
             :phrase => "No steps in Scenario.",
             :score => ERROR,
         },
+        :one_word_step => {
+            :enabled => true,
+            :phrase => "Step that is only one word long.",
+            :score => ERROR,
+        }
     }
 
     STEP_DEFINITION_RULES = {

@@ -280,9 +280,10 @@ describe CukeSniffer::Scenario do
         "Then that action is verified"
     ]
     scenario = CukeSniffer::Scenario.new("location:1", raw_code)
-    rule = CukeSniffer::RuleConfig::SCENARIO_RULES[:commented_step]
-    scenario.score.should == rule[:score]
-    scenario.rules_hash.should == {rule[:phrase] => 1}
+    comment_rule = CukeSniffer::RuleConfig::SCENARIO_RULES[:commented_step]
+    asterisk_rule = CukeSniffer::RuleConfig::SCENARIO_RULES[:asterisk_step]
+    scenario.rules_hash.keys.include?(comment_rule[:phrase]).should be_true
+    scenario.rules_hash.keys.include?(asterisk_rule[:phrase]).should be_false
   end
 
 end
@@ -555,5 +556,24 @@ describe "ScenarioRules" do
     ]
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, SCENARIO_RULES[:date_used])
+  end
+
+  it "should punish Scenario steps with only one word." do
+    scenario_block = [
+        "Scenario: Step with one word",
+        "Given word",
+    ]
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    validate_rule(scenario, SCENARIO_RULES[:one_word_step])
+  end
+
+  it "should punish Scenarios with multiple steps with only one word." do
+    scenario_block = [
+        "Scenario: Step with one word",
+        "Given word",
+        "When nope",
+    ]
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    scenario.rules_hash[SCENARIO_RULES[:one_word_step][:phrase]].should == 2
   end
 end

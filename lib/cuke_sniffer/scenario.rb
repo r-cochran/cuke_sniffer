@@ -82,7 +82,14 @@ module CukeSniffer
       rule_commented_step
       rule_implementation_words
       rule_date_used_in_step
+      rule_one_word_step
       evaluate_outline_scores if type == "Scenario Outline"
+    end
+
+    def rule_one_word_step
+      @steps.each do |step|
+        store_rule(SCENARIO_RULES[:one_word_step]) if step.split.count == 2
+      end
     end
 
     def evaluate_outline_scores
