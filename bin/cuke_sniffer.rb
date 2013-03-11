@@ -6,8 +6,9 @@ Calling CukeSniffer with no arguments will run it against the current directory.
 Other Options for Running include:
   <feature_file_path>, <step_def_file_path> : Runs CukeSniffer against the
                                               specified paths.
-  -o, --out html (name)                     : Runs CukeSniffer then outputs an
-                                              html file in the current
+  -o, --out <type> (name)                   : Where <type> is 'html' or 'xml'.
+                                              Runs CukeSniffer then outputs an
+                                              html/xml file in the current
                                               directory (with optional name).
   -h, --help                                : You get this lovely document."
 
@@ -40,6 +41,14 @@ if ARGV.include? "--out" or ARGV.include? "-o"
       else
         file_name = file_name + ".html" unless file_name =~ /\.html$/
         cuke_sniffer.output_html(file_name)
+      end
+    when "xml"
+      file_name = ARGV[index + 2]
+      if file_name.nil?
+        cuke_sniffer.output_xml
+      else
+        file_name = file_name + ".xml" unless file_name =~ /\.xml$/
+        cuke_sniffer.output_xml(file_name)
       end
     else
       print_results(cuke_sniffer)
