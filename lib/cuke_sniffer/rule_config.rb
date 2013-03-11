@@ -133,7 +133,12 @@ module CukeSniffer
             :enabled => true,
             :phrase => "Step that is only one word long.",
             :score => ERROR,
-        }
+        },
+        :multiple_given_when_then => {
+            :enabled => true,
+            :phrase => "Given/When/Then used multiple times in the same scenario.",
+            :score => WARNING,
+        },
     }
 
     STEP_DEFINITION_RULES = {

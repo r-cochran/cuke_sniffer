@@ -576,4 +576,34 @@ describe "ScenarioRules" do
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.rules_hash[SCENARIO_RULES[:one_word_step][:phrase]].should == 2
   end
+
+  it "should punish Scenarios that use Given more than once." do
+    scenario_block = [
+        "Scenario: Multiple Givens",
+        "Given I am doing setup",
+        "Given I am doing more setup",
+    ]
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    validate_rule(scenario, SCENARIO_RULES[:multiple_given_when_then])
+  end
+
+  it "should punish Scenarios that use When more than once." do
+    scenario_block = [
+        "Scenario: Multiple Givens",
+        "When I am doing setup",
+        "When I am doing more setup",
+    ]
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    validate_rule(scenario, SCENARIO_RULES[:multiple_given_when_then])
+  end
+
+  it "should punish Scenarios that use Then more than once." do
+    scenario_block = [
+        "Scenario: Multiple Givens",
+        "Then I am doing setup",
+        "Then I am doing more setup",
+    ]
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    validate_rule(scenario, SCENARIO_RULES[:multiple_given_when_then])
+  end
 end

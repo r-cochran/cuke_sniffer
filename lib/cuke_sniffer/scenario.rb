@@ -83,7 +83,13 @@ module CukeSniffer
       rule_implementation_words
       rule_date_used_in_step
       rule_one_word_step
+      rule_multiple_given_when_then
       evaluate_outline_scores if type == "Scenario Outline"
+    end
+
+    def rule_multiple_given_when_then
+      step_order = get_step_order
+      %w(Given When Then).each { |type| store_rule(SCENARIO_RULES[:multiple_given_when_then]) if step_order.count(type) > 1 }
     end
 
     def rule_one_word_step
