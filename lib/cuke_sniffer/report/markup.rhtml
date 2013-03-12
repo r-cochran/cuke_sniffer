@@ -329,7 +329,7 @@
     <% i=0 %>
     <% cuke_sniffer.step_definitions.each do |step_definition| %>
         <div style="cursor: hand;" onclick="toggle(this,4)" class="feature <%= i%2==0 ? "even" : "odd" %>">
-          <% next if step_definition.score <= 0 and !step_definition.calls.empty? %>
+          <% next if step_definition.score <= 0 or step_definition.calls.empty? %>
           <div style="float:left;padding:4px;font-weight:bold;color:red;"><%= step_definition.score %></div>
           <div style="width:55%;padding:4px; float:left;">
 
