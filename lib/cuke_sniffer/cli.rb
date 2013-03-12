@@ -6,7 +6,21 @@ module CukeSniffer
     include CukeSniffer::Constants
     include ROXML
 
+    class SummaryNode
+      include ROXML
+      xml_accessor :score
+      xml_accessor :count
+      xml_accessor :average
+      xml_accessor :good
+      xml_accessor :bad
+      xml_accessor :threshold
+    end
+
     xml_name "cuke_sniffer"
+    xml_accessor :features_summary, :as => SummaryNode
+    xml_accessor :scenarios_summary, :as => SummaryNode
+    xml_accessor :step_definitions_summary, :as => SummaryNode
+    xml_accessor :improvement_list, :as => {:key => "rule", :value => "total"}, :in =>  "improvement_list", :from => "improvement"
     xml_accessor :features, :as => [CukeSniffer::Feature], :in => "features"
     xml_accessor :step_definitions, :as => [CukeSniffer::StepDefinition], :in => "step_definitions"
 
@@ -56,6 +70,21 @@ module CukeSniffer
       catalog_step_calls
       puts "\nAssessing Score: "
       assess_score
+      @improvement_list = @summary[:improvement_list]
+      @features_summary = load_summary_data(@summary[:features])
+      @scenarios_summary = load_summary_data(@summary[:scenarios])
+      @step_definitions_summary = load_summary_data(@summary[:step_definitions])
+    end
+
+    def load_summary_data(summary_hash)
+      summary_node = SummaryNode.new
+      summary_node.count = summary_hash[:total]
+      summary_node.score = summary_hash[:total_score]
+      summary_node.average = summary_hash[:average]
+      summary_node.threshold = summary_hash[:threshold]
+      summary_node.good = summary_hash[:good]
+      summary_node.bad = summary_hash[:bad]
+      summary_node
     end
 
     def good?
