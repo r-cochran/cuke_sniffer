@@ -8,9 +8,9 @@ module CukeSniffer
 
     xml_name "cuke_sniffer"
     xml_accessor :features, :as => [CukeSniffer::Feature], :in => "features"
-    xml_accessor :step_definitions, :as =>[CukeSniffer::StepDefinition], :in => "step_definitions"
+    xml_accessor :step_definitions, :as => [CukeSniffer::StepDefinition], :in => "step_definitions"
 
-    attr_accessor :summary, :features_location,:step_definitions_location, :scenarios
+    attr_accessor :summary, :features_location, :step_definitions_location, :scenarios
 
     def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd)
       @features_location = features_location
@@ -205,11 +205,11 @@ module CukeSniffer
       @features.each do |feature|
         unless feature.background.nil?
           background_steps = extract_steps_hash(feature.background)
-          background_steps.each_key{|key| steps[key] = background_steps[key]}
+          background_steps.each_key { |key| steps[key] = background_steps[key] }
         end
         feature.scenarios.each do |scenario|
           scenario_steps = extract_steps_hash(scenario)
-          scenario_steps.each_key{|key| steps[key] = scenario_steps[key]}
+          scenario_steps.each_key { |key| steps[key] = scenario_steps[key] }
         end
       end
       @step_definitions.each do |definition|
@@ -232,12 +232,25 @@ module CukeSniffer
     end
 
     def get_dead_steps
-      dead_steps = []
+      dead_steps_hash = {}
       @step_definitions.each do |step_definition|
-        dead_steps << step_definition if step_definition.calls.empty?
+        location_match = step_definition.location.match(/(?<file>.*).rb:(?<line>\d+)/)
+        file_name = location_match[:file]
+        regex = step_definition.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex]
+        dead_steps_hash[file_name] ||= []
+        dead_steps_hash[file_name] << "#{location_match[:line]}: /#{regex}/" if step_definition.calls.empty?
       end
-
-      dead_steps.sort_by{|step| step.location}
+      total = 0
+      dead_steps_hash.each_key do |key|
+        unless dead_steps_hash[key] == []
+          total += dead_steps_hash[key].size
+          dead_steps_hash[key].sort!
+        else
+          dead_steps_hash.delete(key)
+        end
+      end
+      dead_steps_hash[:total] = total
+      dead_steps_hash
     end
 
     def extract_markup

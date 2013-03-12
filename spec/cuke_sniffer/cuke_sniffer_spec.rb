@@ -128,6 +128,7 @@ describe CukeSniffer do
 
     cuke_sniffer = CukeSniffer::CLI.new(@features_location, Dir.getwd)
     dead_steps = cuke_sniffer.get_dead_steps
+    dead_steps[:total].should >= 1
     dead_steps.empty?.should be_false
     File.delete(file_name)
   end

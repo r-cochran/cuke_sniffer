@@ -209,13 +209,22 @@
 
 <div class="sections">
   <div name="dead_steps" class="shrink_section" id="dead_steps">
+    <% dead_steps = cuke_sniffer.get_dead_steps %>
+    <br>
     <div style="font:bold;padding-left:3%;font:bold;font-size:14pt;">Total Dead
-      Steps: <%= cuke_sniffer.get_dead_steps.count %></div>
-    <% cuke_sniffer.get_dead_steps.each do |dead_step| %>
-        <div style="font:14pt;padding-left:5%;padding-bottom: 1%;">
-          <div><%= "/" + dead_step.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex] + "/" %></div>
-          <div style="padding-left:1%"><%= dead_step.location %></div>
-        </div>
+      Steps: <%= dead_steps[:total] %></div>
+    <% dead_steps.delete :total%>
+    <% dead_steps.each_key do |step_file| %>
+        <div style="font:bold;padding-left:3%;font-size:14pt;">
+          <%= step_file %>
+          <br>
+          <div style="padding-left:3%;font-size:12pt;">
+            <%dead_steps[step_file].each  do |regex|%>
+                <%= regex %>
+                <br>
+            <% end %>
+          </div></div>
+        <br>
     <% end %>
   </div>
 </div>
