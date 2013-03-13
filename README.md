@@ -44,7 +44,7 @@ Or,
     cuke_sniffer = CukeSniffer::CLI.new(<your_features_folder>, <your_step_definitions_folder>)
     cuke_sniffer.output_html
     
-Customizing Rules
+Customizing Rules [in 0.0.3]
 ----
 Command line: coming soon.
 
