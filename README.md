@@ -44,8 +44,33 @@ Or,
     cuke_sniffer = CukeSniffer::CLI.new(<your_features_folder>, <your_step_definitions_folder>)
     cuke_sniffer.output_html
     
+Customizing Rules
+----
+Command line: coming soon.
+
+Inline:
+All rules are symbols in this hash and correspond to the message that is eventually displayed. Each rule has a :enabled, :phrase, :score attribute.
+Some rules have a :min, :max, a custom named attribute for edge case information.
+
+Turning off a rule
+
+    CukeSniffer::RuleConfig::RULES[:numbers_in_description][:enabled] = false
+
+Changing a phrase
+
+    CukeSniffer::RuleConfig::RULES[:background_with_no_scenarios][:phrase] = "Found a bad feature, background with no scenarios"
     
-Example Output
+Changing a score (custom)
+
+    CukeSniffer::RuleConfig::RULES[:asterisk_step][:score] = 3000
+    
+Changing a score (stock)
+
+    CukeSniffer::RuleConfig::RULES[:asterisk_step][:score] = CukeSniffer::RuleConfig::FATAL
+
+You can also edit your source or use a gem extension to add/use your own rules! If you do let us know so we can consider putting it in the gem!
+
+Example Console Output
 ----
     Suite Summary
       Total Score: 325
