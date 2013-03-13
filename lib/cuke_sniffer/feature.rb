@@ -13,12 +13,12 @@ module CukeSniffer
     def initialize(file_name)
       super(file_name)
       @scenarios = []
-      @feature_rules_hash = {}
+      @RULES_hash = {}
       @scenarios_score = 0
       @total_score = 0
       feature_lines = extract_feature_from_file(file_name)
       if feature_lines == []
-        store_rule(FEATURE_RULES[:empty_feature])
+        store_rule(RULES[:empty_feature])
       else
         split_feature(file_name, feature_lines)
         evaluate_score
@@ -97,20 +97,20 @@ module CukeSniffer
     end
 
     def rule_no_scenarios
-      store_rule(FEATURE_RULES[:no_scenarios]) if @scenarios.empty?
+      store_rule(RULES[:no_scenarios]) if @scenarios.empty?
     end
 
     def rule_too_many_scenarios
-      rule = FEATURE_RULES[:too_many_scenarios]
+      rule = RULES[:too_many_scenarios]
       store_rule(rule) if @scenarios.size >= rule[:max]
     end
 
     def rule_background_with_no_scenarios
-      store_rule( FEATURE_RULES[:background_with_no_scenarios]) if @scenarios.empty? and !@background.nil?
+      store_rule( RULES[:background_with_no_scenarios]) if @scenarios.empty? and !@background.nil?
     end
 
     def rule_background_with_one_scenario
-      store_rule(FEATURE_RULES[:background_with_one_scenario]) if @scenarios.size == 1 and !@background.nil?
+      store_rule(RULES[:background_with_one_scenario]) if @scenarios.size == 1 and !@background.nil?
     end
 
   end

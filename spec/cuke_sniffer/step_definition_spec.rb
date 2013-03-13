@@ -222,11 +222,11 @@ describe "StepDefinitionRules" do
     raw_code = ["Given /^step with no code$/ do",
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-   validate_rule(step_definition, STEP_DEFINITION_RULES[:no_code])
+   validate_rule(step_definition, RULES[:no_code])
   end
 
   it "should punish Step Definitions with too many parameters" do
-    rule = STEP_DEFINITION_RULES[:too_many_parameters]
+    rule = RULES[:too_many_parameters]
     parameters = ""
     rule[:max].times{|n| parameters += "param#{n}, "}
 
@@ -238,13 +238,13 @@ describe "StepDefinitionRules" do
   it "should punish Step Definitions that have nested steps" do
     raw_code = ["Given /^step with nested step call$/ do", "steps \"And I am a nested step\"", "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, STEP_DEFINITION_RULES[:nested_step])
+    validate_rule(step_definition, RULES[:nested_step])
   end
 
   it "should punish Step Definitions that have recursive nested steps" do
     raw_code = ["Given /^step with recursive nested step call$/ do", "steps \"And step with recursive nested step call\"", "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, STEP_DEFINITION_RULES[:recursive_nested_step])
+    validate_rule(step_definition, RULES[:recursive_nested_step])
   end
 
   it "should punish each commented line in a Step Definition" do
@@ -253,7 +253,7 @@ describe "StepDefinitionRules" do
                 "#steps \"And step with recursive nested step call\"",
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, STEP_DEFINITION_RULES[:commented_code])
+    validate_rule(step_definition, RULES[:commented_code])
   end
 
   it "should punish each instance of lazy debugging (puts with single quotes)" do
@@ -261,7 +261,7 @@ describe "StepDefinitionRules" do
                 "puts 'debug statement'",
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, STEP_DEFINITION_RULES[:lazy_debugging])
+    validate_rule(step_definition, RULES[:lazy_debugging])
   end
 
   it "should punish each instance of lazy debugging (puts with double quotes)" do
@@ -269,7 +269,7 @@ describe "StepDefinitionRules" do
                 "puts \"debug statement\"",
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, STEP_DEFINITION_RULES[:lazy_debugging])
+    validate_rule(step_definition, RULES[:lazy_debugging])
   end
 
   it "should punish each instance of lazy debugging (puts with literals)" do
@@ -277,7 +277,7 @@ describe "StepDefinitionRules" do
                 "puts %{debug statement}",
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, STEP_DEFINITION_RULES[:lazy_debugging])
+    validate_rule(step_definition, RULES[:lazy_debugging])
   end
 
   it "should punish each instance of lazy debugging (p with single quotes)" do
@@ -285,7 +285,7 @@ describe "StepDefinitionRules" do
                 "p 'debug statement'",
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, STEP_DEFINITION_RULES[:lazy_debugging])
+    validate_rule(step_definition, RULES[:lazy_debugging])
   end
 
   it "should punish each instance of lazy debugging (p with double quotes)" do
@@ -293,7 +293,7 @@ describe "StepDefinitionRules" do
                 "p \"debug statement\"",
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, STEP_DEFINITION_RULES[:lazy_debugging])
+    validate_rule(step_definition, RULES[:lazy_debugging])
   end
 
   it "should punish each instance of lazy debugging (p with literal)" do
@@ -301,6 +301,6 @@ describe "StepDefinitionRules" do
                 "p %{debug statement}",
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, STEP_DEFINITION_RULES[:lazy_debugging])
+    validate_rule(step_definition, RULES[:lazy_debugging])
   end
 end

@@ -40,22 +40,22 @@ module CukeSniffer
     end
 
     def rule_too_many_tags(type)
-      rule = SHARED_RULES[:too_many_tags]
+      rule = RULES[:too_many_tags]
       store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if tags.size >= rule[:max]
     end
 
     def rule_no_description(type)
-      rule = SHARED_RULES[:no_description]
+      rule = RULES[:no_description]
       store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if name.empty?
     end
 
     def rule_numbers_in_name(type)
-      rule = SHARED_RULES[:numbers_in_description]
+      rule = RULES[:numbers_in_description]
       store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if name =~ /\d/
     end
 
     def rule_long_name(type)
-      rule = SHARED_RULES[:long_name]
+      rule = RULES[:long_name]
       store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type))  if name.size >= rule[:max]
     end
 

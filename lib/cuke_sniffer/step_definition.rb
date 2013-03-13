@@ -125,32 +125,32 @@ module CukeSniffer
     def rule_lazy_debugging
       code.each do |line|
         next if is_comment?(line)
-        store_rule(STEP_DEFINITION_RULES[:lazy_debugging]) if line.strip =~ /^(p|puts)( |\()('|"|%(q|Q)?\{)/
+        store_rule(RULES[:lazy_debugging]) if line.strip =~ /^(p|puts)( |\()('|"|%(q|Q)?\{)/
       end
     end
 
     def rule_no_code
-      store_rule(STEP_DEFINITION_RULES[:no_code]) if code.empty?
+      store_rule(RULES[:no_code]) if code.empty?
     end
 
     def rule_too_many_parameters
-      rule = STEP_DEFINITION_RULES[:too_many_parameters]
+      rule = RULES[:too_many_parameters]
       store_rule(rule) if parameters.size >= rule[:max]
     end
 
     def rule_nested_steps
-      store_rule(STEP_DEFINITION_RULES[:nested_step]) unless nested_steps.empty?
+      store_rule(RULES[:nested_step]) unless nested_steps.empty?
     end
 
     def rule_recursive_nested_step
       nested_steps.each_value do |nested_step|
-        store_rule(STEP_DEFINITION_RULES[:recursive_nested_step]) if nested_step =~ regex
+        store_rule(RULES[:recursive_nested_step]) if nested_step =~ regex
       end
     end
 
     def rule_commented_code
       code.each do |line|
-        store_rule(STEP_DEFINITION_RULES[:commented_code]) if is_comment?(line)
+        store_rule(RULES[:commented_code]) if is_comment?(line)
       end
     end
 

@@ -131,14 +131,14 @@ describe "FeatureRules" do
   end
 
   it "should punish Features with no content" do
-    rule = FEATURE_RULES[:empty_feature]
+    rule = RULES[:empty_feature]
     build_file([])
     feature = CukeSniffer::Feature.new(@file_name)
     validate_rule(feature, rule)
   end
 
   it "should punish Features with too many tags" do
-    rule = SHARED_RULES[:too_many_tags]
+    rule = RULES[:too_many_tags]
 
     lines = []
     rule[:max].times { |n| lines << "@tag_#{n}" }
@@ -153,18 +153,18 @@ describe "FeatureRules" do
     build_file(%w(Feature:))
     feature = CukeSniffer::Feature.new(@file_name)
 
-    validate_rule(feature, SHARED_RULES[:no_description])
+    validate_rule(feature, RULES[:no_description])
   end
 
   it "should punish Features with numbers in its name" do
     build_file(["Feature: Story Card 12345"])
     feature = CukeSniffer::Feature.new(@file_name)
 
-    validate_rule(feature, SHARED_RULES[:numbers_in_description])
+    validate_rule(feature, RULES[:numbers_in_description])
   end
 
   it "should punish Features with long names" do
-    rule = SHARED_RULES[:long_name]
+    rule = RULES[:long_name]
 
     feature_description = ""
     rule[:max].times { feature_description << "A" }
@@ -177,23 +177,23 @@ describe "FeatureRules" do
   it "should punish Features that have a background but no Scenarios" do
     build_file(["Feature: Feature with background and no scenarios", "", "Background: I am a background", "And I want to be a test"])
     feature = CukeSniffer::Feature.new(@file_name)
-    validate_rule(feature, FEATURE_RULES[:background_with_no_scenarios])
+    validate_rule(feature, RULES[:background_with_no_scenarios])
   end
 
   it "should punish Features that have a background and only one Scenario" do
     build_file(["Feature: Feature with background and one scenario", "", "Background: I am a background", "And I want to be a test", "", "Scenario: One Scenario"])
     feature = CukeSniffer::Feature.new(@file_name)
-    validate_rule(feature, FEATURE_RULES[:background_with_one_scenario])
+    validate_rule(feature, RULES[:background_with_one_scenario])
   end
 
   it "should punish Features with zero Scenarios" do
     build_file(["Feature: I'm a feature without scenarios"])
     feature = CukeSniffer::Feature.new(@file_name)
-    validate_rule(feature, FEATURE_RULES[:no_scenarios])
+    validate_rule(feature, RULES[:no_scenarios])
   end
 
   it "should punish Features with too many Scenarios" do
-    rule = FEATURE_RULES[:too_many_scenarios]
+    rule = RULES[:too_many_scenarios]
 
     lines = ["Feature: I'm a feature without scenarios!"]
     rule[:max].times { lines << "Scenario: I am a simple scenario" }

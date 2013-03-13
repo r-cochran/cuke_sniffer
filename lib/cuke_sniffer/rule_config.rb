@@ -1,12 +1,12 @@
 module CukeSniffer
   module RuleConfig
 
-    FATAL = 100 #will prevent suite from executing properly
-    ERROR = 25 #will cause problem with debugging
-    WARNING = 10 #readibility/misuse of cucumber
-    INFO = 1 #Small improvements that can be made
+    FATAL =   100 #will prevent suite from executing properly
+    ERROR =   25  #will cause problem with debugging
+    WARNING = 10  #readibility/misuse of cucumber
+    INFO =    1   #Small improvements that can be made
 
-    SHARED_RULES = {
+    RULES = {
         :too_many_tags => {
             :enabled => true,
             :phrase => "{class} has too many tags.",
@@ -34,10 +34,7 @@ module CukeSniffer
             :phrase => "Implementation word used: {word}.",
             :score => INFO,
             :words => ["page", "site", "url", "button", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen"]
-        }
-    }
-
-    FEATURE_RULES = {
+        },
         :empty_feature => {
             :enabled => true,
             :phrase => "Feature file has no content.",
@@ -64,9 +61,6 @@ module CukeSniffer
             :score => INFO,
             :max => 10,
         },
-    }
-
-    SCENARIO_RULES = {
         :too_many_steps => {
             :enabled => true,
             :phrase => "Scenario with too many steps.",
@@ -139,9 +133,6 @@ module CukeSniffer
             :phrase => "Given/When/Then used multiple times in the same scenario.",
             :score => WARNING,
         },
-    }
-
-    STEP_DEFINITION_RULES = {
         :no_code => {
             :enabled => true,
             :phrase => "No code in Step Definition.",

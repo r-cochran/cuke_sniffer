@@ -89,12 +89,12 @@ module CukeSniffer
 
     def rule_multiple_given_when_then
       step_order = get_step_order
-      %w(Given When Then).each { |type| store_rule(SCENARIO_RULES[:multiple_given_when_then]) if step_order.count(type) > 1 }
+      %w(Given When Then).each { |type| store_rule(RULES[:multiple_given_when_then]) if step_order.count(type) > 1 }
     end
 
     def rule_one_word_step
       @steps.each do |step|
-        store_rule(SCENARIO_RULES[:one_word_step]) if step.split.count == 2
+        store_rule(RULES[:one_word_step]) if step.split.count == 2
       end
     end
 
@@ -107,37 +107,37 @@ module CukeSniffer
     end
 
     def rule_empty_scenario
-      store_rule(SCENARIO_RULES[:no_steps]) if @steps.empty?
+      store_rule(RULES[:no_steps]) if @steps.empty?
     end
 
     def rule_too_many_steps
-      rule = SCENARIO_RULES[:too_many_steps]
+      rule = RULES[:too_many_steps]
       store_rule(rule) if @steps.size >= rule[:max]
     end
 
     def rule_step_order
       step_order = get_step_order.uniq
       %w(But * And).each { |type| step_order.delete(type) }
-      store_rule(SCENARIO_RULES[:out_of_order_steps]) unless step_order == %w(Given When Then) or step_order == %w(When Then)
+      store_rule(RULES[:out_of_order_steps]) unless step_order == %w(Given When Then) or step_order == %w(When Then)
     end
 
     def rule_invalid_first_step
       first_step = get_step_order.first
-      store_rule(SCENARIO_RULES[:invalid_first_step]) if %w(And But).include?(first_step)
+      store_rule(RULES[:invalid_first_step]) if %w(And But).include?(first_step)
     end
 
     def rule_asterisk_step
-      get_step_order.count('*').times { store_rule(SCENARIO_RULES[:asterisk_step]) }
+      get_step_order.count('*').times { store_rule(RULES[:asterisk_step]) }
     end
 
     def rule_commented_step
       @steps.each do |step|
-        store_rule(SCENARIO_RULES[:commented_step]) if is_comment?(step)
+        store_rule(RULES[:commented_step]) if is_comment?(step)
       end
     end
 
     def rule_implementation_words
-      rule = SHARED_RULES[:implementation_word]
+      rule = RULES[:implementation_word]
       @steps.each do |step|
         next if is_comment?(step)
         rule[:words].each do |word|
@@ -148,29 +148,29 @@ module CukeSniffer
 
     def rule_date_used_in_step
       @steps.each do |step|
-        store_rule(SCENARIO_RULES[:date_used]) if step =~ DATE_REGEX
+        store_rule(RULES[:date_used]) if step =~ DATE_REGEX
       end
     end
 
     def rule_no_examples_table
-      store_rule(SCENARIO_RULES[:no_examples_table]) if @examples_table.empty?
+      store_rule(RULES[:no_examples_table]) if @examples_table.empty?
     end
 
     def rule_no_examples
-      store_rule(SCENARIO_RULES[:no_examples]) if @examples_table.size == 1
+      store_rule(RULES[:no_examples]) if @examples_table.size == 1
     end
 
     def rule_one_example
-      store_rule(SCENARIO_RULES[:one_example]) if @examples_table.size == 2 and !is_comment?(@examples_table[1])
+      store_rule(RULES[:one_example]) if @examples_table.size == 2 and !is_comment?(@examples_table[1])
     end
 
     def rule_too_many_examples
-      store_rule(SCENARIO_RULES[:too_many_examples]) if (@examples_table.size - 1) >= 8
+      store_rule(RULES[:too_many_examples]) if (@examples_table.size - 1) >= 8
     end
 
     def rule_commented_example
       @examples_table.each do |example|
-        store_rule(SCENARIO_RULES[:commented_example]) if is_comment?(example)
+        store_rule(RULES[:commented_example]) if is_comment?(example)
       end
     end
 
