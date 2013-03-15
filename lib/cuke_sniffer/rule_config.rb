@@ -180,7 +180,12 @@ module CukeSniffer
         :phrase => "Large sleeps used. Use a wait_until like method.",
         :score => INFO,
         :min => 2
-    }
+        },
+        :todo => {
+            :enabled => true,
+            :phrase => "Todo found. Resolve it.",
+            :score => INFO,
+        },
     }
 
   end

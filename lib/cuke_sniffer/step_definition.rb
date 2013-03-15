@@ -136,7 +136,14 @@ module CukeSniffer
       rule_commented_code
       rule_lazy_debugging
       rule_pending
+      rule_todo
       sleep_rules
+    end
+
+    def rule_todo
+      code.each do |line|
+        store_rule(RULES[:todo]) if line =~ /\#(TODO|todo)/
+      end
     end
 
     def sleep_rules

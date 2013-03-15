@@ -362,4 +362,12 @@ describe "StepDefinitionRules" do
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     validate_rule(step_definition, RULES[:large_sleep])
   end
+
+  it "should punish each todo in a step definition" do
+    raw_code = ["Given /^small sleeping step$/ do",
+                "method_call(parameter) #todo figure out why this is being done",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    validate_rule(step_definition, RULES[:todo])
+  end
 end
