@@ -136,14 +136,16 @@ module CukeSniffer
       rule_commented_code
       rule_lazy_debugging
       rule_pending
-      rule_small_sleep
+      sleep_rules
     end
 
-    def rule_small_sleep
+    def sleep_rules
       code.each do |line|
         match_data = line.match /^\s*sleep(\s|\()(?<sleep_time>.*)\)?/
         unless match_data.nil?
-          store_rule(RULES[:small_sleep]) if match_data[:sleep_time].to_f <= RULES[:small_sleep][:max]
+          sleep_value = match_data[:sleep_time].to_f
+          store_rule(RULES[:small_sleep]) if sleep_value <= RULES[:small_sleep][:max]
+          store_rule(RULES[:large_sleep]) if sleep_value > RULES[:large_sleep][:min]
         end
       end
     end

@@ -174,7 +174,13 @@ module CukeSniffer
             :phrase => "Small sleeps used. Use a wait_until like method.",
             :score => INFO,
             :max => 2
-        }
+        },
+        :large_sleep => {
+        :enabled => true,
+        :phrase => "Large sleeps used. Use a wait_until like method.",
+        :score => INFO,
+        :min => 2
+    }
     }
 
   end

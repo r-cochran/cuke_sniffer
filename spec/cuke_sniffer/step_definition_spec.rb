@@ -153,7 +153,7 @@ describe CukeSniffer::StepDefinition do
                 "}",
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    step_definition.nested_steps.should == {"location:3" => nested_step_set_one, "location:4" => nested_step_set_one, "location:8" => nested_step_set_two, "location:9" => nested_step_set_two, "location:10" => nested_step_set_two,}
+    step_definition.nested_steps.should == {"location:3" => nested_step_set_one, "location:4" => nested_step_set_one, "location:8" => nested_step_set_two, "location:9" => nested_step_set_two, "location:10" => nested_step_set_two, }
   end
 
   it "should capture nested steps with inline code as a variable without code inserts" do
@@ -257,13 +257,13 @@ describe "StepDefinitionRules" do
     raw_code = ["Given /^step with no code$/ do",
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-   validate_rule(step_definition, RULES[:no_code])
+    validate_rule(step_definition, RULES[:no_code])
   end
 
   it "should punish Step Definitions with too many parameters" do
     rule = RULES[:too_many_parameters]
     parameters = ""
-    rule[:max].times{|n| parameters += "param#{n}, "}
+    rule[:max].times { |n| parameters += "param#{n}, " }
 
     raw_code = ["Given /^step with many parameters$/ do |#{parameters}|", "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
@@ -353,5 +353,13 @@ describe "StepDefinitionRules" do
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     validate_rule(step_definition, RULES[:small_sleep])
+  end
+
+  it "should punish each large sleep in a step definition" do
+    raw_code = ["Given /^small sleeping step$/ do",
+                "sleep #{RULES[:large_sleep][:min] + 1}",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    validate_rule(step_definition, RULES[:large_sleep])
   end
 end
