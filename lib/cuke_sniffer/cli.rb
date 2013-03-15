@@ -273,7 +273,7 @@ module CukeSniffer
       dead_steps_hash.each_key do |key|
         unless dead_steps_hash[key] == []
           total += dead_steps_hash[key].size
-          dead_steps_hash[key].sort!
+          dead_steps_hash[key].sort_by! {|row| row[/^\d+/].to_i}
         else
           dead_steps_hash.delete(key)
         end
