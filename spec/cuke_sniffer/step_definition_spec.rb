@@ -206,6 +206,41 @@ describe CukeSniffer::StepDefinition do
     step_definition.problem_percentage.should == (3.0/2.0)
     CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = start_threshold
   end
+
+  it "should capture a nested step correctly that is defined in a string literal with spaces between the { and the start of the step" do
+    raw_code = ["Given /^my step$/ do",
+                "steps %{ And I am calling a nested step}",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    step_definition.nested_steps.values.include?("I am calling a nested step").should be_true
+  end
+
+  it "should capture a nested step correctly that are on the same line as the closing of a string literal" do
+    raw_code = ["Given /^my step$/ do",
+                "steps %{",
+                "And I am calling a nested step}",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    step_definition.nested_steps.values.include?("I am calling a nested step").should be_true
+  end
+
+  it "should capture a nested step correctly that are on the same line as the opening of a string literal" do
+    raw_code = ["Given /^my step$/ do",
+                "steps %{And I am calling a nested step}",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    step_definition.nested_steps.values.include?("I am calling a nested step").should be_true
+  end
+
+  it "should capture a nested step correctly that uses a } to close a variable use and is not the true end of the strings" do
+    raw_code = ["Given /^my step$/ do",
+                "steps %{And I am a nested step that uses a \#{variable}",
+                "And this is the true end of the nested step}",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    step_definition.nested_steps.values.include?("this is the true end of the nested step").should be_true
+  end
+
 end
 
 describe "StepDefinitionRules" do
@@ -302,5 +337,21 @@ describe "StepDefinitionRules" do
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     validate_rule(step_definition, RULES[:lazy_debugging])
+  end
+
+  it "should punish each instance of a pending step definition" do
+    raw_code = ["Given /^step with comments$/ do",
+                "pending",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    validate_rule(step_definition, RULES[:pending])
+  end
+
+  it "should punish each small sleep in a step definition" do
+    raw_code = ["Given /^small sleeping step$/ do",
+                "sleep #{RULES[:small_sleep][:max]}",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    validate_rule(step_definition, RULES[:small_sleep])
   end
 end

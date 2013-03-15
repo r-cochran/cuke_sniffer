@@ -12,11 +12,12 @@ module CukeSniffer
     xml_accessor :code, :as => [], :in => "code"
 
     SIMPLE_NESTED_STEP_REGEX = /steps\s"#{STEP_STYLES}(?<step_string>.*)"$/
-    SAME_LINE_COMPLEX_STEP_REGEX = /^steps\s%(q|Q)?{#{STEP_STYLES}(?<step_string>.*)}$/
     START_COMPLEX_STEP_REGEX = /^steps\s%(q|Q)?\{\s*/
+    SAME_LINE_COMPLEX_STEP_REGEX = /#{START_COMPLEX_STEP_REGEX}#{STEP_STYLES}(?<step_string>.*)}$/
     END_COMPLEX_STEP_REGEX = /}$/
     START_COMPLEX_WITH_STEP_REGEX = /steps\s%(q|Q)?\{#{STEP_STYLES}(?<step_string>.*)$/
     END_COMPLEX_WITH_STEP_REGEX = /#{STEP_STYLES}(?<step_string>.*)}$/
+
     def initialize(location, raw_code)
       super(location)
 
@@ -52,13 +53,26 @@ module CukeSniffer
         case line
           when SIMPLE_NESTED_STEP_REGEX
             regex = SIMPLE_NESTED_STEP_REGEX
+          when START_COMPLEX_WITH_STEP_REGEX
+            if line =~ /\}$/
+              if line.include?('#{')
+                reversed_line = line.reverse
+                last_capture = reversed_line[0..reversed_line.index('#')].reverse
+                if last_capture =~ /{.*}$/
+                  multi_line_step_flag = true
+                  regex = START_COMPLEX_WITH_STEP_REGEX
+                else
+                  regex = SAME_LINE_COMPLEX_STEP_REGEX
+                end
+              else
+                regex = SAME_LINE_COMPLEX_STEP_REGEX
+              end
+            else
+              multi_line_step_flag = true
+              regex = START_COMPLEX_WITH_STEP_REGEX
+            end
           when SAME_LINE_COMPLEX_STEP_REGEX
             regex = SAME_LINE_COMPLEX_STEP_REGEX
-          when START_COMPLEX_WITH_STEP_REGEX
-            multi_line_step_flag = true
-            regex = START_COMPLEX_WITH_STEP_REGEX
-          when START_COMPLEX_STEP_REGEX
-            multi_line_step_flag = true
           when END_COMPLEX_WITH_STEP_REGEX
             if line =~ /[#]{.*}$/ && multi_line_step_flag
               regex = STEP_REGEX
@@ -66,6 +80,8 @@ module CukeSniffer
               regex = END_COMPLEX_WITH_STEP_REGEX
               multi_line_step_flag = false
             end
+          when START_COMPLEX_STEP_REGEX
+            multi_line_step_flag = true
           when STEP_REGEX
             regex = STEP_REGEX if multi_line_step_flag
           when END_COMPLEX_STEP_REGEX
@@ -95,7 +111,7 @@ module CukeSniffer
 
     def condensed_call_list
       condensed_list = {}
-      @calls.each{|call, step_string|
+      @calls.each { |call, step_string|
         condensed_list[step_string] ||= []
         condensed_list[step_string] << call
       }
@@ -119,6 +135,26 @@ module CukeSniffer
       rule_recursive_nested_step
       rule_commented_code
       rule_lazy_debugging
+      rule_pending
+      rule_small_sleep
+    end
+
+    def rule_small_sleep
+      code.each do |line|
+        match_data = line.match /^\s*sleep(\s|\()(?<sleep_time>.*)\)?/
+        unless match_data.nil?
+          store_rule(RULES[:small_sleep]) if match_data[:sleep_time].to_f <= RULES[:small_sleep][:max]
+        end
+      end
+    end
+
+    def rule_pending
+      code.each do |line|
+        if line =~ /^\s*pending\s*$/
+          store_rule(RULES[:pending])
+          return
+        end
+      end
     end
 
     def rule_lazy_debugging

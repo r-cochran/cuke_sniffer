@@ -164,6 +164,17 @@ module CukeSniffer
             :phrase => "Lazy Debugging through puts, p, or print",
             :score => WARNING,
         },
+        :pending => {
+            :enabled => true,
+            :phrase => "Pending step definition. Implement or remove.",
+            :score => WARNING,
+        },
+        :small_sleep => {
+            :enabled => true,
+            :phrase => "Small sleeps used. Use a wait_until like method.",
+            :score => INFO,
+            :max => 2
+        }
     }
 
   end
