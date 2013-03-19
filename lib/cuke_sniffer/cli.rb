@@ -20,7 +20,7 @@ module CukeSniffer
     xml_accessor :features_summary, :as => SummaryNode
     xml_accessor :scenarios_summary, :as => SummaryNode
     xml_accessor :step_definitions_summary, :as => SummaryNode
-    xml_accessor :improvement_list, :as => {:key => "rule", :value => "total"}, :in =>  "improvement_list", :from => "improvement"
+    xml_accessor :improvement_list, :as => {:key => "rule", :value => "total"}, :in => "improvement_list", :from => "improvement"
     xml_accessor :features, :as => [CukeSniffer::Feature], :in => "features"
     xml_accessor :step_definitions, :as => [CukeSniffer::StepDefinition], :in => "step_definitions"
 
@@ -218,7 +218,22 @@ module CukeSniffer
       output
     end
 
-    def extract_steps_hash(scenario)
+    def extract_steps_from_features
+      steps = {}
+      @features.each do |feature|
+        steps.merge! extract_scenario_steps(feature.background) unless feature.background.nil?
+        feature.scenarios.each do |scenario|
+          if scenario.type == "Scenario Outline"
+            steps.merge! extract_scenario_outline_steps(scenario)
+          else
+            steps.merge! extract_scenario_steps(scenario)
+          end
+        end
+      end
+      steps
+    end
+
+    def extract_scenario_steps(scenario)
       steps_hash = {}
       counter = 1
       scenario.steps.each do |step|
@@ -229,24 +244,47 @@ module CukeSniffer
       steps_hash
     end
 
-    def get_all_steps
+    def extract_scenario_outline_steps(scenario)
       steps = {}
-      @features.each do |feature|
-        unless feature.background.nil?
-          background_steps = extract_steps_hash(feature.background)
-          background_steps.each_key { |key| steps[key] = background_steps[key] }
-        end
-        feature.scenarios.each do |scenario|
-          scenario_steps = extract_steps_hash(scenario)
-          scenario_steps.each_key { |key| steps[key] = scenario_steps[key] }
+      examples = scenario.examples_table
+      variable_list = extract_variables_from_example(examples.first)
+      (1...examples.size).each do |counter|
+        row_variables = extract_variables_from_example(examples[counter])
+        scenario.steps.each do |step|
+          steps["#{scenario.location}(Example #{counter})"] = build_updated_step_from_example(step, variable_list, row_variables)
         end
       end
+      steps
+    end
+
+    def build_updated_step_from_example(step, variable_list, row_variables)
+      new_step = step.dup
+      variable_list.each do |variable|
+        if step.include? variable
+          new_step.gsub!("<#{variable}>", row_variables[variable_list.index(variable)])
+        end
+      end
+      new_step
+    end
+
+    def extract_variables_from_example(example)
+      example.split(/\s*\|\s*/) - [""]
+    end
+
+    def extract_steps_from_step_definitions
+      steps = {}
       @step_definitions.each do |definition|
         definition.nested_steps.each_key do |key|
           steps[key] = definition.nested_steps[key]
         end
       end
       steps
+    end
+
+    def get_all_steps
+      feature_steps = extract_steps_from_features
+      step_definition_steps = extract_steps_from_step_definitions
+      feature_steps.merge step_definition_steps
     end
 
     def catalog_step_calls
@@ -273,7 +311,7 @@ module CukeSniffer
       dead_steps_hash.each_key do |key|
         unless dead_steps_hash[key] == []
           total += dead_steps_hash[key].size
-          dead_steps_hash[key].sort_by! {|row| row[/^\d+/].to_i}
+          dead_steps_hash[key].sort_by! { |row| row[/^\d+/].to_i }
         else
           dead_steps_hash.delete(key)
         end
