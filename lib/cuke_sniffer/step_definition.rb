@@ -89,7 +89,7 @@ module CukeSniffer
           else
         end
 
-        if regex
+        if regex and is_comment?(line) == false
           index = 0
           while line.include?('#{') and index <= line.length
             index = line.index('#{')

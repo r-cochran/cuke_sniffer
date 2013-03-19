@@ -257,6 +257,23 @@ describe CukeSniffer::StepDefinition do
     step_definition.nested_steps.values.include?("my nested step call").should be_true
   end
 
+  it "should capture nested steps used in conditional logic" do
+    raw_code = ["Given /^step nested step call$/ do",
+                "if steps %{And my nested step call}",
+                "fail",
+                "end",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    step_definition.nested_steps.values.include?("my nested step call").should be_true
+  end
+
+  it "should ignore commented lines when looking for nested steps" do
+    raw_code = ["Given /^step nested step call$/ do",
+                "#      steps %{And my nested step call}",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    step_definition.nested_steps.should == {}
+  end
 
 end
 
