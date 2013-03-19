@@ -241,6 +241,23 @@ describe CukeSniffer::StepDefinition do
     step_definition.nested_steps.values.include?("this is the true end of the nested step").should be_true
   end
 
+  it "should capture nested steps when the 'step' call is used with simple string" do
+    raw_code = ["Given /^step nested step call$/ do",
+                "step \"And my nested step call\"",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    step_definition.nested_steps.values.include?("my nested step call").should be_true
+  end
+
+  it "should capture nested steps when the 'step' call is used with string literal" do
+    raw_code = ["Given /^step nested step call$/ do",
+                "step %{And my nested step call}",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    step_definition.nested_steps.values.include?("my nested step call").should be_true
+  end
+
+
 end
 
 describe "StepDefinitionRules" do

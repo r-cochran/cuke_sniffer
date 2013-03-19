@@ -11,11 +11,11 @@ module CukeSniffer
     xml_accessor :calls, :as => {:key => 'location', :value => 'call'}, :in => "calls"
     xml_accessor :code, :as => [], :in => "code"
 
-    SIMPLE_NESTED_STEP_REGEX = /steps\s"#{STEP_STYLES}(?<step_string>.*)"$/
-    START_COMPLEX_STEP_REGEX = /^steps\s%(q|Q)?\{\s*/
+    SIMPLE_NESTED_STEP_REGEX = /steps?\s"#{STEP_STYLES}(?<step_string>.*)"$/
+    START_COMPLEX_STEP_REGEX = /^steps?\s%(q|Q)?\{\s*/
     SAME_LINE_COMPLEX_STEP_REGEX = /#{START_COMPLEX_STEP_REGEX}#{STEP_STYLES}(?<step_string>.*)}$/
     END_COMPLEX_STEP_REGEX = /}$/
-    START_COMPLEX_WITH_STEP_REGEX = /steps\s%(q|Q)?\{#{STEP_STYLES}(?<step_string>.*)$/
+    START_COMPLEX_WITH_STEP_REGEX = /#{START_COMPLEX_STEP_REGEX}#{STEP_STYLES}(?<step_string>.*)$/
     END_COMPLEX_WITH_STEP_REGEX = /#{STEP_STYLES}(?<step_string>.*)}$/
 
     def initialize(location, raw_code)
