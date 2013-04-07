@@ -186,6 +186,16 @@ module CukeSniffer
             :phrase => "Todo found. Resolve it.",
             :score => INFO,
         },
+        :feature_same_tag => {
+            :enabled => true,
+            :phrase => "Same tag appears on Feature: ",
+            :score => WARNING,
+        },
+        :scenario_same_tag => {
+            :enabled => true,
+            :phrase => "Tag appears on all scenarios: ",
+            :score => WARNING,
+        }
     }
 
   end

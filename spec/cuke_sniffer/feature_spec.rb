@@ -203,4 +203,58 @@ describe "FeatureRules" do
     validate_rule(feature, rule)
   end
 
+  it "should punish Scenarios that have the same tag as its Feature" do
+    rule = RULES[:feature_same_tag]
+
+    lines = [
+        "@tag",
+        "Feature: I'm a feature with tags!",
+        "",
+        "@tag",
+        "Scenario: I have the same tag"
+    ]
+    build_file(lines)
+    feature = CukeSniffer::Feature.new(@file_name)
+    scenario = feature.scenarios[0]
+    scenario.rules_hash.include?("Same tag appears on Feature: @tag").should be_true
+    scenario.score.should >= rule[:score]
+  end
+
+  it "should punish Features if all of the scenarios have a common tag. Simple." do
+    rule = RULES[:scenario_same_tag]
+
+    lines = [
+        "Feature: I'm a feature with scenarios with identical tags!",
+        "",
+        "@tag",
+        "Scenario: I have the same tag1",
+        "@tag",
+        "Scenario: I have the same tag2"
+    ]
+    build_file(lines)
+    feature = CukeSniffer::Feature.new(@file_name)
+    feature.rules_hash.include?("Tag appears on all scenarios: @tag").should be_true
+    feature.score.should >= rule[:score]
+  end
+
+  it "should punish Features if all of the scenarios have a common tag. Complex" do
+    rule = RULES[:scenario_same_tag]
+
+    lines = [
+        "Feature: I'm a feature with scenarios with identical tags!",
+        "",
+        "@tag @a",
+        "Scenario: I have the same tag1",
+        "@tag @tag2 @tag3",
+        "@a",
+        "Scenario: I have the same tag2"
+    ]
+    build_file(lines)
+    feature = CukeSniffer::Feature.new(@file_name)
+    feature.rules_hash.include?("Tag appears on all scenarios: @tag").should be_true
+    feature.rules_hash.include?("Tag appears on all scenarios: @a").should be_true
+    feature.rules_hash.include?("Tag appears on all scenarios: @tag2").should be_false
+    feature.rules_hash.include?("Tag appears on all scenarios: @tag3").should be_false
+    feature.score.should >= rule[:score]
+  end
 end

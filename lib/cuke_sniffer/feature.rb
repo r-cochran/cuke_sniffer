@@ -67,11 +67,23 @@ module CukeSniffer
 
     def add_scenario_to_feature(code_block, index_of_title)
       scenario = CukeSniffer::Scenario.new(index_of_title, code_block)
+      feature_applied_scenario_rules(scenario)
       if scenario.type == "Background"
         @background = scenario
       else
         @scenarios << scenario
       end
+    end
+
+    def feature_applied_scenario_rules(scenario)
+      rule_feature_same_tags(scenario)
+    end
+
+    def rule_feature_same_tags(scenario)
+      rule = RULES[:feature_same_tag]
+      tags.each{|tag|
+        scenario.store_updated_rule(rule, rule[:phrase] += tag) if scenario.tags.include?(tag)
+      }
     end
 
     def ==(comparison_object)
@@ -85,8 +97,24 @@ module CukeSniffer
       rule_too_many_scenarios
       rule_background_with_no_scenarios
       rule_background_with_one_scenario
+      rule_scenario_same_tag
       get_scenarios_score
       @total_score = score + @scenarios_score
+    end
+
+    def rule_scenario_same_tag
+      rule = RULES[:scenario_same_tag]
+      unless scenarios.empty?
+        base_tag_list = scenarios.first.tags
+        scenarios.each do |scenario|
+          base_tag_list.each do |tag|
+            base_tag_list.delete(tag) unless scenario.tags.include?(tag)
+          end
+        end
+        base_tag_list.each do |tag|
+          store_updated_rule(rule, rule[:phrase] + tag)
+        end
+      end
     end
 
     def get_scenarios_score
