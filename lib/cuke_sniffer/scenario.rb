@@ -73,10 +73,16 @@ module CukeSniffer
     end
 
     def evaluate_score
-      super
+      if type == "Background"
+        rule_numbers_in_name(type)
+        rule_long_name(type)
+      else
+        super
+        rule_step_order
+      end
+
       rule_empty_scenario
       rule_too_many_steps
-      rule_step_order
       rule_invalid_first_step
       rule_asterisk_step
       rule_commented_step
@@ -89,7 +95,9 @@ module CukeSniffer
 
     def rule_multiple_given_when_then
       step_order = get_step_order
-      %w(Given When Then).each { |type| store_rule(RULES[:multiple_given_when_then]) if step_order.count(type) > 1 }
+      rule = RULES[:multiple_given_when_then]
+      phrase = rule[:phrase].gsub(/{.*}/, type)
+      %w(Given When Then).each { |type| store_updated_rule(rule, phrase) if step_order.count(type) > 1 }
     end
 
     def rule_one_word_step
@@ -107,12 +115,13 @@ module CukeSniffer
     end
 
     def rule_empty_scenario
-      store_rule(RULES[:no_steps]) if @steps.empty?
+      rule = RULES[:no_steps]
+      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if @steps.empty?
     end
 
     def rule_too_many_steps
       rule = RULES[:too_many_steps]
-      store_rule(rule) if @steps.size >= rule[:max]
+      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if @steps.size >= rule[:max]
     end
 
     def rule_step_order
@@ -123,7 +132,8 @@ module CukeSniffer
 
     def rule_invalid_first_step
       first_step = get_step_order.first
-      store_rule(RULES[:invalid_first_step]) if %w(And But).include?(first_step)
+      rule = RULES[:invalid_first_step]
+      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if %w(And But).include?(first_step)
     end
 
     def rule_asterisk_step

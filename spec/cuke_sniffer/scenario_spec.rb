@@ -607,3 +607,246 @@ describe "ScenarioRules" do
     validate_rule(scenario, RULES[:multiple_given_when_then])
   end
 end
+
+describe "BackgroundRules" do
+
+  def validate_rule(scenario, rule)
+    phrase = rule[:phrase].gsub(/{.*}/, "Background")
+
+    scenario.rules_hash.include?(phrase).should be_true
+    scenario.rules_hash[phrase].should > 0
+    scenario.score.should >= rule[:score]
+  end
+
+  def validate_no_rule(scenario, rule)
+    phrase = rule[:phrase].gsub(/{.*}/, "Background")
+
+    scenario.rules_hash.include?(phrase).should be_false
+  end
+
+  it "should not punish Backgrounds without a name" do
+    scenario_block = %w(Background:)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    validate_no_rule(scenario, RULES[:no_description])
+  end
+
+  it "should punish Backgrounds with no steps" do
+    background_block = [
+        "Background: Empty Scenario",
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    validate_rule(background, RULES[:no_steps])
+  end
+
+  it "should punish Backgrounds with numbers in its name" do
+    background_block = [
+        "Background: Background with some digits 123"
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    validate_rule(background, RULES[:numbers_in_description])
+  end
+
+  it "should punish Backgrounds with long names" do
+    rule = RULES[:long_name]
+    background_description = ""
+    rule[:max].times{background_description << "A"}
+    background_block = [
+        "Background: #{background_description}"
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    validate_rule(background, rule)
+  end
+
+  it "should punish Backgrounds with too many steps" do
+    rule = RULES[:too_many_steps]
+    background_block = [
+        "Background: Scenario with too many steps"
+    ]
+    rule[:max].times {background_block << "And I have too many steps"}
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+
+    validate_rule(background, rule)
+  end
+
+  it "should not punish Backgrounds with steps that are out of order: Then/When" do
+    background_block = [
+        "Background: Scenario with out of order steps",
+        "Then comes first",
+        "When comes second"
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+
+    validate_no_rule(background, RULES[:out_of_order_steps])
+  end
+
+  it "should not punish Backgrounds with steps that are out of order: Then/When/Given" do
+    background_block = [
+        "Background: Scenario with out of order steps",
+        "Then comes first",
+        "When comes second",
+        "Given comes third"
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+
+    validate_no_rule(background, RULES[:out_of_order_steps])
+  end
+
+  it "should not punish Backgrounds with steps that are out of order: Given/Then/And/When" do
+    background_block = [
+        "Background: Scenario with out of order steps",
+        "Given comes first",
+        "Then comes second",
+        "And is ignored",
+        "When comes third"
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    validate_no_rule(background, RULES[:out_of_order_steps])
+  end
+
+  it "should punish Backgrounds with And as its first step" do
+    background_block = [
+        "Background: Background with And as its first step",
+        "And is not a valid first step",
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    validate_rule(background, RULES[:invalid_first_step])
+  end
+
+  it "should punish Backgrounds with But as its first step" do
+    background_block = [
+        "Background: Background with But as its first step",
+        "But is not a valid first step",
+        "When comes first"
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    validate_rule(background, RULES[:invalid_first_step])
+  end
+
+  it "should punish Backgrounds that use the * step" do
+    background_block = [
+        "Background: Background with *",
+        "* is an awesome operator"
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    validate_rule(background, RULES[:asterisk_step])
+  end
+
+  it "should punish each step in a Background that uses *" do
+    background_block = [
+        "Background: Background with *",
+        "Given I am first",
+        "* is an awesome operator",
+        "When I am second",
+        "* is an awesome operator",
+        "Then I am third"
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    background.score.should >= 4
+    background.rules_hash[RULES[:asterisk_step][:phrase]].should == 2
+  end
+
+  it "should punish Backgrounds with commented steps" do
+    background_block = [
+        "Background: Scenario with commented line",
+        "#Given I am first",
+        "When I am second",
+        "Then I am third"
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    validate_rule(background, RULES[:commented_step])
+  end
+
+  it "should punish each step in a Background that is commented" do
+    background_block = [
+        "Background: Background with commented line",
+        "#Given I am first",
+        "#When I am second",
+        "#Then I am third"
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    background.rules_hash[RULES[:commented_step][:phrase]].should == 3
+  end
+
+  it "should not punish Backgrounds with too many tags" do
+    rule = RULES[:too_many_tags]
+    background_block = []
+    rule[:max].times{|n| background_block << "@tag_#{n}"}
+    background_block << "Background: Scenario with many tags"
+
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    validate_no_rule(background, rule)
+  end
+
+  it "should punish Backgrounds that use implementation words(page/site/ect)" do
+    background_block = [
+        "Background: Background with implementation words",
+        "Given I am on the login page",
+        "When I log in to the site",
+        "Then I am on the home page",
+    ]
+
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    background.rules_hash.include?("Implementation word used: page.").should be_true
+    background.rules_hash.include?("Implementation word used: site.").should be_true
+    background.rules_hash["Implementation word used: page."].should == 2
+    background.rules_hash["Implementation word used: site."].should == 1
+  end
+
+  it "should punish Backgrounds with steps that use fixed Dates(01/01/0001)" do
+    background_block = [
+        "Background: Background with dates used",
+        "Given Today is 11/12/2013",
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    validate_rule(background, RULES[:date_used])
+  end
+
+  it "should punish Backgrounds steps with only one word." do
+    background_block = [
+        "Background: Step with one word",
+        "Given word",
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    validate_rule(background, RULES[:one_word_step])
+  end
+
+  it "should punish Backgrounds with multiple steps with only one word." do
+    background_block = [
+        "Background: Step with one word",
+        "Given word",
+        "When nope",
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    background.rules_hash[RULES[:one_word_step][:phrase]].should == 2
+  end
+
+  it "should punish Background that use Given more than once." do
+    background_block = [
+        "Background: Multiple Givens",
+        "Given I am doing setup",
+        "Given I am doing more setup",
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    validate_rule(background, RULES[:multiple_given_when_then])
+  end
+
+  it "should punish Backgrounds that use When more than once." do
+    background_block = [
+        "Background: Multiple Givens",
+        "When I am doing setup",
+        "When I am doing more setup",
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    validate_rule(background, RULES[:multiple_given_when_then])
+  end
+
+  it "should punish Backgrounds that use Then more than once." do
+    background_block = [
+        "Background: Multiple Givens",
+        "Then I am doing setup",
+        "Then I am doing more setup",
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    validate_rule(background, RULES[:multiple_given_when_then])
+  end
+end

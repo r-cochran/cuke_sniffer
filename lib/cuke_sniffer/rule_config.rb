@@ -1,10 +1,10 @@
 module CukeSniffer
   module RuleConfig
 
-    FATAL =   100 #will prevent suite from executing properly
-    ERROR =   25  #will cause problem with debugging
-    WARNING = 10  #readibility/misuse of cucumber
-    INFO =    1   #Small improvements that can be made
+    FATAL = 100 #will prevent suite from executing properly
+    ERROR = 25 #will cause problem with debugging
+    WARNING = 10 #readibility/misuse of cucumber
+    INFO = 1 #Small improvements that can be made
 
     RULES = {
         :too_many_tags => {
@@ -63,7 +63,7 @@ module CukeSniffer
         },
         :too_many_steps => {
             :enabled => true,
-            :phrase => "Scenario with too many steps.",
+            :phrase => "{class} with too many steps.",
             :score => WARNING,
             :max => 7,
         },
@@ -130,7 +130,7 @@ module CukeSniffer
         },
         :multiple_given_when_then => {
             :enabled => true,
-            :phrase => "Given/When/Then used multiple times in the same scenario.",
+            :phrase => "Given/When/Then used multiple times in the same {class}.",
             :score => WARNING,
         },
         :no_code => {
@@ -176,10 +176,10 @@ module CukeSniffer
             :max => 2
         },
         :large_sleep => {
-        :enabled => true,
-        :phrase => "Large sleeps used. Use a wait_until like method.",
-        :score => INFO,
-        :min => 2
+            :enabled => true,
+            :phrase => "Large sleeps used. Use a wait_until like method.",
+            :score => INFO,
+            :min => 2
         },
         :todo => {
             :enabled => true,
