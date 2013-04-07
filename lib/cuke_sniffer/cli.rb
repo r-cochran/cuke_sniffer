@@ -248,10 +248,14 @@ module CukeSniffer
       steps = {}
       examples = scenario.examples_table
       variable_list = extract_variables_from_example(examples.first)
-      (1...examples.size).each do |counter|
-        row_variables = extract_variables_from_example(examples[counter])
+      (1...examples.size).each do |example_counter|
+        row_variables = extract_variables_from_example(examples[example_counter])
+        step_counter = 1
         scenario.steps.each do |step|
-          steps["#{scenario.location}(Example #{counter})"] = build_updated_step_from_example(step, variable_list, row_variables)
+          step_line = scenario.start_line + step_counter
+          location = "#{scenario.location.gsub(/\d+$/, step_line.to_s)}(Example #{example_counter})"
+          steps[location] = build_updated_step_from_example(step, variable_list, row_variables)
+          step_counter += 1
         end
       end
       steps

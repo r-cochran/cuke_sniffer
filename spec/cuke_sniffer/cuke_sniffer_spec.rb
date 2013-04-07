@@ -255,4 +255,45 @@ describe CukeSniffer do
     cuke_sniffer.get_dead_steps.should == {:total => 0}
     File.delete(my_feature_file)
   end
+
+  it "should not consider step definitions that are only dynamically built from outlines to be dead step definitions. Complex case." do
+    my_feature_file = "temp.feature"
+    file = File.open(my_feature_file, "w")
+    file.puts "Feature: Temp"
+    file.puts ""
+    file.puts "Scenario Outline: Testing scenario outlines capturing all steps"
+    file.puts "Given hello <name>"
+    file.puts "And <name> returns my greeting"
+    file.puts "Examples:"
+    file.puts "|name|"
+    file.puts "|John|"
+    file.puts "|Bill|"
+    file.close
+
+    feature = CukeSniffer::Feature.new(my_feature_file)
+
+    raw_code = ["Given /^hello John$/ do",
+                "end"]
+    john_step_definition = CukeSniffer::StepDefinition.new("location.rb:1", raw_code)
+
+    raw_code = ["Given /^John returns my greeting$/ do",
+                "end"]
+    john_reply_step_definition = CukeSniffer::StepDefinition.new("location.rb:1", raw_code)
+
+    raw_code = ["Given /^hello Bill$/ do",
+                "end"]
+    bill_step_definition = CukeSniffer::StepDefinition.new("location.rb:3", raw_code)
+
+    raw_code = ["Given /^Bill returns my greeting$/ do",
+                "end"]
+    bill_reply_step_definition = CukeSniffer::StepDefinition.new("location.rb:1", raw_code)
+
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
+    cuke_sniffer.features = [feature]
+    cuke_sniffer.step_definitions = [john_step_definition, john_reply_step_definition, bill_step_definition, bill_reply_step_definition]
+
+    cuke_sniffer.catalog_step_calls
+    cuke_sniffer.get_dead_steps.should == {:total => 0}
+    File.delete(my_feature_file)
+  end
 end
