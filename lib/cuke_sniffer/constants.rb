@@ -8,7 +8,7 @@ module CukeSniffer
 
     SCENARIO_TITLE_STYLES = /(?<type>Background|Scenario|Scenario Outline|Scenario Template):\s*/
 
-    STEP_STYLES = /(?<style>Given|When|Then|And|Or|But|Transform|\*)\s/
+    STEP_STYLES = /(?<style>Given|When|Then|And|Or|But|Transform|\*)\s+/
     STEP_REGEX = /^#{COMMENT_REGEX}#{STEP_STYLES}(?<step_string>.*)/
     STEP_DEFINITION_REGEX = /^#{STEP_STYLES}\/(?<step>.+)\/\sdo\s?(\|(?<parameters>.*)\|)?$/
 

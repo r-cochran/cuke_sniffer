@@ -296,4 +296,27 @@ describe CukeSniffer do
     cuke_sniffer.get_dead_steps.should == {:total => 0}
     File.delete(my_feature_file)
   end
+
+  it "should disregard multiple white space between the Given/When/Then and the actual content of the step when cataloging step definitions and should not be considered a dead step" do
+    my_feature_file = "temp.feature"
+    file = File.open(my_feature_file, "w")
+    file.puts "Feature: Temp"
+    file.puts "Scenario: white space"
+    file.puts "Given     blarg"
+    file.close
+
+    feature = CukeSniffer::Feature.new(my_feature_file)
+
+    raw_code = ["Given /^blarg$/ do",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location.rb:3", raw_code)
+
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
+    cuke_sniffer.features = [feature]
+    cuke_sniffer.step_definitions = [step_definition]
+
+    cuke_sniffer.catalog_step_calls
+    cuke_sniffer.get_dead_steps.should == {:total => 0}
+    File.delete(my_feature_file)
+  end
 end
