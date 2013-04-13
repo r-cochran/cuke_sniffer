@@ -16,9 +16,9 @@ Gem::Specification.new do |s|
              "lib/cuke_sniffer/step_definition.rb",
              "lib/cuke_sniffer/report/markup.rhtml",
              "lib/cuke_sniffer/cli.rb",
-             "bin/cuke_sniffer.rb"
-             ]
+             "bin/cuke_sniffer"
+  ]
   s.homepage = 'https://github.com/r-cochran/cuke_sniffer'
   s.add_runtime_dependency 'roxml'
-  s.executables = ["cuke_sniffer.rb"]
+  s.executables = ["cuke_sniffer"]
 end
