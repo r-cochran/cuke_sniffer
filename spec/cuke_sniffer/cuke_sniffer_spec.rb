@@ -133,6 +133,28 @@ describe CukeSniffer do
     File.delete(file_name)
   end
 
+  it "should identify possibly dead step definitions" do
+    lines = ["Given /^I am a possibly dead step$/ do",
+             "",
+             "end",
+             "Given /^This step has a passed in \"parameter\"$/ do |expression|",
+             "steps %Q{Given I am a possibly \#{expression} step}",
+             "end"]
+    file_name = "possibly_dead_steps.rb"
+    file = File.open(file_name, "w")
+    lines.each{|line| file.puts(line)}
+    file.close
+
+    cuke_sniffer = CukeSniffer::CLI.new(nil, Dir.getwd)
+    File.delete(file_name)
+
+    cuke_sniffer.step_definitions[1].add_call("hello", "world")
+
+    converted_steps_with_expressions = cuke_sniffer.convert_steps_with_expressions(cuke_sniffer.get_steps_with_expressions(cuke_sniffer.get_all_steps))
+    cuke_sniffer.catalog_possible_dead_steps(converted_steps_with_expressions)
+    cuke_sniffer.step_definitions[0].calls.should_not == {}
+  end
+
   it "should read every line of multiple step definition and segment those lines into steps." do
     cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
     file_name = "my_steps.rb"
@@ -319,4 +341,25 @@ describe CukeSniffer do
     cuke_sniffer.get_dead_steps.should == {:total => 0}
     File.delete(my_feature_file)
   end
+
+  it "should capture all of the step calls with inserted expressions for later checking" do
+    raw_code = ["Given /^This step has a passed in \"parameter\"$/ do |expression|",
+                "steps %Q{And this step has an \#{expression}}",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location.rb:1", raw_code)
+
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
+    cuke_sniffer.step_definitions = [step_definition]
+    all_steps = cuke_sniffer.get_all_steps
+    steps_with_expressions = cuke_sniffer.get_steps_with_expressions(all_steps)
+    steps_with_expressions.should == {"location.rb:2" => "this step has an \#{expression}"}
+  end
+
+  it "should convert steps that have expressions into regular expressions" do
+    steps_with_expressions = {"location.rb:1" => "step with an \#{expression}", "location.rb:2" => "another step with an \#{expression} and another \#{expression}"}
+
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
+    cuke_sniffer.convert_steps_with_expressions(steps_with_expressions).values.should == [/^step with an .*$/, /^another step with an .* and another .*$/]
+  end
+
 end

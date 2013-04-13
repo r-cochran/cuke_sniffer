@@ -53,6 +53,8 @@ module CukeSniffer
         case line
           when SIMPLE_NESTED_STEP_REGEX
             regex = SIMPLE_NESTED_STEP_REGEX
+          when SAME_LINE_COMPLEX_STEP_REGEX
+            regex = SAME_LINE_COMPLEX_STEP_REGEX
           when START_COMPLEX_WITH_STEP_REGEX
             if line =~ /\}$/
               if line.include?('#{')
@@ -71,8 +73,6 @@ module CukeSniffer
               multi_line_step_flag = true
               regex = START_COMPLEX_WITH_STEP_REGEX
             end
-          when SAME_LINE_COMPLEX_STEP_REGEX
-            regex = SAME_LINE_COMPLEX_STEP_REGEX
           when END_COMPLEX_WITH_STEP_REGEX
             if line =~ /[#]{.*}$/ && multi_line_step_flag
               regex = STEP_REGEX
@@ -90,17 +90,6 @@ module CukeSniffer
         end
 
         if regex and is_comment?(line) == false
-          index = 0
-          while line.include?('#{') and index <= line.length
-            index = line.index('#{')
-            replace_string = ""
-            while index <= line.length and line[index - 1] != "}"
-              replace_string << line[index]
-              index += 1
-            end
-            line.gsub!(replace_string, "variable")
-          end
-
           match = regex.match(line)
           nested_step_line = (@start_line + counter)
           @nested_steps[location.gsub(/:\d*/, ":" + nested_step_line.to_s)] = match[:step_string]

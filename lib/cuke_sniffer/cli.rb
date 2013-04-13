@@ -296,9 +296,30 @@ module CukeSniffer
       @step_definitions.each do |step_definition|
         print '.'
         calls = steps.find_all { |location, step| step.gsub(STEP_STYLES, "") =~ step_definition.regex }
-        calls.each { |call|
-          step_definition.add_call(call[0], call[1].gsub(STEP_STYLES, ""))
-        }
+        calls.each { |call| step_definition.add_call(call[0], call[1].gsub(STEP_STYLES, "")) }
+      end
+
+    end
+
+    def get_steps_with_expressions(steps)
+      steps_with_expressions = {}
+      steps.each do |step_location, step_value|
+        if step_value =~ /\#{.*}/
+          steps_with_expressions[step_location] = step_value
+        end
+      end
+      steps_with_expressions
+    end
+
+    def catalog_possible_dead_steps(steps_with_expressions)
+      @step_definitions.each do |step_definition|
+        next unless step_definition.calls.empty?
+        regex_as_string = step_definition.regex.to_s.gsub(/\(\?-mix:\^?/, "").gsub(/\$\)$/, "")
+        steps_with_expressions.each do |step_location, step_value|
+          if regex_as_string =~ step_value
+            step_definition.add_call(step_location, step_value)
+          end
+        end
       end
     end
 
@@ -351,6 +372,15 @@ module CukeSniffer
         file << doc.serialize
       end
 
+    end
+
+    def convert_steps_with_expressions(steps_with_expressions)
+      step_regexs = {}
+      steps_with_expressions.each do |step_location, step_value|
+        modified_step = step_value.gsub(/\#{[^}]*}/, '.*')
+        step_regexs[step_location] = Regexp.new('^' + modified_step + '$')
+      end
+      step_regexs
     end
   end
 end
