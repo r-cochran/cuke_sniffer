@@ -6,6 +6,8 @@ A ruby library used to root out smells in your cukes. Tailored for identifying c
 
 [Patch Notes] (https://github.com/r-cochran/cuke_sniffer/wiki/Patch-notes)
 
+[Release 1 Tracking Board] (https://trello.com/board/cuke-sniffer/51635ebc2a64e41173017526)
+
 Installation
 -----------
 
