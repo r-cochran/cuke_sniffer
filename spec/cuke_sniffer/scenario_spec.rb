@@ -849,4 +849,14 @@ describe "BackgroundRules" do
     background = CukeSniffer::Scenario.new("location:1", background_block)
     validate_rule(background, RULES[:multiple_given_when_then])
   end
+
+  it "should punish Backgrounds that have tags" do
+    background_block = [
+        "@tag",
+        "Background: I am a background",
+        "Given I am a step",
+    ]
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    validate_rule(background, RULES[:background_with_tag])
+  end
 end

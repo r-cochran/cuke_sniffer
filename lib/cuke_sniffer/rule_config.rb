@@ -195,6 +195,11 @@ module CukeSniffer
             :enabled => true,
             :phrase => "Tag appears on all scenarios: ",
             :score => WARNING,
+        },
+        :background_with_tag => {
+            :enabled => true,
+            :phrase => "There is a background with a tag. This feature file cannot run!",
+            :score => FATAL
         }
     }
 

@@ -56,7 +56,12 @@ module CukeSniffer
 
     def rule_long_name(type)
       rule = RULES[:long_name]
-      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type))  if name.size >= rule[:max]
+      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if name.size >= rule[:max]
+    end
+
+    def rule_tagged_background(type)
+      rule = RULES[:background_with_tag]
+      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if tags.size > 0
     end
 
     def == (comparison_object)

@@ -76,6 +76,7 @@ module CukeSniffer
       if type == "Background"
         rule_numbers_in_name(type)
         rule_long_name(type)
+        rule_tagged_background(type)
       else
         super
         rule_step_order
@@ -183,6 +184,5 @@ module CukeSniffer
         store_rule(RULES[:commented_example]) if is_comment?(example)
       end
     end
-
   end
 end
