@@ -211,5 +211,10 @@ module CukeSniffer
         store_rule(RULES[:commented_example]) if is_comment?(example)
       end
     end
+
+    def rule_tagged_background(type)
+      rule = RULES[:background_with_tag]
+      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if tags.size > 0
+    end
   end
 end
