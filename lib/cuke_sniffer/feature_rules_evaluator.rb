@@ -3,17 +3,36 @@ require 'cuke_sniffer/rule_config'
 require 'cuke_sniffer/rules_evaluator'
 
 module CukeSniffer
-  class FeatureRulesEvaluator < RulesEvaluator
-    include CukeSniffer::Constants
-    include CukeSniffer::RuleConfig
-    
-    attr_accessor :tags, :name
 
+  # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
+  # Copyright:: Copyright (C) 2013 Robert Cochran
+  # License::   Distributes under the MIT License
+
+  # Parent class for Feature and Scenario objects
+  # holds shared attributes and rules.
+  # Extends CukeSniffer::RulesEvaluator
+  class FeatureRulesEvaluator < RulesEvaluator
+
+    # string array: Contains all tags attached to a Feature or Scenario
+    attr_accessor :tags
+
+    # string: Name of the Feature or Scenario
+    attr_accessor :name
+
+    # Location must be in the format of "file_path\file_name.rb:line_number"
     def initialize(location)
       @name = ""
       @tags = []
       super(location)
     end
+
+    def == (comparison_object) # :nodoc:
+      super(comparison_object)
+      comparison_object.name == name
+      comparison_object.tags == tags
+    end
+
+    private
 
     def create_name(line, filter)
       line.gsub!(/#{COMMENT_REGEX}#{filter}/, "")
@@ -62,12 +81,6 @@ module CukeSniffer
     def rule_tagged_background(type)
       rule = RULES[:background_with_tag]
       store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if tags.size > 0
-    end
-
-    def == (comparison_object)
-      super(comparison_object)
-      comparison_object.name == name
-      comparison_object.tags == tags
     end
 
   end

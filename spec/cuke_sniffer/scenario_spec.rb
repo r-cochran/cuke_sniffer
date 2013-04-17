@@ -113,8 +113,6 @@ describe CukeSniffer::Scenario do
         "Scenario: Test Scenario with empty scenario rule firing",
     ]
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.score = 0
-    scenario.evaluate_score
     scenario.score.should > 0
   end
 
@@ -123,8 +121,6 @@ describe CukeSniffer::Scenario do
         "Scenario: Test Scenario to fire empty scenario rule",
     ]
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.rules_hash = {}
-    scenario.evaluate_score
     scenario.rules_hash.should_not == {}
   end
 

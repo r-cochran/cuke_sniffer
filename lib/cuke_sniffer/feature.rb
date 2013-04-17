@@ -1,19 +1,33 @@
 module CukeSniffer
+
+  # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
+  # Copyright:: Copyright (C) 2013 Robert Cochran
+  # License::   Distributes under the MIT License
+
+  # Handles feature files and disassembles and evaluates
+  # its components.
   class Feature < FeatureRulesEvaluator
-    include CukeSniffer::Constants
-    include CukeSniffer::RuleConfig
-    include ROXML
 
     xml_accessor :scenarios, :as => [CukeSniffer::FeatureRulesEvaluator], :in => "scenarios"
 
-    SCENARIO_TITLE_REGEX = /#{COMMENT_REGEX}#{SCENARIO_TITLE_STYLES}(?<name>.*)/
+    SCENARIO_TITLE_REGEX = /#{COMMENT_REGEX}#{SCENARIO_TITLE_STYLES}(?<name>.*)/ # :nodoc:
 
-    attr_accessor :background, :scenarios, :scenarios_score,:total_score
+    # Scenario: The background of a Feature, created as a Scenario object
+    attr_accessor :background
 
+    # Scenario array: A list of all scenarios contained in a feature file
+    attr_accessor :scenarios
+
+    # int: Total score from all of the scenarios contained in the feature
+    attr_accessor :scenarios_score
+
+    # int: Total score of the feature and its scenarios
+    attr_accessor :total_score
+
+    # file_name must be in the format of "file_path\file_name.feature"
     def initialize(file_name)
       super(file_name)
       @scenarios = []
-      @RULES_hash = {}
       @scenarios_score = 0
       @total_score = 0
       feature_lines = extract_feature_from_file(file_name)
@@ -24,6 +38,13 @@ module CukeSniffer
         evaluate_score
       end
     end
+
+    def ==(comparison_object) # :nodoc:
+      super(comparison_object)
+      comparison_object.scenarios == scenarios
+    end
+
+    private
 
     def extract_feature_from_file(file_name)
       feature_lines = []
@@ -75,22 +96,6 @@ module CukeSniffer
       end
     end
 
-    def feature_applied_scenario_rules(scenario)
-      rule_feature_same_tags(scenario)
-    end
-
-    def rule_feature_same_tags(scenario)
-      rule = RULES[:feature_same_tag]
-      tags.each{|tag|
-        scenario.store_updated_rule(rule, rule[:phrase] += tag) if scenario.tags.include?(tag)
-      }
-    end
-
-    def ==(comparison_object)
-      super(comparison_object)
-      comparison_object.scenarios == scenarios
-    end
-
     def evaluate_score
       super
       rule_no_scenarios
@@ -100,6 +105,17 @@ module CukeSniffer
       rule_scenario_same_tag
       get_scenarios_score
       @total_score = score + @scenarios_score
+    end
+
+    def feature_applied_scenario_rules(scenario)
+      rule_feature_same_tags(scenario)
+    end
+
+    def rule_feature_same_tags(scenario)
+      rule = RULES[:feature_same_tag]
+      tags.each{|tag|
+        scenario.store_updated_rule(rule, rule[:phrase] + tag) if scenario.tags.include?(tag)
+      }
     end
 
     def rule_scenario_same_tag

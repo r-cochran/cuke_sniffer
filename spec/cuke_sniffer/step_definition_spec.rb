@@ -124,8 +124,6 @@ describe CukeSniffer::StepDefinition do
     raw_code = ["Given /^step with no code$/ do",
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    step_definition.score = 0
-    step_definition.evaluate_score
     step_definition.score.should > 0
   end
 
@@ -133,8 +131,6 @@ describe CukeSniffer::StepDefinition do
     raw_code = ["Given /^step with no code$/ do",
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    step_definition.rules_hash = {}
-    step_definition.evaluate_score
     step_definition.rules_hash.should_not == {}
   end
 

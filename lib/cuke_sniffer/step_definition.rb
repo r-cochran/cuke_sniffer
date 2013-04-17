@@ -1,8 +1,12 @@
 require 'roxml'
 module CukeSniffer
+
+  # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
+  # Copyright:: Copyright (C) 2013 Robert Cochran
+  # License::   Distributes under the MIT License
+
+  # Translates and evaluates Cucumber step definitions
   class StepDefinition < RulesEvaluator
-    include CukeSniffer::Constants
-    include CukeSniffer::RuleConfig
 
     xml_accessor :start_line
     xml_accessor :regex
@@ -11,13 +15,34 @@ module CukeSniffer
     xml_accessor :calls, :as => {:key => 'location', :value => 'call'}, :in => "calls"
     xml_accessor :code, :as => [], :in => "code"
 
-    SIMPLE_NESTED_STEP_REGEX = /steps?\s"#{STEP_STYLES}(?<step_string>.*)"$/
-    START_COMPLEX_STEP_REGEX = /^steps?\s%(q|Q)?\{\s*/
-    SAME_LINE_COMPLEX_STEP_REGEX = /#{START_COMPLEX_STEP_REGEX}#{STEP_STYLES}(?<step_string>.*)}$/
-    END_COMPLEX_STEP_REGEX = /}$/
-    START_COMPLEX_WITH_STEP_REGEX = /#{START_COMPLEX_STEP_REGEX}#{STEP_STYLES}(?<step_string>.*)$/
-    END_COMPLEX_WITH_STEP_REGEX = /#{STEP_STYLES}(?<step_string>.*)}$/
+    # int: Line on which a step definition starts
+    attr_accessor :start_line
 
+    # Regex: Regex that cucumber uses to match step calls
+    attr_accessor :regex
+
+    # string arra: List of the parameters a step definition has
+    attr_accessor :parameters
+
+    # hash:
+    # * Key: location:line of the nested step
+    # * Value: The step call that appears on the line
+    attr_accessor :nested_steps
+
+    # hash:
+    # * Key: Location in which the step definition is called from
+    # * Value: The step string that matched the regex
+    # In the case of a fuzzy match it will be a regex of the
+    # step call that was the inverse match of the regex translated
+    # into a string.
+    attr_accessor :calls
+
+    # string array: List of all of the content between the regex and the end of the step definition.
+    attr_accessor :code
+
+    # location must be in the format of "file_path\file_name.rb:line_number"
+    # raw_code is an array of strings that represents the step definition
+    # must contain the regex line and its pairing end
     def initialize(location, raw_code)
       super(location)
 
@@ -41,9 +66,28 @@ module CukeSniffer
       evaluate_score
     end
 
+    # Adds new location => step_string pairs to the calls hash
     def add_call(location, step_string)
       @calls[location] = step_string
     end
+
+    def ==(comparison_object) # :nodoc:
+      super(comparison_object)
+      comparison_object.regex == regex
+      comparison_object.code == code
+      comparison_object.parameters == parameters
+      comparison_object.calls == calls
+      comparison_object.nested_steps == nested_steps
+    end
+
+    private
+
+    SIMPLE_NESTED_STEP_REGEX = /steps?\s"#{STEP_STYLES}(?<step_string>.*)"$/ # :nodoc:
+    START_COMPLEX_STEP_REGEX = /^steps?\s%(q|Q)?\{\s*/ # :nodoc:
+    SAME_LINE_COMPLEX_STEP_REGEX = /#{START_COMPLEX_STEP_REGEX}#{STEP_STYLES}(?<step_string>.*)}$/ # :nodoc:
+    END_COMPLEX_STEP_REGEX = /}$/ # :nodoc:
+    START_COMPLEX_WITH_STEP_REGEX = /#{START_COMPLEX_STEP_REGEX}#{STEP_STYLES}(?<step_string>.*)$/ # :nodoc:
+    END_COMPLEX_WITH_STEP_REGEX = /#{STEP_STYLES}(?<step_string>.*)}$/ # :nodoc:
 
     def detect_nested_steps
       multi_line_step_flag = false
@@ -105,15 +149,6 @@ module CukeSniffer
         condensed_list[step_string] << call
       }
       condensed_list
-    end
-
-    def ==(comparison_object)
-      super(comparison_object)
-      comparison_object.regex == regex
-      comparison_object.code == code
-      comparison_object.parameters == parameters
-      comparison_object.calls == calls
-      comparison_object.nested_steps == nested_steps
     end
 
     def evaluate_score

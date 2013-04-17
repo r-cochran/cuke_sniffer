@@ -1,10 +1,28 @@
 module CukeSniffer
+
+  # Contains the rules and various scores used in evaluating objects
   module RuleConfig
 
-    FATAL = 100 #will prevent suite from executing properly
-    ERROR = 25 #will cause problem with debugging
-    WARNING = 10 #readibility/misuse of cucumber
-    INFO = 1 #Small improvements that can be made
+    # Will prevent suite from executing properly
+    FATAL = 100
+
+    # Will cause problem with debugging
+    ERROR = 25
+
+    # Readability/misuse of cucumber
+    WARNING = 10
+
+    # Small improvements that can be made
+    INFO = 1
+
+    # Master hash used for rule data
+    # * +:enabled+
+    # * +:phrase+
+    # * +:score+
+    # Optional:
+    # * +:words+
+    # * +:max+
+    # * +:min+
 
     RULES = {
         :too_many_tags => {
