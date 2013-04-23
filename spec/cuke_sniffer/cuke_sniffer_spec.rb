@@ -156,7 +156,6 @@ describe CukeSniffer do
   end
 
   it "should read every line of multiple step definition and segment those lines into steps." do
-    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
     file_name = "my_steps.rb"
     file = File.open(file_name, "w")
     file.puts("Given /^I am a step$/ do")
@@ -171,14 +170,13 @@ describe CukeSniffer do
     file.puts("end")
     file.close
 
-    steps_array = cuke_sniffer.build_step_definitions(file_name)
-    steps_array.count.should == 2
+    cuke_sniffer = CukeSniffer::CLI.new(nil, file_name)
+    cuke_sniffer.step_definitions.count.should == 2
 
     File.delete(file_name)
   end
 
   it "should create a list of step definition objects from a step definition file." do
-    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
     file_name = "my_steps.rb"
     file = File.open(file_name, "w")
     file.puts("Given /^I am a step$/ do")
@@ -189,7 +187,8 @@ describe CukeSniffer do
     expected_step_definitions = [
         CukeSniffer::StepDefinition.new("my_steps.rb:0", ["Given /^I am a step$/ do", "puts 'stuff'", "end"])
     ]
-    step_definitions = cuke_sniffer.build_step_definitions(file_name)
+    cuke_sniffer = CukeSniffer::CLI.new(nil, file_name)
+    step_definitions = cuke_sniffer.step_definitions
 
     step_definitions.should == expected_step_definitions
     File.delete(file_name)

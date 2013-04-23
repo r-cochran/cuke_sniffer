@@ -76,6 +76,132 @@ module CukeSniffer
       @step_definitions_summary = load_summary_data(@summary[:step_definitions])
     end
 
+    def good?
+      @summary[:total_score] <= Constants::THRESHOLDS["Project"]
+    end
+
+    def problem_percentage
+      @summary[:total_score].to_f / Constants::THRESHOLDS["Project"].to_f
+    end
+
+    def output_results
+      feature_results = @summary[:features]
+      step_definition_results = @summary[:step_definitions]
+      output = "Suite Summary
+  Total Score: #{@summary[:total_score]}
+    Features (#@features_location)
+      Min: #{feature_results[:min]} (#{feature_results[:min_file]})
+      Max: #{feature_results[:max]} (#{feature_results[:max_file]})
+      Average: #{feature_results[:average]}
+    Step Definitions (#@step_definitions_location)
+      Min: #{step_definition_results[:min]} (#{step_definition_results[:min_file]})
+      Max: #{step_definition_results[:max]} (#{step_definition_results[:max_file]})
+      Average: #{step_definition_results[:average]}
+  Improvements to make:"
+      create_improvement_list.each { |item| output << "\n    #{item}" }
+      output
+    end
+
+    def output_html(file_name = "cuke_sniffer_results.html", cuke_sniffer = self)
+      @features = @features.sort_by { |feature| feature.total_score }.reverse
+      @step_definitions = @step_definitions.sort_by { |step_definition| step_definition.score }.reverse
+
+      markup_erb = ERB.new extract_markup
+      output = markup_erb.result(binding)
+      File.open(file_name, 'w') do |f|
+        f.write(output)
+      end
+    end
+
+    def output_xml(file_name = "cuke_sniffer.xml")
+      doc = Nokogiri::XML::Document.new
+      doc.root = self.to_xml
+      open(file_name, "w") do |file|
+        file << doc.serialize
+      end
+    end
+
+    def get_dead_steps
+      dead_steps_hash = {}
+      @step_definitions.each do |step_definition|
+        location_match = step_definition.location.match(/(?<file>.*).rb:(?<line>\d+)/)
+        file_name = location_match[:file]
+        regex = step_definition.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex]
+        dead_steps_hash[file_name] ||= []
+        dead_steps_hash[file_name] << "#{location_match[:line]}: /#{regex}/" if step_definition.calls.empty?
+      end
+      total = 0
+      dead_steps_hash.each_key do |key|
+        unless dead_steps_hash[key] == []
+          total += dead_steps_hash[key].size
+          dead_steps_hash[key].sort_by! { |row| row[/^\d+/].to_i }
+        else
+          dead_steps_hash.delete(key)
+        end
+      end
+      dead_steps_hash[:total] = total
+      dead_steps_hash
+    end
+
+    def catalog_step_calls
+      steps = get_all_steps
+      @step_definitions.each do |step_definition|
+        print '.'
+        calls = steps.find_all { |location, step| step.gsub(STEP_STYLES, "") =~ step_definition.regex }
+        calls.each { |call| step_definition.add_call(call[0], call[1].gsub(STEP_STYLES, "")) }
+      end
+    end
+
+    def convert_steps_with_expressions(steps_with_expressions)
+      step_regexs = {}
+      steps_with_expressions.each do |step_location, step_value|
+        modified_step = step_value.gsub(/\#{[^}]*}/, '.*')
+        step_regexs[step_location] = Regexp.new('^' + modified_step + '$')
+      end
+      step_regexs
+    end
+
+    def assess_score
+      @summary[:features] = assess_array(@features, "Feature")
+      @summary[:scenarios] = assess_array(@scenarios, "Scenario")
+      @summary[:step_definitions] = assess_array(@step_definitions, "StepDefinition") unless @step_definitions.empty?
+      sort_improvement_list
+    end
+
+    def get_all_steps
+      feature_steps = extract_steps_from_features
+      step_definition_steps = extract_steps_from_step_definitions
+      feature_steps.merge step_definition_steps
+    end
+
+    def get_steps_with_expressions(steps)
+      steps_with_expressions = {}
+      steps.each do |step_location, step_value|
+        if step_value =~ /\#{.*}/
+          steps_with_expressions[step_location] = step_value
+        end
+      end
+      steps_with_expressions
+    end
+
+    def catalog_possible_dead_steps(steps_with_expressions)
+      @step_definitions.each do |step_definition|
+        next unless step_definition.calls.empty?
+        regex_as_string = step_definition.regex.to_s.gsub(/\(\?-mix:\^?/, "").gsub(/\$\)$/, "")
+        steps_with_expressions.each do |step_location, step_value|
+          if regex_as_string =~ step_value
+            step_definition.add_call(step_location, step_value)
+          end
+        end
+      end
+    end
+
+    def extract_variables_from_example(example)
+      example.split(/\s*\|\s*/) - [""]
+    end
+
+    private
+
     def load_summary_data(summary_hash)
       summary_node = SummaryNode.new
       summary_node.count = summary_hash[:total]
@@ -85,14 +211,6 @@ module CukeSniffer
       summary_node.good = summary_hash[:good]
       summary_node.bad = summary_hash[:bad]
       summary_node
-    end
-
-    def good?
-      @summary[:total_score] <= Constants::THRESHOLDS["Project"]
-    end
-
-    def problem_percentage
-      @summary[:total_score].to_f / Constants::THRESHOLDS["Project"].to_f
     end
 
     def build_file_list_from_folder(folder_name, extension)
@@ -170,13 +288,6 @@ module CukeSniffer
       }
     end
 
-    def assess_score
-      @summary[:features] = assess_array(@features, "Feature")
-      @summary[:scenarios] = assess_array(@scenarios, "Scenario")
-      @summary[:step_definitions] = assess_array(@step_definitions, "StepDefinition") unless @step_definitions.empty?
-      sort_improvement_list
-    end
-
     def get_all_scenarios(features)
       scenarios = []
       features.each do |feature|
@@ -192,24 +303,6 @@ module CukeSniffer
       sorted_array.reverse.each { |node|
         @summary[:improvement_list][node[0]] = node[1]
       }
-    end
-
-    def output_results
-      feature_results = @summary[:features]
-      step_definition_results = @summary[:step_definitions]
-      output = "Suite Summary
-  Total Score: #{@summary[:total_score]}
-    Features (#@features_location)
-      Min: #{feature_results[:min]} (#{feature_results[:min_file]})
-      Max: #{feature_results[:max]} (#{feature_results[:max_file]})
-      Average: #{feature_results[:average]}
-    Step Definitions (#@step_definitions_location)
-      Min: #{step_definition_results[:min]} (#{step_definition_results[:min_file]})
-      Max: #{step_definition_results[:max]} (#{step_definition_results[:max_file]})
-      Average: #{step_definition_results[:average]}
-  Improvements to make:"
-      create_improvement_list.each { |item| output << "\n    #{item}" }
-      output
     end
 
     def create_improvement_list
@@ -271,10 +364,6 @@ module CukeSniffer
       new_step
     end
 
-    def extract_variables_from_example(example)
-      example.split(/\s*\|\s*/) - [""]
-    end
-
     def extract_steps_from_step_definitions
       steps = {}
       @step_definitions.each do |definition|
@@ -283,66 +372,6 @@ module CukeSniffer
         end
       end
       steps
-    end
-
-    def get_all_steps
-      feature_steps = extract_steps_from_features
-      step_definition_steps = extract_steps_from_step_definitions
-      feature_steps.merge step_definition_steps
-    end
-
-    def catalog_step_calls
-      steps = get_all_steps
-      @step_definitions.each do |step_definition|
-        print '.'
-        calls = steps.find_all { |location, step| step.gsub(STEP_STYLES, "") =~ step_definition.regex }
-        calls.each { |call| step_definition.add_call(call[0], call[1].gsub(STEP_STYLES, "")) }
-      end
-
-    end
-
-    def get_steps_with_expressions(steps)
-      steps_with_expressions = {}
-      steps.each do |step_location, step_value|
-        if step_value =~ /\#{.*}/
-          steps_with_expressions[step_location] = step_value
-        end
-      end
-      steps_with_expressions
-    end
-
-    def catalog_possible_dead_steps(steps_with_expressions)
-      @step_definitions.each do |step_definition|
-        next unless step_definition.calls.empty?
-        regex_as_string = step_definition.regex.to_s.gsub(/\(\?-mix:\^?/, "").gsub(/\$\)$/, "")
-        steps_with_expressions.each do |step_location, step_value|
-          if regex_as_string =~ step_value
-            step_definition.add_call(step_location, step_value)
-          end
-        end
-      end
-    end
-
-    def get_dead_steps
-      dead_steps_hash = {}
-      @step_definitions.each do |step_definition|
-        location_match = step_definition.location.match(/(?<file>.*).rb:(?<line>\d+)/)
-        file_name = location_match[:file]
-        regex = step_definition.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex]
-        dead_steps_hash[file_name] ||= []
-        dead_steps_hash[file_name] << "#{location_match[:line]}: /#{regex}/" if step_definition.calls.empty?
-      end
-      total = 0
-      dead_steps_hash.each_key do |key|
-        unless dead_steps_hash[key] == []
-          total += dead_steps_hash[key].size
-          dead_steps_hash[key].sort_by! { |row| row[/^\d+/].to_i }
-        else
-          dead_steps_hash.delete(key)
-        end
-      end
-      dead_steps_hash[:total] = total
-      dead_steps_hash
     end
 
     def extract_markup
@@ -354,33 +383,5 @@ module CukeSniffer
       markup
     end
 
-    def output_html(file_name = "cuke_sniffer_results.html", cuke_sniffer = self)
-      @features = @features.sort_by { |feature| feature.total_score }.reverse
-      @step_definitions = @step_definitions.sort_by { |step_definition| step_definition.score }.reverse
-
-      markup_erb = ERB.new extract_markup
-      output = markup_erb.result(binding)
-      File.open(file_name, 'w') do |f|
-        f.write(output)
-      end
-    end
-
-    def output_xml(file_name = "cuke_sniffer.xml")
-      doc = Nokogiri::XML::Document.new
-      doc.root = self.to_xml
-      open(file_name, "w") do |file|
-        file << doc.serialize
-      end
-
-    end
-
-    def convert_steps_with_expressions(steps_with_expressions)
-      step_regexs = {}
-      steps_with_expressions.each do |step_location, step_value|
-        modified_step = step_value.gsub(/\#{[^}]*}/, '.*')
-        step_regexs[step_location] = Regexp.new('^' + modified_step + '$')
-      end
-      step_regexs
-    end
   end
 end
