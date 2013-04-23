@@ -104,6 +104,23 @@ describe CukeSniffer::Feature do
     CukeSniffer::Constants::THRESHOLDS["Feature"] = start_threshold
   end
 
+  it "should should not lose the tags of the first scenario when rules are ran." do
+    lines = [
+        "Feature: I'm a feature with scenarios with identical tags!",
+        "",
+        "@tag",
+        "@a",
+        "@test",
+        "Scenario: Scenario 1",
+        "@tag @a",
+        "Scenario: Scenario 2",
+        "@tag",
+        "Scenario: Scenario 3"
+    ]
+    build_file(lines)
+    feature = CukeSniffer::Feature.new(@file_name)
+    feature.scenarios.first.tags.should == ["@tag", "@a", "@test"]
+  end
 end
 
 describe "FeatureRules" do

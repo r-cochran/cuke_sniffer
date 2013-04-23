@@ -121,7 +121,7 @@ module CukeSniffer
     def rule_scenario_same_tag
       rule = RULES[:scenario_same_tag]
       unless scenarios.empty?
-        base_tag_list = scenarios.first.tags
+        base_tag_list = scenarios.first.tags.clone
         scenarios.each do |scenario|
           base_tag_list.each do |tag|
             base_tag_list.delete(tag) unless scenario.tags.include?(tag)
