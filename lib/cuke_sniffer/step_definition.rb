@@ -136,7 +136,7 @@ module CukeSniffer
         if regex and is_comment?(line) == false
           match = regex.match(line)
           nested_step_line = (@start_line + counter)
-          @nested_steps[location.gsub(/:\d*$/, ":" + nested_step_line.to_s)] = match[:step_string]
+          @nested_steps[location.gsub(/:\d*$/, ":" + nested_step_line.to_s)] = match[:step_string].gsub("\\", "")
         end
         counter += 1
       end
