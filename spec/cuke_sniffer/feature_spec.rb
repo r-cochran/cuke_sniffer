@@ -274,4 +274,18 @@ describe "FeatureRules" do
     feature.rules_hash.include?("Tag appears on all scenarios: @tag3").should be_false
     feature.score.should >= rule[:score]
   end
+
+  it "should punish Features if the description has commas in it." do
+    rule = RULES[:commas_in_description]
+
+    lines = [
+        "Feature: I'm a feature with scenarios with a comma, in the description",
+        "",
+        "Scenario: I am a Scenario"
+    ]
+    build_file(lines)
+    feature = CukeSniffer::Feature.new(@file_name)
+    feature.rules_hash.include?("There are commas in the description, creating possible multirunning scenarios or features.").should be_true
+    feature.score.should >= rule[:score]
+  end
 end

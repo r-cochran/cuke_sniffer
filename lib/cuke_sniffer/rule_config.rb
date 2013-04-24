@@ -218,6 +218,11 @@ module CukeSniffer
             :enabled => true,
             :phrase => "There is a background with a tag. This feature file cannot run!",
             :score => FATAL
+        },
+        :commas_in_description => {
+            :enabled => true,
+            :phrase => "There are commas in the description, creating possible multirunning scenarios or features.",
+            :score => WARNING
         }
     }
 

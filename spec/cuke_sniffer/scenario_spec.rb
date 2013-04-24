@@ -602,6 +602,14 @@ describe "ScenarioRules" do
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, RULES[:multiple_given_when_then])
   end
+
+  it "should punish Scenarios that have commas in its description" do
+    scenario_block = [
+        "Scenario: Scenario with a comma, in its description"
+    ]
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    validate_rule(scenario, RULES[:commas_in_description])
+  end
 end
 
 describe "BackgroundRules" do
