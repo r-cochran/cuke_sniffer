@@ -1,4 +1,4 @@
-cuke_sniffer
+cuke_sniffer [![Build Status](https://travis-ci.org/r-cochran/cuke_sniffer.png?branch=master)](https://travis-ci.org/r-cochran/cuke_sniffer)
 ============
 A ruby library used to root out smells in your cukes. Tailored for identifying critical problems as well as general improvements to your project/features/scenarios/step definitions.
 
