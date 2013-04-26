@@ -86,7 +86,7 @@ describe CukeSniffer do
     feature.each{|line| file.puts line}
     file.close
 
-    cuke_sniffer = CukeSniffer::CLI.new(file_name)
+    cuke_sniffer = CukeSniffer::CLI.new(file_name, nil)
     cuke_sniffer.get_all_steps.values.should == ["Given I am a background", "When I do an action", "Then that action is verified"]
     File.delete(file_name)
   end
