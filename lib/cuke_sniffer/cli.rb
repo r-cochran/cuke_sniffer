@@ -150,15 +150,15 @@ module CukeSniffer
         calls = steps.find_all { |location, step| step.gsub(STEP_STYLES, "") =~ step_definition.regex }
         calls.each { |call| step_definition.add_call(call[0], call[1].gsub(STEP_STYLES, "")) }
       end
+
+      converted_steps = convert_steps_with_expressions(get_steps_with_expressions(steps))
+      catalog_possible_dead_steps(converted_steps)
     end
 
-    def convert_steps_with_expressions(steps_with_expressions)
-      step_regexs = {}
-      steps_with_expressions.each do |step_location, step_value|
-        modified_step = step_value.gsub(/\#{[^}]*}/, '.*')
-        step_regexs[step_location] = Regexp.new('^' + modified_step + '$')
-      end
-      step_regexs
+    private
+
+    def extract_variables_from_example(example)
+      example.split(/\s*\|\s*/) - [""]
     end
 
     def assess_score
@@ -196,11 +196,14 @@ module CukeSniffer
       end
     end
 
-    def extract_variables_from_example(example)
-      example.split(/\s*\|\s*/) - [""]
+    def convert_steps_with_expressions(steps_with_expressions)
+      step_regexs = {}
+      steps_with_expressions.each do |step_location, step_value|
+        modified_step = step_value.gsub(/\#{[^}]*}/, '.*')
+        step_regexs[step_location] = Regexp.new('^' + modified_step + '$')
+      end
+      step_regexs
     end
-
-    private
 
     def load_summary_data(summary_hash)
       summary_node = SummaryNode.new
