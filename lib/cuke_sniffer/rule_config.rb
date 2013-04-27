@@ -223,6 +223,11 @@ module CukeSniffer
             :enabled => true,
             :phrase => "There are commas in the description, creating possible multirunning scenarios or features.",
             :score => WARNING
+        },
+        :comment_after_tag => {
+            :enabled => true,
+            :phrase => "Comment comes between tag and properly executing line. This feature file cannot run!",
+            :score => FATAL
         }
     }
 

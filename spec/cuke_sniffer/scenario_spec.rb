@@ -294,6 +294,13 @@ describe "ScenarioRules" do
     scenario.score.should >= rule[:score]
   end
 
+  #TODO Extract and unify
+  def validate_no_rule(scenario, rule)
+    phrase = rule[:phrase].gsub(/{.*}/, "Scenario")
+
+    scenario.rules_hash.include?(phrase).should be_false
+  end
+
   it "should punish Scenarios without a name" do
     scenario_block = %w(Scenario:)
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
@@ -609,6 +616,29 @@ describe "ScenarioRules" do
     ]
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, RULES[:commas_in_description])
+  end
+
+  it "should punish Scenarios that have a comment on a line after a tag" do
+    scenario_block = [
+        "@tag",
+        "#comment",
+        "     #comment with spaces",
+        "Scenario: Comment after Tag",
+        "Given I am a step"
+    ]
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    validate_rule(scenario, RULES[:comment_after_tag])
+  end
+
+  it "should not punish Scenarios that have a tag with a hash in it" do
+    scenario_block = [
+        "@tag",
+        "@#comment",
+        "Scenario: Comment after Tag",
+        "Given I am a step"
+    ]
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    validate_no_rule(scenario, RULES[:comment_after_tag])
   end
 end
 

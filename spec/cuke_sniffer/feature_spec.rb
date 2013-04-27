@@ -288,4 +288,33 @@ describe "FeatureRules" do
     feature.rules_hash.include?("There are commas in the description, creating possible multirunning scenarios or features.").should be_true
     feature.score.should >= rule[:score]
   end
+
+  it "should punish Features that have a comment on a line after a tag" do
+    rule = RULES[:comment_after_tag]
+
+    lines = [
+        "@tag",
+        "#comment",
+        "     #comment with spaces",
+        "Feature: I'm a feature with a comment after a tag"
+    ]
+    build_file(lines)
+    feature = CukeSniffer::Feature.new(@file_name)
+    feature.rules_hash.include?(rule[:phrase]).should be_true
+    feature.score.should >= rule[:score]
+  end
+
+  it "should not punish Features that have a tag with a hash in it" do
+    rule = RULES[:comment_after_tag]
+
+    lines = [
+        "@tag",
+        "@#comment",
+        "Feature: I'm a feature with a hash symbol in my tag"
+    ]
+    build_file(lines)
+    feature = CukeSniffer::Feature.new(@file_name)
+    feature.rules_hash.include?(rule[:phrase]).should be_false
+    feature.score.should < rule[:score]
+  end
 end
