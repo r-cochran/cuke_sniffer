@@ -7,7 +7,6 @@ module CukeSniffer
   # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
   # Copyright:: Copyright (C) 2013 Robert Cochran
   # License::   Distributes under the MIT License
-
   # Parent class for Feature and Scenario objects
   # holds shared attributes and rules.
   # Extends CukeSniffer::RulesEvaluator

@@ -2,7 +2,6 @@ module CukeSniffer
   # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
   # Copyright:: Copyright (C) 2013 Robert Cochran
   # License::   Distributes under the MIT License
-
   # A collection of constants that are used throughout the gem
   module Constants
 
@@ -17,7 +16,10 @@ module CukeSniffer
 
     # hash: Stores scores to compare against for determining if an object is good
     # * Key: String of the object name
+    #  Project, Feature, Scenario, StepDefinition
     # * Value: Integer of the highest acceptable value an object can have
+    # Customizable for a projects level of acceptable score
+    #  CukeSniffer::Constants::THRESHOLDS["Project"] = 95000
     THRESHOLDS = {
         "Project" => 1000,
         "Feature" => 30,

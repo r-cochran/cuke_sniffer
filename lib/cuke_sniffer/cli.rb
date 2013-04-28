@@ -2,6 +2,11 @@ require 'erb'
 require 'roxml'
 
 module CukeSniffer
+
+  # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
+  # Copyright:: Copyright (C) 2013 Robert Cochran
+  # License::   Distributes under the MIT License
+
   class CLI
     include CukeSniffer::Constants
     include ROXML
@@ -24,8 +29,37 @@ module CukeSniffer
     xml_accessor :features, :as => [CukeSniffer::Feature], :in => "features"
     xml_accessor :step_definitions, :as => [CukeSniffer::StepDefinition], :in => "step_definitions"
 
-    attr_accessor :summary, :features_location, :step_definitions_location, :scenarios
 
+
+    attr_accessor :summary
+    attr_accessor :features_location
+    attr_accessor :step_definitions_location
+    attr_accessor :scenarios
+
+
+    # Does analysis against the passed features and step definition locations
+    #
+    # Can be called in several ways.
+    #
+    #
+    # No argument(assumes current directory is the project)
+    #  cuke_sniffer = CukeSniffer::CLI.new
+    #
+    # Against single files
+    #  cuke_sniffer = CukeSniffer::CLI.new("my_feature.feature", nil)
+    # Or
+    #  cuke_sniffer = CukeSniffer::CLI.new(nil, "my_steps.rb")
+    #
+    #
+    # Against folders
+    #  cuke_sniffer = CukeSniffer::CLI.new("my_features_directory\", "my_steps_directory\")
+    #
+    # You can mix and match all of the above examples
+    #
+    # Displays the sequence and a . indicator for each new loop in that process.
+    # Handles creation of all Feature and StepDefinition objects
+    # Then catalogs all step definition calls to be used for rules and identification
+    # of dead steps.
     def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd)
       @features_location = features_location
       @step_definitions_location = step_definitions_location
@@ -76,14 +110,18 @@ module CukeSniffer
       @step_definitions_summary = load_summary_data(@summary[:step_definitions])
     end
 
+    # Returns the status of the overall project based on a comparison of the score to the threshold score
     def good?
       @summary[:total_score] <= Constants::THRESHOLDS["Project"]
     end
 
+    # Calculates the score to threshold percentage of an object
+    # Return: Float
     def problem_percentage
       @summary[:total_score].to_f / Constants::THRESHOLDS["Project"].to_f
     end
 
+    # Prints out a summary of the results and the list of improvements to be made
     def output_results
       feature_results = @summary[:features]
       step_definition_results = @summary[:step_definitions]
@@ -102,6 +140,11 @@ module CukeSniffer
       output
     end
 
+    # Creates a html file with the collected project details
+    # file_name defaults to "cuke_sniffer_results.html" unless specified
+    #  cuke_sniffer.output_html
+    # Or
+    #  cuke_sniffer.output_html("results01-01-0001.html")
     def output_html(file_name = "cuke_sniffer_results.html", cuke_sniffer = self)
       @features = @features.sort_by { |feature| feature.total_score }.reverse
       @step_definitions = @step_definitions.sort_by { |step_definition| step_definition.score }.reverse
@@ -113,6 +156,11 @@ module CukeSniffer
       end
     end
 
+    # Creates a xml file with the collected project details
+    # file_name defaults to "cuke_sniffer.xml" unless specified
+    #  cuke_sniffer.output_xml
+    # Or
+    #  cuke_sniffer.output_xml("cuke_sniffer01-01-0001.xml")
     def output_xml(file_name = "cuke_sniffer.xml")
       doc = Nokogiri::XML::Document.new
       doc.root = self.to_xml
@@ -121,6 +169,10 @@ module CukeSniffer
       end
     end
 
+    # Gathers all StepDefinitions that have no calls
+    # Returns a hash that has two different types of records
+    # 1: String of the file with a dead step with an array of the line and regex of each dead step
+    # 2: Symbol of :total with an integer that is the total number of dead steps
     def get_dead_steps
       dead_steps_hash = {}
       @step_definitions.each do |step_definition|
@@ -143,6 +195,8 @@ module CukeSniffer
       dead_steps_hash
     end
 
+    # Determines all normal and nested step calls and assigns them to the corresponding step definition.
+    # Does direct and fuzzy matching
     def catalog_step_calls
       steps = get_all_steps
       @step_definitions.each do |step_definition|

@@ -3,7 +3,6 @@ module CukeSniffer
   # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
   # Copyright:: Copyright (C) 2013 Robert Cochran
   # License::   Distributes under the MIT License
-
   # Handles feature files and disassembles and evaluates
   # its components.
   class Feature < FeatureRulesEvaluator

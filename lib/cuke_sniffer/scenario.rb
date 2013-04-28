@@ -3,7 +3,6 @@ module CukeSniffer
   # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
   # Copyright:: Copyright (C) 2013 Robert Cochran
   # License::   Distributes under the MIT License
-
   # This class is a representation of the cucumber objects
   # Background, Scenario, Scenario Outline
   #
