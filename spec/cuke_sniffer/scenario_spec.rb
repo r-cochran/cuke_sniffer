@@ -640,6 +640,16 @@ describe "ScenarioRules" do
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_no_rule(scenario, RULES[:comment_after_tag])
   end
+
+  it "should punish Scenarios that have commented tags" do
+    scenario_block = [
+        "\#tag",
+        "Scenario: Commented tag",
+        "Given I am a step"
+    ]
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    validate_rule(scenario, RULES[:commented_tag])
+  end
 end
 
 describe "BackgroundRules" do
