@@ -42,7 +42,7 @@ describe CukeSniffer do
     raw_code.each{ |line| file.puts line}
     file.close
     cuke_sniffer = CukeSniffer::CLI.new
-    cuke_sniffer.hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "\\hooks.rb:1", raw_code)]
+    cuke_sniffer.hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "/hooks.rb:1", raw_code)]
     File.delete(file_name)
   end
 

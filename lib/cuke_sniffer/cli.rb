@@ -95,7 +95,7 @@ module CukeSniffer
       end
 
       puts("\nHooks:")
-      hooks_file_name = Dir.getwd + "\\hooks.rb"
+      hooks_file_name = Dir.getwd + "/hooks.rb"
       @hooks = build_hooks(hooks_file_name) if File.exists?(hooks_file_name)
 
 
