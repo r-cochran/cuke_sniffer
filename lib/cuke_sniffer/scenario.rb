@@ -117,6 +117,7 @@ module CukeSniffer
       rule_date_used_in_step
       rule_one_word_step
       rule_multiple_given_when_then
+      rule_commented_tag
       evaluate_outline_scores if type == "Scenario Outline"
     end
 
@@ -214,6 +215,12 @@ module CukeSniffer
     def rule_tagged_background(type)
       rule = RULES[:background_with_tag]
       store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if tags.size > 0
+    end
+
+    def rule_commented_tag
+      tags.each do |tag|
+        store_rule(RULES[:commented_tag]) if tag =~ /#.*/
+      end
     end
   end
 end
