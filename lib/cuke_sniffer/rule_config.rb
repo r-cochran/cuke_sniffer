@@ -169,6 +169,11 @@ module CukeSniffer
             :enabled => true,
             :phrase => "There are commas in the description, creating possible multirunning scenarios or features.",
             :score => WARNING
+        },
+        :commented_tag => {
+            :enabled => true,
+            :phrase => "Tag is commented out",
+            :score => WARNING
         }
     }
 
