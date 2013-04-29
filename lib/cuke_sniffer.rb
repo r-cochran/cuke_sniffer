@@ -8,6 +8,7 @@ require 'cuke_sniffer/feature_rules_evaluator'
 require 'cuke_sniffer/feature'
 require 'cuke_sniffer/scenario'
 require 'cuke_sniffer/step_definition'
+require 'cuke_sniffer/hook'
 require 'cuke_sniffer/cli'
 
 module CukeSniffer

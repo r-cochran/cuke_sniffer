@@ -39,7 +39,7 @@ module CukeSniffer
     end
 
     def ==(comparison_object) # :nodoc:
-      super(comparison_object)
+      super(comparison_object) &&
       comparison_object.scenarios == scenarios
     end
 

@@ -26,8 +26,8 @@ module CukeSniffer
     end
 
     def == (comparison_object) # :nodoc:
-      super(comparison_object)
-      comparison_object.name == name
+      super(comparison_object) &&
+      comparison_object.name == name &&
       comparison_object.tags == tags
     end
 

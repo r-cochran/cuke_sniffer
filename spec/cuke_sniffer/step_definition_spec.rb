@@ -27,7 +27,7 @@ describe CukeSniffer::StepDefinition do
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     step_definition.regex.should == /^the first number is "([^"]*)"$/
-    step_definition.parameters.should == %w"first_number"
+    step_definition.parameters.should == ["first_number"]
     step_definition.code.should == ["@second_number = 1"]
   end
 

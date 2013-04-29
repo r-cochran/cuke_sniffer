@@ -35,6 +35,7 @@ module CukeSniffer
     attr_accessor :features_location
     attr_accessor :step_definitions_location
     attr_accessor :scenarios
+    attr_accessor :hooks
 
 
     # Does analysis against the passed features and step definition locations
@@ -92,6 +93,12 @@ module CukeSniffer
           }
         end
       end
+
+      puts("\nHooks:")
+      hooks_file_name = Dir.getwd + "\\hooks.rb"
+      @hooks = build_hooks(hooks_file_name) if File.exists?(hooks_file_name)
+
+
 
       @step_definitions.flatten!
       @summary = {
@@ -304,7 +311,7 @@ module CukeSniffer
         step_code << step_file_lines[counter].strip
         counter+=1
       end
-      step_definitions << CukeSniffer::StepDefinition.new("#{file_name}:#{counter+1}", step_code) unless step_code.empty? or !found_first_step
+      step_definitions << CukeSniffer::StepDefinition.new("#{file_name}:#{counter+1 -step_code.count}", step_code) unless step_code.empty? or !found_first_step
       step_definitions
     end
 
@@ -438,6 +445,29 @@ module CukeSniffer
         markup << line
       end
       markup
+    end
+
+    def build_hooks(file_name)
+      hooks_file_lines = []
+      hooks_file = File.open(file_name)
+      hooks_file.each_line { |line| hooks_file_lines << line }
+      hooks_file.close
+
+      counter = 0
+      hooks_code = []
+      hooks = []
+      found_first_hook = false
+      until counter >= hooks_file_lines.length
+        if hooks_file_lines[counter] =~ HOOK_REGEX and !hooks_code.empty? and found_first_hook
+          hooks << CukeSniffer::Hook.new("#{file_name}:#{counter+1 - hooks_code.count}", hooks_code)
+          hooks_code = []
+        end
+        found_first_hook = true if hooks_file_lines[counter] =~ HOOK_REGEX
+        hooks_code << hooks_file_lines[counter].strip
+        counter+=1
+      end
+      hooks << CukeSniffer::Hook.new("#{file_name}:#{counter+1 -hooks_code.count}", hooks_code) unless hooks_code.empty? or !found_first_hook
+      hooks
     end
 
   end

@@ -20,11 +20,29 @@ describe CukeSniffer do
   it "should be able to utilize a single step definition file for parsing" do
     file_name = "single_steps.rb"
     file = File.open(file_name, "w")
-    raw_code = ["Given /^I am a step$/ do", "end"]
+    raw_code = [
+        "Given /^I am a step$/ do",
+        "end"
+    ]
     raw_code.each{|line| file.puts line}
     file.close
     cuke_sniffer = CukeSniffer::CLI.new(nil, file_name)
-    cuke_sniffer.step_definitions.should == [CukeSniffer::StepDefinition.new("single.steps.rb:1", raw_code)]
+    cuke_sniffer.step_definitions.should == [CukeSniffer::StepDefinition.new("single_steps.rb:1", raw_code)]
+    File.delete(file_name)
+  end
+
+  it "should parse a hooks file" do
+    file_name = "hooks.rb"
+    file = File.open(file_name, "w")
+    raw_code = [
+        "Before do",
+        "var = 2",
+        "end"
+    ]
+    raw_code.each{ |line| file.puts line}
+    file.close
+    cuke_sniffer = CukeSniffer::CLI.new
+    cuke_sniffer.hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "\\hooks.rb:1", raw_code)]
     File.delete(file_name)
   end
 
@@ -106,7 +124,7 @@ describe CukeSniffer do
     file.close
 
     expected_step_definitions = [
-        CukeSniffer::StepDefinition.new("my_steps.rb:0", ["Given /^I am a step$/ do", "puts 'stuff'", "end"])
+        CukeSniffer::StepDefinition.new("my_steps.rb:1", ["Given /^I am a step$/ do", "puts 'stuff'", "end"])
     ]
     cuke_sniffer = CukeSniffer::CLI.new(nil, file_name)
     step_definitions = cuke_sniffer.step_definitions

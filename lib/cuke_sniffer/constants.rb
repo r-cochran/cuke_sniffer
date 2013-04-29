@@ -13,6 +13,8 @@ module CukeSniffer
     STEP_STYLES = /(?<style>Given|When|Then|And|Or|But|Transform|\*)\s+/ # :nodoc:
     STEP_REGEX = /^#{COMMENT_REGEX}#{STEP_STYLES}(?<step_string>.*)/ # :nodoc:
     STEP_DEFINITION_REGEX = /^#{STEP_STYLES}\/(?<step>.+)\/\sdo\s?(\|(?<parameters>.*)\|)?$/ # :nodoc:
+    HOOK_STYLES = /(?<type>Before|After|AfterConfiguration|at_exit|Around|AfterStep)/ # :nodoc:
+    HOOK_REGEX = /^#{HOOK_STYLES}(\((?<tags>.*)\)\sdo|\s+do)(\s\|(?<parameters>.*)\|)?/
 
     # hash: Stores scores to compare against for determining if an object is good
     # * Key: String of the object name

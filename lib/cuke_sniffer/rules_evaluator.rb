@@ -46,8 +46,8 @@ module CukeSniffer
     end
 
     def == (comparison_object) # :nodoc:
-      comparison_object.location == location
-      comparison_object.score == score
+      comparison_object.location == location &&
+      comparison_object.score == score &&
       comparison_object.rules_hash == rules_hash
     end
 

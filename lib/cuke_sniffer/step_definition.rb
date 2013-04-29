@@ -57,7 +57,7 @@ module CukeSniffer
         if line =~ STEP_DEFINITION_REGEX
           matches = STEP_DEFINITION_REGEX.match(line)
           @regex = Regexp.new(matches[:step])
-          @parameters = matches[:parameters].split(",") unless matches[:parameters].nil?
+          @parameters = matches[:parameters].split(/,\s*/) if matches[:parameters]
         end
       end
 
@@ -71,11 +71,11 @@ module CukeSniffer
     end
 
     def ==(comparison_object) # :nodoc:
-      super(comparison_object)
-      comparison_object.regex == regex
-      comparison_object.code == code
-      comparison_object.parameters == parameters
-      comparison_object.calls == calls
+      super(comparison_object) &&
+      comparison_object.regex == regex &&
+      comparison_object.code == code &&
+      comparison_object.parameters == parameters &&
+      comparison_object.calls == calls &&
       comparison_object.nested_steps == nested_steps
     end
 
