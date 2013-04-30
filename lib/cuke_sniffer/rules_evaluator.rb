@@ -7,6 +7,7 @@ module CukeSniffer
   # Parent class for all objects that have rules executed against it
   class RulesEvaluator
     include CukeSniffer::Constants
+    include CukeSniffer::RuleConfig
     include ROXML
 
     xml_accessor :score, :location
