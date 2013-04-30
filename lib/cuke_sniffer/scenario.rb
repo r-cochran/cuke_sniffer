@@ -16,13 +16,14 @@ module CukeSniffer
     # int: Line on which the scenario begins
     attr_accessor :start_line
 
-    # String: Background, Scenario, Scenario Outline
+    # string: The type of scenario
+    # Background, Scenario, Scenario Outline
     attr_accessor :type
 
     # string array: List of each step call in a scenario
     attr_accessor :steps
 
-    # hash:
+    # hash: Keeps each location and content of an inline table
     # * Key: Step string the inline table is attached to
     # * Value: Array of all of the lines in the table
     attr_accessor :inline_tables

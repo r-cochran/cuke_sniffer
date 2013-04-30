@@ -4,15 +4,35 @@ module CukeSniffer
   # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
   # Copyright:: Copyright (C) 2013 Robert Cochran
   # License::   Distributes under the MIT License
-
+  # Cucumber Hook class used for evaluating rules
+  # Extends CukeSniffer::RulesEvaluator
   class Hook < RulesEvaluator
+
     xml_accessor :start_line
     xml_accessor :type
     xml_accessor :tags, :as => [], :in => "tags"
     xml_accessor :parameters, :as => [], :in => "parameters"
     xml_accessor :code, :as => [], :in => "code"
 
+    # The type of the hook: AfterConfiguration, After, AfterStep, Around, Before, at_exit
+    attr_accessor :type
 
+    # The list of tags used as a filter for the hook
+    attr_accessor :tags
+
+    # The parameters that are declared on the hook
+    attr_accessor :parameters
+
+    # Integer of the line in which the hook was found
+    attr_accessor :start_line
+
+    # Array of strings that contain the code kept in the hook
+    attr_accessor :code
+
+
+    # location must be in the format of "file_path\file_name.rb:line_number"
+    # raw_code is an array of strings that represents the step definition
+    # must contain the hook declaration line and the pairing end
     def initialize(location, raw_code)
       super(location)
 

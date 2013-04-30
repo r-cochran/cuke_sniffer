@@ -5,6 +5,7 @@ module CukeSniffer
   # Copyright:: Copyright (C) 2013 Robert Cochran
   # License::   Distributes under the MIT License
   # Parent class for all objects that have rules executed against it
+  # Mixins: CukeSniffer::Constants, CukeSniffer::RuleConfig, ROXML
   class RulesEvaluator
     include CukeSniffer::Constants
     include CukeSniffer::RuleConfig
@@ -16,9 +17,12 @@ module CukeSniffer
     # int: Sum of the rules fired
     attr_accessor :score
 
-    # hash:
-    # * Key: symbol of the rule
-    # * Value: times the rule has fired
+    # string: Location in which the object was found
+    attr_accessor :location
+
+    # hash: Contains the phrase every rule fired against the object and times it fired
+    # * Key: string
+    # * Value: int
     attr_accessor :rules_hash
 
     # Location must be in the format of "file_path\file_name.rb:line_number"
@@ -42,14 +46,14 @@ module CukeSniffer
       score.to_f / Constants::THRESHOLDS[@class_type].to_f
     end
 
-    def store_updated_rule(rule, phrase)
-      store_rule({:enabled => rule[:enabled], :score => rule[:score], :phrase => phrase})
-    end
-
     def == (comparison_object) # :nodoc:
       comparison_object.location == location &&
       comparison_object.score == score &&
       comparison_object.rules_hash == rules_hash
+    end
+
+    def store_updated_rule(rule, phrase)
+      store_rule({:enabled => rule[:enabled], :score => rule[:score], :phrase => phrase})
     end
 
     private

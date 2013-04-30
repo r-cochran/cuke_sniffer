@@ -5,6 +5,7 @@ module CukeSniffer
   # License::   Distributes under the MIT License
   # Handles feature files and disassembles and evaluates
   # its components.
+  # Extends CukeSniffer::FeatureRulesEvaluator
   class Feature < FeatureRulesEvaluator
 
     xml_accessor :scenarios, :as => [CukeSniffer::FeatureRulesEvaluator], :in => "scenarios"

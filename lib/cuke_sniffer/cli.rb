@@ -6,7 +6,7 @@ module CukeSniffer
   # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
   # Copyright:: Copyright (C) 2013 Robert Cochran
   # License::   Distributes under the MIT License
-
+  # Mixins: CukeSniffer::Constants, ROXML
   class CLI
     include CukeSniffer::Constants
     include ROXML
@@ -19,7 +19,7 @@ module CukeSniffer
       xml_accessor :good
       xml_accessor :bad
       xml_accessor :threshold
-    end
+    end # :nodoc:
 
     xml_name "cuke_sniffer"
     xml_accessor :features_summary, :as => SummaryNode
@@ -30,11 +30,27 @@ module CukeSniffer
     xml_accessor :step_definitions, :as => [CukeSniffer::StepDefinition], :in => "step_definitions"
 
 
+    # Feature array: All Features gathered from the specified folder
+    attr_accessor :features
 
+    # StepDefinition Array: All StepDefinitions objects gathered from the specified folder
+    attr_accessor :step_definitions
+
+    # Hash: Summary objects and improvement lists
+    # * Key: symbol, :total_score, :features, :step_definitions, :improvement_list
+    # * Value: hash or array
     attr_accessor :summary
+
+    # string: Location of the feature file or root folder that was searched in
     attr_accessor :features_location
+
+    # string: Location of the step definition file or root folder that was searched in
     attr_accessor :step_definitions_location
+
+    # Scenario array: All Scenarios found in the features from the specified folder
     attr_accessor :scenarios
+
+    # Hook array: All Hooks found in the current directory
     attr_accessor :hooks
 
 
@@ -98,8 +114,6 @@ module CukeSniffer
       hooks_file_name = Dir.getwd + "/hooks.rb"
       @hooks = build_hooks(hooks_file_name) if File.exists?(hooks_file_name)
 
-
-
       @step_definitions.flatten!
       @summary = {
           :total_score => 0,
@@ -149,6 +163,7 @@ module CukeSniffer
 
     # Creates a html file with the collected project details
     # file_name defaults to "cuke_sniffer_results.html" unless specified
+    # Second parameter used for passing into the markup.
     #  cuke_sniffer.output_html
     # Or
     #  cuke_sniffer.output_html("results01-01-0001.html")

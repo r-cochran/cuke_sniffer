@@ -5,6 +5,7 @@ module CukeSniffer
   # Copyright:: Copyright (C) 2013 Robert Cochran
   # License::   Distributes under the MIT License
   # Translates and evaluates Cucumber step definitions
+  # Extends CukeSniffer::RulesEvaluator
   class StepDefinition < RulesEvaluator
 
     xml_accessor :start_line
@@ -20,15 +21,15 @@ module CukeSniffer
     # Regex: Regex that cucumber uses to match step calls
     attr_accessor :regex
 
-    # string arra: List of the parameters a step definition has
+    # string array: List of the parameters a step definition has
     attr_accessor :parameters
 
-    # hash:
+    # hash: Contains each nested step call a step definition has
     # * Key: location:line of the nested step
     # * Value: The step call that appears on the line
     attr_accessor :nested_steps
 
-    # hash:
+    # hash: Contains each call that is made to a step definition
     # * Key: Location in which the step definition is called from
     # * Value: The step string that matched the regex
     # In the case of a fuzzy match it will be a regex of the
