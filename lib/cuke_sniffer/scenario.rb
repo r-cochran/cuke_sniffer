@@ -91,11 +91,11 @@ module CukeSniffer
 
     def get_step_order
       order = []
-      @steps.each { |line|
+      @steps.each do |line|
         next if is_comment?(line)
         match = line.match(STEP_REGEX)
         order << match[:style] unless match.nil?
-      }
+      end
       order
     end
 
@@ -134,44 +134,75 @@ module CukeSniffer
       step_order = get_step_order
       rule = RULES[:multiple_given_when_then]
       phrase = rule[:phrase].gsub(/{.*}/, type)
-      %w(Given When Then).each { |type| store_updated_rule(rule, phrase) if step_order.count(type) > 1 }
+      ["Given", "When", "Then"].each { |step| store_updated_rule(rule, phrase) if step_order.count(step) > 1 }
     end
 
     def rule_one_word_step
       @steps.each do |step|
-        store_rule(RULES[:one_word_step]) if step.split.count == 2
+        rule = RULES[:one_word_step]
+        store_rule(rule) if step.split.count == 2
       end
-    end
-
-    def rule_empty_scenario
-      rule = RULES[:no_steps]
-      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if @steps.empty?
-    end
-
-    def rule_too_many_steps
-      rule = RULES[:too_many_steps]
-      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if @steps.size >= rule[:max]
     end
 
     def rule_step_order
       step_order = get_step_order.uniq
-      %w(But * And).each { |type| step_order.delete(type) }
-      store_rule(RULES[:out_of_order_steps]) unless step_order == %w(Given When Then) or step_order == %w(When Then)
-    end
-
-    def rule_invalid_first_step
-      first_step = get_step_order.first
-      rule = RULES[:invalid_first_step]
-      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if %w(And But).include?(first_step)
+      ["But", "*", "And"].each { |type| step_order.delete(type) }
+      rule = RULES[:out_of_order_steps]
+      store_rule(rule) unless step_order == %w(Given When Then) or step_order == %w(When Then)
     end
 
     def rule_asterisk_step
-      get_step_order.count('*').times { store_rule(RULES[:asterisk_step]) }
+      get_step_order.count('*').times do
+        rule = RULES[:asterisk_step]
+        store_rule(rule)
+      end
     end
 
     def rule_commented_step
       @steps.each do |step|
-        store_rule(RULES[:commented_step]) if is_comment?(step)
+        rule = RULES[:commented_step]
+        store_rule(rule) if is_comment?(step)
+      end
+    end
+
+    def rule_date_used_in_step
+      @steps.each do |step|
+        rule = RULES[:date_used]
+        store_rule(rule) if step =~ DATE_REGEX
+      end
+    end
+
+    def rule_no_examples_table
+      rule = RULES[:no_examples_table]
+      store_rule(rule) if @examples_table.empty?
+    end
+
+    def rule_no_examples
+      rule = RULES[:no_examples]
+      store_rule(rule) if @examples_table.size == 1
+    end
+
+    def rule_one_example
+      rule = RULES[:one_example]
+      store_rule(rule) if @examples_table.size == 2 and !is_comment?(@examples_table[1])
+    end
+
+    def rule_too_many_examples
+      rule = RULES[:too_many_examples]
+      store_rule(rule) if (@examples_table.size - 1) >= 8
+    end
+
+    def rule_commented_example
+      @examples_table.each do |example|
+        rule = RULES[:commented_example]
+        store_rule(rule) if is_comment?(example)
+      end
+    end
+
+    def rule_commented_tag
+      tags.each do |tag|
+        rule = RULES[:commented_tag]
+        store_rule(rule) if tag =~ /#.*/
       end
     end
 
@@ -185,43 +216,25 @@ module CukeSniffer
       end
     end
 
-    def rule_date_used_in_step
-      @steps.each do |step|
-        store_rule(RULES[:date_used]) if step =~ DATE_REGEX
-      end
-    end
-
-    def rule_no_examples_table
-      store_rule(RULES[:no_examples_table]) if @examples_table.empty?
-    end
-
-    def rule_no_examples
-      store_rule(RULES[:no_examples]) if @examples_table.size == 1
-    end
-
-    def rule_one_example
-      store_rule(RULES[:one_example]) if @examples_table.size == 2 and !is_comment?(@examples_table[1])
-    end
-
-    def rule_too_many_examples
-      store_rule(RULES[:too_many_examples]) if (@examples_table.size - 1) >= 8
-    end
-
-    def rule_commented_example
-      @examples_table.each do |example|
-        store_rule(RULES[:commented_example]) if is_comment?(example)
-      end
-    end
-
     def rule_tagged_background(type)
       rule = RULES[:background_with_tag]
       store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if tags.size > 0
     end
 
-    def rule_commented_tag
-      tags.each do |tag|
-        store_rule(RULES[:commented_tag]) if tag =~ /#.*/
-      end
+    def rule_invalid_first_step
+      first_step = get_step_order.first
+      rule = RULES[:invalid_first_step]
+      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if %w(And But).include?(first_step)
+    end
+
+    def rule_empty_scenario
+      rule = RULES[:no_steps]
+      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if @steps.empty?
+    end
+
+    def rule_too_many_steps
+      rule = RULES[:too_many_steps]
+      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if @steps.size >= rule[:max]
     end
   end
 end

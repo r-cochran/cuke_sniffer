@@ -49,7 +49,6 @@ module CukeSniffer
     end
 
     def evaluate_score
-      super
       cls_name = self.class.to_s.gsub('CukeSniffer::', '')
       rule_too_many_tags(cls_name)
       rule_no_description(cls_name)

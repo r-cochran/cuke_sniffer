@@ -58,9 +58,6 @@ module CukeSniffer
 
     private
 
-    def evaluate_score
-    end
-
     def store_rule(rule)
       if rule[:enabled]
         @score += rule[:score]

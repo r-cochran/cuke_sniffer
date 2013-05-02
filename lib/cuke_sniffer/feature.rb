@@ -32,7 +32,8 @@ module CukeSniffer
       @total_score = 0
       feature_lines = extract_feature_from_file(file_name)
       if feature_lines == []
-        store_rule(RULES[:empty_feature])
+        rule = RULES[:empty_feature]
+        store_rule(rule)
       else
         split_feature(file_name, feature_lines)
         evaluate_score
@@ -113,9 +114,7 @@ module CukeSniffer
 
     def rule_feature_same_tags(scenario)
       rule = RULES[:feature_same_tag]
-      tags.each{|tag|
-        scenario.store_updated_rule(rule, rule[:phrase] + tag) if scenario.tags.include?(tag)
-      }
+      tags.each { |tag| scenario.store_updated_rule(rule, rule[:phrase] + tag) if scenario.tags.include?(tag) }
     end
 
     def rule_scenario_same_tag
@@ -141,7 +140,8 @@ module CukeSniffer
     end
 
     def rule_no_scenarios
-      store_rule(RULES[:no_scenarios]) if @scenarios.empty?
+      rule = RULES[:no_scenarios]
+      store_rule(rule) if @scenarios.empty?
     end
 
     def rule_too_many_scenarios
@@ -150,12 +150,13 @@ module CukeSniffer
     end
 
     def rule_background_with_no_scenarios
-      store_rule( RULES[:background_with_no_scenarios]) if @scenarios.empty? and !@background.nil?
+      rule = RULES[:background_with_no_scenarios]
+      store_rule(rule) if @scenarios.empty? and !@background.nil?
     end
 
     def rule_background_with_one_scenario
-      store_rule(RULES[:background_with_one_scenario]) if @scenarios.size == 1 and !@background.nil?
+      rule = RULES[:background_with_one_scenario]
+      store_rule(rule) if @scenarios.size == 1 and !@background.nil?
     end
-
   end
 end

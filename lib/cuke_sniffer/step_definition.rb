@@ -144,15 +144,14 @@ module CukeSniffer
 
     def condensed_call_list
       condensed_list = {}
-      @calls.each { |call, step_string|
+      @calls.each do |call, step_string|
         condensed_list[step_string] ||= []
         condensed_list[step_string] << call
-      }
+      end
       condensed_list
     end
 
     def evaluate_score
-      super
       rule_no_code
       rule_too_many_parameters
       rule_nested_steps
@@ -166,39 +165,51 @@ module CukeSniffer
 
     def rule_todo
       code.each do |line|
-        store_rule(RULES[:todo]) if line =~ /\#(TODO|todo)/
+        rule = RULES[:todo]
+        store_rule(rule) if line =~ /\#(TODO|todo)/
       end
     end
 
     def sleep_rules
       code.each do |line|
         match_data = line.match /^\s*sleep(\s|\()(?<sleep_time>.*)\)?/
-        unless match_data.nil?
+        if match_data
           sleep_value = match_data[:sleep_time].to_f
-          store_rule(RULES[:small_sleep]) if sleep_value <= RULES[:small_sleep][:max]
-          store_rule(RULES[:large_sleep]) if sleep_value > RULES[:large_sleep][:min]
+          rule_small_sleep(sleep_value)
+          rule_large_sleep(sleep_value)
         end
       end
     end
 
+    def rule_large_sleep(sleep_value)
+      rule = RULES[:large_sleep]
+      store_rule(rule) if sleep_value > rule[:min]
+    end
+
+    def rule_small_sleep(sleep_value)
+      rule = RULES[:small_sleep]
+      store_rule(rule) if sleep_value <= rule[:max]
+    end
+
     def rule_pending
+      rule = RULES[:pending]
       code.each do |line|
-        if line =~ /^\s*pending\s*$/
-          store_rule(RULES[:pending])
-          return
-        end
+        store_rule(rule) if line =~ /^\s*pending\s*$/
+        return
       end
     end
 
     def rule_lazy_debugging
+      rule = RULES[:lazy_debugging]
       code.each do |line|
         next if is_comment?(line)
-        store_rule(RULES[:lazy_debugging]) if line.strip =~ /^(p|puts)( |\()('|"|%(q|Q)?\{)/
+        store_rule(rule) if line.strip =~ /^(p|puts)( |\()('|"|%(q|Q)?\{)/
       end
     end
 
     def rule_no_code
-      store_rule(RULES[:no_code]) if code.empty?
+      rule = RULES[:no_code]
+      store_rule(rule) if code.empty?
     end
 
     def rule_too_many_parameters
@@ -207,20 +218,22 @@ module CukeSniffer
     end
 
     def rule_nested_steps
-      store_rule(RULES[:nested_step]) unless nested_steps.empty?
+      rule = RULES[:nested_step]
+      store_rule(rule) unless nested_steps.empty?
     end
 
     def rule_recursive_nested_step
+      rule = RULES[:recursive_nested_step]
       nested_steps.each_value do |nested_step|
-        store_rule(RULES[:recursive_nested_step]) if nested_step =~ regex
+        store_rule(rule) if nested_step =~ regex
       end
     end
 
     def rule_commented_code
+      rule = RULES[:commented_code]
       code.each do |line|
-        store_rule(RULES[:commented_code]) if is_comment?(line)
+        store_rule(rule) if is_comment?(line)
       end
     end
-
   end
 end
