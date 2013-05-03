@@ -134,7 +134,7 @@ module CukeSniffer
       step_order = get_step_order
       rule = RULES[:multiple_given_when_then]
       phrase = rule[:phrase].gsub(/{.*}/, type)
-      ["Given", "When", "Then"].each { |step| store_updated_rule(rule, phrase) if step_order.count(step) > 1 }
+      ["Given", "When", "Then"].each { |step| store_rule(rule, phrase) if step_order.count(step) > 1 }
     end
 
     def rule_one_word_step
@@ -212,7 +212,7 @@ module CukeSniffer
         next if is_comment?(step)
         rule[:words].each do |word|
           rule_phrase = rule[:phrase].gsub(/{.*}/, word)
-          store_updated_rule(rule, rule_phrase) if step.include?(word)
+          store_rule(rule, rule_phrase) if step.include?(word)
         end
       end
     end
@@ -220,26 +220,26 @@ module CukeSniffer
     def rule_tagged_background(type)
       rule = RULES[:background_with_tag]
       rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_updated_rule(rule, rule_phrase) if tags.size > 0
+      store_rule(rule, rule_phrase) if tags.size > 0
     end
 
     def rule_invalid_first_step
       first_step = get_step_order.first
       rule = RULES[:invalid_first_step]
       rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_updated_rule(rule, rule_phrase) if %w(And But).include?(first_step)
+      store_rule(rule, rule_phrase) if %w(And But).include?(first_step)
     end
 
     def rule_empty_scenario
       rule = RULES[:no_steps]
       rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_updated_rule(rule, rule_phrase) if @steps.empty?
+      store_rule(rule, rule_phrase) if @steps.empty?
     end
 
     def rule_too_many_steps
       rule = RULES[:too_many_steps]
       rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_updated_rule(rule, rule_phrase) if @steps.size >= rule[:max]
+      store_rule(rule, rule_phrase) if @steps.size >= rule[:max]
     end
   end
 end

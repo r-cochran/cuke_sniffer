@@ -116,7 +116,7 @@ module CukeSniffer
       rule = RULES[:feature_same_tag]
       tags.each do |tag|
         rule_phrase = rule[:phrase] + tag
-        scenario.store_updated_rule(rule, rule_phrase) if scenario.tags.include?(tag)
+        scenario.store_rule(rule, rule_phrase) if scenario.tags.include?(tag)
       end
     end
 
@@ -131,16 +131,14 @@ module CukeSniffer
         end
         base_tag_list.each do |tag|
           rule_phrase = rule[:phrase] + tag
-          store_updated_rule(rule, rule_phrase)
+          store_rule(rule, rule_phrase)
         end
       end
     end
 
     def get_scenarios_score
       @scenarios_score += @background.score unless @background.nil?
-      @scenarios.each do |scenario|
-        @scenarios_score += scenario.score
-      end
+      @scenarios.each { |scenario| @scenarios_score += scenario.score }
     end
 
     def rule_no_scenarios

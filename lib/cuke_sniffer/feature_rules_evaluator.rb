@@ -61,37 +61,37 @@ module CukeSniffer
     def rule_too_many_tags(type)
       rule = RULES[:too_many_tags]
       rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_updated_rule(rule, rule_phrase) if tags.size >= rule[:max]
+      store_rule(rule, rule_phrase) if tags.size >= rule[:max]
     end
 
     def rule_no_description(type)
       rule = RULES[:no_description]
       rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_updated_rule(rule, rule_phrase) if name.empty?
+      store_rule(rule, rule_phrase) if name.empty?
     end
 
     def rule_numbers_in_name(type)
       rule = RULES[:numbers_in_description]
       rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_updated_rule(rule, rule_phrase) if name =~ /\d/
+      store_rule(rule, rule_phrase) if name =~ /\d/
     end
 
     def rule_long_name(type)
       rule = RULES[:long_name]
       rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_updated_rule(rule, rule_phrase) if name.size >= rule[:max]
+      store_rule(rule, rule_phrase) if name.size >= rule[:max]
     end
 
     def rule_commas_in_description(type)
       rule = RULES[:commas_in_description]
       rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_updated_rule(rule, rule_phrase) if name.include?(',')
+      store_rule(rule, rule_phrase) if name.include?(',')
     end
 
     def rule_comment_after_tag(type)
       rule = RULES[:comment_after_tag]
       rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_updated_rule(rule, rule_phrase) if tags.grep(/^\s*\#/) != []
+      store_rule(rule, rule_phrase) if tags.grep(/^\s*\#/) != []
     end
   end
 end

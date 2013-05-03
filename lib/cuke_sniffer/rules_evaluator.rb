@@ -52,19 +52,15 @@ module CukeSniffer
       comparison_object.rules_hash == rules_hash
     end
 
-    def store_updated_rule(rule, phrase)
-      store_rule({:enabled => rule[:enabled], :score => rule[:score], :phrase => phrase})
+    def store_rule(rule, phrase = rule[:phrase])
+      if rule[:enabled]
+        @score += rule[:score]
+        @rules_hash[phrase] ||= 0
+        @rules_hash[phrase] += 1
+      end
     end
 
     private
-
-    def store_rule(rule)
-      if rule[:enabled]
-        @score += rule[:score]
-        @rules_hash[rule[:phrase]] ||= 0
-        @rules_hash[rule[:phrase]] += 1
-      end
-    end
 
     def is_comment?(line)
       if line =~ /^\#.*$/
@@ -73,6 +69,5 @@ module CukeSniffer
         false
       end
     end
-
   end
 end
