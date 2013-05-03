@@ -114,7 +114,10 @@ module CukeSniffer
 
     def rule_feature_same_tags(scenario)
       rule = RULES[:feature_same_tag]
-      tags.each { |tag| scenario.store_updated_rule(rule, rule[:phrase] + tag) if scenario.tags.include?(tag) }
+      tags.each do |tag|
+        rule_phrase = rule[:phrase] + tag
+        scenario.store_updated_rule(rule, rule_phrase) if scenario.tags.include?(tag)
+      end
     end
 
     def rule_scenario_same_tag
@@ -127,7 +130,8 @@ module CukeSniffer
           end
         end
         base_tag_list.each do |tag|
-          store_updated_rule(rule, rule[:phrase] + tag)
+          rule_phrase = rule[:phrase] + tag
+          store_updated_rule(rule, rule_phrase)
         end
       end
     end

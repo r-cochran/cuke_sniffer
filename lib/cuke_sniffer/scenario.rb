@@ -211,30 +211,35 @@ module CukeSniffer
       @steps.each do |step|
         next if is_comment?(step)
         rule[:words].each do |word|
-          store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, word)) if step.include?(word)
+          rule_phrase = rule[:phrase].gsub(/{.*}/, word)
+          store_updated_rule(rule, rule_phrase) if step.include?(word)
         end
       end
     end
 
     def rule_tagged_background(type)
       rule = RULES[:background_with_tag]
-      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if tags.size > 0
+      rule_phrase = rule[:phrase].gsub(/{.*}/, type)
+      store_updated_rule(rule, rule_phrase) if tags.size > 0
     end
 
     def rule_invalid_first_step
       first_step = get_step_order.first
       rule = RULES[:invalid_first_step]
-      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if %w(And But).include?(first_step)
+      rule_phrase = rule[:phrase].gsub(/{.*}/, type)
+      store_updated_rule(rule, rule_phrase) if %w(And But).include?(first_step)
     end
 
     def rule_empty_scenario
       rule = RULES[:no_steps]
-      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if @steps.empty?
+      rule_phrase = rule[:phrase].gsub(/{.*}/, type)
+      store_updated_rule(rule, rule_phrase) if @steps.empty?
     end
 
     def rule_too_many_steps
       rule = RULES[:too_many_steps]
-      store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if @steps.size >= rule[:max]
+      rule_phrase = rule[:phrase].gsub(/{.*}/, type)
+      store_updated_rule(rule, rule_phrase) if @steps.size >= rule[:max]
     end
   end
 end
