@@ -121,6 +121,23 @@ describe CukeSniffer::Feature do
     feature = CukeSniffer::Feature.new(@file_name)
     feature.scenarios.first.tags.should == ["@tag", "@a", "@test"]
   end
+
+  it "should only consider cucumber formatted Scenarios and Scenario Outlines when generating scenario objects" do
+    lines = [
+        "Feature:",
+        "",
+        "    Manual Scenario: this is not a test",
+        "",
+        "    Previously Tested Scenario: nope, still just hanging out in the feature description zone",
+        "",
+        " Scenario: Real Scenario",
+        "* step"
+    ]
+    build_file(lines)
+    feature = CukeSniffer::Feature.new(@file_name)
+    feature.scenarios.count.should == 1
+    feature.scenarios.first.name.should == "Real Scenario"
+  end
 end
 
 describe "FeatureRules" do
