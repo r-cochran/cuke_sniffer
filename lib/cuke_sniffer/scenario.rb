@@ -70,7 +70,7 @@ module CukeSniffer
         if scenario[index] =~ /^\|.*\|/
           step = scenario[index - 1]
           @inline_tables[step] = []
-          until index >= scenario.length or scenario[index] =~ STEP_REGEX
+          until index >= scenario.length or scenario[index] =~ /(#{STEP_REGEX}|^\s*Examples:)/
             @inline_tables[step] << scenario[index]
             index += 1
           end
