@@ -138,6 +138,21 @@ describe CukeSniffer::Feature do
     feature.scenarios.count.should == 1
     feature.scenarios.first.name.should == "Real Scenario"
   end
+
+  it "should not consider anything with an @ to be a symbol, it us always have a leading white space or nothing at all" do
+    lines = ['Feature:',
+    '',
+    '    Scenario Outline:',
+    '* a step',
+    'Examples:',
+    '    | param |',
+    '    | !@#$% |']
+
+    build_file(lines)
+    feature = CukeSniffer::Feature.new(@file_name)
+    feature.scenarios.count.should == 1
+    feature.scenarios.first.rules_hash.keys.include?("Scenario Outline with no examples.").should be_false
+  end
 end
 
 describe "FeatureRules" do

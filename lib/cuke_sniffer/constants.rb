@@ -8,7 +8,7 @@ module CukeSniffer
     FILE_IGNORE_LIST = %w(. .. .svn) # :nodoc:
     DATE_REGEX = /(?<date>\d{2}\/\d{2}\/\d{4})/ # :nodoc:
     COMMENT_REGEX = /#?\s*/ # :nodoc:
-    TAG_REGEX = /(?<tag>@\S*)/ # :nodoc:
+    TAG_REGEX = /(^|\s+)(?<tag>@\S*)/ # :nodoc:
     SCENARIO_TITLE_STYLES = /^\s*\#*\s*(?<type>Background|Scenario|Scenario Outline|Scenario Template):\s*/ # :nodoc:
     STEP_STYLES = /(?<style>Given|When|Then|And|Or|But|Transform|\*)\s+/ # :nodoc:
     STEP_REGEX = /^#{COMMENT_REGEX}#{STEP_STYLES}(?<step_string>.*)/ # :nodoc:
