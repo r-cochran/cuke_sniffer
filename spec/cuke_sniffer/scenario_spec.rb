@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-include CukeSniffer::RuleConfig
-
 describe CukeSniffer::Scenario do
 
   it "should retain the passed location, name, and the steps of the scenario step after initialization" do
@@ -643,12 +641,22 @@ describe "ScenarioRules" do
 
   it "should punish Scenarios that have commented tags" do
     scenario_block = [
-        "\#tag",
+        "\#@tag",
         "Scenario: Commented tag",
         "Given I am a step"
     ]
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, RULES[:commented_tag])
+  end
+
+  it "should not punish Scenarios that have a comment before any tags occur" do
+    scenario_block = [
+        "#comment",
+        "@tag",
+        "Scenario: I'm a scenario with a comment before a tag"
+    ]
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    validate_no_rule(scenario, RULES[:comment_after_tag])
   end
 end
 
