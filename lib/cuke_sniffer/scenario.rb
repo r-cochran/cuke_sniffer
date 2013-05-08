@@ -118,7 +118,6 @@ module CukeSniffer
       rule_date_used_in_step
       rule_one_word_step
       rule_multiple_given_when_then
-      rule_commented_tag
       evaluate_outline_scores if type == "Scenario Outline"
     end
 
@@ -196,13 +195,6 @@ module CukeSniffer
       @examples_table.each do |example|
         rule = RULES[:commented_example]
         store_rule(rule) if is_comment?(example)
-      end
-    end
-
-    def rule_commented_tag
-      tags.each do |tag|
-        rule = RULES[:commented_tag]
-        store_rule(rule) if tag =~ /#.*/
       end
     end
 
