@@ -172,7 +172,7 @@ module CukeSniffer
         },
         :commented_tag => {
             :enabled => true,
-            :phrase => "Tag is commented out",
+            :phrase => "{class} has a commented out tag",
             :score => WARNING
         }
     }
