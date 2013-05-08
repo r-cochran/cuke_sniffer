@@ -106,7 +106,7 @@ module CukeSniffer
     def rule_commented_tag(type)
       rule = RULES[:commented_tag]
       tags.each do |tag|
-        store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if is_comment?(tag) && tag.match(TAG_REGEX)
+        store_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if is_comment?(tag) && tag.match(/@\S*/)
       end
     end
 

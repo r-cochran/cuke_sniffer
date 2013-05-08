@@ -198,13 +198,6 @@ module CukeSniffer
       end
     end
 
-    def rule_commented_tag
-      tags.each do |tag|
-        rule = RULES[:commented_tag]
-        store_rule(rule) if tag =~ /#.*/
-      end
-    end
-
     def rule_implementation_words
       rule = RULES[:implementation_word]
       @steps.each do |step|
