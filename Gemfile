@@ -1,7 +1,7 @@
 source :rubygems
 
 group :development do
-  gem 'rake'
+   gem 'rake'
   gem 'rspec'
   gem 'cucumber'
   gem 'nokogiri'
