@@ -349,4 +349,30 @@ describe "FeatureRules" do
     feature.rules_hash.include?(rule[:phrase]).should be_false
     feature.score.should < rule[:score]
   end
+
+  it "should punish Features that have commented tags" do
+    rule = RULES[:commented_tag]
+
+    lines = [
+        "\#@tag",
+        "Feature: I'm a feature with a commented tag"
+    ]
+    build_file(lines)
+    feature = CukeSniffer::Feature.new(@file_name)
+    validate_rule(feature, rule)
+  end
+
+  it "should not punish Features that have a comment before any tags occur" do
+    rule = RULES[:comment_after_tag]
+
+    lines = [
+        "#comment",
+        "@tag",
+        "Feature: I'm a feature with a comment before a tag"
+    ]
+    build_file(lines)
+    feature = CukeSniffer::Feature.new(@file_name)
+    feature.rules_hash.include?(rule[:phrase]).should be_false
+    feature.score.should < rule[:score]
+  end
 end

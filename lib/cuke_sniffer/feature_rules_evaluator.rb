@@ -41,10 +41,13 @@ module CukeSniffer
     end
 
     def update_tag_list(line)
-      if TAG_REGEX.match(line) && !is_comment?(line)
-        line.scan(TAG_REGEX).each { |tag| @tags << tag[0] }
+      comment_start = (line =~ /([^@\w]#)|(^#)/)
+
+      if comment_start
+        line[0...comment_start].split.each { |single_tag| @tags << single_tag }
+        @tags << line[comment_start..line.length].strip
       else
-        @tags << line.strip unless line.empty?
+        line.split.each { |single_tag| @tags << single_tag }
       end
     end
 
@@ -56,6 +59,7 @@ module CukeSniffer
       rule_long_name(cls_name)
       rule_commas_in_description(cls_name)
       rule_comment_after_tag(cls_name)
+      rule_commented_tag(cls_name)
     end
 
     def rule_too_many_tags(type)
@@ -90,9 +94,22 @@ module CukeSniffer
 
     def rule_comment_after_tag(type)
       rule = RULES[:comment_after_tag]
-      rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_rule(rule, rule_phrase) if tags.grep(/^\s*\#/) != []
+
+      last_comment_index = tags.rindex { |single_tag| is_comment?(single_tag) }
+      if last_comment_index
+        comment_after_tag = tags[0...last_comment_index].any? { |single_tag| !is_comment?(single_tag) }
+        rule_phrase = rule[:phrase].gsub(/{.*}/, type)
+        store_rule(rule, rule_phrase) if comment_after_tag
+      end
     end
+
+    def rule_commented_tag(type)
+      rule = RULES[:commented_tag]
+      tags.each do |tag|
+        store_updated_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if is_comment?(tag) && tag.match(TAG_REGEX)
+      end
+    end
+
   end
 end
 
