@@ -100,4 +100,27 @@ describe "HookRules" do
     validate_rule(hook, RULES[:hook_all_comments])
   end
 
+  it "should punish hooks with negated tags on and'd tags" do
+    raw_code = ["Before('@tag', '~@tag') do",
+                "end"]
+    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
+    validate_rule(hook, RULES[:hook_conflicting_tags])
+  end
+
+  it "should punish hooks with negated tags on or'd tags" do
+    raw_code = ["Before('@tag,~@tag') do",
+                "end"]
+
+    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
+    validate_rule(hook, RULES[:hook_conflicting_tags])
+  end
+
+  it "should punish hooks with duplicate tags" do
+    raw_code = ["Before('@tag,@tag') do",
+                "end"]
+
+    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
+    validate_rule(hook, RULES[:hook_duplicate_tags])
+  end
+
 end

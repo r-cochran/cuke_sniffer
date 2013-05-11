@@ -94,6 +94,11 @@ module CukeSniffer
             :phrase => "Hook without a begin/rescue. Reduced visibility when debugging.",
             :score => ERROR
         },
+        :hook_conflicting_tags => {
+            :enabled => true,
+            :phrase => "Hook that both expects and ignores the same tag. This hook will not function as expected.",
+            :score => ERROR
+        },
     }
 
     warning_rules = {
@@ -200,6 +205,11 @@ module CukeSniffer
             :phrase => "Hook is only comments.",
             :score => WARNING
         },
+        :hook_duplicate_tags => {
+            :enabled => true,
+            :phrase => "Hook has duplicate tags.",
+            :score => WARNING
+        }
     }
 
     info_rules = {

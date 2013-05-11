@@ -71,6 +71,8 @@ module CukeSniffer
       rule_hook_not_in_hooks_file
       rule_no_debugging
       rule_all_comments
+      rule_conflicting_tags
+      rule_duplicate_tags
       if @type == "Around"
         rule_around_hook_without_2_parameters
         rule_around_hook_no_block_call
@@ -120,6 +122,33 @@ module CukeSniffer
         return unless is_comment?(line)
       end
       store_rule(rule)
+    end
+
+    def rule_conflicting_tags
+      rule = RULES[:hook_conflicting_tags]
+      all_tags = flatten_tags
+
+      all_tags.each do |single_tag|
+        tag = single_tag.gsub("~", "")
+        if all_tags.include?(tag) and all_tags.include?("~#{tag}")
+          store_rule(rule)
+          return
+        end
+      end
+    end
+
+    def flatten_tags
+      all_tags = []
+      @tags.each { |single_tag| all_tags << single_tag.split(',') }
+      all_tags.flatten
+    end
+
+    def rule_duplicate_tags
+      rule = RULES[:hook_duplicate_tags]
+      all_tags = flatten_tags
+      unique_tags = all_tags.uniq
+
+      store_rule(rule) unless all_tags == unique_tags
     end
 
   end
