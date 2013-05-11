@@ -41,8 +41,41 @@ describe CukeSniffer do
     ]
     raw_code.each{ |line| file.puts line}
     file.close
-    cuke_sniffer = CukeSniffer::CLI.new
+    cuke_sniffer = CukeSniffer::CLI.new(nil, nil, Dir.getwd + "/hooks.rb")
     cuke_sniffer.hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "/hooks.rb:1", raw_code)]
+    File.delete(file_name)
+  end
+
+  it "should parse a hooks file with multiple hooks" do
+    file_name = "hooks.rb"
+    file = File.open(file_name, "w")
+    raw_code = [
+        "Before do",
+        "var = 2",
+        "end",
+        "Before('@tag') do",
+        "var = 2",
+        "end"
+    ]
+    raw_code.each{ |line| file.puts line}
+    file.close
+    cuke_sniffer = CukeSniffer::CLI.new(nil, nil, Dir.getwd + "/hooks.rb")
+    cuke_sniffer.hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "/hooks.rb:1", raw_code[0..2]), CukeSniffer::Hook.new(Dir.getwd + "/hooks.rb:4", raw_code[3..5])]
+    File.delete(file_name)
+  end
+
+  it "should parse hooks that exist in any ruby file" do
+    file_name = "env.rb"
+    file = File.open(file_name, "w")
+    raw_code = [
+        "Before do",
+        "var = 2",
+        "end"
+    ]
+    raw_code.each{ |line| file.puts line}
+    file.close
+    cuke_sniffer = CukeSniffer::CLI.new(nil, nil, Dir.getwd + "/env.rb")
+    cuke_sniffer.hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "/env.rb:1", raw_code)]
     File.delete(file_name)
   end
 

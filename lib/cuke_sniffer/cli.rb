@@ -77,14 +77,16 @@ module CukeSniffer
     # Handles creation of all Feature and StepDefinition objects
     # Then catalogs all step definition calls to be used for rules and identification
     # of dead steps.
-    def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd)
+    def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd, hooks_location = Dir.getwd)
       @features_location = features_location
       @step_definitions_location = step_definitions_location
       @features = []
       @scenarios = []
       @step_definitions = []
+      @hooks = []
 
       puts "\nFeatures:"
+      #extract this to a method that accepts a block and yields for the build pattern
       unless features_location.nil?
         if File.file?(features_location)
           @features = [CukeSniffer::Feature.new(features_location)]
@@ -109,12 +111,21 @@ module CukeSniffer
           }
         end
       end
+      @step_definitions.flatten!
 
       puts("\nHooks:")
-      hooks_file_name = Dir.getwd + "/hooks.rb"
-      @hooks = build_hooks(hooks_file_name) if File.exists?(hooks_file_name)
+      unless hooks_location.nil?
+        if File.file?(hooks_location)
+          @hooks = [build_hooks(hooks_location)]
+        else
+          build_file_list_from_folder(hooks_location, ".rb").each { |location|
+            @hooks << build_hooks(location)
+            print '.'
+          }
+        end
+      end
+      @hooks.flatten!
 
-      @step_definitions.flatten!
       @summary = {
           :total_score => 0,
           :features => {},
