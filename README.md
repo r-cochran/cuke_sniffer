@@ -1,5 +1,6 @@
-cuke_sniffer
+cuke_sniffer 
 ============
+[![Gem Version](https://badge.fury.io/rb/cuke_sniffer.png)](http://badge.fury.io/rb/cuke_sniffer)
 [![Build Status](https://travis-ci.org/r-cochran/cuke_sniffer.png?branch=master)](https://travis-ci.org/r-cochran/cuke_sniffer)
 [![Dependency Status](https://gemnasium.com/r-cochran/cuke_sniffer.png)](https://gemnasium.com/r-cochran/cuke_sniffer)
 
