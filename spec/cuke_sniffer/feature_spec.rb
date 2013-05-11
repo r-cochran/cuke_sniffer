@@ -14,12 +14,6 @@ describe CukeSniffer::Feature do
     File.delete(@file_name)
   end
 
-  def build_file(lines)
-    file = File.open(@file_name, "w")
-    lines.each{|line| file.puts(line)}
-    file.close
-  end
-
   it "should be able to handle an empty feature file" do
     build_file([])
     CukeSniffer::Feature.new(@file_name)
@@ -163,12 +157,6 @@ describe "FeatureRules" do
 
   after(:each) do
     File.delete(@file_name)
-  end
-
-  def build_file(lines)
-    file = File.open(@file_name, "w")
-    lines.each{|line| file.puts(line)}
-    file.close
   end
 
   def validate_rule(feature, rule)

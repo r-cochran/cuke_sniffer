@@ -7,3 +7,9 @@ require 'cuke_sniffer'
 require 'roxml'
 
 include CukeSniffer::RuleConfig
+
+def build_file(lines)
+  file = File.open(@file_name, "w")
+  lines.each{|line| file.puts(line)}
+  file.close
+end

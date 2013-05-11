@@ -274,8 +274,7 @@ end
 describe "StepDefinitionRules" do
 
   def validate_rule(step_definition, rule)
-    phrase = rule[:phrase].gsub(/{.*}/, "Scenario")
-
+    phrase = rule[:phrase]
     step_definition.rules_hash.include?(phrase).should be_true
     step_definition.rules_hash[phrase].should > 0
     step_definition.score.should >= rule[:score]

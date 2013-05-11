@@ -78,7 +78,22 @@ module CukeSniffer
             :enabled => true,
             :phrase => "No code in Step Definition.",
             :score => ERROR
-        }
+        },
+        :around_hook_without_2_parameters => {
+            :enabled => true,
+            :phrase => "Around hook without 2 parameters for Scenario and Block.",
+            :score => ERROR
+        },
+        :around_hook_no_block_call => {
+            :enabled => true,
+            :phrase => "Around hook does not call its block.",
+            :score => ERROR
+        },
+        :hook_no_debugging => {
+            :enabled => true,
+            :phrase => "Hook without a begin/rescue. Reduced visibility when debugging.",
+            :score => ERROR
+        },
     }
 
     warning_rules = {
@@ -174,7 +189,17 @@ module CukeSniffer
             :enabled => true,
             :phrase => "{class} has a commented out tag",
             :score => WARNING
-        }
+        },
+        :empty_hook => {
+            :enabled => true,
+            :phrase => "Hook with no content.",
+            :score => WARNING
+        },
+        :hook_all_comments => {
+            :enabled => true,
+            :phrase => "Hook is only comments.",
+            :score => WARNING
+        },
     }
 
     info_rules = {
@@ -233,7 +258,13 @@ module CukeSniffer
             :enabled => true,
             :phrase => "Todo found. Resolve it.",
             :score => INFO
-        }
+        },
+        :hook_not_in_hooks_file => {
+            :enabled => true,
+            :phrase => "Hook found outside of the designated hooks file",
+            :score => INFO,
+            :file => "hooks.rb"
+        },
     }
 
     # Master hash used for rule data
@@ -244,10 +275,6 @@ module CukeSniffer
     # * +:words+
     # * +:max+
     # * +:min+
-    RULES = {}
-      .merge fatal_rules
-      .merge error_rules
-      .merge warning_rules
-      .merge info_rules
+    RULES = {}.merge fatal_rules.merge error_rules.merge warning_rules.merge info_rules
   end
 end

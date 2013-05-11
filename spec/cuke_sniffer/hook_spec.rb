@@ -32,3 +32,72 @@ describe CukeSniffer::Hook do
     hook.parameters.should == ["scenario", "block"]
   end
 end
+
+describe "HookRules" do
+  def validate_rule(scenario, rule)
+    phrase = rule[:phrase]
+
+    scenario.rules_hash.include?(phrase).should be_true
+    scenario.rules_hash[phrase].should > 0
+    scenario.score.should >= rule[:score]
+  end
+
+  it "should punish Hooks without content" do
+    raw_code = ["Before do",
+                "end"]
+    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
+    validate_rule(hook, RULES[:empty_hook])
+  end
+
+  it "should punish hooks that exist outside of the hooks.rb file" do
+    raw_code = ["Before do",
+                "end"]
+    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
+    validate_rule(hook, RULES[:hook_not_in_hooks_file])
+  end
+
+  it "should punish Around hooks that do not have 2 parameters. 0 parameters." do
+    raw_code = ["Around do",
+                "end"]
+    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
+    validate_rule(hook, RULES[:around_hook_without_2_parameters])
+  end
+
+  it "should punish Around hooks that do not have 2 parameters. 1 parameter." do
+    raw_code = ["Around do |a|",
+                "end"]
+    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
+    validate_rule(hook, RULES[:around_hook_without_2_parameters])
+  end
+
+  it "should punish Around hooks that do not have 2 parameters. 3 parameters." do
+    raw_code = ["Around do |a, b, c|",
+                "end"]
+    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
+    validate_rule(hook, RULES[:around_hook_without_2_parameters])
+  end
+
+  it "should punish Around hooks that never have a call on their 2nd parameter. The scenario is not called." do
+    raw_code = ["Around do |scenario, block|",
+                "end"]
+    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
+    validate_rule(hook, RULES[:around_hook_no_block_call])
+  end
+
+  it "should punish hooks without a begin/rescue for debugging." do
+    raw_code = ["Before do",
+                "end"]
+    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
+    validate_rule(hook, RULES[:hook_no_debugging])
+  end
+
+  it "should punish hooks that are all comments" do
+    raw_code = ["Before do",
+                "# comment",
+                "# comment",
+                "end"]
+    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
+    validate_rule(hook, RULES[:hook_all_comments])
+  end
+
+end

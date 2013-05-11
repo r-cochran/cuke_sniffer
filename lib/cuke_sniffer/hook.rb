@@ -53,14 +53,73 @@ module CukeSniffer
           @parameters = matches[:parameters].split(/,\s*/) if matches[:parameters]
         end
       end
+      evaluate_score
     end
 
     def ==(comparison_object) # :nodoc:
       super(comparison_object) &&
-      comparison_object.type == type &&
-      comparison_object.tags == tags &&
-      comparison_object.parameters == parameters &&
-      comparison_object.code == code
+          comparison_object.type == type &&
+          comparison_object.tags == tags &&
+          comparison_object.parameters == parameters &&
+          comparison_object.code == code
+    end
+
+    private
+
+    def evaluate_score
+      rule_empty_hook
+      rule_hook_not_in_hooks_file
+      rule_no_debugging
+      rule_all_comments
+      if @type == "Around"
+        rule_around_hook_without_2_parameters
+        rule_around_hook_no_block_call
+      end
+    end
+
+    def rule_empty_hook
+      rule = RULES[:empty_hook]
+      store_rule(rule) if @code == []
+    end
+
+    def rule_hook_not_in_hooks_file
+      rule = RULES[:hook_not_in_hooks_file]
+      store_rule(rule) unless @location.include?(rule[:file])
+    end
+
+    def rule_around_hook_without_2_parameters
+      rule = RULES[:around_hook_without_2_parameters]
+      store_rule(rule) unless @parameters.count == 2
+    end
+
+    def rule_around_hook_no_block_call
+      return if @rules_hash.keys.include?(RULES[:around_hook_without_2_parameters][:phrase])
+      rule = RULES[:around_hook_no_block_call]
+      block_call = "#{@parameters[1]}.call"
+      @code.each do |line|
+        return if line.include?(block_call)
+      end
+      store_rule(rule)
+    end
+
+    def rule_no_debugging
+      rule = RULES[:hook_no_debugging]
+      begin_found = false
+      rescue_found = false
+      @code.each do |line|
+        begin_found = true if line.include?("begin")
+        rescue_found = true if line.include?("rescue")
+        break if begin_found and rescue_found
+      end
+      store_rule(rule) unless begin_found and rescue_found
+    end
+
+    def rule_all_comments
+      rule = RULES[:hook_all_comments]
+      @code.each do |line|
+        return unless is_comment?(line)
+      end
+      store_rule(rule)
     end
 
   end

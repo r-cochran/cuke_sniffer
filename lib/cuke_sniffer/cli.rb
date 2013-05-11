@@ -28,6 +28,7 @@ module CukeSniffer
     xml_accessor :improvement_list, :as => {:key => "rule", :value => "total"}, :in => "improvement_list", :from => "improvement"
     xml_accessor :features, :as => [CukeSniffer::Feature], :in => "features"
     xml_accessor :step_definitions, :as => [CukeSniffer::StepDefinition], :in => "step_definitions"
+    xml_accessor :hooks, :as => [CukeSniffer::Hook], :in => "hooks"
 
 
     # Feature array: All Features gathered from the specified folder
