@@ -95,7 +95,7 @@ module CukeSniffer
     end
 
     def rule_around_hook_no_block_call
-      return if @rules_hash.keys.include?(RULES[:around_hook_without_2_parameters][:phrase])
+      return if rule_stored?(:around_hook_without_2_parameters)
       rule = RULES[:around_hook_no_block_call]
       block_call = "#{@parameters[1]}.call"
       @code.each do |line|
@@ -104,7 +104,12 @@ module CukeSniffer
       store_rule(rule)
     end
 
+    def rule_stored?(rule_symbol)
+      @rules_hash.keys.include?(RULES[rule_symbol][:phrase])
+    end
+
     def rule_no_debugging
+      return if rule_stored?(:empty_hook)
       rule = RULES[:hook_no_debugging]
       begin_found = false
       rescue_found = false

@@ -86,9 +86,17 @@ describe "HookRules" do
 
   it "should punish hooks without a begin/rescue for debugging." do
     raw_code = ["Before do",
+                "# code",
                 "end"]
     hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
     validate_rule(hook, RULES[:hook_no_debugging])
+  end
+
+  it "should not punish hooks for a begin/rescue for debugging when there is no code." do
+    raw_code = ["Before do",
+                "end"]
+    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
+    hook.rules_hash.include?(RULES[:hook_no_debugging][:phrase]).should be_false
   end
 
   it "should punish hooks that are all comments" do

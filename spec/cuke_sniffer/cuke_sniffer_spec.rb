@@ -175,7 +175,7 @@ describe CukeSniffer do
   end
 
   it "should determine if it is below the step definition threshold" do
-    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
+    cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location, nil)
     start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
     CukeSniffer::Constants::THRESHOLDS["Project"] = 200
     cuke_sniffer.good?.should == true
@@ -327,6 +327,17 @@ describe CukeSniffer do
 
     File.delete(feature_file_location)
     File.delete(step_definition_file_name)
+  end
+
+  it "should put hooks rules into the improvements list" do
+    hooks_file_location = "hooks_file.rb"
+    lines = ["Before do", "end"]
+    build_file(lines, hooks_file_location)
+
+    cuke_sniffer = CukeSniffer::CLI.new(nil, nil, hooks_file_location)
+    File.delete hooks_file_location
+
+    cuke_sniffer.improvement_list.should_not be_empty
   end
 
 end

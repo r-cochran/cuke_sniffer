@@ -8,8 +8,8 @@ require 'roxml'
 
 include CukeSniffer::RuleConfig
 
-def build_file(lines)
-  file = File.open(@file_name, "w")
-  lines.each{|line| file.puts(line)}
+def build_file(lines, file_name = @file_name)
+  file = File.open(file_name, "w")
+  lines.each { |line| file.puts(line) }
   file.close
 end

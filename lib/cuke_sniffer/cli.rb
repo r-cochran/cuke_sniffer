@@ -25,6 +25,7 @@ module CukeSniffer
     xml_accessor :features_summary, :as => SummaryNode
     xml_accessor :scenarios_summary, :as => SummaryNode
     xml_accessor :step_definitions_summary, :as => SummaryNode
+    xml_accessor :hooks_summary, :as => SummaryNode
     xml_accessor :improvement_list, :as => {:key => "rule", :value => "total"}, :in => "improvement_list", :from => "improvement"
     xml_accessor :features, :as => [CukeSniffer::Feature], :in => "features"
     xml_accessor :step_definitions, :as => [CukeSniffer::StepDefinition], :in => "step_definitions"
@@ -131,6 +132,7 @@ module CukeSniffer
           :total_score => 0,
           :features => {},
           :step_definitions => {},
+          :hooks => {},
           :improvement_list => {}
       }
       puts "\nCataloging Step Calls: "
@@ -141,6 +143,7 @@ module CukeSniffer
       @features_summary = load_summary_data(@summary[:features])
       @scenarios_summary = load_summary_data(@summary[:scenarios])
       @step_definitions_summary = load_summary_data(@summary[:step_definitions])
+      @hooks_summary = load_summary_data(@summary[:hooks])
     end
 
     # Returns the status of the overall project based on a comparison of the score to the threshold score
@@ -158,6 +161,7 @@ module CukeSniffer
     def output_results
       feature_results = @summary[:features]
       step_definition_results = @summary[:step_definitions]
+      hooks_results = @summary[:hooks]
       output = "Suite Summary
   Total Score: #{@summary[:total_score]}
     Features (#@features_location)
@@ -168,6 +172,10 @@ module CukeSniffer
       Min: #{step_definition_results[:min]} (#{step_definition_results[:min_file]})
       Max: #{step_definition_results[:max]} (#{step_definition_results[:max_file]})
       Average: #{step_definition_results[:average]}
+    Hooks (#@hooks_location)
+      Min: #{hooks_results[:min]} (#{hooks_results[:min_file]})
+      Max: #{hooks_results[:max]} (#{hooks_results[:max_file]})
+      Average: #{hooks_results[:average]}
   Improvements to make:"
       create_improvement_list.each { |item| output << "\n    #{item}" }
       output
@@ -253,6 +261,7 @@ module CukeSniffer
       @summary[:features] = assess_array(@features, "Feature")
       @summary[:scenarios] = assess_array(@scenarios, "Scenario")
       @summary[:step_definitions] = assess_array(@step_definitions, "StepDefinition") unless @step_definitions.empty?
+      @summary[:hooks] = assess_array(@hooks, "Hook") unless @hooks.empty?
       sort_improvement_list
     end
 

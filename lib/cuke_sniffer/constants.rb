@@ -26,7 +26,8 @@ module CukeSniffer
         "Project" => 1000,
         "Feature" => 30,
         "Scenario" => 30,
-        "StepDefinition" => 20
+        "StepDefinition" => 20,
+        "Hook" => 20
     }
 
   end

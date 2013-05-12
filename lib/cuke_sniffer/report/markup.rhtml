@@ -109,50 +109,58 @@
      feature_results = cuke_sniffer.summary[:features]
      scenario_results = cuke_sniffer.summary[:scenarios]
      step_definition_results = cuke_sniffer.summary[:step_definitions]
+     hooks_results = cuke_sniffer.summary[:hooks]
   %>
   <br>
-  <table style="padding-left: 3%;">
+  <table style="padding: 0 3%; width: 100%">
     <tr>
       <td class="major_summary_col"></td>
       <td class="major_summary_col">Features</td>
       <td class="major_summary_col">Scenarios</td>
       <td class="major_summary_col">Step Definitions</td>
+      <td class="major_summary_col">Hooks</td>
     </tr>
     <tr>
       <td class="summary_col">Total Score</td>
       <td class="summary_col"><%= feature_results[:total_score] %></td>
       <td class="summary_col"><%= scenario_results[:total_score] %></td>
       <td class="summary_col"><%= step_definition_results[:total_score] %></td>
+      <td class="summary_col"><%= hooks_results[:total_score] %></td>
     </tr>
     <tr>
       <td class="major_summary_col">Count</td>
       <td class="major_summary_col"><%= cuke_sniffer.features.count %></td>
       <td class="major_summary_col"><%= cuke_sniffer.scenarios.count %></td>
       <td class="major_summary_col"><%= cuke_sniffer.step_definitions.count %></td>
+      <td class="major_summary_col"><%= cuke_sniffer.hooks.count %></td>
     </tr>
     <tr>
       <td class="summary_col">Lowest Score</td>
       <td class="summary_col"><%= feature_results[:min] %></td>
       <td class="summary_col"><%= scenario_results[:min] %></td>
       <td class="summary_col"><%= step_definition_results[:min] %></td>
+      <td class="summary_col"><%= hooks_results[:min] %></td>
     </tr>
     <tr>
       <td class="summary_col">Highest Score</td>
       <td class="summary_col"><%= feature_results[:max] %></td>
       <td class="summary_col"><%= scenario_results[:max] %></td>
       <td class="summary_col"><%= step_definition_results[:max] %></td>
+      <td class="summary_col"><%= hooks_results[:max] %></td>
     </tr>
     <tr>
       <td class="major_summary_col">Average Score</td>
       <td class="major_summary_col"><%= feature_results[:average] %></td>
       <td class="major_summary_col"><%= scenario_results[:average] %></td>
       <td class="major_summary_col"><%= step_definition_results[:average] %></td>
+      <td class="major_summary_col"><%= hooks_results[:average] %></td>
     </tr>
     <tr>
       <td class="summary_col">Threshold</td>
       <td class="summary_col"><%= feature_results[:threshold] %></td>
       <td class="summary_col"><%= scenario_results[:threshold] %></td>
       <td class="summary_col"><%= step_definition_results[:threshold] %></td>
+      <td class="summary_col"><%= hooks_results[:threshold] %></td>
     </tr>
     <tr>
       <td class="summary_col">Good</td>
@@ -161,6 +169,7 @@
       <td class="summary_col"><%= (step_definition_results[:good].to_f/step_definition_results[:total].to_f*100).round(2) %>
         %
       </td>
+      <td class="summary_col"><%= (hooks_results[:good].to_f/hooks_results[:total].to_f*100).round(2) %>%</td>
     </tr>
     <tr>
       <td class="summary_col">Bad</td>
@@ -169,6 +178,7 @@
       <td class="summary_col"><%= (step_definition_results[:bad].to_f/step_definition_results[:total].to_f*100).round(2) %>
         %
       </td>
+      <td class="summary_col"><%= (hooks_results[:bad].to_f/hooks_results[:total].to_f*100).round(2) %>%</td>
     </tr>
   </table>
 </div>
@@ -186,7 +196,7 @@
   <div name="improvement_list" class="shrink_section" id="improvement_list">
     <div style="padding-left:3%;font:bold;font-size:14pt;">Types of
       improvements: <%= cuke_sniffer.summary[:improvement_list].keys.count %></div>
-    <table style="padding-left: 5%;font-size:14pt;">
+    <table style="padding-left: 5%;font-size:14pt;width: 100%">
       <% cuke_sniffer.summary[:improvement_list].each do |improvement, count| %>
           <tr>
             <td style="width: 20px"><%= count %></td>
@@ -211,25 +221,27 @@
   <div name="dead_steps" class="shrink_section" id="dead_steps">
     <% dead_steps = cuke_sniffer.get_dead_steps %>
     <br>
+
     <div style="font:bold;padding-left:3%;font:bold;font-size:14pt;">Total Dead
       Steps: <%= dead_steps[:total] %></div>
-    <% dead_steps.delete :total%>
+    <% dead_steps.delete :total %>
     <% dead_steps.each_key do |step_file| %>
         <div style="font:bold;padding-left:3%;font-size:14pt;">
           <%= step_file %>
           <br>
+
           <div style="padding-left:3%;font-size:12pt;">
-            <%dead_steps[step_file].each  do |regex|%>
+            <% dead_steps[step_file].each do |regex| %>
                 <%= regex %>
                 <br>
             <% end %>
-          </div></div>
+          </div>
+        </div>
         <br>
     <% end %>
   </div>
 </div>
 <br><br>
-
 
 <div style="float:left;" class="title">
   <a href=#feature_details style="color: white;font-style: normal;">
