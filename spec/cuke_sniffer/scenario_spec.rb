@@ -295,6 +295,67 @@ describe CukeSniffer::Scenario do
     scenario = CukeSniffer::Scenario.new("location:1", raw_code)
     scenario.examples_table.should == ["| param |", "| value1 |", "| value2 |"]
   end
+
+  it "should not pick up commented non-example lines in an example table" do
+    lines = [
+        "Scenario Outline: Commented examples",
+        "* step",
+        "Examples:",
+        "| thing |",
+        "#a comment",
+        "| 2 |"
+    ]
+    scenario = CukeSniffer::Scenario.new("Location.rb:1", lines)
+    scenario.examples_table.should == ["| thing |", "| 2 |"]
+  end
+
+  it "should not pick up commented non-example lines in an example table" do
+    lines = [
+        "Scenario Outline: Commented example",
+        "* step",
+        "Examples:",
+        "| thing |",
+        "#| 2 |"
+    ]
+    scenario = CukeSniffer::Scenario.new("Location.rb:1", lines)
+    scenario.examples_table.should == ["| thing |", "#| 2 |"]
+  end
+
+  it "should not keep the line following additional example tables on a scenario" do
+    raw_code = ["Scenario Outline: Outlinable",
+        "Given <outline>",
+        "Examples:",
+        "| outline |",
+        "| things |",
+        "@tag",
+        "Examples:",
+        "| outline |",
+        "| stuff |",
+        "Examples:",
+        "| outline |",
+        "| thing 1 |",
+        "| thing 2 |"
+    ]
+
+    scenario = CukeSniffer::Scenario.new("location.rb:1", raw_code)
+    scenario.examples_table.should == ["| outline |", "| things |", "| stuff |", "| thing 1 |", "| thing 2 |"]
+
+  end
+
+  it "should not remove example items that are the same as the variable name" do
+    raw_code = ["Scenario Outline: Outlinable",
+                "Given <outline>",
+                "Examples:",
+                "| outline |",
+                "| things |",
+                "| outline |"
+    ]
+
+    scenario = CukeSniffer::Scenario.new("location.rb:1", raw_code)
+    scenario.examples_table.should == ["| outline |", "| things |", "| outline |"]
+  end
+
+
 end
 
 describe "ScenarioRules" do

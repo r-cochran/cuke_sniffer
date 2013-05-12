@@ -254,6 +254,7 @@ module CukeSniffer
     private
 
     def extract_variables_from_example(example)
+      example = example[example.index('|')..example.length]
       example.split(/\s*\|\s*/) - [""]
     end
 
@@ -440,8 +441,11 @@ module CukeSniffer
     def extract_scenario_outline_steps(scenario)
       steps = {}
       examples = scenario.examples_table
+      return {} if examples.empty?
       variable_list = extract_variables_from_example(examples.first)
       (1...examples.size).each do |example_counter|
+        #TODO Abstraction needed for this regex matcher (constants?)
+        next if examples[example_counter] =~ /^\#.*$/
         row_variables = extract_variables_from_example(examples[example_counter])
         step_counter = 1
         scenario.steps.each do |step|
@@ -458,7 +462,9 @@ module CukeSniffer
       new_step = step.dup
       variable_list.each do |variable|
         if step.include? variable
-          new_step.gsub!("<#{variable}>", row_variables[variable_list.index(variable)])
+          table_variable_to_insert = row_variables[variable_list.index(variable)]
+          table_variable_to_insert ||= ""
+          new_step.gsub!("<#{variable}>", table_variable_to_insert)
         end
       end
       new_step

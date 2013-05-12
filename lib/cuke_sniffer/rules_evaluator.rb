@@ -62,12 +62,9 @@ module CukeSniffer
 
     private
 
+    #TODO Abstraction needed for this regex matcher (constants?)
     def is_comment?(line)
-      if line =~ /^\#.*$/
-        true
-      else
-        false
-      end
+      true if line =~ /^\#.*$/
     end
   end
 end

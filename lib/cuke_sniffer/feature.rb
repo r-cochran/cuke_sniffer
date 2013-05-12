@@ -42,7 +42,7 @@ module CukeSniffer
 
     def ==(comparison_object) # :nodoc:
       super(comparison_object) &&
-      comparison_object.scenarios == scenarios
+          comparison_object.scenarios == scenarios
     end
 
     private
@@ -71,10 +71,16 @@ module CukeSniffer
       index_of_title = nil
       code_block = []
       until index >= feature_lines.length
-        if scenario_title_found and (feature_lines[index].match TAG_REGEX or feature_lines[index].match SCENARIO_TITLE_REGEX)
-          add_scenario_to_feature(code_block, index_of_title)
+        if scenario_title_found and feature_lines[index].match SCENARIO_TITLE_REGEX
+          not_our_code = []
+          code_block.reverse.each do |line|
+            break unless line =~ /@.*|^#\s*[^|]/
+            not_our_code << line
+          end
+
+          add_scenario_to_feature(code_block[0..(-1 * not_our_code.length)], index_of_title)
           scenario_title_found = false
-          code_block = []
+          code_block = not_our_code
         end
         code_block << feature_lines[index].strip
         if feature_lines[index].match SCENARIO_TITLE_REGEX

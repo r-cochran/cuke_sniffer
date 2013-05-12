@@ -83,7 +83,8 @@ module CukeSniffer
       if index < scenario.length and scenario[index].include?("Examples:")
         index += 1
         until index >= scenario.length
-          @examples_table << scenario[index] unless scenario[index].empty?
+          index += 2 if scenario[index].include?("Examples:")
+          @examples_table << scenario[index] if scenario[index] =~ /#{COMMENT_REGEX}\|.*\|/
           index += 1
         end
       end

@@ -80,6 +80,15 @@ module CukeSniffer
       comparison_object.nested_steps == nested_steps
     end
 
+    def condensed_call_list
+      condensed_list = {}
+      @calls.each do |call, step_string|
+        condensed_list[step_string] ||= []
+        condensed_list[step_string] << call
+      end
+      condensed_list
+    end
+
     private
 
     SIMPLE_NESTED_STEP_REGEX = /steps?\s"#{STEP_STYLES}(?<step_string>.*)"$/ # :nodoc:
@@ -133,22 +142,13 @@ module CukeSniffer
           else
         end
 
-        if regex and is_comment?(line) == false
+        if regex and !is_comment?(line)
           match = regex.match(line)
           nested_step_line = (@start_line + counter)
           @nested_steps[location.gsub(/:\d*$/, ":" + nested_step_line.to_s)] = match[:step_string].gsub("\\", "")
         end
         counter += 1
       end
-    end
-
-    def condensed_call_list
-      condensed_list = {}
-      @calls.each do |call, step_string|
-        condensed_list[step_string] ||= []
-        condensed_list[step_string] << call
-      end
-      condensed_list
     end
 
     def evaluate_score

@@ -24,7 +24,7 @@ describe CukeSniffer do
         "Given /^I am a step$/ do",
         "end"
     ]
-    raw_code.each{|line| file.puts line}
+    raw_code.each { |line| file.puts line }
     file.close
     cuke_sniffer = CukeSniffer::CLI.new(nil, file_name)
     cuke_sniffer.step_definitions.should == [CukeSniffer::StepDefinition.new("single_steps.rb:1", raw_code)]
@@ -39,7 +39,7 @@ describe CukeSniffer do
         "var = 2",
         "end"
     ]
-    raw_code.each{ |line| file.puts line}
+    raw_code.each { |line| file.puts line }
     file.close
     cuke_sniffer = CukeSniffer::CLI.new(nil, nil, Dir.getwd + "/hooks.rb")
     cuke_sniffer.hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "/hooks.rb:1", raw_code)]
@@ -57,7 +57,7 @@ describe CukeSniffer do
         "var = 2",
         "end"
     ]
-    raw_code.each{ |line| file.puts line}
+    raw_code.each { |line| file.puts line }
     file.close
     cuke_sniffer = CukeSniffer::CLI.new(nil, nil, Dir.getwd + "/hooks.rb")
     cuke_sniffer.hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "/hooks.rb:1", raw_code[0..2]), CukeSniffer::Hook.new(Dir.getwd + "/hooks.rb:4", raw_code[3..5])]
@@ -72,7 +72,7 @@ describe CukeSniffer do
         "var = 2",
         "end"
     ]
-    raw_code.each{ |line| file.puts line}
+    raw_code.each { |line| file.puts line }
     file.close
     cuke_sniffer = CukeSniffer::CLI.new(nil, nil, Dir.getwd + "/env.rb")
     cuke_sniffer.hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "/env.rb:1", raw_code)]
@@ -117,7 +117,7 @@ describe CukeSniffer do
     lines = ["Given /^I am a dead step$/ do", "", "end"]
     file_name = "dead_steps.rb"
     file = File.open(file_name, "w")
-    lines.each{|line| file.puts(line)}
+    lines.each { |line| file.puts(line) }
     file.close
 
     cuke_sniffer = CukeSniffer::CLI.new(@features_location, Dir.getwd)
@@ -339,5 +339,56 @@ describe CukeSniffer do
 
     cuke_sniffer.improvement_list.should_not be_empty
   end
+
+  it "should be able to handle the substitution of Scenario Outline steps that are missing the examples table" do
+    lines = ["Feature: bad feature",
+             '#Scenario Outline: commented scenario',
+             '* I am a bad <var>'
+    ]
+    file_name = "temp_feature.feature"
+    build_file(lines, file_name)
+    lambda { CukeSniffer::CLI.new(file_name, nil, nil) }.should_not raise_error
+    File.delete(file_name)
+  end
+
+  it "should be able to accept an examples table in a scenario outline with empty values" do
+    lines = ["Feature: Just a plain old feature",
+             "Scenario Outline: Outlinable",
+             "Given <outline>",
+             "Examples:",
+             "|outline|",
+             "|       |"
+    ]
+    file_name = "temp_feature.feature"
+    build_file(lines, file_name)
+    lambda { CukeSniffer::CLI.new(file_name, nil, nil) }.should_not raise_error
+    File.delete(file_name)
+  end
+
+  it "should not consider a step generated from a commented example row when categorizing step calls" do
+    lines = ["Feature: Just a plain old feature",
+             "Scenario Outline: Outlinable",
+             "Given <outline>",
+             "Examples:",
+             "|outline|",
+             "#| John      |"
+    ]
+    feature_file_name = "temp_feature.feature"
+    build_file(lines, feature_file_name)
+
+
+    steps = [
+        "Given /^John$/ do",
+        "end"
+    ]
+    step_definition_file_name = "temp_steps.rb"
+    build_file(steps, step_definition_file_name)
+    cuke_sniffer = CukeSniffer::CLI.new(feature_file_name, step_definition_file_name, nil)
+    cuke_sniffer.step_definitions.first.calls.should == {}
+    File.delete(feature_file_name)
+    File.delete(step_definition_file_name)
+  end
+
+
 
 end

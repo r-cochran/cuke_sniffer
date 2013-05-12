@@ -147,6 +147,24 @@ describe CukeSniffer::Feature do
     feature.scenarios.count.should == 1
     feature.scenarios.first.rules_hash.keys.include?("Scenario Outline with no examples.").should be_false
   end
+
+  it "should not throw an error on a scenario outline followed by multiple examples tables with tags included" do
+    lines = ["Feature: Just a plain old feature",
+             "Scenario Outline: Outlinable",
+             "Given <outline>",
+             "Examples:",
+             "| outline |",
+             "| things |",
+             "@tag",
+             "Examples:",
+             "| outline |",
+             "| stuff |"
+    ]
+    file_name = "temp_feature.feature"
+    build_file(lines, file_name)
+    lambda { CukeSniffer::Feature.new(file_name) }.should_not raise_error
+    File.delete(file_name)
+  end
 end
 
 describe "FeatureRules" do
