@@ -74,13 +74,17 @@ module CukeSniffer
         if scenario_title_found and feature_lines[index].match SCENARIO_TITLE_REGEX
           not_our_code = []
           code_block.reverse.each do |line|
-            break unless line =~ /@.*|^#\s*[^|]/
+            break if line =~ /#{SCENARIO_TITLE_STYLES}|#{STEP_STYLES}|^\|.*\||Examples:/
             not_our_code << line
           end
 
-          add_scenario_to_feature(code_block[0..(-1 * not_our_code.length)], index_of_title)
+          if not_our_code.empty?
+            add_scenario_to_feature(code_block, index_of_title)
+          else
+            add_scenario_to_feature(code_block[0...(-1 * not_our_code.length)], index_of_title)
+          end
           scenario_title_found = false
-          code_block = not_our_code
+          code_block = not_our_code.reverse
         end
         code_block << feature_lines[index].strip
         if feature_lines[index].match SCENARIO_TITLE_REGEX
