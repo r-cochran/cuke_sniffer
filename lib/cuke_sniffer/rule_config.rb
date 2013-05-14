@@ -177,12 +177,12 @@ module CukeSniffer
         },
         :feature_same_tag => {
             :enabled => true,
-            :phrase => "Same tag appears on Feature: ",
+            :phrase => "Same tag appears on Feature.",
             :score => WARNING
         },
         :scenario_same_tag => {
             :enabled => true,
-            :phrase => "Tag appears on all scenarios: ",
+            :phrase => "Tag appears on all scenarios.",
             :score => WARNING
         },
         :commas_in_description => {

@@ -271,7 +271,7 @@ describe "FeatureRules" do
     build_file(lines)
     feature = CukeSniffer::Feature.new(@file_name)
     scenario = feature.scenarios[0]
-    scenario.rules_hash.include?("Same tag appears on Feature: @tag").should be_true
+    scenario.rules_hash.include?(rule[:phrase]).should be_true
     scenario.score.should >= rule[:score]
   end
 
@@ -288,7 +288,7 @@ describe "FeatureRules" do
     ]
     build_file(lines)
     feature = CukeSniffer::Feature.new(@file_name)
-    feature.rules_hash.include?("Tag appears on all scenarios: @tag").should be_true
+    feature.rules_hash.include?(rule[:phrase]).should be_true
     feature.score.should >= rule[:score]
   end
 
@@ -306,10 +306,8 @@ describe "FeatureRules" do
     ]
     build_file(lines)
     feature = CukeSniffer::Feature.new(@file_name)
-    feature.rules_hash.include?("Tag appears on all scenarios: @tag").should be_true
-    feature.rules_hash.include?("Tag appears on all scenarios: @a").should be_true
-    feature.rules_hash.include?("Tag appears on all scenarios: @tag2").should be_false
-    feature.rules_hash.include?("Tag appears on all scenarios: @tag3").should be_false
+    feature.rules_hash.include?(rule[:phrase]).should be_true
+    feature.rules_hash[rule[:phrase]].should == 2
     feature.score.should >= rule[:score]
   end
 
