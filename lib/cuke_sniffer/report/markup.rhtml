@@ -83,6 +83,12 @@
         padding-top: 4px
     }
 
+    table {
+        padding-left: 5%;
+        font-size: 14pt;
+        width: 100%
+    }
+
 </style>
 <div style="float:left; color: green; font-weight: bold; padding-left:10px;">
   Cuke Sniffer
@@ -290,7 +296,7 @@
             </table>
             <br>
             <% feature.scenarios = [feature.background, feature.scenarios].flatten unless feature.background.nil? %>
-            <table style="border-bottom:2px solid lightgreen">
+            <table style="border-bottom:2px solid lightgreen;">
               <% feature.scenarios.each do |scenario| %>
                   <% next if scenario.rules_hash.empty? %>
                   <tr>
@@ -329,6 +335,76 @@
 <br><br>
 
 <div style="float:left;" class="title">
+  <a href=#hooks style="color: white;font-style: normal;">
+    <span style="border-left-color:green;cursor: hand;" onclick="toggleById('hooks',this)">+ Hooks</span>
+  </a>
+</div>
+<div class="links" style="float:right"></div>
+<br style="clear:both">
+
+<div class="sections">
+  <div name="hooks" class="shrink_section" id="hooks">
+    <% i=0 %>
+    <% if cuke_sniffer.hooks.empty? %>
+        No hooks parsed
+    <% end %>
+    <% cuke_sniffer.hooks.each do |hook| %>
+        <div style="cursor: hand;" onclick="toggle(this,2)">
+
+          <% next if hook.score <= 0 %>
+          <div style="float:left;padding:4px;font-weight:bold;color:red;"><%= hook.score %></div>
+          <div style="width:55%;padding:4px; float:left;">
+            <% tags = "(" %>
+            <% hook.tags.each do |tag| %>
+                <% tags << tag %>
+                <% tags << ", " unless tag == hook.tags.last %>
+            <% end %>
+            <% tags += ")" %>
+            <% parameters = "| " %>
+            <% hook.parameters.each do |parameter| %>
+                <% parameters << parameter %>
+                <% parameters << ", " unless parameter == hook.parameters.last %>
+            <% end %>
+            <% parameters += " |" %>
+            <% name = hook.type %>
+            <% name += tags unless tags == "()" %>
+            <% name += " do " %>
+            <% name += parameters unless parameters == "|  |" %>
+            <%= name %></div>
+          <div class="scenarios" style="display:none;">
+
+
+            <div style="width:55%;padding:4px; float:left;">
+              <b class="featurepath"><%= hook.location.gsub(cuke_sniffer.hooks_location, "") %></b>
+              <br>
+              <table style="padding-left: 5%;font-size:14pt;width: 100%">
+                <tr>
+                  <td style="width: 600px;vertical-align:top;">
+                    <% hook.code.each do |line| %>
+                        <%= line %>
+                    <% end %>
+                  </td>
+                  <td style="width: 600px;vertical-align:top;">
+                    <b>Hook improvements:</b>
+                    <br>
+                    <% hook.rules_hash.each_key do |improvement| %>
+                        <div style="text-indent: 15px;">
+                          (<%= hook.rules_hash[improvement] %>) <%= improvement %>
+                        </div>
+                    <% end %>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <br style="clear:both;">
+        </div>
+    <% end %>
+  </div>
+</div>
+<br><br>
+
+<div style="float:left;" class="title">
   <a href=#step_definitions style="color: white;font-style: normal;">
     <span style="border-left-color:green;cursor: hand;" onclick="toggleById('step_definitions',this)">+ Step Definitions</span>
   </a>
@@ -340,8 +416,8 @@
   <div name="step_definitions" class="shrink_section" id="step_definitions">
     <% i=0 %>
     <% cuke_sniffer.step_definitions.each do |step_definition| %>
-        <div style="cursor: hand;" onclick="toggle(this,4)" class="feature <%= i%2==0 ? "even" : "odd" %>">
-          <% next if step_definition.score <= 0 or step_definition.calls.empty? %>
+        <% next if step_definition.score <= 0 or step_definition.calls.empty? %>
+        <div style="cursor: hand;" onclick="toggle(this,4)">
           <div style="float:left;padding:4px;font-weight:bold;color:red;"><%= step_definition.score %></div>
           <div style="width:55%;padding:4px; float:left;">
 
@@ -373,7 +449,7 @@
           <div class="steps" style="display:none;">
             <b class="featurepath"><%= step_definition.location.gsub(cuke_sniffer.step_definitions_location, "") %></b>
             <br>
-            <table>
+            <table style="padding-left: 5%;font-size:14pt;width: 100%">
               <tr>
                 <td style="width: 600px;vertical-align:top;">
                   <% unless step_definition.parameters.empty? %>
@@ -404,4 +480,5 @@
     <% end %>
   </div>
 </div>
+
 </div>

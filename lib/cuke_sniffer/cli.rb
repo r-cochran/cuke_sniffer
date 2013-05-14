@@ -49,6 +49,9 @@ module CukeSniffer
     # string: Location of the step definition file or root folder that was searched in
     attr_accessor :step_definitions_location
 
+    # string: Location of the hook file or root folder that was searched in
+    attr_accessor :hooks_location
+
     # Scenario array: All Scenarios found in the features from the specified folder
     attr_accessor :scenarios
 
@@ -82,6 +85,7 @@ module CukeSniffer
     def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd, hooks_location = Dir.getwd)
       @features_location = features_location
       @step_definitions_location = step_definitions_location
+      @hooks_location = hooks_location
       @features = []
       @scenarios = []
       @step_definitions = []
@@ -190,6 +194,7 @@ module CukeSniffer
     def output_html(file_name = "cuke_sniffer_results.html", cuke_sniffer = self)
       @features = @features.sort_by { |feature| feature.total_score }.reverse
       @step_definitions = @step_definitions.sort_by { |step_definition| step_definition.score }.reverse
+      @hooks = @hooks.sort_by { |hook| hook.score }.reverse
 
       markup_erb = ERB.new extract_markup
       output = markup_erb.result(binding)
@@ -261,8 +266,8 @@ module CukeSniffer
     def assess_score
       @summary[:features] = assess_array(@features, "Feature")
       @summary[:scenarios] = assess_array(@scenarios, "Scenario")
-      @summary[:step_definitions] = assess_array(@step_definitions, "StepDefinition") unless @step_definitions.empty?
-      @summary[:hooks] = assess_array(@hooks, "Hook") unless @hooks.empty?
+      @summary[:step_definitions] = assess_array(@step_definitions, "StepDefinition")
+      @summary[:hooks] = assess_array(@hooks, "Hook")
       sort_improvement_list
     end
 
@@ -358,22 +363,24 @@ module CukeSniffer
       good = 0
       bad = 0
       total_score = 0
-      array.each do |node|
-        score = node.score
-        @summary[:total_score] += score
-        total_score += score
-        node.rules_hash.each_key do |key|
-          @summary[:improvement_list][key] ||= 0
-          @summary[:improvement_list][key] += node.rules_hash[key]
+      unless array.empty?
+        array.each do |node|
+          score = node.score
+          @summary[:total_score] += score
+          total_score += score
+          node.rules_hash.each_key do |key|
+            @summary[:improvement_list][key] ||= 0
+            @summary[:improvement_list][key] += node.rules_hash[key]
+          end
+          min, min_file = score, node.location if (min.nil? or score < min)
+          max, max_file = score, node.location if (max.nil? or score > max)
+          if node.good?
+            good += 1
+          else
+            bad += 1
+          end
+          total += score
         end
-        min, min_file = score, node.location if (min.nil? or score < min)
-        max, max_file = score, node.location if (max.nil? or score > max)
-        if node.good?
-          good += 1
-        else
-          bad += 1
-        end
-        total += score
       end
       {
           :total => array.count,
