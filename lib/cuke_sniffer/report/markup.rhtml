@@ -125,7 +125,7 @@
     <tr>
       <td>Good</td>
       <% data_symbols.each do |symbol| %>
-          <td><%= (cuke_sniffer.summary[symbol][:good].to_f/cuke_sniffer.summary[symbol][:total].to_f).round(2) * 100 %>
+          <td><%= ((cuke_sniffer.summary[symbol][:good].to_f/cuke_sniffer.summary[symbol][:total].to_f) * 100).round(2) %>
             %
           </td>
       <% end %>
@@ -133,7 +133,7 @@
     <tr>
       <td>Bad</td>
       <% data_symbols.each do |symbol| %>
-          <td><%= (cuke_sniffer.summary[symbol][:bad].to_f/cuke_sniffer.summary[symbol][:total].to_f).round(2) * 100 %>
+          <td><%= ((cuke_sniffer.summary[symbol][:bad].to_f/cuke_sniffer.summary[symbol][:total].to_f) * 100).round(2) %>
             %
           </td>
       <% end %>
@@ -166,12 +166,13 @@
 <div class="shrink_section" id="dead_steps_data">
   <% dead_steps = cuke_sniffer.get_dead_steps %>
   <% dead_steps.delete(:total) %>
-  <% if dead_steps.count == 0 %>
+  <% dead_step_count = dead_steps.values.flatten.count %>
+  <% if dead_step_count == 0 %>
       <div class="notes">No dead steps found!</div>
-  <% elsif dead_steps.count == 1 %>
-      <div class="notes" style="color: red"><%= dead_steps.count %> Dead Step found.</div>
+  <% elsif dead_step_count == 1 %>
+      <div class="notes" style="color: red"><%= dead_step_count %> Dead Step found.</div>
   <% else %>
-      <div class="notes" style="color: red"><%= dead_steps.count %> Dead Steps found.</div>
+      <div class="notes" style="color: red"><%= dead_steps_count %> Dead Steps found.</div>
   <% end %>
 
   <table style="width: 100%">
