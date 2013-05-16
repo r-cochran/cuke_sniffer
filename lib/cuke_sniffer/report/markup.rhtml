@@ -238,6 +238,7 @@
         </div>
         <div>
           <% feature.scenarios.each do |scenario| %>
+              <% next if scenario.score <= 0 %>
               <div class="red_number" style="float:left; padding-left: 1%"><%= scenario.score %></div>
               <div style="float: left; width: 45%;"><%= scenario.type + ": " + scenario.name %></div>
               <div style="margin-left:1%;float: left; border-left: 2px solid #90ee90; border-top: 2px solid #90ee90; text-indent: 1%">
