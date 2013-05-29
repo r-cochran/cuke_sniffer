@@ -31,6 +31,13 @@ describe CukeSniffer::StepDefinition do
     step_definition.code.should == ["@second_number = 1"]
   end
 
+  it 'is not impacted by excess whitespace around parameters' do
+    raw_code = ["Given /a step/ do | param_1 ,  param_2,param_3    |",
+                "end"]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    step_definition.parameters.should == ['param_1','param_2','param_3']
+  end
+
   it "should add passed call locations (file + line) and their matched step call to a record hash" do
     raw_code = ["Given /^the first number is \"([^\"]*)\"$/ do |first_number|",
                 "@second_number = 1",
