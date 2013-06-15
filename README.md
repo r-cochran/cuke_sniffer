@@ -29,13 +29,9 @@ Command Line
     cd <your_features_folder>
     cuke_sniffer
     
-JRuby
-
-    cuke_sniffer.rb
-        
 Or,
 
-    cuke_sniffer <your_features_folder> <your_step_definitions_folder>
+    cuke_sniffer <your_features_folder> <your_step_definitions_folder> <your_hooks_directory>
 
 From Ruby files
 
@@ -43,14 +39,13 @@ From Ruby files
     cuke_sniffer = CukeSniffer::CLI.new
     cuke_sniffer.output_results
     
-    
 Or, 
 
     require 'cuke_sniffer'
-    cuke_sniffer = CukeSniffer::CLI.new(<your_features_folder>, <your_step_definitions_folder>)
+    cuke_sniffer = CukeSniffer::CLI.new(<your_features_folder>, <your_step_definitions_folder>, <your_hooks_directory>)
     cuke_sniffer.output_html
     
-Customizing Rules [in 0.0.3]
+Customizing Rules
 ----
 Command line: coming soon.
 
@@ -76,7 +71,7 @@ Changing a score (stock)
 
 You can also edit your source or use a gem extension to add/use your own rules! If you do let us know so we can consider putting it in the gem!
 
-Example Console Output
+Console Output
 ----
     Suite Summary
       Total Score: 325
@@ -101,26 +96,134 @@ Example Console Output
         (1)Recursive nested step call.
         (1)Scenario has no description.
         (1)Feature has numbers in the description.
+
 ----        
-Summary
+HTML Output
 -----
-![summary](http://i.imgur.com/G7GM1gF.png)
------
+Since there is a large amount of information that can be displayed each major section is hidden by default and can be shown/hidden by clicking on the green title bar for that section. Following that pattern, if you want to see more details of an item you can click on its title (see features, step definitions, hooks).
 
-Expanded
------
-![expand_improvement_list](http://i.imgur.com/SiVAVd1.png)
-![expand_dead_steps](http://i.imgur.com/YNfLORb.png)
-![expand_features](http://i.imgur.com/D3C7ss7.png)
-![expand_step_definitions](http://i.imgur.com/md6aKIG.png)
+**Default Display**
+![summary](http://i.imgur.com/9XNlbHs.png)
+
+**Improvement List**
+![improvement_list](http://i.imgur.com/uZ7R0yd.png)
+
+**Dead Steps**
+![dead_steps](http://i.imgur.com/KHtz2v0.png)
+
+**Features**
+![features](http://i.imgur.com/qicQUiN.png)
+
+**Features (expanded to show details)**
+![features_expand](http://i.imgur.com/mTkKlmo.png)
+
+**Step Definitions**
+![step_definitions](http://i.imgur.com/xvNMS9t.png)
+
+**Step Definitions (expanded to show details)**
+![step_definitions_expand](http://i.imgur.com/tn4p5ny.png)
+
+**Hooks**
+![hooks](http://i.imgur.com/y6nitqI.png)
+
+**Hooks (expanded to show details)**
+![hooks_expand](http://i.imgur.com/GbNouqT.png)
+
+XML Output
 ----
+https://github.com/r-cochran/cuke_sniffer/blob/master/cuke_sniffer.xml
 
-Expanded for more details
------
-![expand_details_features](http://i.imgur.com/tZtbA8R.png)
-![expand_details_step_definitions](http://i.imgur.com/O1aBepe.png)
-----
+The xml output follows the same object structure as the classes in this gem.
 
+    cuke_sniffer
+    	feature_summary
+			score
+			count
+			average
+			good
+			bad
+			threshold
+		scenarios_summary
+			score
+			count
+			average
+			good
+			bad
+			threshold
+		step_definitions_summary
+			score
+			count
+			average
+			good
+			bad
+			threshold
+		hooks_summary
+			score
+			count
+			average
+			good
+			bad
+			threshold
+		improvement_list
+			improvement
+				rule
+				total
+		features
+			feature
+				scenarios
+					start_line
+					steps
+						step
+					examples
+						example
+					score
+					location
+					rules
+						rule
+							phrase
+							score
+				score
+				location
+				rules
+					rule
+						phrase
+						score
+				
+		step_definitions
+			step_definition
+				start_line
+				regex
+				parameters
+					parameter
+				nested_steps
+					nested_step
+				calls
+					call
+						location
+						call
+				code
+					code
+				score
+				location
+				rules
+					rule
+						phrase
+						score
+		hooks
+			hook
+				start_line
+				type
+				tags
+					tag
+				parameters
+				code
+					code
+				score
+				rules
+					rule
+						phrase
+						score
+		
 Submitting Issues
 -----
 To submit an issue you have found in CukeSniffer, please use the GitHub issue page for this gem.
