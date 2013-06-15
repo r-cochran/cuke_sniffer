@@ -58,7 +58,7 @@ module CukeSniffer
         if line =~ STEP_DEFINITION_REGEX
           matches = STEP_DEFINITION_REGEX.match(line)
           @regex = Regexp.new(matches[:step])
-          @parameters = matches[:parameters].split(/,\s*/) if matches[:parameters]
+          @parameters = matches[:parameters].split(/,\s*/).collect{|param| param.strip} if matches[:parameters]
         end
       end
 
