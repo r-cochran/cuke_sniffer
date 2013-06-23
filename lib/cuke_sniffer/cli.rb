@@ -164,19 +164,24 @@ module CukeSniffer
     # Prints out a summary of the results and the list of improvements to be made
     def output_results
       feature_results = @summary[:features]
+      scenario_results = @summary[:scenarios]
       step_definition_results = @summary[:step_definitions]
       hooks_results = @summary[:hooks]
       output = "Suite Summary
   Total Score: #{@summary[:total_score]}
-    Features (#@features_location)
+    Features
       Min: #{feature_results[:min]} (#{feature_results[:min_file]})
       Max: #{feature_results[:max]} (#{feature_results[:max_file]})
       Average: #{feature_results[:average]}
-    Step Definitions (#@step_definitions_location)
+    Scenarios
+      Min: #{scenario_results[:min]} (#{scenario_results[:min_file]})
+      Max: #{scenario_results[:max]} (#{scenario_results[:max_file]})
+      Average: #{scenario_results[:average]}
+    Step Definitions
       Min: #{step_definition_results[:min]} (#{step_definition_results[:min_file]})
       Max: #{step_definition_results[:max]} (#{step_definition_results[:max_file]})
       Average: #{step_definition_results[:average]}
-    Hooks (#@hooks_location)
+    Hooks
       Min: #{hooks_results[:min]} (#{hooks_results[:min_file]})
       Max: #{hooks_results[:max]} (#{hooks_results[:max_file]})
       Average: #{hooks_results[:average]}

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cuke_sniffer (0.0.5)
+    cuke_sniffer (0.0.6)
       roxml
 
 GEM
