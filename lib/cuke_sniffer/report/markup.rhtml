@@ -160,6 +160,29 @@
 </div>
 <br style="clear:both">
 
+<div class="title" onclick="toggleById('rules', this)">
+  Rules +
+</div>
+<div class="shrink_section" id="rules">
+  <table style="width: 100%">
+    <tr><td>Enabled Rules:</td></tr>
+    <% cuke_sniffer.rules.each_value do |rule| %>
+        <% next if !rule[:enabled] %>
+        <tr>
+          <td class="notes"><%= rule[:phrase] %></td>
+        </tr>
+    <% end %>
+    <tr><td>Disabled Rules:</td></tr>
+    <% cuke_sniffer.rules.each_value do |rule| %>
+        <% next if rule[:enabled] %>
+        <tr>
+          <td class="notes"><%= rule[:phrase] %></td>
+        </tr>
+    <% end %>
+  </table>
+</div>
+<br style="clear:both">
+
 <div class="title" onclick="toggleById('dead_steps_data', this)">
   Dead Steps +
 </div>

@@ -9,6 +9,7 @@ module CukeSniffer
   # Mixins: CukeSniffer::Constants, ROXML
   class CLI
     include CukeSniffer::Constants
+    include CukeSniffer::RuleConfig
     include ROXML
 
     class SummaryNode
@@ -58,6 +59,9 @@ module CukeSniffer
     # Hook array: All Hooks found in the current directory
     attr_accessor :hooks
 
+    # Rules hash: All the rules that exist at runtime and their corresponding data
+    attr_accessor :rules
+
 
     # Does analysis against the passed features and step definition locations
     #
@@ -90,6 +94,7 @@ module CukeSniffer
       @scenarios = []
       @step_definitions = []
       @hooks = []
+      @rules = RULES
 
       puts "\nFeatures:"
       #extract this to a method that accepts a block and yields for the build pattern
