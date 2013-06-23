@@ -201,12 +201,12 @@ module CukeSniffer
     #  cuke_sniffer.output_html
     # Or
     #  cuke_sniffer.output_html("results01-01-0001.html")
-    def output_html(file_name = "cuke_sniffer_results.html", cuke_sniffer = self)
+    def output_html(file_name = "cuke_sniffer_results.html", cuke_sniffer = self, markup_source = File.join(File.dirname(__FILE__), 'report'))
       @features = @features.sort_by { |feature| feature.total_score }.reverse
       @step_definitions = @step_definitions.sort_by { |step_definition| step_definition.score }.reverse
       @hooks = @hooks.sort_by { |hook| hook.score }.reverse
 
-      markup_erb = ERB.new extract_markup
+      markup_erb = ERB.new extract_markup(markup_source)
       output = markup_erb.result(binding)
       File.open(file_name, 'w') do |f|
         f.write(output)
@@ -497,8 +497,8 @@ module CukeSniffer
       steps
     end
 
-    def extract_markup
-      markup_location = File.join(File.dirname(__FILE__), 'report', 'markup.rhtml')
+    def extract_markup(markup_source)
+      markup_location = "#{markup_source}/markup.html.erb"
       markup = ""
       File.open(markup_location).lines.each do |line|
         markup << line

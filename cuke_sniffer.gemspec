@@ -14,7 +14,9 @@ Gem::Specification.new do |s|
              "lib/cuke_sniffer/rule_config.rb",
              "lib/cuke_sniffer/scenario.rb",
              "lib/cuke_sniffer/step_definition.rb",
-             "lib/cuke_sniffer/report/markup.rhtml",
+             "lib/cuke_sniffer/report/markup.js",
+             "lib/cuke_sniffer/report/markup.css",
+             "lib/cuke_sniffer/report/markup.html.erb",
              "lib/cuke_sniffer/cli.rb",
              "lib/cuke_sniffer/hook.rb",
              "bin/cuke_sniffer"

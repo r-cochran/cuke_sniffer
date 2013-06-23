@@ -1,0 +1,45 @@
+.title {
+    padding-left: 1%;
+    width: 25%;
+    background-color: green;
+    color: white;
+    border-top: 0;
+    border-bottom: 0;
+    font-weight: bold;
+    font-size: 21pt;
+    cursor: hand;
+}
+
+.shrink_section {
+    border: 2px solid #90ee90;
+    display: none;
+}
+
+.table_top {
+    width: 20%;
+    font-size: 14pt;
+    padding: 0;
+}
+
+.divide_row {
+    border-bottom: 1px solid black;
+}
+
+.red_number {
+    width: 3%;
+    color: red;
+    text-indent: 1%;
+    font-weight: bold;
+}
+
+.notes {
+    text-indent: 1%;
+    font-weight: bold;
+}
+
+.sub_section {
+    display: none;
+    margin-left: 1%;
+    margin-right: 1%;
+    border-top: 2px solid #add8e6;
+}
