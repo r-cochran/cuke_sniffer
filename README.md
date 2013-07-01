@@ -4,7 +4,13 @@ cuke_sniffer
 [![Build Status](https://travis-ci.org/r-cochran/cuke_sniffer.png?branch=master)](https://travis-ci.org/r-cochran/cuke_sniffer)
 [![Dependency Status](https://gemnasium.com/r-cochran/cuke_sniffer.png)](https://gemnasium.com/r-cochran/cuke_sniffer)
 
-A ruby library used to root out smells in your cukes. Tailored for identifying critical problems as well as general improvements to your project/features/scenarios/step definitions.
+##Purpose
+A ruby library used to root out smells in your cukes. Tailored for identifying 		 critical problems as well as general improvements to your project/features/scenarios/step definitions.
+
+Scoring is based on the number of 'smells' in a cucumber project, where smells
+are potential misuses or errors. Cuke_sniffer follows a 'golf score' type system
+where the lower the number, the better. 'Min' refers to the overall best score
+for a particular object and the 'Max' is the overall worst object score.
 
 `SEE LICENSE FOR CURRENT CUKE_SNIFFER USE DETAILS`
 
@@ -24,22 +30,32 @@ Note for JRuby: Make sure you have your
 
     JRUBY_OPTS=--1.9 
 
-Command Line
+###Command Line
 
     cd <your_features_folder>
     cuke_sniffer
-    
-Or,
+
+Or
 
     cuke_sniffer <your_features_folder> <your_step_definitions_folder> <your_hooks_directory>
 
-From Ruby files
+HTML output
+
+    cuke_sniffer -o html 
+	cuke_sniffer -o html <name_of_object>
+
+XML output
+
+    cuke_sniffer -o xml
+	cuke_sniffer -o xml <name_of_object>
+
+###From Ruby files
 
     require 'cuke_sniffer'
     cuke_sniffer = CukeSniffer::CLI.new
     cuke_sniffer.output_results
     
-Or, 
+Or 
 
     require 'cuke_sniffer'
     cuke_sniffer = CukeSniffer::CLI.new(<your_features_folder>, <your_step_definitions_folder>, <your_hooks_directory>)
@@ -53,19 +69,19 @@ Inline:
 All rules are symbols in this hash and correspond to the message that is eventually displayed. Each rule has a :enabled, :phrase, :score attribute.
 Some rules have a :min, :max, a custom named attribute for edge case information.
 
-Turning off a rule
+#####Turning off a rule
 
     CukeSniffer::RuleConfig::RULES[:numbers_in_description][:enabled] = false
 
-Changing a phrase
+#####Changing a phrase
 
     CukeSniffer::RuleConfig::RULES[:background_with_no_scenarios][:phrase] = "Found a bad feature, background with no scenarios"
     
-Changing a score (custom)
+#####Changing a score (custom)
 
     CukeSniffer::RuleConfig::RULES[:asterisk_step][:score] = 3000
     
-Changing a score (stock)
+#####Changing a score (stock)
 
     CukeSniffer::RuleConfig::RULES[:asterisk_step][:score] = CukeSniffer::RuleConfig::FATAL
 
@@ -170,6 +186,18 @@ The xml output follows the same object structure as the classes in this gem.
 				total
 		features
 			feature
+				background
+					start_line
+					steps
+						step
+					examples
+						example
+					score
+					location
+					rules
+						rule
+							phrase
+							score
 				scenarios
 					start_line
 					steps
@@ -227,3 +255,5 @@ The xml output follows the same object structure as the classes in this gem.
 Submitting Issues
 -----
 To submit an issue you have found in CukeSniffer, please use the GitHub issue page for this gem.
+
+Contributed by [Manifest Solutions](http://manifestcorp.com/Home.aspx)
