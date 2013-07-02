@@ -389,8 +389,6 @@ describe CukeSniffer do
     File.delete(step_definition_file_name)
   end
 
-  it "should allow indirect access to the rules at runtime." do
-    CukeSniffer::CLI.new().rules.should == RULES
-  end
+
 
 end
