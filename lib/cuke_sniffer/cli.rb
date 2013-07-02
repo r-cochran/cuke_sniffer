@@ -22,15 +22,15 @@ module CukeSniffer
       xml_accessor :threshold
     end # :nodoc:
 
-    class RulesSummary
+    class Rule
       include ROXML
       xml_accessor :enabled
       xml_accessor :phrase
       xml_accessor :score
-     end
+    end
 
     xml_name "cuke_sniffer"
-    xml_accessor :rules_summary, :as => RulesSummary
+    xml_accessor :rules, :as => [Rule], :in => "rules"
     xml_accessor :features_summary, :as => SummaryNode
     xml_accessor :scenarios_summary, :as => SummaryNode
     xml_accessor :step_definitions_summary, :as => SummaryNode
@@ -104,6 +104,7 @@ module CukeSniffer
       @hooks = []
       @rules = []
 
+
       puts "\nFeatures:"
       #extract this to a method that accepts a block and yields for the build pattern
       unless features_location.nil?
@@ -145,21 +146,19 @@ module CukeSniffer
       end
       @hooks.flatten!
 
-      @rules = CukeSniffer::ResultsBuilder.new().build_rules(RULES)
+      build_rules
 
       @summary = {
           :total_score => 0,
           :features => {},
           :step_definitions => {},
           :hooks => {},
-          :improvement_list => {},
-          :rules => {}
+          :improvement_list => {}
       }
       puts "\nCataloging Step Calls: "
       catalog_step_calls
       puts "\nAssessing Score: "
       assess_score
-      @rules_summary = load_summary_data(@summary[:rules])
       @improvement_list = @summary[:improvement_list]
       @features_summary = load_summary_data(@summary[:features])
       @scenarios_summary = load_summary_data(@summary[:scenarios])
@@ -339,13 +338,6 @@ module CukeSniffer
       summary_node.good = summary_hash[:good]
       summary_node.bad = summary_hash[:bad]
       summary_node
-    end
-
-    def load_rules_data(rules_hash)
-      rules_node = RulesSummary.new
-      rules_node.enabled = rules_hash[:enabled]
-      rules_node.phrase = rules_hash[:phrase]
-      rules_node.score = rules_hash[:score]
     end
 
     def build_file_list_from_folder(folder_name, extension)
@@ -548,6 +540,14 @@ module CukeSniffer
       hooks
     end
 
-
+    def build_rules()
+      RULES.each do |key, value|
+        rules_summary = Rule.new
+        rules_summary.phrase = value[:phrase]
+        rules_summary.score = value[:score]
+        rules_summary.enabled = value[:enabled]
+        @rules << rules_summary
+      end
+    end
   end
 end
