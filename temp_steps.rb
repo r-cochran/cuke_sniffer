@@ -1,2 +1,0 @@
-Given /^John$/ do
-end
