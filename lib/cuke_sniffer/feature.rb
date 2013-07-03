@@ -156,7 +156,7 @@ module CukeSniffer
 
     def rule_too_many_scenarios
       rule = RULES[:too_many_scenarios]
-      store_rule(rule) if @scenarios.size >= rule[:max]
+      store_rule(rule) if @scenarios.size >= rule[:condition]
     end
 
     def rule_background_with_no_scenarios

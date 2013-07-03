@@ -27,6 +27,7 @@ module CukeSniffer
       xml_accessor :enabled
       xml_accessor :phrase
       xml_accessor :score
+      xml_accessor :condition
     end
 
     xml_name "cuke_sniffer"

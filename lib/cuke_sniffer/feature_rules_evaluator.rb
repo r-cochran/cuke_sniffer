@@ -65,7 +65,7 @@ module CukeSniffer
     def rule_too_many_tags(type)
       rule = RULES[:too_many_tags]
       rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_rule(rule, rule_phrase) if tags.size >= rule[:max]
+      store_rule(rule, rule_phrase) if tags.size >= rule[:condition]
     end
 
     def rule_no_description(type)
@@ -83,7 +83,7 @@ module CukeSniffer
     def rule_long_name(type)
       rule = RULES[:long_name]
       rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_rule(rule, rule_phrase) if name.size >= rule[:max]
+      store_rule(rule, rule_phrase) if name.size >= rule[:condition]
     end
 
     def rule_commas_in_description(type)

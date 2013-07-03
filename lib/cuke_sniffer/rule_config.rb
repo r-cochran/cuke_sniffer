@@ -126,7 +126,7 @@ module CukeSniffer
             :enabled => true,
             :phrase => "{class} with too many steps.",
             :score => WARNING,
-            :max => 7
+            :condition => 7
         },
         :out_of_order_steps => {
             :enabled => true,
@@ -152,7 +152,7 @@ module CukeSniffer
             :enabled => true,
             :phrase => "Scenario Outline with too many examples.",
             :score => WARNING,
-            :max => 10
+            :condition => 10
         },
         :multiple_given_when_then => {
             :enabled => true,
@@ -163,7 +163,7 @@ module CukeSniffer
             :enabled => true,
             :phrase => "Too many parameters in Step Definition.",
             :score => WARNING,
-            :max => 4
+            :condition => 4
         },
         :lazy_debugging => {
             :enabled => true,
@@ -217,25 +217,25 @@ module CukeSniffer
             :enabled => true,
             :phrase => "{class} has too many tags.",
             :score => INFO,
-            :max => 8
+            :condition => 8
         },
         :long_name => {
             :enabled => true,
             :phrase => "{class} has a long description.",
             :score => INFO,
-            :max => 180
+            :condition => 180
         },
         :implementation_word => {
             :enabled => true,
             :phrase => "Implementation word used: {word}.",
             :score => INFO,
-            :words => ["page", "site", "url", "button", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen"]
+            :condition => ["page", "site", "url", "button", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen"]
         },
         :too_many_scenarios => {
             :enabled => true,
             :phrase => "Feature with too many scenarios.",
             :score => INFO,
-            :max => 10
+            :condition => 10
         },
         :date_used => {
             :enabled => true,
@@ -256,13 +256,13 @@ module CukeSniffer
             :enabled => true,
             :phrase => "Small sleeps used. Use a wait_until like method.",
             :score => INFO,
-            :max => 2
+            :condition => 2
         },
         :large_sleep => {
             :enabled => true,
             :phrase => "Large sleeps used. Use a wait_until like method.",
             :score => INFO,
-            :min => 2
+            :condition => 2
         },
         :todo => {
             :enabled => true,
@@ -273,7 +273,7 @@ module CukeSniffer
             :enabled => true,
             :phrase => "Hook found outside of the designated hooks file",
             :score => INFO,
-            :file => "hooks.rb"
+            :condition => "hooks.rb"
         },
     }
 

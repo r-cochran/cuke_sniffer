@@ -183,12 +183,12 @@ module CukeSniffer
 
     def rule_large_sleep(sleep_value)
       rule = RULES[:large_sleep]
-      store_rule(rule) if sleep_value > rule[:min]
+      store_rule(rule) if sleep_value > rule[:condition]
     end
 
     def rule_small_sleep(sleep_value)
       rule = RULES[:small_sleep]
-      store_rule(rule) if sleep_value <= rule[:max]
+      store_rule(rule) if sleep_value <= rule[:condition]
     end
 
     def rule_pending
@@ -214,7 +214,7 @@ module CukeSniffer
 
     def rule_too_many_parameters
       rule = RULES[:too_many_parameters]
-      store_rule(rule) if parameters.size >= rule[:max]
+      store_rule(rule) if parameters.size >= rule[:condition]
     end
 
     def rule_nested_steps

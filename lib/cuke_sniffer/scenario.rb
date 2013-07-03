@@ -203,7 +203,7 @@ module CukeSniffer
       rule = RULES[:implementation_word]
       @steps.each do |step|
         next if is_comment?(step)
-        rule[:words].each do |word|
+        rule[:condition].each do |word|
           rule_phrase = rule[:phrase].gsub(/{.*}/, word)
           store_rule(rule, rule_phrase) if step.include?(word)
         end
@@ -232,7 +232,7 @@ module CukeSniffer
     def rule_too_many_steps
       rule = RULES[:too_many_steps]
       rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_rule(rule, rule_phrase) if @steps.size >= rule[:max]
+      store_rule(rule, rule_phrase) if @steps.size >= rule[:condition]
     end
   end
 end
