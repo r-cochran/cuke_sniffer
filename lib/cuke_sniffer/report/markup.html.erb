@@ -107,17 +107,17 @@
 <div class="shrink_section" id="rules">
   <table style="width: 100%">
     <tr><td>Enabled Rules:</td></tr>
-    <% cuke_sniffer.rules.each_value do |rule| %>
-        <% next if !rule[:enabled] %>
+    <% cuke_sniffer.rules.each do |rule| %>
+        <% next if !rule.enabled %>
         <tr>
-          <td class="notes"><%= rule[:phrase] %></td>
+          <td class="notes"><%= rule.phrase %></td>
         </tr>
     <% end %>
     <tr><td>Disabled Rules:</td></tr>
-    <% cuke_sniffer.rules.each_value do |rule| %>
-        <% next if rule[:enabled] %>
+    <% cuke_sniffer.rules.each do |rule| %>
+        <% next if rule.enabled %>
         <tr>
-          <td class="notes"><%= rule[:phrase] %></td>
+          <td class="notes"><%= rule.phrase %></td>
         </tr>
     <% end %>
   </table>
