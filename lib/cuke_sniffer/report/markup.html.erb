@@ -1,5 +1,68 @@
-<script type="text/javascript" src= "<%=markup_source%>/markup.js" ></script>
-<link rel="stylesheet" type="text/css" href="<%=markup_source%>/markup.css">
+<link rel="stylesheet" type="text/css" >
+
+<script type="text/javascript">
+
+    function toggleById(item, link) {
+        updateDisplayStatus(document.getElementById(item));
+        toggleText(link)
+    }
+    function updateDisplayStatus(object) {
+        object.style.display = (object.style.display == "block") ? 'none' : "block";
+    }
+    function toggleText(link) {
+        var char_result = link.innerHTML.indexOf("+") > -1 ? "-" : "+";
+        link.innerHTML = link.innerHTML.replace(/(\+|\-)/, char_result)
+    }
+
+
+</script>
+
+<style>
+    .title {
+        padding-left: 1%;
+        width: 25%;
+        background-color: green;
+        color: white;
+        border-top: 0;
+        border-bottom: 0;
+        font-weight: bold;
+        font-size: 21pt;
+        cursor: pointer;
+    }
+
+    .shrink_section {
+        border: 2px solid #90ee90;
+        display: none;
+    }
+
+    .table_top {
+        width: 20%;
+        font-size: 14pt;
+        padding: 0;
+    }
+
+    .divide_row {
+        border-bottom: 1px solid black;
+    }
+
+    .red_number {
+        width: 3%;
+        color: red;
+        text-indent: 1%;
+        font-weight: bold;
+    }
+
+    .notes {
+        font-weight: bold;
+    }
+
+    .sub_section {
+        display: none;
+        margin-left: 1%;
+        margin-right: 1%;
+        border-top: 2px solid #add8e6;
+    }
+</style>
 
 <div style="float: left; color: green; font-size: 20px; font-weight: bold; padding-bottom: 1px;">
   Cuke Sniffer
@@ -171,7 +234,7 @@
   <% index = 0 %>
   <% cuke_sniffer.features.each do |feature| %>
       <% next if feature.total_score <= 0 %>
-      <div style="cursor: hand; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('feature_<%=index%>'))">
+      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('feature_<%=index%>'))">
         <div class="red_number" style="float:left"><%= feature.total_score + feature.scenarios_score %></div>
         <div class="notes"><%= feature.name %></div>
       </div>
@@ -230,7 +293,7 @@
   <% index = 0 %>
   <% cuke_sniffer.step_definitions.each do |step_definition| %>
       <% next if step_definition.score <= 0 %>
-      <div style="cursor: hand; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('step_definition_<%=index%>'))">
+      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('step_definition_<%=index%>'))">
         <div class="red_number" style="float:left"><%= step_definition.score %></div>
         <% parameters = "" %>
         <% step_definition.parameters.each do |param| %>
@@ -278,7 +341,7 @@
   <% index = 0 %>
   <% cuke_sniffer.hooks.each do |hook| %>
       <% next if hook.score <= 0 %>
-      <div style="cursor: hand; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_<%=index%>'))">
+      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_<%=index%>'))">
         <div class="red_number" style="float:left"><%= hook.score %></div>
         <% tags = "(" %>
         <% hook.tags.each do |tag| %>
