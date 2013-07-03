@@ -389,6 +389,17 @@ describe CukeSniffer do
     File.delete(step_definition_file_name)
   end
 
+  it "contains all of the rules."do
+    cuke_sniffer = CukeSniffer::CLI.new()
 
+    cuke_sniffer.rules.size.should == RULES.size
+    cuke_sniffer.rules.first.phrase.should_not == nil
+    cuke_sniffer.rules.first.score.should_not == nil
+    cuke_sniffer.rules.first.enabled.should == true
+  end
 
 end
+
+
+
+

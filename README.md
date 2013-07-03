@@ -152,6 +152,12 @@ https://github.com/r-cochran/cuke_sniffer/blob/master/cuke_sniffer.xml
 The xml output follows the same object structure as the classes in this gem.
 
     cuke_sniffer
+  		rules
+			rule
+				enabled
+				phrase
+				score
+
     	feature_summary
 			score
 			count
