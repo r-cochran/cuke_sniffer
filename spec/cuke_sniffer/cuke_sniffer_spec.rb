@@ -398,6 +398,95 @@ describe CukeSniffer do
     cuke_sniffer.rules.first.enabled.should == true
   end
 
+  it "should have at least one condition in the rules." do
+    cuke_sniffer = CukeSniffer::CLI.new()
+
+    has_condition = false
+    cuke_sniffer.rules.each do |rule|
+      if rule.conditions != nil
+        has_condition = true
+      end
+    end
+
+    has_condition.should == true
+  end
+
+  describe "build_rule" do
+
+    single_rule_set = {
+        :one => {
+            :enabled => true,
+            :phrase => "Scenario Outline with no examples.",
+            :score => FATAL
+        }
+    }
+
+    multiple_rule_set = {
+        :one => {
+            :enabled => true,
+            :phrase => "Scenario Outline with a single example.",
+            :score => FATAL
+        },
+        :two => {
+            :enabled => false,
+            :phrase => "Scenario Outline with multiple examples.",
+            :score => WARNING
+        },
+        :three => {
+            :enabled => true,
+            :phrase => "Scenario Outline with the last example.",
+            :score => INFO,
+            :max => 7,
+            :min => 1
+        }
+    }
+
+    it "produces rule summaries based on the provided rules" do
+      rules = CukeSniffer::CLI.build_rules(multiple_rule_set)
+
+      rules[0].enabled.should be_true
+      rules[0].score.should == FATAL
+      rules[0].phrase.should == "Scenario Outline with a single example."
+
+      rules[1].enabled.should be_false
+      rules[1].score.should == WARNING
+      rules[1].phrase.should == "Scenario Outline with multiple examples."
+
+      rules[2].enabled.should be_true
+      rules[2].score.should == INFO
+      rules[2].phrase.should == "Scenario Outline with the last example."
+
+    end
+
+    it "produces a rule summary for each rule" do
+      CukeSniffer::CLI.build_rules(single_rule_set).size.should == 1
+      CukeSniffer::CLI.build_rules(multiple_rule_set).size.should == 3
+    end
+
+    it "produces a empty list result when a nil rule is provided" do
+      nil_rule_set = nil
+      rules = CukeSniffer::CLI.build_rules(nil_rule_set)
+      rules.size.should == 0
+    end
+
+    it "produces an empty list when an empty set of rules is provided" do
+      empty_rule_set = {  }
+      rules = CukeSniffer::CLI.build_rules(empty_rule_set)
+      rules.size.should == 0
+    end
+
+    it "produces a rule summary with an empty conditions list when a rule has no conditions"do
+      rules = CukeSniffer::CLI.build_rules(multiple_rule_set)
+      rules[1].conditions.should == {}
+    end
+
+    it "produces a condition in the rule summary for each condition in the rule"do
+      rules = CukeSniffer::CLI.build_rules(multiple_rule_set)
+      rules[2].conditions[:max].should == 7
+      rules[2].conditions[:min].should == 1
+
+    end
+  end
 end
 
 
