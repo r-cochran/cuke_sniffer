@@ -196,7 +196,7 @@ describe "FeatureRules" do
     rule = RULES[:too_many_tags]
 
     lines = []
-    rule[:condition].times { |n| lines << "@tag_#{n}" }
+    rule[:max].times { |n| lines << "@tag_#{n}" }
     lines << "Feature: Feature with many tags"
     build_file(lines)
     feature = CukeSniffer::Feature.new(@file_name)
@@ -222,7 +222,7 @@ describe "FeatureRules" do
     rule = RULES[:long_name]
 
     feature_description = ""
-    rule[:condition].times { feature_description << "A" }
+    rule[:max].times { feature_description << "A" }
     build_file(["Feature: #{feature_description}"])
     feature = CukeSniffer::Feature.new(@file_name)
 
@@ -251,7 +251,7 @@ describe "FeatureRules" do
     rule = RULES[:too_many_scenarios]
 
     lines = ["Feature: I'm a feature without scenarios!"]
-    rule[:condition].times { lines << "Scenario: I am a simple scenario" }
+    rule[:max].times { lines << "Scenario: I am a simple scenario" }
 
     build_file(lines)
     feature = CukeSniffer::Feature.new(@file_name)

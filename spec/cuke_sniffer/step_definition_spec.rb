@@ -297,7 +297,7 @@ describe "StepDefinitionRules" do
   it "should punish Step Definitions with too many parameters" do
     rule = RULES[:too_many_parameters]
     parameters = ""
-    rule[:condition].times { |n| parameters += "param#{n}, " }
+    rule[:max].times { |n| parameters += "param#{n}, " }
 
     raw_code = ["Given /^step with many parameters$/ do |#{parameters}|", "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
@@ -391,7 +391,7 @@ describe "StepDefinitionRules" do
 
   it "should punish each large sleep in a step definition" do
     raw_code = ["Given /^small sleeping step$/ do",
-                "sleep #{RULES[:large_sleep][:condition] + 1}",
+                "sleep #{RULES[:large_sleep][:min] + 1}",
                 "end"]
     step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
     validate_rule(step_definition, RULES[:large_sleep])

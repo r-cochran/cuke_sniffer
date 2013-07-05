@@ -86,7 +86,7 @@ module CukeSniffer
 
     def rule_hook_not_in_hooks_file
       rule = RULES[:hook_not_in_hooks_file]
-      store_rule(rule) unless @location.include?(rule[:condition])
+      store_rule(rule) unless @location.include?(rule[:file])
     end
 
     def rule_around_hook_without_2_parameters

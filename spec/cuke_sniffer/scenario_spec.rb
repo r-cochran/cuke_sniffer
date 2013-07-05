@@ -400,7 +400,7 @@ describe "ScenarioRules" do
   it "should punish Scenarios with long names" do
     rule = RULES[:long_name]
     scenario_description = ""
-    rule[:condition].times { scenario_description << "A" }
+    rule[:max].times { scenario_description << "A" }
     scenario_block = [
         "Scenario: #{scenario_description}"
     ]
@@ -413,7 +413,7 @@ describe "ScenarioRules" do
     scenario_block = [
         "Scenario: Scenario with too many steps"
     ]
-    rule[:condition].times { scenario_block << "And I have too many steps" }
+    rule[:max].times { scenario_block << "And I have too many steps" }
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
 
     validate_rule(scenario, rule)
@@ -596,7 +596,7 @@ describe "ScenarioRules" do
         "Examples:",
         "|var_a|"
     ]
-    rule[:condition].times { |n| scenario_block << "|#{n}|" }
+    rule[:max].times { |n| scenario_block << "|#{n}|" }
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     validate_rule(scenario, RULES[:too_many_examples])
   end
@@ -604,7 +604,7 @@ describe "ScenarioRules" do
   it "should punish Scenarios with too many tags" do
     rule = RULES[:too_many_tags]
     scenario_block = []
-    rule[:condition].times { |n| scenario_block << "@tag_#{n}" }
+    rule[:max].times { |n| scenario_block << "@tag_#{n}" }
     scenario_block << "Scenario: Scenario with many tags"
 
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
@@ -777,7 +777,7 @@ describe "BackgroundRules" do
   it "should punish Backgrounds with long names" do
     rule = RULES[:long_name]
     background_description = ""
-    rule[:condition].times { background_description << "A" }
+    rule[:max].times { background_description << "A" }
     background_block = [
         "Background: #{background_description}"
     ]
@@ -790,7 +790,7 @@ describe "BackgroundRules" do
     background_block = [
         "Background: Scenario with too many steps"
     ]
-    rule[:condition].times { background_block << "And I have too many steps" }
+    rule[:max].times { background_block << "And I have too many steps" }
     background = CukeSniffer::Scenario.new("location:1", background_block)
 
     validate_rule(background, rule)
@@ -898,7 +898,7 @@ describe "BackgroundRules" do
   it "should not punish Backgrounds with too many tags" do
     rule = RULES[:too_many_tags]
     background_block = []
-    rule[:condition].times { |n| background_block << "@tag_#{n}" }
+    rule[:max].times { |n| background_block << "@tag_#{n}" }
     background_block << "Background: Scenario with many tags"
 
     background = CukeSniffer::Scenario.new("location:1", background_block)
