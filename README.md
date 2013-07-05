@@ -93,20 +93,20 @@ Console Output
 	Suite Summary
 	  Total Score: 192
         Features
-          Min: 0 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/complex_calculator.feature)
-          Max: 0 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/complex_calculator.feature)
+          Min: 0 
+          Max: 0 
           Average: 0.0
       Scenarios
-          Min: 0 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/complex_calculator.feature:3)
-          Max: 10 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/nested_directory/nested_feature.feature:3)
+          Min: 0 
+          Max: 10 
           Average: 3.33
       Step Definitions
-          Min: 0 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/step_definitions/complex_calculator_steps.rb:1)
-          Max: 10 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/step_definitions/nested_steps/nested_steps.rb:1)
+          Min: 0 
+          Max: 10 
           Average: 1.38
       Hooks
-          Min: 21 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/support/env.rb:1)
-          Max: 25 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/support/hooks.rb:1)
+          Min: 21 
+          Max: 25 
           Average: 24.43
 	  Improvements to make:
         (6)Hook without a begin/rescue. Reduced visibility when debugging.
