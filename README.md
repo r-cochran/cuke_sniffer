@@ -89,29 +89,34 @@ You can also edit your source or use a gem extension to add/use your own rules! 
 
 Console Output
 ----
-    Suite Summary
-      Total Score: 325
-        Features (../features/scenarios)
-          Min: 0
-          Max: 213
-          Average: 55.75
-        Step Definitions (../features/step_definitions)
-          Min: 0
-          Max: 101
-          Average: 11.33
-      Improvements to make:
-        (4)Scenario steps out of Given/When/Then order.
-        (2)Nested step call.
-        (1)Implementation word used: screen.
-        (1)No steps in Scenario.
-        (1)Scenario Outline with no examples table.
-        (1)Scenario with too many steps.
-        (1)Implementation word used: button.
-        (1)Implementation word used: page.
-        (1)Invalid first step. Began with And/But.
-        (1)Recursive nested step call.
-        (1)Scenario has no description.
-        (1)Feature has numbers in the description.
+
+	Suite Summary
+	  Total Score: 192
+        Features
+          Min: 0 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/complex_calculator.feature)
+          Max: 0 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/complex_calculator.feature)
+          Average: 0.0
+      Scenarios
+          Min: 0 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/complex_calculator.feature:3)
+          Max: 10 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/nested_directory/nested_feature.feature:3)
+          Average: 3.33
+      Step Definitions
+          Min: 0 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/step_definitions/complex_calculator_steps.rb:1)
+          Max: 10 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/step_definitions/nested_steps/nested_steps.rb:1)
+          Average: 1.38
+      Hooks
+          Min: 21 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/support/env.rb:1)
+          Max: 25 (C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/support/hooks.rb:1)
+          Average: 24.43
+	  Improvements to make:
+        (6)Hook without a begin/rescue. Reduced visibility when debugging.
+        (1)Hook with no content.
+        (1)Hook found outside of the designated hooks file
+        (1)Hook is only comments.
+        (1)Nested step call.
+        (1)Lazy Debugging through puts, p, or print
+        (1)Scenario steps out of Given/When/Then order.
+
 
 ----        
 HTML Output
