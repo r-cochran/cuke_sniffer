@@ -27,6 +27,7 @@ module CukeSniffer
       xml_accessor :enabled
       xml_accessor :phrase
       xml_accessor :score
+      xml_accessor :conditions, :as => {:key => "name", :value => "value"}, :in => "conditions", :from => "condition"
     end
 
     xml_name "cuke_sniffer"
@@ -104,7 +105,6 @@ module CukeSniffer
       @hooks = []
       @rules = []
 
-
       puts "\nFeatures:"
       #extract this to a method that accepts a block and yields for the build pattern
       unless features_location.nil?
@@ -146,7 +146,7 @@ module CukeSniffer
       end
       @hooks.flatten!
 
-      build_rules
+      @rules = CukeSniffer::CLI.build_rules(RULES)
 
       @summary = {
           :total_score => 0,
@@ -276,6 +276,27 @@ module CukeSniffer
       converted_steps = convert_steps_with_expressions(get_steps_with_expressions(steps))
       catalog_possible_dead_steps(converted_steps)
     end
+
+
+    def self.build_rules(rules)
+      if rules.nil?
+        return []
+      end
+      rules.collect do |key, value|
+        rules_summary = Rule.new
+        rules_summary.phrase = value[:phrase]
+        rules_summary.score = value[:score]
+        rules_summary.enabled = value[:enabled]
+        conditional_keys = value.keys - [:phrase, :score, :enabled]
+        conditions = {}
+        conditional_keys.each do|key|
+          conditions[key] = value[key]
+        end
+        rules_summary.conditions = conditions
+        rules_summary
+      end
+    end
+
 
     private
 
@@ -539,15 +560,6 @@ module CukeSniffer
       hooks << CukeSniffer::Hook.new("#{file_name}:#{counter+1 -hooks_code.count}", hooks_code) unless hooks_code.empty? or !found_first_hook
       hooks
     end
-
-    def build_rules()
-      RULES.each do |key, value|
-        rules_summary = Rule.new
-        rules_summary.phrase = value[:phrase]
-        rules_summary.score = value[:score]
-        rules_summary.enabled = value[:enabled]
-        @rules << rules_summary
-      end
-    end
   end
+
 end
