@@ -12,30 +12,12 @@ module CukeSniffer
     include CukeSniffer::RuleConfig
     include ROXML
 
-    class SummaryNode
-      include ROXML
-      xml_accessor :score
-      xml_accessor :count
-      xml_accessor :average
-      xml_accessor :good
-      xml_accessor :bad
-      xml_accessor :threshold
-    end # :nodoc:
-
-    class Rule
-      include ROXML
-      xml_accessor :enabled
-      xml_accessor :phrase
-      xml_accessor :score
-      xml_accessor :conditions, :as => {:key => "name", :value => "value"}, :in => "conditions", :from => "condition"
-    end
-
     xml_name "cuke_sniffer"
     xml_accessor :rules, :as => [Rule], :in => "rules"
-    xml_accessor :features_summary, :as => SummaryNode
-    xml_accessor :scenarios_summary, :as => SummaryNode
-    xml_accessor :step_definitions_summary, :as => SummaryNode
-    xml_accessor :hooks_summary, :as => SummaryNode
+    xml_accessor :features_summary, :as => CukeSniffer::SummaryNode
+    xml_accessor :scenarios_summary, :as => CukeSniffer::SummaryNode
+    xml_accessor :step_definitions_summary, :as => CukeSniffer::SummaryNode
+    xml_accessor :hooks_summary, :as => CukeSniffer::SummaryNode
     xml_accessor :improvement_list, :as => {:key => "rule", :value => "total"}, :in => "improvement_list", :from => "improvement"
     xml_accessor :features, :as => [CukeSniffer::Feature], :in => "features"
     xml_accessor :step_definitions, :as => [CukeSniffer::StepDefinition], :in => "step_definitions"
@@ -283,17 +265,17 @@ module CukeSniffer
         return []
       end
       rules.collect do |key, value|
-        rules_summary = Rule.new
-        rules_summary.phrase = value[:phrase]
-        rules_summary.score = value[:score]
-        rules_summary.enabled = value[:enabled]
+        rule = CukeSniffer::Rule.new
+        rule.phrase = value[:phrase]
+        rule.score = value[:score]
+        rule.enabled = value[:enabled]
         conditional_keys = value.keys - [:phrase, :score, :enabled]
         conditions = {}
         conditional_keys.each do|key|
           conditions[key] = value[key]
         end
-        rules_summary.conditions = conditions
-        rules_summary
+        rule.conditions = conditions
+        rule
       end
     end
 
