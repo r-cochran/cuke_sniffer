@@ -5,241 +5,348 @@
       <enabled>true</enabled>
       <phrase>Scenario Outline with no examples.</phrase>
       <score>100</score>
+      <conditions>
+        <condition>
+          <name>bacon</name>
+          <value>sup</value>
+        </condition>
+        <condition>
+          <name>eggs</name>
+          <value>you know it</value>
+        </condition>
+      </conditions>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Scenario Outline with no examples table.</phrase>
       <score>100</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Recursive nested step call.</phrase>
       <score>100</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>There is a background with a tag. This feature file cannot run!</phrase>
       <score>100</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Comment comes between tag and properly executing line. This feature file cannot run!</phrase>
       <score>100</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>{class} has no description.</phrase>
       <score>25</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Feature with no scenarios.</phrase>
       <score>25</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Commented step.</phrase>
       <score>25</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Commented example.</phrase>
       <score>25</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>No steps in Scenario.</phrase>
       <score>25</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Step that is only one word long.</phrase>
       <score>25</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>No code in Step Definition.</phrase>
       <score>25</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Around hook without 2 parameters for Scenario and Block.</phrase>
       <score>25</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Around hook does not call its block.</phrase>
       <score>25</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
       <score>25</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Hook that both expects and ignores the same tag. This hook will not function as expected.</phrase>
       <score>25</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>{class} has numbers in the description.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Feature file has no content.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Feature has a background with no scenarios.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Feature has a background with one scenario.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>{class} with too many steps.</phrase>
       <score>10</score>
+      <conditions>
+        <condition>
+          <name>max</name>
+          <value>7</value>
+        </condition>
+      </conditions>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Scenario steps out of Given/When/Then order.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Invalid first step. Began with And/But.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Step includes a * instead of Given/When/Then/And/But.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Scenario Outline with only one example.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Scenario Outline with too many examples.</phrase>
       <score>10</score>
+      <conditions>
+        <condition>
+          <name>max</name>
+          <value>10</value>
+        </condition>
+      </conditions>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Given/When/Then used multiple times in the same {class}.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Too many parameters in Step Definition.</phrase>
       <score>10</score>
+      <conditions>
+        <condition>
+          <name>max</name>
+          <value>4</value>
+        </condition>
+      </conditions>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Lazy Debugging through puts, p, or print</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Pending step definition. Implement or remove.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Same tag appears on Feature.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Tag appears on all scenarios.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>There are commas in the description, creating possible multirunning scenarios or features.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>{class} has a commented out tag</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Hook with no content.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Hook is only comments.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Hook has duplicate tags.</phrase>
       <score>10</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>{class} has too many tags.</phrase>
       <score>1</score>
+      <conditions>
+        <condition>
+          <name>max</name>
+          <value>8</value>
+        </condition>
+      </conditions>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>{class} has a long description.</phrase>
       <score>1</score>
+      <conditions>
+        <condition>
+          <name>max</name>
+          <value>180</value>
+        </condition>
+      </conditions>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Implementation word used: {word}.</phrase>
       <score>1</score>
+      <conditions>
+        <condition>
+          <name>words</name>
+          <value>["page", "site", "url", "button", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen"]</value>
+        </condition>
+      </conditions>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Feature with too many scenarios.</phrase>
       <score>1</score>
+      <conditions>
+        <condition>
+          <name>max</name>
+          <value>10</value>
+        </condition>
+      </conditions>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Date used.</phrase>
       <score>1</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Nested step call.</phrase>
       <score>1</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Commented code in Step Definition.</phrase>
       <score>1</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Small sleeps used. Use a wait_until like method.</phrase>
       <score>1</score>
+      <conditions>
+        <condition>
+          <name>max</name>
+          <value>2</value>
+        </condition>
+      </conditions>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Large sleeps used. Use a wait_until like method.</phrase>
       <score>1</score>
+      <conditions>
+        <condition>
+          <name>min</name>
+          <value>2</value>
+        </condition>
+      </conditions>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Todo found. Resolve it.</phrase>
       <score>1</score>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Hook found outside of the designated hooks file</phrase>
       <score>1</score>
+      <conditions>
+        <condition>
+          <name>file</name>
+          <value>hooks.rb</value>
+        </condition>
+      </conditions>
     </rule>
   </rules>
   <features_summary>
