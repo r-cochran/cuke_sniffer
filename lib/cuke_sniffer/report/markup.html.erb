@@ -31,7 +31,11 @@
     }
 
     .shrink_section {
-        border: 2px solid #90ee90;
+        display: none;
+    }
+
+    .rules_shrink_section {
+        float: left;
         display: none;
     }
 
@@ -62,6 +66,39 @@
         margin-right: 1%;
         border-top: 2px solid #add8e6;
     }
+
+    .rule_notes {
+        margin-left: 1%;
+        border-left: 2px solid #90ee90;
+        border-top: 2px solid #90ee90;
+        padding-bottom: 14px;
+        text-indent: 1%;
+        display: block;
+        padding-left: 1%;
+        margin-bottom: 15px;
+        clear: left;
+
+    }
+
+    .rule_style {
+        margin: 0;
+        text_indent: 3%;
+
+    }
+    .rule_heading {
+        font-weight: bold;
+    }
+    ol  {
+        list-style-type:none;
+        display: block;
+
+    }
+
+    .rule_details {
+             text-indent: 0%;
+         }
+
+
 </style>
 
 <div style="float: left; color: green; font-size: 20px; font-weight: bold; padding-bottom: 1px;">
@@ -164,27 +201,80 @@
 </div>
 <br style="clear:both">
 
-<div class="title" onclick="toggleById('rules', this)">
+<div id="rulesTab" class="title" onclick="toggleById('rules', this)">
   Rules +
 </div>
-<div class="shrink_section" id="rules">
-  <table style="width: 100%">
-    <tr><td>Enabled Rules:</td></tr>
-    <% cuke_sniffer.rules.each do |rule| %>
-        <% next if !rule.enabled %>
-        <tr>
-          <td class="notes"><%= rule.phrase %></td>
-        </tr>
-    <% end %>
-    <tr><td>Disabled Rules:</td></tr>
-    <% cuke_sniffer.rules.each do |rule| %>
-        <% next if rule.enabled %>
-        <tr>
-          <td class="notes"><%= rule.phrase %></td>
-        </tr>
-    <% end %>
-  </table>
+
+<div class="rules_shrink_section" id="rules">
+
+  <% counter = 0 %>
+  <% index = 0 %>
+  <% enabled = true %>
+
+  <% while( counter < 2 ) %>
+
+      <% if counter == 0 %>
+          <ol id="enabledRules" class="rule_style">
+            <p class="rule_heading">Enabled Rules:</p>
+      <% else %>
+          <ol id="disabledRules" class="rule_style">
+            <p class="rule_heading">Disabled Rules:</p>
+      <% end %>
+
+      <% cuke_sniffer.rules.each do |rule| %>
+
+          <% if rule.enabled == enabled %>
+
+              <li class="rule_notes">
+                <div id="phrase_<%= index %>" class="rule_details">Phrase: <%= rule.phrase%></div>
+                <div id="score_<%= index %>" class="rule_details">Score: <%= rule.score%></div>
+                <% rule.conditions.each do |key, value| %>
+                    <% if value.kind_of?(Array) %>
+                        <% array_line_index = 0 %>
+                        <div id="condition_<%= index %>" class="rule_details"><%= key.capitalize%>: </div>
+                        <% temp_index = 5 %>
+                        <% range = true %>
+                        <% while( range == true ) %>
+                            <% if temp_index >= value.size %>
+                                <% if temp_index <= 5 %>
+                                    <div id="arrayCondition_<%= array_line_index %>" class="rule_details"><%= value[0..value.size].to_s %></div>
+                                    <% array_line_index += 1 %>
+                                    <% range = false %>
+                                <% elsif temp_index % 5 != 0 %>
+                                    <div id="arrayCondition_<%= array_line_index %>" class="rule_details"><%= value[temp_index-(temp_index%5)..value.size].to_s %></div>
+                                    <% array_line_index += 1 %>
+                                    <% range = false %>
+                                <% elsif temp_index % 5 == 0 %>
+                                    <div id="arrayCondition_<%= array_line_index %>" class="rule_details"><%= value[temp_index-5..value.size].to_s %></div>
+                                    <% array_line_index += 1 %>
+                                    <% range = false %>
+                                <% end %>
+                            <% elsif temp_index < value.size && temp_index % 5 == 0 %>
+                                <div id="arrayCondition_<%= array_line_index %>" class="rule_details"><%= value[temp_index-5..temp_index-1].to_s %></div>
+                                <% array_line_index += 1 %>
+                            <% end %>
+                            <% temp_index += 1 %>
+                        <% end %>
+
+                    <% else %>
+                        <div id="condition_<%= index %>" class="rule_details"><%= key.capitalize%>: <%= value%></div>
+                    <% end %>
+                    </li>
+                <% end %>
+                <% index += 1 %>
+
+          <% end %>
+      <% end %>
+
+      <% counter += 1 %>
+      <% enabled = false %>
+      </ol>
+      </ol>
+
+  <% end %>
 </div>
+
+
 <br style="clear:both">
 
 <div class="title" onclick="toggleById('dead_steps_data', this)">
@@ -224,7 +314,7 @@
 </div>
 <br style="clear:both">
 
-<div class="title" onclick="toggleById('features_data', this)">
+<div id="rulesTab" class="title" onclick="toggleById('features_data', this)">
   Features +
 </div>
 <div class="shrink_section" id="features_data">
