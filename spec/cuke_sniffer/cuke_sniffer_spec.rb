@@ -1,6 +1,27 @@
 require 'spec_helper'
+require 'page-object'
+require 'watir-webdriver'
+
+
+class CSHTMLPage
+  include PageObject
+
+  page_url "file:///C:/devl/workspaces/cuke_sniffer/cuke_sniffer/cuke_sniffer_results.html"
+
+  div(:rulesTab, :id => 'rulesTab')
+
+  ol(:enabledRules, :id => 'enabledRules')
+
+  ol(:disabledRules, :id => 'disabledRules')
+
+  div(:score, :id => 'score')
+
+end
+
+include PageObject::PageFactory
 
 describe CukeSniffer do
+
 
   before(:each) do
     @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
@@ -487,6 +508,71 @@ describe CukeSniffer do
 
     end
   end
+
+  describe "output_html" do
+
+    before(:all) do
+      @browser = Watir::Browser.new :firefox
+    end
+
+    after(:all) do
+      @browser.close
+    end
+
+
+    it "orders the enabled rules by score (descending)"do
+
+      visit_page CSHTMLPage do |page|
+
+        currentScore = nil
+        previousScore = nil
+
+        page.rulesTab_element.click
+
+        page.enabledRules_element.each do |item|
+          currentScore = item.text.scan(/Score: \d*/)
+          currentScoreNumber =  currentScore.to_s.scan(/(\d+)/)
+          currentScoreNumberCollected = currentScoreNumber.collect(&:first)
+          score = currentScoreNumberCollected[0]
+          score= score.to_i
+
+          if previousScore != nil
+            previousScore.should >= score
+          end
+          previousScore = score
+
+        end
+      end
+    end
+
+    it "orders the disabled rules by score (descending)"do
+
+      visit_page CSHTMLPage do |page|
+
+        currentScore = nil
+        previousScore = nil
+
+        page.rulesTab_element.click
+
+        page.disabledRules_element.each do |item|
+          currentScore = item.text.scan(/Score: \d*/)
+          currentScoreNumber =  currentScore.to_s.scan(/(\d+)/)
+          currentScoreNumberCollected = currentScoreNumber.collect(&:first)
+          score = currentScoreNumberCollected[0]
+          score= score.to_i
+
+          if previousScore != nil
+            previousScore.should >= score
+          end
+          previousScore = score
+
+        end
+      end
+    end
+
+
+  end
+
 end
 
 

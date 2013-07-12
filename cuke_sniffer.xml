@@ -5,16 +5,7 @@
       <enabled>true</enabled>
       <phrase>Scenario Outline with no examples.</phrase>
       <score>100</score>
-      <conditions>
-        <condition>
-          <name>bacon</name>
-          <value>sup</value>
-        </condition>
-        <condition>
-          <name>eggs</name>
-          <value>you know it</value>
-        </condition>
-      </conditions>
+      <conditions/>
     </rule>
     <rule>
       <enabled>true</enabled>
