@@ -34,68 +34,81 @@ describe CukeSniffer::Hook do
 end
 
 describe "HookRules" do
-  def validate_rule(scenario, rule)
-    phrase = rule[:phrase]
-
-    scenario.rules_hash.include?(phrase).should be_true
-    scenario.rules_hash[phrase].should > 0
-    scenario.score.should >= rule[:score]
+  before(:each) do
+    @cli = CukeSniffer::CLI.new()
   end
 
   it "should punish Hooks without content" do
     raw_code = ["Before do",
                 "end"]
-    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
-    validate_rule(hook, RULES[:empty_hook])
+    @cli.hooks = [CukeSniffer::Hook.new("location.rb:1", raw_code)]
+    rule = CukeSniffer::CLI.build_rule(RULES[:empty_hook])
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+    verify_rule(@cli.hooks[0], rule)
   end
 
   it "should punish hooks that exist outside of the hooks.rb file" do
     raw_code = ["Before do",
                 "end"]
-    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
-    validate_rule(hook, RULES[:hook_not_in_hooks_file])
+    @cli.hooks = [CukeSniffer::Hook.new("location.rb:1", raw_code)]
+    rule = CukeSniffer::CLI.build_rule(RULES[:hook_not_in_hooks_file])
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+    verify_rule(@cli.hooks[0], rule)
   end
 
   it "should punish Around hooks that do not have 2 parameters. 0 parameters." do
     raw_code = ["Around do",
                 "end"]
-    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
-    validate_rule(hook, RULES[:around_hook_without_2_parameters])
+    @cli.hooks = [CukeSniffer::Hook.new("location.rb:1", raw_code)]
+    rule = CukeSniffer::CLI.build_rule(RULES[:around_hook_without_2_parameters])
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+    verify_rule(@cli.hooks[0], rule)
   end
 
   it "should punish Around hooks that do not have 2 parameters. 1 parameter." do
     raw_code = ["Around do |a|",
                 "end"]
-    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
-    validate_rule(hook, RULES[:around_hook_without_2_parameters])
+    @cli.hooks = [CukeSniffer::Hook.new("location.rb:1", raw_code)]
+    rule = CukeSniffer::CLI.build_rule(RULES[:around_hook_without_2_parameters])
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+    verify_rule(@cli.hooks[0], rule)
   end
 
   it "should punish Around hooks that do not have 2 parameters. 3 parameters." do
     raw_code = ["Around do |a, b, c|",
                 "end"]
-    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
-    validate_rule(hook, RULES[:around_hook_without_2_parameters])
+    @cli.hooks = [CukeSniffer::Hook.new("location.rb:1", raw_code)]
+    rule = CukeSniffer::CLI.build_rule(RULES[:around_hook_without_2_parameters])
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+    verify_rule(@cli.hooks[0], rule)
   end
 
   it "should punish Around hooks that never have a call on their 2nd parameter. The scenario is not called." do
     raw_code = ["Around do |scenario, block|",
                 "end"]
-    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
-    validate_rule(hook, RULES[:around_hook_no_block_call])
+    @cli.hooks = [CukeSniffer::Hook.new("location.rb:1", raw_code)]
+    rule = CukeSniffer::CLI.build_rule(RULES[:around_hook_no_block_call])
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+    verify_rule(@cli.hooks[0], rule)
   end
 
   it "should punish hooks without a begin/rescue for debugging." do
     raw_code = ["Before do",
                 "# code",
                 "end"]
-    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
-    validate_rule(hook, RULES[:hook_no_debugging])
+    @cli.hooks = [CukeSniffer::Hook.new("location.rb:1", raw_code)]
+    rule = CukeSniffer::CLI.build_rule(RULES[:hook_no_debugging])
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+    verify_rule(@cli.hooks[0], rule)
   end
 
   it "should not punish hooks for a begin/rescue for debugging when there is no code." do
     raw_code = ["Before do",
                 "end"]
     hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
+    @cli.hooks = [CukeSniffer::Hook.new("location.rb:1", raw_code)]
+    rule = CukeSniffer::CLI.build_rule(RULES[:hook_no_debugging])
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
     hook.rules_hash.include?(RULES[:hook_no_debugging][:phrase]).should be_false
   end
 
@@ -104,31 +117,37 @@ describe "HookRules" do
                 "# comment",
                 "# comment",
                 "end"]
-    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
-    validate_rule(hook, RULES[:hook_all_comments])
+    @cli.hooks = [CukeSniffer::Hook.new("location.rb:1", raw_code)]
+    rule = CukeSniffer::CLI.build_rule(RULES[:hook_all_comments])
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+    verify_rule(@cli.hooks[0], rule)
   end
 
   it "should punish hooks with negated tags on and'd tags" do
     raw_code = ["Before('@tag', '~@tag') do",
                 "end"]
-    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
-    validate_rule(hook, RULES[:hook_conflicting_tags])
+    @cli.hooks = [CukeSniffer::Hook.new("location.rb:1", raw_code)]
+    rule = CukeSniffer::CLI.build_rule(RULES[:hook_conflicting_tags])
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+    verify_rule(@cli.hooks[0], rule)
   end
 
   it "should punish hooks with negated tags on or'd tags" do
     raw_code = ["Before('@tag,~@tag') do",
                 "end"]
-
-    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
-    validate_rule(hook, RULES[:hook_conflicting_tags])
+    @cli.hooks = [CukeSniffer::Hook.new("location.rb:1", raw_code)]
+    rule = CukeSniffer::CLI.build_rule(RULES[:hook_conflicting_tags])
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+    verify_rule(@cli.hooks[0], rule)
   end
 
   it "should punish hooks with duplicate tags" do
     raw_code = ["Before('@tag,@tag') do",
                 "end"]
-
-    hook = CukeSniffer::Hook.new("location.rb:1", raw_code)
-    validate_rule(hook, RULES[:hook_duplicate_tags])
+    @cli.hooks = [CukeSniffer::Hook.new("location.rb:1", raw_code)]
+    rule = CukeSniffer::CLI.build_rule(RULES[:hook_duplicate_tags])
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+    verify_rule(@cli.hooks[0], rule)
   end
 
 end

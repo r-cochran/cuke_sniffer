@@ -13,7 +13,12 @@ describe CukeSniffer do
     file.puts("Feature: I am the cheese that stands alone")
     file.close
     cuke_sniffer = CukeSniffer::CLI.new(file_name, nil)
-    cuke_sniffer.features.should == [CukeSniffer::Feature.new(file_name)]
+    actual_features = cuke_sniffer.features
+    actual_features.each do |feature|
+      feature.rules_hash = {}
+      feature.score = 0
+    end
+    actual_features.should == [CukeSniffer::Feature.new(file_name)]
     File.delete(file_name)
   end
 
@@ -27,7 +32,12 @@ describe CukeSniffer do
     raw_code.each { |line| file.puts line }
     file.close
     cuke_sniffer = CukeSniffer::CLI.new(nil, file_name)
-    cuke_sniffer.step_definitions.should == [CukeSniffer::StepDefinition.new("single_steps.rb:1", raw_code)]
+    actual_step_definitions = cuke_sniffer.step_definitions
+    actual_step_definitions.each do |step_definition|
+      step_definition.rules_hash = {}
+      step_definition.score = 0
+    end
+    actual_step_definitions.should == [CukeSniffer::StepDefinition.new("single_steps.rb:1", raw_code)]
     File.delete(file_name)
   end
 
@@ -42,7 +52,12 @@ describe CukeSniffer do
     raw_code.each { |line| file.puts line }
     file.close
     cuke_sniffer = CukeSniffer::CLI.new(nil, nil, Dir.getwd + "/hooks.rb")
-    cuke_sniffer.hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "/hooks.rb:1", raw_code)]
+    actual_hooks = cuke_sniffer.hooks
+    actual_hooks.each do |hook|
+      hook.rules_hash = {}
+      hook.score = 0
+    end
+    actual_hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "/hooks.rb:1", raw_code)]
     File.delete(file_name)
   end
 
@@ -60,7 +75,12 @@ describe CukeSniffer do
     raw_code.each { |line| file.puts line }
     file.close
     cuke_sniffer = CukeSniffer::CLI.new(nil, nil, Dir.getwd + "/hooks.rb")
-    cuke_sniffer.hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "/hooks.rb:1", raw_code[0..2]), CukeSniffer::Hook.new(Dir.getwd + "/hooks.rb:4", raw_code[3..5])]
+    actual_hooks = cuke_sniffer.hooks
+    actual_hooks.each do |hook|
+      hook.rules_hash = {}
+      hook.score = 0
+    end
+    actual_hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "/hooks.rb:1", raw_code[0..2]), CukeSniffer::Hook.new(Dir.getwd + "/hooks.rb:4", raw_code[3..5])]
     File.delete(file_name)
   end
 
@@ -75,7 +95,12 @@ describe CukeSniffer do
     raw_code.each { |line| file.puts line }
     file.close
     cuke_sniffer = CukeSniffer::CLI.new(nil, nil, Dir.getwd + "/env.rb")
-    cuke_sniffer.hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "/env.rb:1", raw_code)]
+    actual_hooks = cuke_sniffer.hooks
+    actual_hooks.each do |hook|
+      hook.rules_hash = {}
+      hook.score = 0
+    end
+    actual_hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "/env.rb:1", raw_code)]
     File.delete(file_name)
   end
 
@@ -160,16 +185,20 @@ describe CukeSniffer do
         CukeSniffer::StepDefinition.new("my_steps.rb:1", ["Given /^I am a step$/ do", "puts 'stuff'", "end"])
     ]
     cuke_sniffer = CukeSniffer::CLI.new(nil, file_name)
-    step_definitions = cuke_sniffer.step_definitions
-
-    step_definitions.should == expected_step_definitions
+    actual_step_definitions = cuke_sniffer.step_definitions
+    actual_step_definitions.each do |step_definition|
+      step_definition.rules_hash = {}
+      step_definition.score = 0
+    end
+    actual_step_definitions.should == expected_step_definitions
     File.delete(file_name)
   end
 
-  it "should determine if it is above the scenario threshold" do
+  it "should determine if it is above the project threshold" do
     cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
     start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
     CukeSniffer::Constants::THRESHOLDS["Project"] = 2
+    cuke_sniffer.summary[:total_score] = 3
     cuke_sniffer.good?.should == false
     CukeSniffer::Constants::THRESHOLDS["Project"] = start_threshold
   end

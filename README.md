@@ -267,4 +267,8 @@ Submitting Issues
 -----
 To submit an issue you have found in CukeSniffer, please use the GitHub issue page for this gem.
 
-Contributed by [Manifest Solutions](http://manifestcorp.com/Home.aspx)
+Authored by: Robert Cochran, Chris Vaughn, Robert Anderson
+
+Contributions by [Manifest Solutions](http://manifestcorp.com/Home.aspx)
+
+[All Contributors](https://github.com/r-cochran/cuke_sniffer/contributors)

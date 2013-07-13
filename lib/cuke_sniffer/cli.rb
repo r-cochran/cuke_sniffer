@@ -129,7 +129,7 @@ module CukeSniffer
       @hooks.flatten!
 
       @rules = CukeSniffer::CLI.build_rules(RULES)
-
+      CukeSniffer::RulesEvaluator.new(self, @rules)
       @summary = {
           :total_score => 0,
           :features => {},
@@ -261,22 +261,26 @@ module CukeSniffer
 
 
     def self.build_rules(rules)
-      if rules.nil?
-        return []
-      end
+      return [] if rules.nil?
       rules.collect do |key, value|
-        rule = CukeSniffer::Rule.new
-        rule.phrase = value[:phrase]
-        rule.score = value[:score]
-        rule.enabled = value[:enabled]
-        conditional_keys = value.keys - [:phrase, :score, :enabled]
-        conditions = {}
-        conditional_keys.each do|key|
-          conditions[key] = value[key]
-        end
-        rule.conditions = conditions
-        rule
+        build_rule(value)
       end
+    end
+
+    def self.build_rule(value)
+      rule = CukeSniffer::Rule.new
+      rule.phrase = value[:phrase]
+      rule.score = value[:score]
+      rule.enabled = value[:enabled]
+      conditional_keys = value.keys - [:phrase, :score, :enabled, :targets, :reason]
+      conditions = {}
+      conditional_keys.each do |key|
+        conditions[key] = value[key]
+      end
+      rule.conditions = conditions
+      rule.reason = value[:reason]
+      rule.targets = value[:targets]
+      rule
     end
 
 

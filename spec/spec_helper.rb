@@ -13,3 +13,12 @@ def build_file(lines, file_name = @file_name)
   lines.each { |line| file.puts(line) }
   file.close
 end
+
+def verify_rule(object, rule, count = 1)
+  object.rules_hash[rule.phrase].should == count
+  object.score.should >= rule.score
+end
+
+def verify_no_rule(object, rule)
+  object.rules_hash[rule.phrase].should == nil
+end

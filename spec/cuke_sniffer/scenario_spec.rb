@@ -106,22 +106,6 @@ describe CukeSniffer::Scenario do
     scenario.type.should == "Scenario Outline"
   end
 
-  it "should evaluate the scenario and the score should be greater than 0" do
-    scenario_block = [
-        "Scenario: Test Scenario with empty scenario rule firing",
-    ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.score.should > 0
-  end
-
-  it "should evaluate the scenario and then update a list of rules/occurrences" do
-    scenario_block = [
-        "Scenario: Test Scenario to fire empty scenario rule",
-    ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.should_not == {}
-  end
-
   it "should return the name for multi-line scenarios" do
     scenario = [
         "Scenario: Test",
@@ -220,16 +204,12 @@ describe CukeSniffer::Scenario do
   end
 
   it "should determine if it is above the scenario threshold" do
-    raw_code = [
-        "Scenario: Above scenario threshold",
-        "#Given I am a good scenario",
-        "#When I do a behavior inducing action",
-        "#Then that action is verified"
-    ]
+    raw_code = ["Scenario: Above scenario threshold"]
 
     start_threshold = CukeSniffer::Constants::THRESHOLDS["Scenario"]
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = 2
     scenario = CukeSniffer::Scenario.new("location:1", raw_code)
+    scenario.score = 3
     scenario.good?.should == false
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = start_threshold
   end
@@ -263,21 +243,6 @@ describe CukeSniffer::Scenario do
     scenario.score = 3
     scenario.problem_percentage.should == (3.0/2.0).to_f
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = start_threshold
-  end
-
-  it "should not have a rule ran against a commented step besides the normal rule" do
-    raw_code = [
-        "Scenario: Above scenario threshold",
-        "Given blarg",
-        "#* button button button",
-        "When I do a behavior inducing action",
-        "Then that action is verified"
-    ]
-    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
-    comment_rule = CukeSniffer::RuleConfig::RULES[:commented_step]
-    asterisk_rule = CukeSniffer::RuleConfig::RULES[:asterisk_step]
-    scenario.rules_hash.keys.include?(comment_rule[:phrase]).should be_true
-    scenario.rules_hash.keys.include?(asterisk_rule[:phrase]).should be_false
   end
 
   it "should not have inline tables overflow to include the examples table" do
@@ -355,68 +320,68 @@ describe CukeSniffer::Scenario do
     scenario.examples_table.should == ["| outline |", "| things |", "| outline |"]
   end
 
-
 end
 
 describe "ScenarioRules" do
 
-  def validate_rule(scenario, rule)
-    phrase = rule[:phrase].gsub(/{.*}/, "Scenario")
-
-    scenario.rules_hash.include?(phrase).should be_true
-    scenario.rules_hash[phrase].should > 0
-    scenario.score.should >= rule[:score]
+  def run_rule_against_scenario(scenario_block, rule)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    build_file([], @file_name)
+    feature = CukeSniffer::Feature.new(@file_name)
+    feature.scenarios =[scenario]
+    @cli.features = [feature]
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
   end
 
-  #TODO Extract and unify
-  def validate_no_rule(scenario, rule)
-    phrase = rule[:phrase].gsub(/{.*}/, "Scenario")
+  def test_scenario_rule(scenario_block, symbol, count = 1)
+    rule = CukeSniffer::CLI.build_rule(RULES[symbol])
+    run_rule_against_scenario(scenario_block, rule)
+    rule.phrase.gsub!("{class}", "Scenario")
+    verify_rule(@cli.features[0].scenarios[0], rule, count)
+  end
 
-    scenario.rules_hash.include?(phrase).should be_false
+  def test_no_scenario_rule(scenario_block, symbol)
+    rule = CukeSniffer::CLI.build_rule(RULES[symbol])
+    run_rule_against_scenario(scenario_block, rule)
+    rule.phrase.gsub!("{class}", "Scenario")
+    verify_no_rule(@cli.features[0].scenarios[0], rule)
+  end
+
+  before(:each) do
+    @file_name = "my_feature.feature"
+    @cli = CukeSniffer::CLI.new()
+  end
+
+  after(:each) do
+    File.delete(@file_name)
   end
 
   it "should punish Scenarios without a name" do
     scenario_block = %w(Scenario:)
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:no_description])
+    test_scenario_rule(scenario_block, :no_description)
   end
 
   it "should punish Scenarios with no steps" do
-    scenario_block = [
-        "Scenario: Empty Scenario",
-    ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:no_steps])
+    scenario_block = ["Scenario: Empty Scenario"]
+    test_scenario_rule(scenario_block, :no_steps)
   end
 
   it "should punish Scenarios with numbers in its name" do
-    scenario_block = [
-        "Scenario: Scenario with some digits 123"
-    ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:numbers_in_description])
+    scenario_block = ["Scenario: Scenario with some digits 123"]
+    test_scenario_rule(scenario_block, :numbers_in_description)
   end
 
   it "should punish Scenarios with long names" do
-    rule = RULES[:long_name]
     scenario_description = ""
-    rule[:max].times { scenario_description << "A" }
-    scenario_block = [
-        "Scenario: #{scenario_description}"
-    ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, rule)
+    RULES[:long_name][:max].times { scenario_description << "A" }
+    scenario_block = ["Scenario: #{scenario_description}"]
+    test_scenario_rule(scenario_block, :long_name)
   end
 
   it "should punish Scenarios with too many steps" do
-    rule = RULES[:too_many_steps]
-    scenario_block = [
-        "Scenario: Scenario with too many steps"
-    ]
-    rule[:max].times { scenario_block << "And I have too many steps" }
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-
-    validate_rule(scenario, rule)
+    scenario_block = ["Scenario: Scenario with too many steps"]
+    (RULES[:too_many_steps][:max]+1).times { scenario_block << "And I have too many steps" }
+    test_scenario_rule(scenario_block, :too_many_steps)
   end
 
   it "should punish Scenarios with steps that are out of order: Then/When" do
@@ -425,9 +390,7 @@ describe "ScenarioRules" do
         "Then comes first",
         "When comes second"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-
-    validate_rule(scenario, RULES[:out_of_order_steps])
+    test_scenario_rule(scenario_block, :out_of_order_steps)
   end
 
   it "should punish Scenarios with steps that are out of order: Then/When/Given" do
@@ -437,9 +400,7 @@ describe "ScenarioRules" do
         "When comes second",
         "Given comes third"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-
-    validate_rule(scenario, RULES[:out_of_order_steps])
+    test_scenario_rule(scenario_block, :out_of_order_steps)
   end
 
   it "should punish Scenarios with steps that are out of order: Given/Then/And/When" do
@@ -450,8 +411,7 @@ describe "ScenarioRules" do
         "And is ignored",
         "When comes third"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:out_of_order_steps])
+    test_scenario_rule(scenario_block, :out_of_order_steps)
   end
 
   it "should punish Scenarios with And as its first step" do
@@ -459,8 +419,7 @@ describe "ScenarioRules" do
         "Scenario: Scenario with And as its first step",
         "And is not a valid first step",
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:invalid_first_step])
+    test_scenario_rule(scenario_block, :invalid_first_step)
   end
 
   it "should punish Scenarios with But as its first step" do
@@ -469,8 +428,7 @@ describe "ScenarioRules" do
         "But is not a valid first step",
         "When comes first"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:invalid_first_step])
+    test_scenario_rule(scenario_block, :invalid_first_step)
   end
 
   it "should punish Scenarios that use the * step" do
@@ -478,8 +436,7 @@ describe "ScenarioRules" do
         "Scenario: Scenario with *",
         "* is an awesome operator"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:asterisk_step])
+    test_scenario_rule(scenario_block, :asterisk_step)
   end
 
   it "should punish each step in a Scenario that uses *" do
@@ -491,9 +448,7 @@ describe "ScenarioRules" do
         "* is an awesome operator",
         "Then I am third"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.score.should >= 4
-    scenario.rules_hash[RULES[:asterisk_step][:phrase]].should == 2
+    test_scenario_rule(scenario_block, :asterisk_step, 2)
   end
 
   it "should punish Scenarios with commented steps" do
@@ -503,8 +458,7 @@ describe "ScenarioRules" do
         "When I am second",
         "Then I am third"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:commented_step])
+    test_scenario_rule(scenario_block, :commented_step)
   end
 
   it "should punish each step in a Scenario that is commented" do
@@ -514,8 +468,7 @@ describe "ScenarioRules" do
         "#When I am second",
         "#Then I am third"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.rules_hash[RULES[:commented_step][:phrase]].should == 3
+    test_scenario_rule(scenario_block, :commented_step, 3)
   end
 
   it "should punish Scenario Outlines with commented examples" do
@@ -529,8 +482,7 @@ describe "ScenarioRules" do
         "#|a|",
         "|b|"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:commented_example])
+    test_scenario_rule(scenario_block, :commented_example)
   end
 
   it "should punish each commented example in a Scenario Outline" do
@@ -544,8 +496,7 @@ describe "ScenarioRules" do
         "#|a|",
         "#|b|"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.rules_hash.include?(RULES[:commented_example][:phrase]).should be_true
+    test_scenario_rule(scenario_block, :commented_example, 2)
   end
 
   it "should punish Scenario Outlines with no examples" do
@@ -557,8 +508,7 @@ describe "ScenarioRules" do
         "Examples:",
         "|var_a|",
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:no_examples])
+    test_scenario_rule(scenario_block, :no_examples)
   end
 
   it "should punish Scenario Outlines with only one example" do
@@ -571,8 +521,7 @@ describe "ScenarioRules" do
         "|var_a|",
         "|a|"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:one_example])
+    test_scenario_rule(scenario_block, :one_example)
   end
 
   it "should punish Scenario Outlines without the Examples table" do
@@ -582,8 +531,7 @@ describe "ScenarioRules" do
         "When I am second",
         "Then I am third",
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:no_examples_table])
+    test_scenario_rule(scenario_block, :no_examples_table)
   end
 
   it "should punish Scenario Outlines with too many examples" do
@@ -597,18 +545,14 @@ describe "ScenarioRules" do
         "|var_a|"
     ]
     rule[:max].times { |n| scenario_block << "|#{n}|" }
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:too_many_examples])
+    test_scenario_rule(scenario_block, :too_many_examples)
   end
 
   it "should punish Scenarios with too many tags" do
-    rule = RULES[:too_many_tags]
     scenario_block = []
-    rule[:max].times { |n| scenario_block << "@tag_#{n}" }
+    RULES[:too_many_tags][:max].times { |n| scenario_block << "@tag_#{n}" }
     scenario_block << "Scenario: Scenario with many tags"
-
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, rule)
+    test_scenario_rule(scenario_block, :too_many_tags)
   end
 
   it "should punish Scenarios that use implementation words(page/site/ect)" do
@@ -618,8 +562,10 @@ describe "ScenarioRules" do
         "When I log in to the site",
         "Then I am on the home page",
     ]
+    rule = CukeSniffer::CLI.build_rule(RULES[:implementation_word])
+    run_rule_against_scenario(scenario_block, rule)
+    scenario = @cli.features[0].scenarios[0]
 
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.rules_hash.include?("Implementation word used: page.").should be_true
     scenario.rules_hash.include?("Implementation word used: site.").should be_true
     scenario.rules_hash["Implementation word used: page."].should == 2
@@ -631,8 +577,7 @@ describe "ScenarioRules" do
         "Scenario: Scenario with dates used",
         "Given Today is 11/12/2013",
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:date_used])
+    test_scenario_rule(scenario_block, :date_used)
   end
 
   it "should punish Scenario steps with only one word." do
@@ -640,8 +585,7 @@ describe "ScenarioRules" do
         "Scenario: Step with one word",
         "Given word",
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:one_word_step])
+    test_scenario_rule(scenario_block, :one_word_step)
   end
 
   it "should punish Scenarios with multiple steps with only one word." do
@@ -650,8 +594,7 @@ describe "ScenarioRules" do
         "Given word",
         "When nope",
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.rules_hash[RULES[:one_word_step][:phrase]].should == 2
+    test_scenario_rule(scenario_block, :one_word_step, 2)
   end
 
   it "should punish Scenarios that use Given more than once." do
@@ -660,8 +603,7 @@ describe "ScenarioRules" do
         "Given I am doing setup",
         "Given I am doing more setup",
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:multiple_given_when_then])
+    test_scenario_rule(scenario_block, :multiple_given_when_then)
   end
 
   it "should punish Scenarios that use When more than once." do
@@ -670,8 +612,7 @@ describe "ScenarioRules" do
         "When I am doing setup",
         "When I am doing more setup",
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:multiple_given_when_then])
+    test_scenario_rule(scenario_block, :multiple_given_when_then)
   end
 
   it "should punish Scenarios that use Then more than once." do
@@ -680,16 +621,12 @@ describe "ScenarioRules" do
         "Then I am doing setup",
         "Then I am doing more setup",
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:multiple_given_when_then])
+    test_scenario_rule(scenario_block, :multiple_given_when_then)
   end
 
   it "should punish Scenarios that have commas in its description" do
-    scenario_block = [
-        "Scenario: Scenario with a comma, in its description"
-    ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:commas_in_description])
+    scenario_block = ["Scenario: Scenario with a comma, in its description"]
+    test_scenario_rule(scenario_block, :commas_in_description)
   end
 
   it "should punish Scenarios that have a comment on a line after a tag" do
@@ -700,8 +637,7 @@ describe "ScenarioRules" do
         "Scenario: Comment after Tag",
         "Given I am a step"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:comment_after_tag])
+    test_scenario_rule(scenario_block, :comment_after_tag)
   end
 
   it "should not punish Scenarios that have a tag with a hash in it" do
@@ -711,18 +647,16 @@ describe "ScenarioRules" do
         "Scenario: Comment after Tag",
         "Given I am a step"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_no_rule(scenario, RULES[:comment_after_tag])
+    test_no_scenario_rule(scenario_block, :comment_after_tag)
   end
 
   it "should punish Scenarios that have commented tags" do
     scenario_block = [
-        "\#@tag",
+        '#@tag',
         "Scenario: Commented tag",
         "Given I am a step"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_rule(scenario, RULES[:commented_tag])
+    test_scenario_rule(scenario_block, :commented_tag)
   end
 
   it "should not punish Scenarios that have a comment before any tags occur" do
@@ -731,69 +665,70 @@ describe "ScenarioRules" do
         "@tag",
         "Scenario: I'm a scenario with a comment before a tag"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_no_rule(scenario, RULES[:comment_after_tag])
+    test_no_scenario_rule(scenario_block, :comment_after_tag)
   end
+
 end
 
 describe "BackgroundRules" do
-
-  def validate_rule(scenario, rule)
-    phrase = rule[:phrase].gsub(/{.*}/, "Background")
-
-    scenario.rules_hash.include?(phrase).should be_true
-    scenario.rules_hash[phrase].should > 0
-    scenario.score.should >= rule[:score]
+  def run_rule_against_background(background_block, rule)
+    background = CukeSniffer::Scenario.new("location:1", background_block)
+    build_file([], @file_name)
+    feature = CukeSniffer::Feature.new(@file_name)
+    feature.background = background
+    @cli.features = [feature]
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
   end
 
-  def validate_no_rule(scenario, rule)
-    phrase = rule[:phrase].gsub(/{.*}/, "Background")
+  def test_background_rule(background_block, symbol, count = 1)
+    rule = CukeSniffer::CLI.build_rule(RULES[symbol])
+    run_rule_against_background(background_block, rule)
+    verify_rule(@cli.features[0].background, rule, count)
+  end
 
-    scenario.rules_hash.include?(phrase).should be_false
+  def test_no_background_rule(background_block, symbol)
+    rule = CukeSniffer::CLI.build_rule(RULES[symbol])
+    run_rule_against_background(background_block, rule)
+    verify_no_rule(@cli.features[0].background, rule)
+  end
+
+  before(:each) do
+    @file_name = "my_feature.feature"
+    @cli = CukeSniffer::CLI.new()
+  end
+
+  after(:each) do
+    File.delete(@file_name)
   end
 
   it "should not punish Backgrounds without a name" do
-    scenario_block = %w(Background:)
-    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    validate_no_rule(scenario, RULES[:no_description])
+    background_block = %w(Background:)
+    test_no_background_rule(background_block, :no_description)
   end
 
   it "should punish Backgrounds with no steps" do
-    background_block = [
-        "Background: Empty Scenario",
-    ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    validate_rule(background, RULES[:no_steps])
+    background_block = ["Background: Empty Scenario"]
+    test_background_rule(background_block, :no_steps)
   end
 
   it "should punish Backgrounds with numbers in its name" do
-    background_block = [
-        "Background: Background with some digits 123"
-    ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    validate_rule(background, RULES[:numbers_in_description])
+    background_block = ["Background: Background with some digits 123"]
+    test_background_rule(background_block, :numbers_in_description)
   end
 
   it "should punish Backgrounds with long names" do
-    rule = RULES[:long_name]
     background_description = ""
-    rule[:max].times { background_description << "A" }
-    background_block = [
-        "Background: #{background_description}"
-    ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    validate_rule(background, rule)
+    RULES[:long_name][:max].times { background_description << "A" }
+    background_block = ["Background: #{background_description}" ]
+    test_background_rule(background_block, :long_name)
   end
 
   it "should punish Backgrounds with too many steps" do
-    rule = RULES[:too_many_steps]
     background_block = [
         "Background: Scenario with too many steps"
     ]
-    rule[:max].times { background_block << "And I have too many steps" }
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-
-    validate_rule(background, rule)
+    (RULES[:too_many_steps][:max]+1).times { background_block << "And I have too many steps" }
+    test_background_rule(background_block, :too_many_steps)
   end
 
   it "should not punish Backgrounds with steps that are out of order: Then/When" do
@@ -802,9 +737,7 @@ describe "BackgroundRules" do
         "Then comes first",
         "When comes second"
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-
-    validate_no_rule(background, RULES[:out_of_order_steps])
+    test_no_background_rule(background_block, :out_of_order_steps)
   end
 
   it "should not punish Backgrounds with steps that are out of order: Then/When/Given" do
@@ -814,9 +747,7 @@ describe "BackgroundRules" do
         "When comes second",
         "Given comes third"
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-
-    validate_no_rule(background, RULES[:out_of_order_steps])
+    test_no_background_rule(background_block, :out_of_order_steps)
   end
 
   it "should not punish Backgrounds with steps that are out of order: Given/Then/And/When" do
@@ -827,8 +758,9 @@ describe "BackgroundRules" do
         "And is ignored",
         "When comes third"
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    validate_no_rule(background, RULES[:out_of_order_steps])
+    rule = CukeSniffer::CLI.build_rule(RULES[:out_of_order_steps])
+    run_rule_against_background(background_block, rule)
+    @cli.features[0].background.rules_hash.include?(rule.phrase).should be_false
   end
 
   it "should punish Backgrounds with And as its first step" do
@@ -836,8 +768,7 @@ describe "BackgroundRules" do
         "Background: Background with And as its first step",
         "And is not a valid first step",
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    validate_rule(background, RULES[:invalid_first_step])
+    test_background_rule(background_block, :invalid_first_step)
   end
 
   it "should punish Backgrounds with But as its first step" do
@@ -846,8 +777,7 @@ describe "BackgroundRules" do
         "But is not a valid first step",
         "When comes first"
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    validate_rule(background, RULES[:invalid_first_step])
+    test_background_rule(background_block, :invalid_first_step)
   end
 
   it "should punish Backgrounds that use the * step" do
@@ -855,8 +785,7 @@ describe "BackgroundRules" do
         "Background: Background with *",
         "* is an awesome operator"
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    validate_rule(background, RULES[:asterisk_step])
+    test_background_rule(background_block, :asterisk_step)
   end
 
   it "should punish each step in a Background that uses *" do
@@ -868,9 +797,7 @@ describe "BackgroundRules" do
         "* is an awesome operator",
         "Then I am third"
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    background.score.should >= 4
-    background.rules_hash[RULES[:asterisk_step][:phrase]].should == 2
+    test_background_rule(background_block, :asterisk_step, 2)
   end
 
   it "should punish Backgrounds with commented steps" do
@@ -880,8 +807,7 @@ describe "BackgroundRules" do
         "When I am second",
         "Then I am third"
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    validate_rule(background, RULES[:commented_step])
+    test_background_rule(background_block, :commented_step)
   end
 
   it "should punish each step in a Background that is commented" do
@@ -891,18 +817,14 @@ describe "BackgroundRules" do
         "#When I am second",
         "#Then I am third"
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    background.rules_hash[RULES[:commented_step][:phrase]].should == 3
+    test_background_rule(background_block, :commented_step, 3)
   end
 
   it "should not punish Backgrounds with too many tags" do
-    rule = RULES[:too_many_tags]
     background_block = []
-    rule[:max].times { |n| background_block << "@tag_#{n}" }
+    RULES[:too_many_tags][:max].times { |n| background_block << "@tag_#{n}" }
     background_block << "Background: Scenario with many tags"
-
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    validate_no_rule(background, rule)
+    test_no_background_rule(background_block, :too_many_tags)
   end
 
   it "should punish Backgrounds that use implementation words(page/site/ect)" do
@@ -912,8 +834,10 @@ describe "BackgroundRules" do
         "When I log in to the site",
         "Then I am on the home page",
     ]
+    rule = CukeSniffer::CLI.build_rule(RULES[:implementation_word])
+    run_rule_against_background(background_block, rule)
+    background= @cli.features[0].background
 
-    background = CukeSniffer::Scenario.new("location:1", background_block)
     background.rules_hash.include?("Implementation word used: page.").should be_true
     background.rules_hash.include?("Implementation word used: site.").should be_true
     background.rules_hash["Implementation word used: page."].should == 2
@@ -925,8 +849,7 @@ describe "BackgroundRules" do
         "Background: Background with dates used",
         "Given Today is 11/12/2013",
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    validate_rule(background, RULES[:date_used])
+    test_background_rule(background_block, :date_used)
   end
 
   it "should punish Backgrounds steps with only one word." do
@@ -934,8 +857,7 @@ describe "BackgroundRules" do
         "Background: Step with one word",
         "Given word",
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    validate_rule(background, RULES[:one_word_step])
+    test_background_rule(background_block, :one_word_step)
   end
 
   it "should punish Backgrounds with multiple steps with only one word." do
@@ -944,8 +866,7 @@ describe "BackgroundRules" do
         "Given word",
         "When nope",
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    background.rules_hash[RULES[:one_word_step][:phrase]].should == 2
+    test_background_rule(background_block, :one_word_step, 2)
   end
 
   it "should punish Background that use Given more than once." do
@@ -954,8 +875,7 @@ describe "BackgroundRules" do
         "Given I am doing setup",
         "Given I am doing more setup",
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    validate_rule(background, RULES[:multiple_given_when_then])
+    test_background_rule(background_block, :multiple_given_when_then)
   end
 
   it "should punish Backgrounds that use When more than once." do
@@ -964,8 +884,7 @@ describe "BackgroundRules" do
         "When I am doing setup",
         "When I am doing more setup",
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    validate_rule(background, RULES[:multiple_given_when_then])
+    test_background_rule(background_block, :multiple_given_when_then)
   end
 
   it "should punish Backgrounds that use Then more than once." do
@@ -974,8 +893,7 @@ describe "BackgroundRules" do
         "Then I am doing setup",
         "Then I am doing more setup",
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    validate_rule(background, RULES[:multiple_given_when_then])
+    test_background_rule(background_block, :multiple_given_when_then)
   end
 
   it "should punish Backgrounds that have tags" do
@@ -984,7 +902,6 @@ describe "BackgroundRules" do
         "Background: I am a background",
         "Given I am a step",
     ]
-    background = CukeSniffer::Scenario.new("location:1", background_block)
-    validate_rule(background, RULES[:background_with_tag])
+    test_background_rule(background_block, :background_with_tag)
   end
 end

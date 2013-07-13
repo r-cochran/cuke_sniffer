@@ -1,6 +1,6 @@
 require 'cuke_sniffer/constants'
 require 'cuke_sniffer/rule_config'
-require 'cuke_sniffer/rules_evaluator'
+require 'cuke_sniffer/rule_target'
 
 module CukeSniffer
 
@@ -9,8 +9,8 @@ module CukeSniffer
   # License::   Distributes under the MIT License
   # Parent class for Feature and Scenario objects
   # holds shared attributes and rules.
-  # Extends CukeSniffer::RulesEvaluator
-  class FeatureRulesEvaluator < RulesEvaluator
+  # Extends CukeSniffer::RuleTarget
+  class FeatureRuleTarget < RuleTarget
 
     # string array: Contains all tags attached to a Feature or Scenario
     attr_accessor :tags
@@ -48,65 +48,6 @@ module CukeSniffer
         @tags << line[comment_start..line.length].strip
       else
         line.split.each { |single_tag| @tags << single_tag }
-      end
-    end
-
-    def evaluate_score
-      cls_name = self.class.to_s.gsub('CukeSniffer::', '')
-      rule_too_many_tags(cls_name)
-      rule_no_description(cls_name)
-      rule_numbers_in_name(cls_name)
-      rule_long_name(cls_name)
-      rule_commas_in_description(cls_name)
-      rule_comment_after_tag(cls_name)
-      rule_commented_tag(cls_name)
-    end
-
-    def rule_too_many_tags(type)
-      rule = RULES[:too_many_tags]
-      rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_rule(rule, rule_phrase) if tags.size >= rule[:max]
-    end
-
-    def rule_no_description(type)
-      rule = RULES[:no_description]
-      rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_rule(rule, rule_phrase) if name.empty?
-    end
-
-    def rule_numbers_in_name(type)
-      rule = RULES[:numbers_in_description]
-      rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_rule(rule, rule_phrase) if name =~ /\d/
-    end
-
-    def rule_long_name(type)
-      rule = RULES[:long_name]
-      rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_rule(rule, rule_phrase) if name.size >= rule[:max]
-    end
-
-    def rule_commas_in_description(type)
-      rule = RULES[:commas_in_description]
-      rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-      store_rule(rule, rule_phrase) if name.include?(',')
-    end
-
-    def rule_comment_after_tag(type)
-      rule = RULES[:comment_after_tag]
-
-      last_comment_index = tags.rindex { |single_tag| is_comment?(single_tag) }
-      if last_comment_index
-        comment_after_tag = tags[0...last_comment_index].any? { |single_tag| !is_comment?(single_tag) }
-        rule_phrase = rule[:phrase].gsub(/{.*}/, type)
-        store_rule(rule, rule_phrase) if comment_after_tag
-      end
-    end
-
-    def rule_commented_tag(type)
-      rule = RULES[:commented_tag]
-      tags.each do |tag|
-        store_rule(rule, rule[:phrase].gsub(/{.*}/, type)) if is_comment?(tag) && tag.match(/@\S*/)
       end
     end
 

@@ -64,17 +64,13 @@ describe CukeSniffer::Feature do
     feature.scenarios.should == []
   end
 
-  it "should have access to feature specific rules" do
-    build_file(["Feature: ", "", "Scenario: ", "Given blah", "When blam", "Then blammo"])
-    feature = CukeSniffer::Feature.new(@file_name)
-    feature.rules_hash.should == {"Feature has no description." => 1}
-  end
-
   it "should determine if it is above the feature threshold" do
     build_file(["Feature: ", "", "Scenario: ", "Given blah", "When blam", "Then blammo"])
     feature = CukeSniffer::Feature.new(@file_name)
     start_threshold = CukeSniffer::Constants::THRESHOLDS["Feature"]
     CukeSniffer::Constants::THRESHOLDS["Feature"] = 2
+    feature.rules_hash = {"my rule" => 1}
+    feature.score = 3
     feature.good?.should == false
     CukeSniffer::Constants::THRESHOLDS["Feature"] = start_threshold
   end
@@ -169,116 +165,100 @@ end
 
 describe "FeatureRules" do
 
+  def run_rule_against_feature(feature_block, rule)
+    build_file(feature_block)
+    @cli.features = [CukeSniffer::Feature.new(@file_name)]
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+
+  end
+
+  def test_feature_rule(feature_block, symbol, count = 1)
+    rule = CukeSniffer::CLI.build_rule(RULES[symbol])
+    run_rule_against_feature(feature_block, rule)
+    rule.phrase.gsub!("{class}", "Feature")
+    verify_rule(@cli.features[0], rule, count)
+  end
+
+  def test_no_feature_rule(feature_block, symbol)
+    rule = CukeSniffer::CLI.build_rule(RULES[symbol])
+    run_rule_against_feature(feature_block, rule)
+    rule.phrase.gsub!("{class}", "Feature")
+    verify_no_rule(@cli.features[0], rule)
+  end
+
   before(:each) do
     @file_name = "my_feature.feature"
+    @cli = CukeSniffer::CLI.new()
   end
 
   after(:each) do
     File.delete(@file_name)
   end
 
-  def validate_rule(feature, rule)
-    phrase = rule[:phrase].gsub(/{.*}/, "Feature")
-
-    feature.rules_hash.should include phrase
-    feature.rules_hash[phrase].should > 0
-    feature.score.should >= rule[:score]
-  end
-
   it "should punish Features with no content" do
-    rule = RULES[:empty_feature]
-    build_file([])
-    feature = CukeSniffer::Feature.new(@file_name)
-    validate_rule(feature, rule)
+    feature_block = []
+    test_feature_rule(feature_block, :empty_feature)
   end
 
   it "should punish Features with too many tags" do
-    rule = RULES[:too_many_tags]
-
-    lines = []
-    rule[:max].times { |n| lines << "@tag_#{n}" }
-    lines << "Feature: Feature with many tags"
-    build_file(lines)
-    feature = CukeSniffer::Feature.new(@file_name)
-
-    validate_rule(feature, rule)
+    feature_block = []
+    RULES[:too_many_tags][:max].times { |n| feature_block << "@tag_#{n}" }
+    feature_block << "Feature: Feature with many tags"
+    test_feature_rule(feature_block, :too_many_tags)
   end
 
   it "should punish Features without a name" do
-    build_file(%w(Feature:))
-    feature = CukeSniffer::Feature.new(@file_name)
-
-    validate_rule(feature, RULES[:no_description])
+    feature_block = ["Feature:"]
+    test_feature_rule(feature_block, :no_description)
   end
 
   it "should punish Features with numbers in its name" do
-    build_file(["Feature: Story Card 12345"])
-    feature = CukeSniffer::Feature.new(@file_name)
-
-    validate_rule(feature, RULES[:numbers_in_description])
+    feature_block = ["Feature: Story Card 12345"]
+    test_feature_rule(feature_block, :numbers_in_description)
   end
 
   it "should punish Features with long names" do
-    rule = RULES[:long_name]
-
     feature_description = ""
-    rule[:max].times { feature_description << "A" }
-    build_file(["Feature: #{feature_description}"])
-    feature = CukeSniffer::Feature.new(@file_name)
-
-    validate_rule(feature, rule)
+    RULES[:long_name][:max].times { feature_description << "A" }
+    feature_block = ["Feature: #{feature_description}"]
+    test_feature_rule(feature_block, :long_name)
   end
 
   it "should punish Features that have a background but no Scenarios" do
-    build_file(["Feature: Feature with background and no scenarios", "", "Background: I am a background", "And I want to be a test"])
-    feature = CukeSniffer::Feature.new(@file_name)
-    validate_rule(feature, RULES[:background_with_no_scenarios])
+    feature_block = [
+        "Feature: Feature with background and no scenarios",
+        "",
+        "Background: I am a background",
+        "And I want to be a test"
+    ]
+    test_feature_rule(feature_block, :background_with_no_scenarios)
   end
 
   it "should punish Features that have a background and only one Scenario" do
-    build_file(["Feature: Feature with background and one scenario", "", "Background: I am a background", "And I want to be a test", "", "Scenario: One Scenario"])
-    feature = CukeSniffer::Feature.new(@file_name)
-    validate_rule(feature, RULES[:background_with_one_scenario])
+    feature_block = [
+        "Feature: Feature with background and one scenario",
+        "",
+        "Background: I am a background",
+        "And I want to be a test",
+        "",
+        "Scenario: One Scenario"
+    ]
+    test_feature_rule(feature_block, :background_with_one_scenario)
   end
 
   it "should punish Features with zero Scenarios" do
-    build_file(["Feature: I'm a feature without scenarios"])
-    feature = CukeSniffer::Feature.new(@file_name)
-    validate_rule(feature, RULES[:no_scenarios])
+    feature_block = ["Feature: I'm a feature without scenarios"]
+    test_feature_rule(feature_block, :no_scenarios)
   end
 
   it "should punish Features with too many Scenarios" do
-    rule = RULES[:too_many_scenarios]
-
-    lines = ["Feature: I'm a feature without scenarios!"]
-    rule[:max].times { lines << "Scenario: I am a simple scenario" }
-
-    build_file(lines)
-    feature = CukeSniffer::Feature.new(@file_name)
-    validate_rule(feature, rule)
-  end
-
-  it "should punish Scenarios that have the same tag as its Feature" do
-    rule = RULES[:feature_same_tag]
-
-    lines = [
-        "@tag",
-        "Feature: I'm a feature with tags!",
-        "",
-        "@tag",
-        "Scenario: I have the same tag"
-    ]
-    build_file(lines)
-    feature = CukeSniffer::Feature.new(@file_name)
-    scenario = feature.scenarios[0]
-    scenario.rules_hash.include?(rule[:phrase]).should be_true
-    scenario.score.should >= rule[:score]
+    feature_block = ["Feature: I'm a feature without scenarios!"]
+    RULES[:too_many_scenarios][:max].times { feature_block << "Scenario: I am a simple scenario" }
+    test_feature_rule(feature_block, :too_many_scenarios)
   end
 
   it "should punish Features if all of the scenarios have a common tag. Simple." do
-    rule = RULES[:scenario_same_tag]
-
-    lines = [
+    feature_block = [
         "Feature: I'm a feature with scenarios with identical tags!",
         "",
         "@tag",
@@ -286,16 +266,11 @@ describe "FeatureRules" do
         "@tag",
         "Scenario: I have the same tag2"
     ]
-    build_file(lines)
-    feature = CukeSniffer::Feature.new(@file_name)
-    feature.rules_hash.include?(rule[:phrase]).should be_true
-    feature.score.should >= rule[:score]
+    test_feature_rule(feature_block, :feature_same_tag)
   end
 
   it "should punish Features if all of the scenarios have a common tag. Complex" do
-    rule = RULES[:scenario_same_tag]
-
-    lines = [
+    feature_block = [
         "Feature: I'm a feature with scenarios with identical tags!",
         "",
         "@tag @a",
@@ -304,79 +279,51 @@ describe "FeatureRules" do
         "@a",
         "Scenario: I have the same tag2"
     ]
-    build_file(lines)
-    feature = CukeSniffer::Feature.new(@file_name)
-    feature.rules_hash.include?(rule[:phrase]).should be_true
-    feature.rules_hash[rule[:phrase]].should == 2
-    feature.score.should >= rule[:score]
+    test_feature_rule(feature_block, :scenario_same_tag, 2)
   end
 
   it "should punish Features if the description has commas in it." do
-    rule = RULES[:commas_in_description]
-
-    lines = [
+    feature_block = [
         "Feature: I'm a feature with scenarios with a comma, in the description",
         "",
         "Scenario: I am a Scenario"
     ]
-    build_file(lines)
-    feature = CukeSniffer::Feature.new(@file_name)
-    feature.rules_hash.include?("There are commas in the description, creating possible multirunning scenarios or features.").should be_true
-    feature.score.should >= rule[:score]
+    test_feature_rule(feature_block, :commas_in_description)
   end
 
   it "should punish Features that have a comment on a line after a tag" do
-    rule = RULES[:comment_after_tag]
-
-    lines = [
+    feature_block = [
         "@tag",
         "#comment",
         "     #comment with spaces",
         "Feature: I'm a feature with a comment after a tag"
     ]
-    build_file(lines)
-    feature = CukeSniffer::Feature.new(@file_name)
-    feature.rules_hash.include?(rule[:phrase]).should be_true
-    feature.score.should >= rule[:score]
+    test_feature_rule(feature_block, :comment_after_tag)
   end
 
   it "should not punish Features that have a tag with a hash in it" do
-    rule = RULES[:comment_after_tag]
-
-    lines = [
+    feature_block = [
         "@tag",
         "@#comment",
         "Feature: I'm a feature with a hash symbol in my tag"
     ]
-    build_file(lines)
-    feature = CukeSniffer::Feature.new(@file_name)
-    feature.rules_hash.include?(rule[:phrase]).should be_false
-    feature.score.should < rule[:score]
+    test_no_feature_rule(feature_block, :comment_after_tag)
   end
 
   it "should punish Features that have commented tags" do
-    rule = RULES[:commented_tag]
-
-    lines = [
-        "\#@tag",
+    feature_block = [
+        '#@tag',
         "Feature: I'm a feature with a commented tag"
     ]
-    build_file(lines)
-    feature = CukeSniffer::Feature.new(@file_name)
-    validate_rule(feature, rule)
+    test_feature_rule(feature_block, :commented_tag)
   end
 
   it "should not punish Features that have a comment before any tags occur" do
-    rule = RULES[:comment_after_tag]
-
-    lines = [
+    feature_block = [
         "#comment",
         "@tag",
         "Feature: I'm a feature with a comment before a tag"
     ]
-    build_file(lines)
-    feature = CukeSniffer::Feature.new(@file_name)
-    feature.rules_hash.include?(rule[:phrase]).should be_false
-    feature.score.should < rule[:score]
+    test_no_feature_rule(feature_block, :comment_after_tag)
   end
 end

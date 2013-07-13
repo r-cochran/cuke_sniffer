@@ -127,28 +127,6 @@ describe CukeSniffer::StepDefinition do
     }
   end
 
-  it "should evaluate the step definition and the score should be greater than 0" do
-    raw_code = ["Given /^step with no code$/ do",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    step_definition.score.should > 0
-  end
-
-  it "should evaluate the step definition and then update a list of rules/occurrences" do
-    raw_code = ["Given /^step with no code$/ do",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    step_definition.rules_hash.should_not == {}
-  end
-
-  it "should have a score and rule list immediately after being created" do
-    raw_code = ["Given /^step with no code$/ do",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    step_definition.score.should > 0
-    step_definition.rules_hash.should_not == {}
-  end
-
   it "should evaluate multiple sets of complex nested steps across multiple lines" do
     nested_step_set_one = "the first number is \"1\""
     nested_step_set_two = "the second number is \"55\""
@@ -169,11 +147,10 @@ describe CukeSniffer::StepDefinition do
   end
 
   it "should determine if it is above the scenario threshold" do
-    raw_code = ["Given /^step with no code$/ do",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
+    step_definition = CukeSniffer::StepDefinition.new("location:1", ['Given /^$/ do/', 'end'])
     start_threshold = CukeSniffer::Constants::THRESHOLDS["StepDefinition"]
     CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = 2
+    step_definition.score = 3
     step_definition.good?.should == false
     CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = start_threshold
   end
@@ -279,6 +256,23 @@ describe CukeSniffer::StepDefinition do
 end
 
 describe "StepDefinitionRules" do
+  def run_rule_against_step_definition(step_definition_block, rule)
+    @cli.step_definitions = [CukeSniffer::StepDefinition.new("location.rb:1",step_definition_block)]
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+
+  end
+
+  def test_step_definition_rule(step_definition_block, symbol, count = 1)
+    rule = CukeSniffer::CLI.build_rule(RULES[symbol])
+    run_rule_against_step_definition(step_definition_block, rule)
+    verify_rule(@cli.step_definitions[0], rule, count)
+  end
+
+  def test_no_step_definition_rule(step_definition_block, symbol)
+    rule = CukeSniffer::CLI.build_rule(RULES[symbol])
+    run_rule_against_step_definition(step_definition_block, rule)
+    verify_no_rule(@cli.step_definitions[0], rule)
+  end
 
   def validate_rule(step_definition, rule)
     phrase = rule[:phrase]
@@ -287,121 +281,143 @@ describe "StepDefinitionRules" do
     step_definition.score.should >= rule[:score]
   end
 
+
+  before(:each) do
+    @cli = CukeSniffer::CLI.new()
+  end
+
   it "should punish Step Definitions with no code" do
-    raw_code = ["Given /^step with no code$/ do",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, RULES[:no_code])
+    step_definition_block = [
+        "Given /^step with no code$/ do",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :no_code)
   end
 
   it "should punish Step Definitions with too many parameters" do
-    rule = RULES[:too_many_parameters]
     parameters = ""
-    rule[:max].times { |n| parameters += "param#{n}, " }
-
-    raw_code = ["Given /^step with many parameters$/ do |#{parameters}|", "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, rule)
+    (RULES[:too_many_parameters][:max] + 1).times { |n| parameters += "param#{n}, " }
+    step_definition_block = [
+        "Given /^step with many parameters$/ do |#{parameters}|",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :too_many_parameters)
   end
 
   it "should punish Step Definitions that have nested steps" do
-    raw_code = ["Given /^step with nested step call$/ do", "steps \"And I am a nested step\"", "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, RULES[:nested_step])
+    step_definition_block = [
+        "Given /^step with nested step call$/ do",
+        "steps \"And I am a nested step\"",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :nested_step)
   end
 
   it "should punish Step Definitions that have recursive nested steps" do
-    raw_code = ["Given /^step with recursive nested step call$/ do", "steps \"And step with recursive nested step call\"", "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, RULES[:recursive_nested_step])
+    step_definition_block = [
+        "Given /^step with recursive nested step call$/ do",
+        "steps \"And step with recursive nested step call\"",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :recursive_nested_step)
   end
 
   it "should punish each commented line in a Step Definition" do
-    raw_code = ["Given /^step with comments$/ do",
-                "#steps \"And step with recursive nested step call\"",
-                "#steps \"And step with recursive nested step call\"",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, RULES[:commented_code])
+    step_definition_block = [
+        "Given /^step with comments$/ do",
+        "#steps \"And step with recursive nested step call\"",
+        "#steps \"And step with recursive nested step call\"",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :commented_code, 2)
   end
 
   it "should punish each instance of lazy debugging (puts with single quotes)" do
-    raw_code = ["Given /^step with comments$/ do",
-                "puts 'debug statement'",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, RULES[:lazy_debugging])
+    step_definition_block = [
+        "Given /^step with comments$/ do",
+        "puts 'debug statement'",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :lazy_debugging)
   end
 
   it "should punish each instance of lazy debugging (puts with double quotes)" do
-    raw_code = ["Given /^step with comments$/ do",
-                "puts \"debug statement\"",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, RULES[:lazy_debugging])
+    step_definition_block = [
+        "Given /^step with comments$/ do",
+        "puts \"debug statement\"",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :lazy_debugging)
   end
 
   it "should punish each instance of lazy debugging (puts with literals)" do
-    raw_code = ["Given /^step with comments$/ do",
-                "puts %{debug statement}",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, RULES[:lazy_debugging])
+    step_definition_block = [
+        "Given /^step with comments$/ do",
+        "puts %{debug statement}",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :lazy_debugging)
   end
 
   it "should punish each instance of lazy debugging (p with single quotes)" do
-    raw_code = ["Given /^step with comments$/ do",
-                "p 'debug statement'",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, RULES[:lazy_debugging])
+    step_definition_block = [
+        "Given /^step with comments$/ do",
+        "p 'debug statement'",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :lazy_debugging)
   end
 
   it "should punish each instance of lazy debugging (p with double quotes)" do
-    raw_code = ["Given /^step with comments$/ do",
-                "p \"debug statement\"",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, RULES[:lazy_debugging])
+    step_definition_block = [
+        "Given /^step with comments$/ do",
+        "p \"debug statement\"",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :lazy_debugging)
   end
 
   it "should punish each instance of lazy debugging (p with literal)" do
-    raw_code = ["Given /^step with comments$/ do",
-                "p %{debug statement}",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, RULES[:lazy_debugging])
+    step_definition_block = [
+        "Given /^step with comments$/ do",
+        "p %{debug statement}",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :lazy_debugging)
   end
 
   it "should punish each instance of a pending step definition" do
-    raw_code = ["Given /^step with comments$/ do",
-                "pending",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, RULES[:pending])
+    step_definition_block = [
+        "Given /^step with comments$/ do",
+        "pending",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :pending)
   end
 
   it "should punish each small sleep in a step definition" do
-    raw_code = ["Given /^small sleeping step$/ do",
-                "sleep #{RULES[:small_sleep][:max]}",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, RULES[:small_sleep])
+    step_definition_block = [
+        "Given /^small sleeping step$/ do",
+        "sleep #{RULES[:small_sleep][:max] - 1}",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :small_sleep)
   end
 
   it "should punish each large sleep in a step definition" do
-    raw_code = ["Given /^small sleeping step$/ do",
-                "sleep #{RULES[:large_sleep][:min] + 1}",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, RULES[:large_sleep])
+    step_definition_block = [
+        "Given /^small sleeping step$/ do",
+        "sleep #{RULES[:large_sleep][:min] + 1}",
+        "end"]
+    test_step_definition_rule(step_definition_block, :large_sleep)
   end
 
   it "should punish each todo in a step definition" do
-    raw_code = ["Given /^small sleeping step$/ do",
-                "method_call(parameter) #todo figure out why this is being done",
-                "end"]
-    step_definition = CukeSniffer::StepDefinition.new("location:1", raw_code)
-    validate_rule(step_definition, RULES[:todo])
+    step_definition_block = [
+        "Given /^small sleeping step$/ do",
+        "method_call(parameter) #todo figure out why this is being done",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :todo)
   end
 end

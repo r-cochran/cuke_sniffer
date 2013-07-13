@@ -6,9 +6,9 @@ module CukeSniffer
   # Handles feature files and disassembles and evaluates
   # its components.
   # Extends CukeSniffer::FeatureRulesEvaluator
-  class Feature < FeatureRulesEvaluator
+  class Feature < FeatureRuleTarget
 
-    xml_accessor :scenarios, :as => [CukeSniffer::FeatureRulesEvaluator], :in => "scenarios"
+    xml_accessor :scenarios, :as => [CukeSniffer::FeatureRuleTarget], :in => "scenarios"
 
     SCENARIO_TITLE_REGEX = /#{COMMENT_REGEX}#{SCENARIO_TITLE_STYLES}(?<name>.*)/ # :nodoc:
 
@@ -24,25 +24,28 @@ module CukeSniffer
     # int: Total score of the feature and its scenarios
     attr_accessor :total_score
 
+    # String array: A list of all the lines in a feature file
+    attr_accessor :feature_lines
+
     # file_name must be in the format of "file_path\file_name.feature"
     def initialize(file_name)
       super(file_name)
       @scenarios = []
       @scenarios_score = 0
       @total_score = 0
-      feature_lines = extract_feature_from_file(file_name)
-      if feature_lines == []
-        rule = RULES[:empty_feature]
-        store_rule(rule)
-      else
-        split_feature(file_name, feature_lines)
-        evaluate_score
-      end
+      @feature_lines = extract_feature_from_file(file_name)
+      split_feature(file_name, feature_lines) unless @feature_lines == []
     end
 
     def ==(comparison_object) # :nodoc:
       super(comparison_object) &&
           comparison_object.scenarios == scenarios
+    end
+
+    def update_score
+      @scenarios_score += @background.score unless @background.nil?
+      @scenarios.each { |scenario| @scenarios_score += scenario.score }
+      @total_score = @scenarios_score + @score
     end
 
     private
@@ -99,74 +102,11 @@ module CukeSniffer
 
     def add_scenario_to_feature(code_block, index_of_title)
       scenario = CukeSniffer::Scenario.new(index_of_title, code_block)
-      feature_applied_scenario_rules(scenario)
       if scenario.type == "Background"
         @background = scenario
       else
         @scenarios << scenario
       end
-    end
-
-    def evaluate_score
-      super
-      rule_no_scenarios
-      rule_too_many_scenarios
-      rule_background_with_no_scenarios
-      rule_background_with_one_scenario
-      rule_scenario_same_tag
-      get_scenarios_score
-      @total_score = score + @scenarios_score
-    end
-
-    def feature_applied_scenario_rules(scenario)
-      rule_feature_same_tags(scenario)
-    end
-
-    def rule_feature_same_tags(scenario)
-      rule = RULES[:feature_same_tag]
-      tags.each do |tag|
-        scenario.store_rule(rule, rule[:phrase]) if scenario.tags.include?(tag)
-      end
-    end
-
-    def rule_scenario_same_tag
-      rule = RULES[:scenario_same_tag]
-      unless scenarios.empty?
-        base_tag_list = scenarios.first.tags.clone
-        scenarios.each do |scenario|
-          base_tag_list.each do |tag|
-            base_tag_list.delete(tag) unless scenario.tags.include?(tag)
-          end
-        end
-        base_tag_list.count.times do
-          store_rule(rule, rule[:phrase])
-        end
-      end
-    end
-
-    def get_scenarios_score
-      @scenarios_score += @background.score unless @background.nil?
-      @scenarios.each { |scenario| @scenarios_score += scenario.score }
-    end
-
-    def rule_no_scenarios
-      rule = RULES[:no_scenarios]
-      store_rule(rule) if @scenarios.empty?
-    end
-
-    def rule_too_many_scenarios
-      rule = RULES[:too_many_scenarios]
-      store_rule(rule) if @scenarios.size >= rule[:max]
-    end
-
-    def rule_background_with_no_scenarios
-      rule = RULES[:background_with_no_scenarios]
-      store_rule(rule) if @scenarios.empty? and !@background.nil?
-    end
-
-    def rule_background_with_one_scenario
-      rule = RULES[:background_with_one_scenario]
-      store_rule(rule) if @scenarios.size == 1 and !@background.nil?
     end
   end
 end

@@ -6,7 +6,7 @@ module CukeSniffer
   # License::   Distributes under the MIT License
   # Cucumber Hook class used for evaluating rules
   # Extends CukeSniffer::RulesEvaluator
-  class Hook < RulesEvaluator
+  class Hook < RuleTarget
 
     xml_accessor :start_line
     xml_accessor :type
@@ -53,7 +53,6 @@ module CukeSniffer
           @parameters = matches[:parameters].split(/,\s*/) if matches[:parameters]
         end
       end
-      evaluate_score
     end
 
     def ==(comparison_object) # :nodoc:
@@ -63,98 +62,5 @@ module CukeSniffer
           comparison_object.parameters == parameters &&
           comparison_object.code == code
     end
-
-    private
-
-    def evaluate_score
-      rule_empty_hook
-      rule_hook_not_in_hooks_file
-      rule_no_debugging
-      rule_all_comments
-      rule_conflicting_tags
-      rule_duplicate_tags
-      if @type == "Around"
-        rule_around_hook_without_2_parameters
-        rule_around_hook_no_block_call
-      end
-    end
-
-    def rule_empty_hook
-      rule = RULES[:empty_hook]
-      store_rule(rule) if @code == []
-    end
-
-    def rule_hook_not_in_hooks_file
-      rule = RULES[:hook_not_in_hooks_file]
-      store_rule(rule) unless @location.include?(rule[:file])
-    end
-
-    def rule_around_hook_without_2_parameters
-      rule = RULES[:around_hook_without_2_parameters]
-      store_rule(rule) unless @parameters.count == 2
-    end
-
-    def rule_around_hook_no_block_call
-      return if rule_stored?(:around_hook_without_2_parameters)
-      rule = RULES[:around_hook_no_block_call]
-      block_call = "#{@parameters[1]}.call"
-      @code.each do |line|
-        return if line.include?(block_call)
-      end
-      store_rule(rule)
-    end
-
-    def rule_stored?(rule_symbol)
-      @rules_hash.keys.include?(RULES[rule_symbol][:phrase])
-    end
-
-    def rule_no_debugging
-      return if rule_stored?(:empty_hook)
-      rule = RULES[:hook_no_debugging]
-      begin_found = false
-      rescue_found = false
-      @code.each do |line|
-        begin_found = true if line.include?("begin")
-        rescue_found = true if line.include?("rescue")
-        break if begin_found and rescue_found
-      end
-      store_rule(rule) unless begin_found and rescue_found
-    end
-
-    def rule_all_comments
-      rule = RULES[:hook_all_comments]
-      @code.each do |line|
-        return unless is_comment?(line)
-      end
-      store_rule(rule)
-    end
-
-    def rule_conflicting_tags
-      rule = RULES[:hook_conflicting_tags]
-      all_tags = flatten_tags
-
-      all_tags.each do |single_tag|
-        tag = single_tag.gsub("~", "")
-        if all_tags.include?(tag) and all_tags.include?("~#{tag}")
-          store_rule(rule)
-          return
-        end
-      end
-    end
-
-    def flatten_tags
-      all_tags = []
-      @tags.each { |single_tag| all_tags << single_tag.split(',') }
-      all_tags.flatten
-    end
-
-    def rule_duplicate_tags
-      rule = RULES[:hook_duplicate_tags]
-      all_tags = flatten_tags
-      unique_tags = all_tags.uniq
-
-      store_rule(rule) unless all_tags == unique_tags
-    end
-
   end
 end

@@ -12,6 +12,17 @@ module CukeSniffer
     xml_accessor :phrase
     xml_accessor :score
     xml_accessor :conditions, :as => {:key => "name", :value => "value"}, :in => "conditions", :from => "condition"
+    xml_accessor :targets, :in => "targets"
+    xml_accessor :reason
+
+    def initialize
+      @enabled = false
+      @phrase = ""
+      @score = 0
+      @conditions = {}
+      @targets = []
+      @reason = ""
+    end
   end
 
 end

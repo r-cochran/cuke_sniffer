@@ -6,7 +6,7 @@ module CukeSniffer
   # License::   Distributes under the MIT License
   # Parent class for all objects that have rules executed against it
   # Mixins: CukeSniffer::Constants, CukeSniffer::RuleConfig, ROXML
-  class RulesEvaluator
+  class RuleTarget
     include CukeSniffer::Constants
     include CukeSniffer::RuleConfig
     include ROXML
@@ -50,14 +50,6 @@ module CukeSniffer
       comparison_object.location == location &&
       comparison_object.score == score &&
       comparison_object.rules_hash == rules_hash
-    end
-
-    def store_rule(rule, phrase = rule[:phrase])
-      if rule[:enabled]
-        @score += rule[:score]
-        @rules_hash[phrase] ||= 0
-        @rules_hash[phrase] += 1
-      end
     end
 
     private

@@ -6,7 +6,7 @@ module CukeSniffer
   # License::   Distributes under the MIT License
   # Translates and evaluates Cucumber step definitions
   # Extends CukeSniffer::RulesEvaluator
-  class StepDefinition < RulesEvaluator
+  class StepDefinition < RuleTarget
 
     xml_accessor :start_line
     xml_accessor :regex
@@ -152,88 +152,6 @@ module CukeSniffer
     end
 
     def evaluate_score
-      rule_no_code
-      rule_too_many_parameters
-      rule_nested_steps
-      rule_recursive_nested_step
-      rule_commented_code
-      rule_lazy_debugging
-      rule_pending
-      rule_todo
-      sleep_rules
-    end
-
-    def rule_todo
-      code.each do |line|
-        rule = RULES[:todo]
-        store_rule(rule) if line =~ /\#(TODO|todo)/
-      end
-    end
-
-    def sleep_rules
-      code.each do |line|
-        match_data = line.match /^\s*sleep(\s|\()(?<sleep_time>.*)\)?/
-        if match_data
-          sleep_value = match_data[:sleep_time].to_f
-          rule_small_sleep(sleep_value)
-          rule_large_sleep(sleep_value)
-        end
-      end
-    end
-
-    def rule_large_sleep(sleep_value)
-      rule = RULES[:large_sleep]
-      store_rule(rule) if sleep_value > rule[:min]
-    end
-
-    def rule_small_sleep(sleep_value)
-      rule = RULES[:small_sleep]
-      store_rule(rule) if sleep_value <= rule[:max]
-    end
-
-    def rule_pending
-      rule = RULES[:pending]
-      code.each do |line|
-        store_rule(rule) if line =~ /^\s*pending\s*$/
-        return
-      end
-    end
-
-    def rule_lazy_debugging
-      rule = RULES[:lazy_debugging]
-      code.each do |line|
-        next if is_comment?(line)
-        store_rule(rule) if line.strip =~ /^(p|puts)( |\()('|"|%(q|Q)?\{)/
-      end
-    end
-
-    def rule_no_code
-      rule = RULES[:no_code]
-      store_rule(rule) if code.empty?
-    end
-
-    def rule_too_many_parameters
-      rule = RULES[:too_many_parameters]
-      store_rule(rule) if parameters.size >= rule[:max]
-    end
-
-    def rule_nested_steps
-      rule = RULES[:nested_step]
-      store_rule(rule) unless nested_steps.empty?
-    end
-
-    def rule_recursive_nested_step
-      rule = RULES[:recursive_nested_step]
-      nested_steps.each_value do |nested_step|
-        store_rule(rule) if nested_step =~ regex
-      end
-    end
-
-    def rule_commented_code
-      rule = RULES[:commented_code]
-      code.each do |line|
-        store_rule(rule) if is_comment?(line)
-      end
     end
   end
 end
