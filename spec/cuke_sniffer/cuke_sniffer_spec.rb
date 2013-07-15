@@ -1,24 +1,5 @@
 require 'spec_helper'
-require 'page-object'
-require 'watir-webdriver'
 
-
-class CSHTMLPage
-  include PageObject
-
-  page_url "file:///C:/devl/workspaces/cuke_sniffer/cuke_sniffer/cuke_sniffer_results.html"
-
-  div(:rulesTab, :id => 'rulesTab')
-
-  ol(:enabledRules, :id => 'enabledRules')
-
-  ol(:disabledRules, :id => 'disabledRules')
-
-  div(:score, :id => 'score')
-
-end
-
-include PageObject::PageFactory
 
 describe CukeSniffer do
 
@@ -511,68 +492,100 @@ describe CukeSniffer do
 
   describe "output_html" do
 
-    before(:all) do
-      @browser = Watir::Browser.new :firefox
+    it "should order the hooks during output to html" do
+      #pending
+      hook_raw_code = ["AfterConfiguration do",
+                       "1+1",
+                       "end"]
+      hook_location = "location.rb:1"
+
+      cuke_sniffer = CukeSniffer::CLI.new()
+      big_hook = CukeSniffer::Hook.new(hook_location, hook_raw_code)
+      big_hook.score = 10
+      little_hook = CukeSniffer::Hook.new(hook_location, hook_raw_code)
+      little_hook.score = big_hook.score - 1
+      cuke_sniffer.hooks = [little_hook, big_hook]
+      cuke_sniffer.output_html
+
+      cuke_sniffer.hooks.should == [big_hook, little_hook]
     end
 
-    after(:all) do
-      @browser.close
+    it "should order the step definitions during output to html" do
+      #pending
+      step_def_raw_code = ["When /^the second number is 1$/ do",
+                           "@second_number = 1",
+                           "end"]
+      step_def_location = "path/path/path/my_steps.rb:1"
+
+      cuke_sniffer = CukeSniffer::CLI.new()
+      big_step = CukeSniffer::StepDefinition.new(step_def_location, step_def_raw_code)
+      big_step.score = 10
+      little_step = CukeSniffer::StepDefinition.new(step_def_location, step_def_raw_code)
+      little_step.score = big_step.score - 1
+      cuke_sniffer.step_definitions = [little_step, big_step]
+      cuke_sniffer.output_html
+
+      cuke_sniffer.step_definitions.should == [big_step, little_step]
+    end
+
+    it "should order the rules during output to html (descending)" do
+      #pending
+      cuke_sniffer = CukeSniffer::CLI.new()
+      big_rule = CukeSniffer::Rule.new()
+      big_rule.score = 100
+      little_rule = CukeSniffer::Rule.new()
+      little_rule.score = big_rule.score - 1
+      cuke_sniffer.rules = [little_rule, big_rule]
+      cuke_sniffer.output_html
+
+      cuke_sniffer.rules.should == [big_rule, little_rule]
+    end
+
+    it "should order the features during output to html" do
+      #pending
+      file_name = "my_feature.feature"
+      build_file(["Feature: I am a feature"], file_name)
+
+      cuke_sniffer = CukeSniffer::CLI.new()
+      big_feature = CukeSniffer::Feature.new(file_name)
+      big_feature.total_score = 20
+      little_feature = CukeSniffer::Feature.new(file_name)
+      little_feature.total_score = big_feature.total_score - 1
+      cuke_sniffer.features = [little_feature, big_feature]
+      cuke_sniffer.output_html
+
+      cuke_sniffer.features.should == [big_feature, little_feature]
+
+      File.delete(file_name)
     end
 
 
-    it "orders the enabled rules by score (descending)"do
-
-      visit_page CSHTMLPage do |page|
-
-        currentScore = nil
-        previousScore = nil
-
-        page.rulesTab_element.click
-
-        page.enabledRules_element.each do |item|
-          currentScore = item.text.scan(/Score: \d*/)
-          currentScoreNumber =  currentScore.to_s.scan(/(\d+)/)
-          currentScoreNumberCollected = currentScoreNumber.collect(&:first)
-          score = currentScoreNumberCollected[0]
-          score= score.to_i
-
-          if previousScore != nil
-            previousScore.should >= score
-          end
-          previousScore = score
-
-        end
-      end
-    end
-
-    it "orders the disabled rules by score (descending)"do
-
-      visit_page CSHTMLPage do |page|
-
-        currentScore = nil
-        previousScore = nil
-
-        page.rulesTab_element.click
-
-        page.disabledRules_element.each do |item|
-          currentScore = item.text.scan(/Score: \d*/)
-          currentScoreNumber =  currentScore.to_s.scan(/(\d+)/)
-          currentScoreNumberCollected = currentScoreNumber.collect(&:first)
-          score = currentScoreNumberCollected[0]
-          score= score.to_i
-
-          if previousScore != nil
-            previousScore.should >= score
-          end
-          previousScore = score
-
-        end
-      end
-    end
 
 
   end
 
+  describe "convert_array_condition_into_list_of_strings" do
+
+    it "breaks the array into groups of five" do
+      cuke_sniffer = CukeSniffer::CLI.new()
+      input = ["hi","how","are","you","drew","and","anthony","wow", "boo","moo"]
+
+      cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, drew","and, anthony, wow, boo, moo"])
+
+    end
+
+    it "puts remainder into last group" do
+      cuke_sniffer = CukeSniffer::CLI.new()
+      input = ["hi","how","are","you","drew","and","anthony","wow", "boo","moo","dustin"]
+
+      cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, drew","and, anthony, wow, boo, moo","dustin"])
+
+      input = ["hi","how","are","you"]
+
+      cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you"])
+
+    end
+  end
 end
 
 

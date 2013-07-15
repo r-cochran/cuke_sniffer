@@ -196,6 +196,7 @@ module CukeSniffer
     #  cuke_sniffer.output_html("results01-01-0001.html")
     def output_html(file_name = "cuke_sniffer_results.html", cuke_sniffer = self, markup_source = File.join(File.dirname(__FILE__), 'report'))
       @features = @features.sort_by { |feature| feature.total_score }.reverse
+      @rules = @rules.sort_by { |rule| rule.score }.reverse
       @step_definitions = @step_definitions.sort_by { |step_definition| step_definition.score }.reverse
       @hooks = @hooks.sort_by { |hook| hook.score }.reverse
 
@@ -259,11 +260,11 @@ module CukeSniffer
       catalog_possible_dead_steps(converted_steps)
     end
 
-
     def self.build_rules(rules)
       if rules.nil?
         return []
       end
+
       rules.collect do |key, value|
         rule = CukeSniffer::Rule.new
         rule.phrase = value[:phrase]
@@ -272,11 +273,22 @@ module CukeSniffer
         conditional_keys = value.keys - [:phrase, :score, :enabled]
         conditions = {}
         conditional_keys.each do|key|
-          conditions[key] = value[key]
+          conditions[key] = (value[key].kind_of? Array) ? Array.new(value[key]) : value[key]
         end
+
         rule.conditions = conditions
         rule
       end
+    end
+
+    def convert_array_condition_into_list_of_strings(condition_list)
+      result = []
+      while (condition_list.size>0)
+        five_words = condition_list.slice!(0,5)
+        result << five_words.join(", ")
+      end
+
+      return result
     end
 
 
@@ -542,6 +554,7 @@ module CukeSniffer
       hooks << CukeSniffer::Hook.new("#{file_name}:#{counter+1 -hooks_code.count}", hooks_code) unless hooks_code.empty? or !found_first_hook
       hooks
     end
+
   end
 
 end
