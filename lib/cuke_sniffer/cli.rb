@@ -199,16 +199,20 @@ module CukeSniffer
       @rules = @rules.sort_by { |rule| rule.score }.reverse
       @step_definitions = @step_definitions.sort_by { |step_definition| step_definition.score }.reverse
       @hooks = @hooks.sort_by { |hook| hook.score }.reverse
-      state = true
-      heading = "Enabled Rules"
-      markup_rules = ERB.new extract_markup(markup_source, "rules.html.erb")
-      enabled_rules = markup_rules.result(binding)
+
+      enabled_rules = rules_template(true, "Enabled Rules",markup_source)
+      disabled_rules = rules_template(false, "Disabled Rules",markup_source)
 
       markup_erb = ERB.new extract_markup(markup_source)
       output = markup_erb.result(binding)
       File.open(file_name, 'w') do |f|
         f.write(output)
       end
+    end
+
+    def rules_template(state, heading,markup_source, cuke_sniffer = self)
+      markup_rules = ERB.new extract_markup(markup_source, "rules.html.erb")
+      return markup_rules.result(binding)
     end
 
     # Creates a xml file with the collected project details

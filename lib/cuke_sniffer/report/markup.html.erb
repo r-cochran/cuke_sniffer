@@ -202,56 +202,9 @@
 </div>
 
 <div class="shrink_section" id="rules">
-
-  <% counter = 0 %>
-  <% index = 0 %>
-  <% enabled = true %>
-
-  <% while( counter < 2 ) %>
-
-      <% if counter == 0 %>
-          <ol id="enabledRules" class="rule_style">
-            <p class="rule_heading">Enabled Rules:</p>
-      <% else %>
-          <ol id="disabledRules" class="rule_style">
-            <p class="rule_heading">Disabled Rules:</p>
-      <% end %>
-
-      <% cuke_sniffer.rules.each do |rule| %>
-
-          <% if rule.enabled == enabled %>
-
-              <li class="rule_notes">
-                <div id="phrase_<%= index %>" class="rule_details">Phrase: <%= rule.phrase%></div>
-                <div id="score_<%= index %>" class="rule_details">Score: <%= rule.score%></div>
-                <% rule.conditions.each do |key, value| %>
-                    <% if value.kind_of?(Array) %>
-                        <div id="condition_<%= index %>" class="rule_details"><%= key.capitalize%>: </div>
-
-                        <% result = convert_array_condition_into_list_of_strings(value) %>
-                        <% print key  %>
-                        <% result.first.prepend("[")  %>
-                        <% result.last << "]"  %>
-                        <% result.each do |words| %>
-                            <div><%= words %></div>
-                        <% end %>
-
-                    <% else %>
-                        <div id="condition_<%= index %>" class="rule_details"><%= key.capitalize%>: <%= value%></div>
-                    <% end %>
-                    </li>
-                <% end %>
-          <% end %>
-      <% end %>
-
-      <% counter += 1 %>
-      <% enabled = false %>
-      </ol>
-      </ol>
-
-  <% end %>
+<%= enabled_rules %>
+<%= disabled_rules %>
 </div>
-
 
 <br style="clear:both">
 
