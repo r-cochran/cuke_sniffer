@@ -199,6 +199,10 @@ module CukeSniffer
       @rules = @rules.sort_by { |rule| rule.score }.reverse
       @step_definitions = @step_definitions.sort_by { |step_definition| step_definition.score }.reverse
       @hooks = @hooks.sort_by { |hook| hook.score }.reverse
+      state = true
+      heading = "Enabled Rules"
+      markup_rules = ERB.new extract_markup(markup_source, "rules.html.erb")
+      enabled_rules = markup_rules.result(binding)
 
       markup_erb = ERB.new extract_markup(markup_source)
       output = markup_erb.result(binding)
@@ -523,8 +527,8 @@ module CukeSniffer
       steps
     end
 
-    def extract_markup(markup_source)
-      markup_location = "#{markup_source}/markup.html.erb"
+    def extract_markup(markup_source, template_name = "markup.html.erb")
+      markup_location = "#{markup_source}/#{template_name}"
       markup = ""
       File.open(markup_location).lines.each do |line|
         markup << line
