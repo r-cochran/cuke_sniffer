@@ -206,7 +206,7 @@ describe CukeSniffer::Feature do
           "| stuff |"
       ]
       build_file(feature_block, @file_name)
-      lambda { CukeSniffer::Feature.new(@file_name) }.should_not raise_error
+      expect { CukeSniffer::Feature.new(@file_name) }.to_not raise_error
     end
   end
 
@@ -225,14 +225,14 @@ describe "FeatureRules" do
     rule = CukeSniffer::CLI.build_rule(RULES[symbol])
     run_rule_against_feature(feature_block, rule)
     rule.phrase.gsub!("{class}", "Feature")
-    verify_rule(@cli.features[0], rule, count)
+    verify_rule(@cli.features.first, rule, count)
   end
 
   def test_no_feature_rule(feature_block, symbol)
     rule = CukeSniffer::CLI.build_rule(RULES[symbol])
     run_rule_against_feature(feature_block, rule)
     rule.phrase.gsub!("{class}", "Feature")
-    verify_no_rule(@cli.features[0], rule)
+    verify_no_rule(@cli.features.first, rule)
   end
 
   before(:each) do
@@ -257,7 +257,9 @@ describe "FeatureRules" do
   end
 
   it "should punish Features without a name" do
-    feature_block = ["Feature:"]
+    feature_block = [
+        "Feature:"
+    ]
     test_feature_rule(feature_block, :no_description)
   end
 
@@ -296,12 +298,16 @@ describe "FeatureRules" do
   end
 
   it "should punish Features with zero Scenarios" do
-    feature_block = ["Feature: I'm a feature without scenarios"]
+    feature_block = [
+        "Feature: I'm a feature without scenarios"
+    ]
     test_feature_rule(feature_block, :no_scenarios)
   end
 
   it "should punish Features with too many Scenarios" do
-    feature_block = ["Feature: I'm a feature without scenarios!"]
+    feature_block = [
+        "Feature: I'm a feature without scenarios!"
+    ]
     RULES[:too_many_scenarios][:max].times { feature_block << "Scenario: I am a simple scenario" }
     test_feature_rule(feature_block, :too_many_scenarios)
   end
@@ -375,4 +381,5 @@ describe "FeatureRules" do
     ]
     test_no_feature_rule(feature_block, :comment_after_tag)
   end
+
 end

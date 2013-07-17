@@ -55,7 +55,7 @@ describe CukeSniffer do
           '* I am a bad <var>'
       ]
       build_file(feature_block, @file_name)
-      lambda { CukeSniffer::CLI.new(@file_name) }.should_not raise_error
+      expect { CukeSniffer::CLI.new(@file_name) }.to_not raise_error
     end
 
     it "should be able to accept an examples table in a scenario outline with empty values" do
@@ -68,7 +68,7 @@ describe CukeSniffer do
           "|       |"
       ]
       build_file(feature_block, @file_name)
-      lambda { CukeSniffer::CLI.new(@file_name, nil, nil) }.should_not raise_error
+      expect { CukeSniffer::CLI.new(@file_name, nil, nil) }.to_not raise_error
     end
 
   end

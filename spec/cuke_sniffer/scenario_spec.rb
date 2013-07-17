@@ -3,55 +3,61 @@ require 'spec_helper'
 describe CukeSniffer::Scenario do
 
   it "should retain the passed location, name, and the steps of the scenario step after initialization" do
-    scenario = [
+    scenario_block = [
         "Scenario: Test Scenario",
         "Given I am making a scenario",
         "When I make the scenario",
         "Then the scenario is made",
     ]
     location = "path/path/path/my_feature.feature:1"
-    step_definition = CukeSniffer::Scenario.new(location, scenario)
+    step_definition = CukeSniffer::Scenario.new(location, scenario_block)
     step_definition.location.should == location
     step_definition.name.should == "Test Scenario"
-    step_definition.steps.should == ["Given I am making a scenario",
-                                     "When I make the scenario",
-                                     "Then the scenario is made",]
+    step_definition.steps.should == [
+        "Given I am making a scenario",
+        "When I make the scenario",
+        "Then the scenario is made"
+    ]
   end
 
   it "should retain the information from scenario outlines" do
-    scenario = [
+    scenario_block = [
         "Scenario Outline: Test Scenario",
         "Given I am making a scenario",
         "When I make the scenario",
         "Then the scenario is made",
     ]
     location = "path/path/path/my_feature.feature:1"
-    step_definition = CukeSniffer::Scenario.new(location, scenario)
+    step_definition = CukeSniffer::Scenario.new(location, scenario_block)
     step_definition.location.should == location
     step_definition.name.should == "Test Scenario"
-    step_definition.steps.should == ["Given I am making a scenario",
-                                     "When I make the scenario",
-                                     "Then the scenario is made"]
+    step_definition.steps.should == [
+        "Given I am making a scenario",
+        "When I make the scenario",
+        "Then the scenario is made"
+    ]
   end
 
   it "should retain the information from scenario templates" do
-    scenario = [
+    scenario_block = [
         "Scenario Template: Test Scenario",
         "Given I am making a scenario",
         "When I make the scenario",
         "Then the scenario is made",
     ]
     location = "path/path/path/my_feature.feature:1"
-    step_definition = CukeSniffer::Scenario.new(location, scenario)
+    step_definition = CukeSniffer::Scenario.new(location, scenario_block)
     step_definition.location.should == location
     step_definition.name.should == "Test Scenario"
-    step_definition.steps.should == ["Given I am making a scenario",
-                                     "When I make the scenario",
-                                     "Then the scenario is made",]
+    step_definition.steps.should == [
+        "Given I am making a scenario",
+        "When I make the scenario",
+        "Then the scenario is made"
+    ]
   end
 
   it "should retain information on a tagged scenario" do
-    scenario = [
+    scenario_block = [
         "@tag1 @tag2",
         "@tag3",
         "#comment before scenario",
@@ -61,13 +67,20 @@ describe CukeSniffer::Scenario do
         "Then the scenario is made",
     ]
     location = "path/path/path/my_feature.feature:1"
-    step_definition = CukeSniffer::Scenario.new(location, scenario)
+    step_definition = CukeSniffer::Scenario.new(location, scenario_block)
     step_definition.location.should == location
     step_definition.name.should == "Test Scenario"
-    step_definition.tags.should == ["@tag1", "@tag2", "@tag3", "#comment before scenario"]
-    step_definition.steps.should == ["Given I am making a scenario",
-                                     "When I make the scenario",
-                                     "Then the scenario is made",]
+    step_definition.tags.should == [
+        "@tag1",
+        "@tag2",
+        "@tag3",
+        "#comment before scenario"
+    ]
+    step_definition.steps.should == [
+        "Given I am making a scenario",
+        "When I make the scenario",
+        "Then the scenario is made"
+    ]
   end
 
   it "should retain the examples table if it is a scenario outline" do
@@ -84,10 +97,15 @@ describe CukeSniffer::Scenario do
     scenario = CukeSniffer::Scenario.new(location, scenario_block)
     scenario.location.should == location
     scenario.name.should == "Test Scenario"
-    scenario.steps.should == ["Given I am making a scenario",
-                              "When I make the scenario",
-                              "Then the scenario is made"]
-    scenario.examples_table.should == %w(|stuff| |a|)
+    scenario.steps.should == [
+        "Given I am making a scenario",
+        "When I make the scenario",
+        "Then the scenario is made"
+    ]
+    scenario.examples_table.should == [
+        "|stuff|",
+        "|a|"
+    ]
   end
 
   it "should retain the type of scenario" do
@@ -107,7 +125,7 @@ describe CukeSniffer::Scenario do
   end
 
   it "should return the name for multi-line scenarios" do
-    scenario = [
+    scenario_block = [
         "Scenario: Test",
         "My",
         "Multi-line",
@@ -116,12 +134,12 @@ describe CukeSniffer::Scenario do
         "When I make the scenario",
         "Then the scenario is made",
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", scenario)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.name.should == "Test My Multi-line Scenario"
   end
 
   it "should only include examples in the examples table and not white space" do
-    raw_code = [
+    scenario_block = [
         "Scenario Outline: Examples table should not keep white space or comments",
         "Examples:",
         "|var_name|",
@@ -132,12 +150,12 @@ describe CukeSniffer::Scenario do
         ""
     ]
 
-    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
-    scenario.examples_table.should == %w(|var_name| |one| #|two| |three|)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    scenario.examples_table.should == ["|var_name|", "|one|", "#|two|", "|three|"]
   end
 
   it "should only include steps and not white space" do
-    raw_code = [
+    scenario_block = [
         "Scenario: Examples table should not keep white space or comments",
         "Given I am a thing",
         "And I am also a thing",
@@ -149,47 +167,55 @@ describe CukeSniffer::Scenario do
         ""
     ]
 
-    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
-    scenario.steps.should == ["Given I am a thing", "And I am also a thing", "#      When I skip a line", "Then I should have an interesting scenario"]
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    scenario.steps.should == [
+        "Given I am a thing",
+        "And I am also a thing",
+        "#      When I skip a line",
+        "Then I should have an interesting scenario"
+    ]
   end
 
   it "should capture a scenario even if it commented out" do
-    raw_code = [
+    scenario_block = [
         "# Scenario: I am a commented Scenario",
         "# Given I am commented",
         "When I am commented",
         "#Then we are all commented"
     ]
 
-    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.name.should == "I am a commented Scenario"
   end
 
   it "should capture inline tables and associate them with the step using the table" do
-    raw_code = [
+    scenario_block = [
         "Scenario: It has an inline table",
         "Given the in line table is here",
         "|one|two|three|",
         "|1|2|3|"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
-    scenario.inline_tables["Given the in line table is here"].should == %w(|one|two|three| |1|2|3|)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    scenario.inline_tables["Given the in line table is here"].should == ["|one|two|three|", "|1|2|3|"]
   end
 
   it "should not clip steps after an inline table" do
-    raw_code = [
+    scenario_block = [
         "Scenario: It has an inline table",
         "Given the in line table is here",
         "|one|two|three|",
         "|1|2|3|",
         "And I am still here"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
-    scenario.steps.should == ["Given the in line table is here", "And I am still here"]
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    scenario.steps.should == [
+        "Given the in line table is here",
+        "And I am still here"
+    ]
   end
 
   it "should not clip steps after multiple inline table" do
-    raw_code = [
+    scenario_block = [
         "Scenario: It has an inline table",
         "Given the in line table is here",
         "|one|two|three|",
@@ -199,23 +225,27 @@ describe CukeSniffer::Scenario do
         "| really sure |",
         "Then I am at the end"
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
-    scenario.steps.should == ["Given the in line table is here", "And I am still here", "Then I am at the end"]
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    scenario.steps.should == [
+        "Given the in line table is here",
+        "And I am still here",
+        "Then I am at the end"
+    ]
   end
 
   it "should determine if it is above the scenario threshold" do
-    raw_code = ["Scenario: Above scenario threshold"]
+    scenario_block = ["Scenario: Above scenario threshold"]
 
     start_threshold = CukeSniffer::Constants::THRESHOLDS["Scenario"]
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = 2
-    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.score = 3
     scenario.good?.should == false
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = start_threshold
   end
 
   it "should determine if it is below the scenario threshold" do
-    raw_code = [
+    scenario_block = [
         "Scenario: Below scenario threshold",
         "Given I am a good scenario",
         "When I do a behavior inducing action",
@@ -224,13 +254,13 @@ describe CukeSniffer::Scenario do
 
     start_threshold = CukeSniffer::Constants::THRESHOLDS["Scenario"]
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = 2
-    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.good?.should == true
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = start_threshold
   end
 
   it "should determine the percentage of problems compared to the scenario threshold" do
-    raw_code = [
+    scenario_block = [
         "Scenario: Above scenario threshold",
         "#Given I am a good scenario",
         "#When I do a behavior inducing action",
@@ -239,14 +269,14 @@ describe CukeSniffer::Scenario do
 
     start_threshold = CukeSniffer::Constants::THRESHOLDS["Scenario"]
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = 2
-    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.score = 3
     scenario.problem_percentage.should == (3.0/2.0).to_f
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = start_threshold
   end
 
   it "should not have inline tables overflow to include the examples table" do
-    raw_code = [
+    scenario_block = [
         'Scenario Outline:',
         '* a step',
         '| row 1 |',
@@ -257,12 +287,16 @@ describe CukeSniffer::Scenario do
         '| value1 |',
         '| value2 |'
     ]
-    scenario = CukeSniffer::Scenario.new("location:1", raw_code)
-    scenario.examples_table.should == ["| param |", "| value1 |", "| value2 |"]
+    scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
+    scenario.examples_table.should == [
+        "| param |",
+        "| value1 |",
+        "| value2 |"
+    ]
   end
 
   it "should not pick up commented non-example lines in an example table" do
-    lines = [
+    scenario_block = [
         "Scenario Outline: Commented examples",
         "* step",
         "Examples:",
@@ -270,24 +304,30 @@ describe CukeSniffer::Scenario do
         "#a comment",
         "| 2 |"
     ]
-    scenario = CukeSniffer::Scenario.new("Location.rb:1", lines)
-    scenario.examples_table.should == ["| thing |", "| 2 |"]
+    scenario = CukeSniffer::Scenario.new("Location.rb:1", scenario_block)
+    scenario.examples_table.should == [
+        "| thing |",
+        "| 2 |"
+    ]
   end
 
   it "should not pick up commented non-example lines in an example table" do
-    lines = [
+    scenario_block = [
         "Scenario Outline: Commented example",
         "* step",
         "Examples:",
         "| thing |",
         "#| 2 |"
     ]
-    scenario = CukeSniffer::Scenario.new("Location.rb:1", lines)
-    scenario.examples_table.should == ["| thing |", "#| 2 |"]
+    scenario = CukeSniffer::Scenario.new("Location.rb:1", scenario_block)
+    scenario.examples_table.should == [
+        "| thing |",
+        "#| 2 |"
+    ]
   end
 
   it "should not keep the line following additional example tables on a scenario" do
-    raw_code = ["Scenario Outline: Outlinable",
+    scenario_block = ["Scenario Outline: Outlinable",
         "Given <outline>",
         "Examples:",
         "| outline |",
@@ -302,22 +342,33 @@ describe CukeSniffer::Scenario do
         "| thing 2 |"
     ]
 
-    scenario = CukeSniffer::Scenario.new("location.rb:1", raw_code)
-    scenario.examples_table.should == ["| outline |", "| things |", "| stuff |", "| thing 1 |", "| thing 2 |"]
+    scenario = CukeSniffer::Scenario.new("location.rb:1", scenario_block)
+    scenario.examples_table.should == [
+        "| outline |",
+        "| things |",
+        "| stuff |",
+        "| thing 1 |",
+        "| thing 2 |"
+    ]
 
   end
 
   it "should not remove example items that are the same as the variable name" do
-    raw_code = ["Scenario Outline: Outlinable",
-                "Given <outline>",
-                "Examples:",
-                "| outline |",
-                "| things |",
-                "| outline |"
+    scenario_block = [
+        "Scenario Outline: Outlinable",
+        "Given <outline>",
+        "Examples:",
+        "| outline |",
+        "| things |",
+        "| outline |"
     ]
 
-    scenario = CukeSniffer::Scenario.new("location.rb:1", raw_code)
-    scenario.examples_table.should == ["| outline |", "| things |", "| outline |"]
+    scenario = CukeSniffer::Scenario.new("location.rb:1", scenario_block)
+    scenario.examples_table.should == [
+        "| outline |",
+        "| things |",
+        "| outline |"
+    ]
   end
 
 end
@@ -337,14 +388,14 @@ describe "ScenarioRules" do
     rule = CukeSniffer::CLI.build_rule(RULES[symbol])
     run_rule_against_scenario(scenario_block, rule)
     rule.phrase.gsub!("{class}", "Scenario")
-    verify_rule(@cli.features[0].scenarios[0], rule, count)
+    verify_rule(@cli.features.first.scenarios.first, rule, count)
   end
 
   def test_no_scenario_rule(scenario_block, symbol)
     rule = CukeSniffer::CLI.build_rule(RULES[symbol])
     run_rule_against_scenario(scenario_block, rule)
     rule.phrase.gsub!("{class}", "Scenario")
-    verify_no_rule(@cli.features[0].scenarios[0], rule)
+    verify_no_rule(@cli.features.first.scenarios.first, rule)
   end
 
   before(:each) do
@@ -357,29 +408,39 @@ describe "ScenarioRules" do
   end
 
   it "should punish Scenarios without a name" do
-    scenario_block = %w(Scenario:)
+    scenario_block = [
+        "Scenario:"
+    ]
     test_scenario_rule(scenario_block, :no_description)
   end
 
   it "should punish Scenarios with no steps" do
-    scenario_block = ["Scenario: Empty Scenario"]
+    scenario_block = [
+        "Scenario: Empty Scenario"
+    ]
     test_scenario_rule(scenario_block, :no_steps)
   end
 
   it "should punish Scenarios with numbers in its name" do
-    scenario_block = ["Scenario: Scenario with some digits 123"]
+    scenario_block = [
+        "Scenario: Scenario with some digits 123"
+    ]
     test_scenario_rule(scenario_block, :numbers_in_description)
   end
 
   it "should punish Scenarios with long names" do
     scenario_description = ""
     RULES[:long_name][:max].times { scenario_description << "A" }
-    scenario_block = ["Scenario: #{scenario_description}"]
+    scenario_block = [
+        "Scenario: #{scenario_description}"
+    ]
     test_scenario_rule(scenario_block, :long_name)
   end
 
   it "should punish Scenarios with too many steps" do
-    scenario_block = ["Scenario: Scenario with too many steps"]
+    scenario_block = [
+        "Scenario: Scenario with too many steps"
+    ]
     (RULES[:too_many_steps][:max]+1).times { scenario_block << "And I have too many steps" }
     test_scenario_rule(scenario_block, :too_many_steps)
   end
@@ -683,13 +744,13 @@ describe "BackgroundRules" do
   def test_background_rule(background_block, symbol, count = 1)
     rule = CukeSniffer::CLI.build_rule(RULES[symbol])
     run_rule_against_background(background_block, rule)
-    verify_rule(@cli.features[0].background, rule, count)
+    verify_rule(@cli.features.first.background, rule, count)
   end
 
   def test_no_background_rule(background_block, symbol)
     rule = CukeSniffer::CLI.build_rule(RULES[symbol])
     run_rule_against_background(background_block, rule)
-    verify_no_rule(@cli.features[0].background, rule)
+    verify_no_rule(@cli.features.first.background, rule)
   end
 
   before(:each) do
@@ -702,24 +763,32 @@ describe "BackgroundRules" do
   end
 
   it "should not punish Backgrounds without a name" do
-    background_block = %w(Background:)
+    background_block = [
+        "Background:"
+    ]
     test_no_background_rule(background_block, :no_description)
   end
 
   it "should punish Backgrounds with no steps" do
-    background_block = ["Background: Empty Scenario"]
+    background_block = [
+        "Background: Empty Scenario"
+    ]
     test_background_rule(background_block, :no_steps)
   end
 
   it "should punish Backgrounds with numbers in its name" do
-    background_block = ["Background: Background with some digits 123"]
+    background_block = [
+        "Background: Background with some digits 123"
+    ]
     test_background_rule(background_block, :numbers_in_description)
   end
 
   it "should punish Backgrounds with long names" do
     background_description = ""
     RULES[:long_name][:max].times { background_description << "A" }
-    background_block = ["Background: #{background_description}" ]
+    background_block = [
+        "Background: #{background_description}"
+    ]
     test_background_rule(background_block, :long_name)
   end
 
@@ -760,7 +829,7 @@ describe "BackgroundRules" do
     ]
     rule = CukeSniffer::CLI.build_rule(RULES[:out_of_order_steps])
     run_rule_against_background(background_block, rule)
-    @cli.features[0].background.rules_hash.include?(rule.phrase).should be_false
+    @cli.features.first.background.rules_hash.include?(rule.phrase).should be_false
   end
 
   it "should punish Backgrounds with And as its first step" do
@@ -836,7 +905,7 @@ describe "BackgroundRules" do
     ]
     rule = CukeSniffer::CLI.build_rule(RULES[:implementation_word])
     run_rule_against_background(background_block, rule)
-    background= @cli.features[0].background
+    background= @cli.features.first.background
 
     background.rules_hash.include?("Implementation word used: page.").should be_true
     background.rules_hash.include?("Implementation word used: site.").should be_true
@@ -904,4 +973,5 @@ describe "BackgroundRules" do
     ]
     test_background_rule(background_block, :background_with_tag)
   end
+
 end
