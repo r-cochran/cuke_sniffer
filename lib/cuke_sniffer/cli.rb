@@ -212,7 +212,7 @@ module CukeSniffer
 
     def rules_template(state, heading,markup_source, cuke_sniffer = self)
       markup_rules = ERB.new extract_markup(markup_source, "rules.html.erb")
-      return markup_rules.result(binding)
+      markup_rules.result(binding)
     end
 
     # Creates a xml file with the collected project details

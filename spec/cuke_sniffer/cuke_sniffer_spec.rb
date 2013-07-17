@@ -493,7 +493,6 @@ describe CukeSniffer do
   describe "output_html" do
 
     it "should order the hooks during output to html" do
-      #pending
       hook_raw_code = ["AfterConfiguration do",
                        "1+1",
                        "end"]
@@ -511,7 +510,6 @@ describe CukeSniffer do
     end
 
     it "should order the step definitions during output to html" do
-      #pending
       step_def_raw_code = ["When /^the second number is 1$/ do",
                            "@second_number = 1",
                            "end"]
@@ -529,7 +527,6 @@ describe CukeSniffer do
     end
 
     it "should order the rules during output to html (descending)" do
-      #pending
       cuke_sniffer = CukeSniffer::CLI.new()
       big_rule = CukeSniffer::Rule.new()
       big_rule.score = 100
@@ -542,7 +539,6 @@ describe CukeSniffer do
     end
 
     it "should order the features during output to html" do
-      #pending
       file_name = "my_feature.feature"
       build_file(["Feature: I am a feature"], file_name)
 
@@ -559,26 +555,23 @@ describe CukeSniffer do
       File.delete(file_name)
     end
 
-
-
-
   end
 
   describe "convert_array_condition_into_list_of_strings" do
 
     it "breaks the array into groups of five" do
       cuke_sniffer = CukeSniffer::CLI.new()
-      input = ["hi","how","are","you","drew","and","anthony","wow", "boo","moo"]
+      input = ["hi","how","are","you","should","and","become","wow", "boo","moo"]
 
-      cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, drew","and, anthony, wow, boo, moo"])
+      cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, should","and, become, wow, boo, moo"])
 
     end
 
     it "puts remainder into last group" do
       cuke_sniffer = CukeSniffer::CLI.new()
-      input = ["hi","how","are","you","drew","and","anthony","wow", "boo","moo","dustin"]
+      input = ["hi","how","are","you","should","and","become","wow", "boo","moo","entry"]
 
-      cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, drew","and, anthony, wow, boo, moo","dustin"])
+      cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, should","and, become, wow, boo, moo","entry"])
 
       input = ["hi","how","are","you"]
 
