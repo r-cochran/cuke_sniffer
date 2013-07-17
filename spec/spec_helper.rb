@@ -22,3 +22,10 @@ end
 def verify_no_rule(object, rule)
   object.rules_hash[rule.phrase].should == nil
 end
+
+def remove_rules(rule_objects)
+  rule_objects.each do |rule_object|
+    rule_object.rules_hash = {}
+    rule_object.score = 0
+  end
+end
