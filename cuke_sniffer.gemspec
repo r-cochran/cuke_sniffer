@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
              "lib/cuke_sniffer/hook.rb",
              "bin/cuke_sniffer"
   ]
+  s.license = 'MIT'
   s.homepage = 'https://github.com/r-cochran/cuke_sniffer'
   s.add_runtime_dependency 'roxml'
   s.executables = ["cuke_sniffer"]
