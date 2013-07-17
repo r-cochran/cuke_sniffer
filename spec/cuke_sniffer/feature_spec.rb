@@ -14,58 +14,59 @@ describe CukeSniffer::Feature do
     File.delete(@file_name)
   end
 
-  it "should be able to handle an empty feature file" do
-    build_file([])
-    CukeSniffer::Feature.new(@file_name)
+  it "should gather all feature tags" do
+    feature_block = [
+        "@tag1 @tag2",
+        "@tag3", '#@tag4',
+        "Feature: My Features are in this"
+    ]
+    build_file(feature_block, @file_name)
+    feature = CukeSniffer::Feature.new(@file_name)
+    feature.tags.should == ["@tag1", "@tag2", "@tag3", '#@tag4']
   end
 
   it "should parse a feature file and gather the feature name" do
-    build_file(["Feature: My features are in this"])
+    build_file(["Feature: My features are in this"], @file_name)
     feature = CukeSniffer::Feature.new(@file_name)
     feature.location.should == @file_name
     feature.name.should == "My features are in this"
   end
 
   it "should capture a feature description that spans multiple lines" do
-    build_file(["Feature: I am a feature description", "that appears on multiple lines", "because it is legal in cucumber", ""])
+    feature_block = [
+        "Feature: I am a feature description",
+        "that appears on multiple lines",
+        "because it is legal in cucumber",
+        ""
+    ]
+    build_file(feature_block, @file_name)
     feature = CukeSniffer::Feature.new(@file_name)
     feature.name.should == "I am a feature description that appears on multiple lines because it is legal in cucumber"
   end
 
-  it "should  parse Features files where there is no space between the 'Feature:' declaration and its description" do
-    build_file(%w(Feature:Name))
+  it "should parse Features files where there is no space between the 'Feature:' declaration and its description" do
+    feature_block = [
+        "Feature:Name"
+    ]
+    build_file(feature_block, @file_name)
     feature = CukeSniffer::Feature.new(@file_name)
     feature.name.should == "Name"
   end
 
-  it "should gather all feature tags" do
-    build_file(["@tag1 @tag2", "@tag3", '#@tag4', "Feature: My Features are in this"])
-    feature = CukeSniffer::Feature.new(@file_name)
-    feature.tags.should == ["@tag1", "@tag2", "@tag3", '#@tag4']
-  end
-
-  it "should capture a background in a feature" do
-    raw_code = [
-                "Background: I am a background",
-                "Given I want to be a test",
-                "When I become a test",
-                "Then I am a test"
-               ]
-    build_file(["Feature: Feature with background", "", [raw_code]].flatten)
-    scenario = CukeSniffer::Scenario.new("#@file_name:3", raw_code)
-    feature = CukeSniffer::Feature.new(@file_name)
-    feature.background == scenario
-    feature.scenarios.empty?.should == true
-  end
-
-  it "can create a feature file without scenarios" do
-    build_file(["Feature: I am a feature without scenarios", ""])
-    feature = CukeSniffer::Feature.new(@file_name)
-    feature.scenarios.should == []
+  it "should be able to handle an empty feature file" do
+    build_file([])
+    CukeSniffer::Feature.new(@file_name)
   end
 
   it "should determine if it is above the feature threshold" do
-    build_file(["Feature: ", "", "Scenario: ", "Given blah", "When blam", "Then blammo"])
+    feature_block = [
+        "Feature: ",
+        "", "Scenario: ",
+        "Given blah",
+        "When blam",
+        "Then blammo"
+    ]
+    build_file(feature_block, @file_name)
     feature = CukeSniffer::Feature.new(@file_name)
     start_threshold = CukeSniffer::Constants::THRESHOLDS["Feature"]
     CukeSniffer::Constants::THRESHOLDS["Feature"] = 2
@@ -76,7 +77,14 @@ describe CukeSniffer::Feature do
   end
 
   it "should determine if it is below the feature threshold" do
-    build_file(["Feature: I am a feature", "", "Scenario: ", "Given blah", "When blam", "Then blammo"])
+    feature_block = [
+        "Feature: ",
+        "", "Scenario: ",
+        "Given blah",
+        "When blam",
+        "Then blammo"
+    ]
+    build_file(feature_block, @file_name)
     feature = CukeSniffer::Feature.new(@file_name)
     start_threshold = CukeSniffer::Constants::THRESHOLDS["Feature"]
     CukeSniffer::Constants::THRESHOLDS["Feature"] = 2
@@ -85,7 +93,14 @@ describe CukeSniffer::Feature do
   end
 
   it "should determine the percentage of problems compared to the feature threshold" do
-    build_file(["Feature: I am a feature", "", "Scenario: ", "Given blah", "When blam", "Then blammo"])
+    feature_block = [
+        "Feature: ",
+        "", "Scenario: ",
+        "Given blah",
+        "When blam",
+        "Then blammo"
+    ]
+    build_file(feature_block, @file_name)
     feature = CukeSniffer::Feature.new(@file_name)
     start_threshold = CukeSniffer::Constants::THRESHOLDS["Feature"]
     CukeSniffer::Constants::THRESHOLDS["Feature"] = 2
@@ -94,73 +109,107 @@ describe CukeSniffer::Feature do
     CukeSniffer::Constants::THRESHOLDS["Feature"] = start_threshold
   end
 
-  it "should should not lose the tags of the first scenario when rules are ran." do
-    lines = [
-        "Feature: I'm a feature with scenarios with identical tags!",
-        "",
-        "@tag",
-        "@a",
-        "@test",
-        "Scenario: Scenario 1",
-        "@tag @a",
-        "Scenario: Scenario 2",
-        "@tag",
-        "Scenario: Scenario 3"
+  it "should not consider anything with an @ to be a symbol, it must always have a leading white space or nothing at all" do
+    feature_block = [
+        'Feature:',
+        '',
+        '    Scenario Outline:',
+        '* a step',
+        'Examples:',
+        '    | param |',
+        '    | !@#$% |'
     ]
-    build_file(lines)
-    feature = CukeSniffer::Feature.new(@file_name)
-    feature.scenarios.first.tags.should == ["@tag", "@a", "@test"]
-  end
 
-  it "should only consider cucumber formatted Scenarios and Scenario Outlines when generating scenario objects" do
-    lines = [
-        "Feature:",
-        "",
-        "    Manual Scenario: this is not a test",
-        "",
-        "    Previously Tested Scenario: nope, still just hanging out in the feature description zone",
-        "",
-        " Scenario: Real Scenario",
-        "* step"
-    ]
-    build_file(lines)
-    feature = CukeSniffer::Feature.new(@file_name)
-    feature.scenarios.count.should == 1
-    feature.scenarios.first.name.should == "Real Scenario"
-  end
-
-  it "should not consider anything with an @ to be a symbol, it us always have a leading white space or nothing at all" do
-    lines = ['Feature:',
-    '',
-    '    Scenario Outline:',
-    '* a step',
-    'Examples:',
-    '    | param |',
-    '    | !@#$% |']
-
-    build_file(lines)
+    build_file(feature_block, @file_name)
     feature = CukeSniffer::Feature.new(@file_name)
     feature.scenarios.count.should == 1
     feature.scenarios.first.rules_hash.keys.include?("Scenario Outline with no examples.").should be_false
   end
 
-  it "should not throw an error on a scenario outline followed by multiple examples tables with tags included" do
-    lines = ["Feature: Just a plain old feature",
-             "Scenario Outline: Outlinable",
-             "Given <outline>",
-             "Examples:",
-             "| outline |",
-             "| things |",
-             "@tag",
-             "Examples:",
-             "| outline |",
-             "| stuff |"
-    ]
-    file_name = "temp_feature.feature"
-    build_file(lines, file_name)
-    lambda { CukeSniffer::Feature.new(file_name) }.should_not raise_error
-    File.delete(file_name)
+  describe "Handling Backgrounds" do
+
+    it "should capture a background in a feature" do
+      feature_block = [
+          "Feature: Feature with background",
+          "Background: I am a background",
+          "Given I want to be a test",
+          "When I become a test",
+          "Then I am a test"
+      ]
+      build_file(feature_block, @file_name)
+      scenario = CukeSniffer::Scenario.new("#@file_name:3", feature_block)
+      feature = CukeSniffer::Feature.new(@file_name)
+      feature.background == scenario
+      feature.scenarios.empty?.should == true
+    end
+
   end
+
+  describe "Handling Scenarios" do
+
+    it "can create a feature file without scenarios" do
+      feature_block = [
+          "Feature: I am a feature without scenarios",
+          ""
+      ]
+      build_file(feature_block, @file_name)
+      feature = CukeSniffer::Feature.new(@file_name)
+      feature.scenarios.should == []
+    end
+
+    it "should should not lose the tags of the first scenario when rules are ran." do
+      feature_block = [
+          "Feature: I'm a feature with scenarios with identical tags!",
+          "",
+          "@tag",
+          "@a",
+          "@test",
+          "Scenario: Scenario 1",
+          "@tag @a",
+          "Scenario: Scenario 2",
+          "@tag",
+          "Scenario: Scenario 3"
+      ]
+      build_file(feature_block, @file_name)
+      feature = CukeSniffer::Feature.new(@file_name)
+      feature.scenarios.first.tags.should == ["@tag", "@a", "@test"]
+    end
+
+    it "should only consider cucumber formatted Scenarios and Scenario Outlines when generating scenario objects" do
+      feature_block = [
+          "Feature:",
+          "",
+          "    Manual Scenario: this is not a test",
+          "",
+          "    Previously Tested Scenario: nope, still just hanging out in the feature description zone",
+          "",
+          " Scenario: Real Scenario",
+          "* step"
+      ]
+      build_file(feature_block, @file_name)
+      feature = CukeSniffer::Feature.new(@file_name)
+      feature.scenarios.count.should == 1
+      feature.scenarios.first.name.should == "Real Scenario"
+    end
+
+    it "should not throw an error on a scenario outline followed by multiple examples tables with tags included" do
+      feature_block = [
+          "Feature: Just a plain old feature",
+          "Scenario Outline: Outlinable",
+          "Given <outline>",
+          "Examples:",
+          "| outline |",
+          "| things |",
+          "@tag",
+          "Examples:",
+          "| outline |",
+          "| stuff |"
+      ]
+      build_file(feature_block, @file_name)
+      lambda { CukeSniffer::Feature.new(@file_name) }.should_not raise_error
+    end
+  end
+
 end
 
 describe "FeatureRules" do
