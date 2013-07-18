@@ -253,7 +253,9 @@
         <br style="clear:both">
 
         <div>
-          <% unless feature.background.nil? or feature.background.score > 0 %>
+          <% if feature.background.nil? %>
+              <div id='nil_background'>There is no background to sniff in my_feature.feature!</div>
+          <% elsif feature.background.score > 0 %>
               <div class="red_number" style="float:left; padding-left: 1%"><%= feature.background.score %></div>
               <div style="float: left; width: 45%;"><%= feature.background.type + ": " + feature.background.name %></div>
               <div style="margin-left:1%;float: left; border-left: 2px solid #90ee90; border-top: 2px solid #90ee90;text-indent: 1%;">
@@ -261,8 +263,8 @@
                     <pre style="margin: 0; text_indent: 3%;"><%= rule %></pre>
                 <% end %>
               </div>
-              <br style="clear:both">
           <% end %>
+          <br style="clear:both">
         </div>
         <div>
           <% feature.scenarios.each do |scenario| %>

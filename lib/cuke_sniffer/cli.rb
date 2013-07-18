@@ -198,7 +198,6 @@ module CukeSniffer
       @features = @features.sort_by { |feature| feature.total_score }.reverse
       @step_definitions = @step_definitions.sort_by { |step_definition| step_definition.score }.reverse
       @hooks = @hooks.sort_by { |hook| hook.score }.reverse
-
       markup_erb = ERB.new extract_markup(markup_source)
       output = markup_erb.result(binding)
       File.open(file_name, 'w') do |f|
