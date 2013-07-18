@@ -617,7 +617,6 @@ describe CukeSniffer do
       File.exists?(@file_name).should == true
     end
   end
-
 end
 
 
