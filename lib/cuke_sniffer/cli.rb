@@ -198,12 +198,21 @@ module CukeSniffer
       @features = @features.sort_by { |feature| feature.total_score }.reverse
       @step_definitions = @step_definitions.sort_by { |step_definition| step_definition.score }.reverse
       @hooks = @hooks.sort_by { |hook| hook.score }.reverse
+      @rules = @rules.sort_by { |rule| rule.score }.reverse
+
+      enabled_rules = rules_template(true, "Enabled Rules",markup_source)
+      disabled_rules = rules_template(false, "Disabled Rules",markup_source)
 
       markup_erb = ERB.new extract_markup(markup_source)
       output = markup_erb.result(binding)
       File.open(file_name, 'w') do |f|
         f.write(output)
       end
+    end
+
+    def rules_template(state, heading,markup_source, cuke_sniffer = self)
+      markup_rules = ERB.new extract_markup(markup_source, "rules.html.erb")
+      markup_rules.result(binding)
     end
 
     # Creates a xml file with the collected project details
@@ -275,7 +284,7 @@ module CukeSniffer
       conditional_keys = value.keys - [:phrase, :score, :enabled, :targets, :reason]
       conditions = {}
       conditional_keys.each do |key|
-        conditions[key] = value[key]
+        conditions[key] = (value[key].kind_of? Array) ? Array.new(value[key]) : value[key]
       end
       rule.conditions = conditions
       rule.reason = value[:reason]
@@ -283,6 +292,15 @@ module CukeSniffer
       rule
     end
 
+    def convert_array_condition_into_list_of_strings(condition_list)
+      result = []
+      while (condition_list.size>0)
+        five_words = condition_list.slice!(0,5)
+        result << five_words.join(", ")
+      end
+
+      return result
+    end
 
     private
 
@@ -515,8 +533,8 @@ module CukeSniffer
       steps
     end
 
-    def extract_markup(markup_source)
-      markup_location = "#{markup_source}/markup.html.erb"
+    def extract_markup(markup_source, template_name = "markup.html.erb")
+      markup_location = "#{markup_source}/#{template_name}"
       markup = ""
       File.open(markup_location).lines.each do |line|
         markup << line
