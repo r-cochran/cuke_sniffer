@@ -685,7 +685,6 @@ describe CukeSniffer do
     end
 
   end
-
 end
 
 
