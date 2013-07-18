@@ -599,6 +599,28 @@ describe CukeSniffer do
 
       end
     end
+    it "produces a no objects to sniff message when there is no background in a feature" do
+
+      feature_block = [
+          "Feature: I am a feature",
+          "Scenario: I am something"
+      ]
+      @file_name = "my_feature.feature"
+      build_file(feature_block, @file_name)
+
+      cuke_sniffer = CukeSniffer::CLI.new(Dir.getwd + "/" + @file_name, nil, nil)
+      cuke_sniffer.output_html
+
+      file_name = File.join(File.dirname(__FILE__),'..','..','cuke_sniffer_results.html')
+      file = File.open(file_name)
+      doc = Nokogiri::HTML(file)
+      file.close
+
+      doc.xpath("//div[@id = 'features_data']//div[@id = 'nil_background']").text.should == "There is no background to sniff in my_feature.feature!"
+
+      File.delete(file_name)
+    end
+
     def build_nokogiri_from_cuke_sniffer_results
       file_name = File.join(File.dirname(__FILE__),'..','..','cuke_sniffer_results.html')
       file = File.open(file_name)
@@ -683,7 +705,6 @@ describe CukeSniffer do
       cuke_sniffer.output_xml(@file_name)
       File.exists?(@file_name).should == true
     end
-
   end
 end
 
