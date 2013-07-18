@@ -1,0 +1,24 @@
+<ol class="rule_style">
+  <p class="rule_heading"><%= heading %></p>
+  <% cuke_sniffer.rules.select{|rule| rule.enabled == state }.each do |rule| %>
+      <li class="rule_notes">
+        <div class="rule_details">Phrase: <%= rule.phrase %></div>
+        <div class="rule_details">Score: <%= rule.score%></div>
+        <% rule.conditions.each do |key, value| %>
+            <% if value.kind_of?(Array) %>
+                <div class="rule_details"><%= key.capitalize%>: </div>
+
+                <% result = convert_array_condition_into_list_of_strings(value) %>
+                <% result.first.prepend("[")  %>
+                <% result.last << "]"  %>
+                <% result.each do |words| %>
+                    <div><%= words %></div>
+                <% end %>
+
+            <% else %>
+                <div class="rule_details"><%= key.capitalize%>: <%= value%></div>
+            <% end %>
+            </li>
+        <% end %>
+  <% end %>
+</ol>
