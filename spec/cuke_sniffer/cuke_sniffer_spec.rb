@@ -513,6 +513,91 @@ describe CukeSniffer do
       File.exists?(@file_name).should == true
     end
 
+    it "should order the hooks during output to html" do
+      hook_raw_code = ["AfterConfiguration do",
+                       "1+1",
+                       "end"]
+      hook_location = "location.rb:1"
+
+      cuke_sniffer = CukeSniffer::CLI.new()
+      big_hook = CukeSniffer::Hook.new(hook_location, hook_raw_code)
+      big_hook.score = 10
+      little_hook = CukeSniffer::Hook.new(hook_location, hook_raw_code)
+      little_hook.score = big_hook.score - 1
+      cuke_sniffer.hooks = [little_hook, big_hook]
+      cuke_sniffer.output_html
+
+      cuke_sniffer.hooks.should == [big_hook, little_hook]
+    end
+
+    it "should order the rules during output to html (descending)" do
+      cuke_sniffer = CukeSniffer::CLI.new()
+      big_rule = CukeSniffer::Rule.new()
+      big_rule.score = 100
+      little_rule = CukeSniffer::Rule.new()
+      little_rule.score = big_rule.score - 1
+      cuke_sniffer.rules = [little_rule, big_rule]
+      cuke_sniffer.output_html
+
+      cuke_sniffer.rules.should == [big_rule, little_rule]
+    end
+
+    it "should order the step definitions during output to html" do
+      step_def_raw_code = ["When /^the second number is 1$/ do",
+                           "@second_number = 1",
+                           "end"]
+      step_def_location = "path/path/path/my_steps.rb:1"
+
+      cuke_sniffer = CukeSniffer::CLI.new()
+      big_step = CukeSniffer::StepDefinition.new(step_def_location, step_def_raw_code)
+      big_step.score = 10
+      little_step = CukeSniffer::StepDefinition.new(step_def_location, step_def_raw_code)
+      little_step.score = big_step.score - 1
+      cuke_sniffer.step_definitions = [little_step, big_step]
+      cuke_sniffer.output_html
+
+      cuke_sniffer.step_definitions.should == [big_step, little_step]
+    end
+
+
+    it "should order the features during output to html" do
+      file_name = "my_feature.feature"
+      build_file(["Feature: I am a feature"], file_name)
+
+      cuke_sniffer = CukeSniffer::CLI.new()
+      big_feature = CukeSniffer::Feature.new(file_name)
+      big_feature.total_score = 20
+      little_feature = CukeSniffer::Feature.new(file_name)
+      little_feature.total_score = big_feature.total_score - 1
+      cuke_sniffer.features = [little_feature, big_feature]
+      cuke_sniffer.output_html
+
+      cuke_sniffer.features.should == [big_feature, little_feature]
+
+      File.delete(file_name)
+    end
+    describe "convert_array_condition_into_list_of_strings" do
+
+      it "breaks the array into groups of five" do
+        cuke_sniffer = CukeSniffer::CLI.new()
+        input = ["hi","how","are","you","should","and","become","wow", "boo","moo"]
+
+        cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, should","and, become, wow, boo, moo"])
+
+      end
+
+      it "puts remainder into last group" do
+        cuke_sniffer = CukeSniffer::CLI.new()
+        input = ["hi","how","are","you","should","and","become","wow", "boo","moo","entry"]
+
+        cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, should","and, become, wow, boo, moo","entry"])
+
+        input = ["hi","how","are","you"]
+
+        cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you"])
+
+      end
+    end
   end
 
   describe "XML output" do
@@ -531,9 +616,7 @@ describe CukeSniffer do
       cuke_sniffer.output_xml(@file_name)
       File.exists?(@file_name).should == true
     end
-
   end
-
 end
 
 
