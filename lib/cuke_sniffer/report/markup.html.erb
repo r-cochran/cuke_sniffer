@@ -292,24 +292,31 @@
   <% if cuke_sniffer.step_definitions.count == 0 %>
       <div class="notes">There were no Step Definitions to sniff in '<%= cuke_sniffer.step_definitions_location %>'!</div>
   <% end %>
+  <% empty_step_index = 0 %>
+  <% cuke_sniffer.empty_step_definitions_files.each do |step_definition_location| %>
+      <div id="empty_step_<%=empty_step_index%>" class="notes">There were no Step Definitions to sniff in '<%= step_definition_location %>'!</div>
+      <br>
+      <% empty_step_index +=1 %>
+  <% end %>
   <% index = 0 %>
   <% cuke_sniffer.step_definitions.each do |step_definition| %>
       <% next if step_definition.score <= 0 %>
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('step_definition_<%=index%>'))">
-        <div class="red_number" style="float:left"><%= step_definition.score %></div>
-        <% parameters = "" %>
-        <% step_definition.parameters.each do |param| %>
-            <% if param == step_definition.parameters.first %>
-                <% parameters << "| " %>
-            <% end %>
-            <% parameters << param %>
+        <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('step_definition_<%=index%>'))">
+          <div class="red_number" style="float:left"><%= step_definition.score %></div>
+          <% parameters = "" %>
+          <% step_definition.parameters.each do |param| %>
+              <% if param == step_definition.parameters.first %>
+                  <% parameters << "| " %>
+              <% end %>
+              <% parameters << param %>
 
-            <% if param == step_definition.parameters.last %>
-                <% parameters << " |" %>
-            <% else %>
-                <% parameters << ", " %>
-            <% end %>
-        <% end %>
+              <% if param == step_definition.parameters.last %>
+                  <% parameters << " |" %>
+              <% else %>
+                  <% parameters << ", " %>
+              <% end %>
+          <% end %>
+
         <div style="float: left" class="notes"><%= "/" + step_definition.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex] + "/ do " + parameters %></div>
         <div style="float: right; padding-right:1%" class="notes"><%= step_definition.calls.keys.count %> Call(s)</div>
       </div>

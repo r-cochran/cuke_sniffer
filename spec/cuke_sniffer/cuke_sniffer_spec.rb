@@ -538,48 +538,18 @@ describe CukeSniffer do
       cuke_sniffer = CukeSniffer::CLI.new(Dir.getwd + "/" + @file_name, nil, nil)
       cuke_sniffer.output_html
 
-      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'features_data']//div[@id = 'nil_background']").text.should == "There is no background to sniff in my_feature.feature!"
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'features_data']//div[@id = 'nil_background']").text.should == "There is no background to sniff in #{@file_name}!"
 
-      #delete_cuke_sniffer_results
+      delete_cuke_sniffer_results
     end
 
-    it "produces a no objects to sniff message when there are no step definitions for each empty step definition file" do
+    it "produces a no objects to sniff message for each empty step definition file" do
 
       step_definition_block_empty = [
 
       ]
 
-      step_definition_block_empty_too = [
-          "Given /^My test feature $/ do",
-          "end"
-      ]
-
-      temp_dir = Dir.mktmpdir
-
-      @file_name_empty = "my_step_definitions.rb"
-      build_file(step_definition_block_empty, @file_name_empty, temp_dir)
-
-      @file_name_non_empty = "my_step_definitions_non_empty.rb"
-      build_file(step_definition_block_empty_too, @file_name_non_empty, temp_dir)
-
-      cuke_sniffer = CukeSniffer::CLI.new(nil,temp_dir, nil)
-      #cuke_sniffer.step_definitions = [@file_name_empty, step_definition_non_empty]
-      cuke_sniffer.output_html
-      file_name = File.join(File.dirname(__FILE__),'..','..','cuke_sniffer_results.html')
-      file = File.open(file_name)
-      doc = Nokogiri::HTML(file)
-      file.close
-
-
-      doc.xpath("//div[@id = 'step_definitions_data']//div[@class='notes']").text.should == "There were no Step Definitions to sniff in '#{temp_dir}'!"
-      #File.delete(file_name)
-      #File.delete(@file_name_empty)
-      #File.delete(@file_name_non_empty)
-    end
-
-    it "does not display a message for a empty step definition file when there is some step definitions with errors in other step definition files" do
-
-      step_definition_block_empty = [
+      step_definition_block_empty_two = [
 
       ]
 
@@ -590,25 +560,25 @@ describe CukeSniffer do
 
       temp_dir = Dir.mktmpdir
 
-      @file_name_empty = "my_step_definitions.rb"
-      build_file(step_definition_block_empty, @file_name_empty, temp_dir)
+     @file_name_empty = "my_step_definitions.rb"
+     build_file(step_definition_block_empty, @file_name_empty, temp_dir)
+
+      @file_name_empty_two = "my_step_definitions_two.rb"
+      build_file(step_definition_block_empty_two, @file_name_empty_two, temp_dir)
 
       @file_name_non_empty = "my_step_definitions_non_empty.rb"
       build_file(step_definition_block_non_empty, @file_name_non_empty, temp_dir)
 
       cuke_sniffer = CukeSniffer::CLI.new(nil,temp_dir, nil)
-      #cuke_sniffer.step_definitions = [@file_name_empty, step_definition_non_empty]
       cuke_sniffer.output_html
-      file_name = File.join(File.dirname(__FILE__),'..','..','cuke_sniffer_results.html')
-      file = File.open(file_name)
-      doc = Nokogiri::HTML(file)
-      file.close
 
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'step_definitions_data']//div[@id='empty_step_0']").text.should == "There were no Step Definitions to sniff in '#{temp_dir+"/"+@file_name_empty}'!"
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'step_definitions_data']//div[@id='empty_step_1']").text.should == "There were no Step Definitions to sniff in '#{temp_dir+"/"+@file_name_empty_two}'!"
 
-      doc.xpath("//div[@id = 'step_definitions_data']//div[@class='notes']").text.should == "/^My test feature $/ do 0 Call(s)"
-      #File.delete(file_name)
-      #File.delete(@file_name_empty)
-      #File.delete(@file_name_non_empty)
+      File.delete("#{temp_dir+"/"+@file_name_empty}")
+      File.delete("#{temp_dir+"/"+@file_name_empty_two}")
+      File.delete("#{temp_dir+"/"+@file_name_non_empty}")
+      Dir.delete(temp_dir);
     end
   end
 

@@ -41,6 +41,9 @@ module CukeSniffer
     # string: Location of the step definition file or root folder that was searched in
     attr_accessor :step_definitions_location
 
+    #string array: All step definition files that are empty
+    attr_accessor :empty_step_definitions_files
+
     # string: Location of the hook file or root folder that was searched in
     attr_accessor :hooks_location
 
@@ -86,7 +89,7 @@ module CukeSniffer
       @step_definitions = []
       @hooks = []
       @rules = []
-
+      @empty_step_definitions_files = []
       puts "\nFeatures:"
       #extract this to a method that accepts a block and yields for the build pattern
       unless features_location.nil?
@@ -105,10 +108,14 @@ module CukeSniffer
       puts("\nStep Definitions:")
       unless step_definitions_location.nil?
         if File.file?(step_definitions_location)
-          @step_definitions = [build_step_definitions(step_definitions_location)]
+          definitions = [build_step_definitions(step_definitions_location)]
+          @step_definitions = definitions
+          empty_step_definition_array_builder(definitions, step_definitions_location)
         else
           build_file_list_from_folder(step_definitions_location, ".rb").each { |location|
-            @step_definitions << build_step_definitions(location)
+            definitions = build_step_definitions(location)
+            @step_definitions << definitions
+            empty_step_definition_array_builder(definitions, location)
             print '.'
           }
         end
@@ -146,6 +153,12 @@ module CukeSniffer
       @scenarios_summary = load_summary_data(@summary[:scenarios])
       @step_definitions_summary = load_summary_data(@summary[:step_definitions])
       @hooks_summary = load_summary_data(@summary[:hooks])
+    end
+
+    def empty_step_definition_array_builder(definitions, location)
+      if definitions.size ==0
+        @empty_step_definitions_files << location
+      end
     end
 
     # Returns the status of the overall project based on a comparison of the score to the threshold score
