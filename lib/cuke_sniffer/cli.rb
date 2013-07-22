@@ -108,10 +108,14 @@ module CukeSniffer
       puts("\nStep Definitions:")
       unless step_definitions_location.nil?
         if File.file?(step_definitions_location)
-          @step_definitions = [build_step_definitions(step_definitions_location)]
+          definitions = [build_step_definitions(step_definitions_location)]
+          @step_definitions = definitions
+          empty_step_definition_array_builder(definitions, step_definitions_location)
         else
           build_file_list_from_folder(step_definitions_location, ".rb").each { |location|
-            @step_definitions << build_step_definitions(location)
+            definitions = build_step_definitions(location)
+            @step_definitions << definitions
+            empty_step_definition_array_builder(definitions, location)
             print '.'
           }
         end
