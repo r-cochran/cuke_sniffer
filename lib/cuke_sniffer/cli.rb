@@ -44,6 +44,9 @@ module CukeSniffer
     #string array: All step definition files that are empty
     attr_accessor :empty_step_definitions_files
 
+    #string array: All hooks files that are empty
+    attr_accessor :empty_hooks_files
+
     # string: Location of the hook file or root folder that was searched in
     attr_accessor :hooks_location
 
@@ -90,6 +93,7 @@ module CukeSniffer
       @hooks = []
       @rules = []
       @empty_step_definitions_files = []
+      @empty_hooks_files = []
       puts "\nFeatures:"
       #extract this to a method that accepts a block and yields for the build pattern
       unless features_location.nil?
@@ -125,10 +129,14 @@ module CukeSniffer
       puts("\nHooks:")
       unless hooks_location.nil?
         if File.file?(hooks_location)
-          @hooks = [build_hooks(hooks_location)]
+          hooks_definitions = [build_hooks(hooks_location)]
+          @hooks = hooks_definitions
+          empty_hooks_array_builder(hooks_definitions, hooks_location)
         else
           build_file_list_from_folder(hooks_location, ".rb").each { |location|
-            @hooks << build_hooks(location)
+            hooks_definitions = build_hooks(location)
+            @hooks << hooks_definitions
+            empty_hooks_array_builder(hooks_definitions, location)
             print '.'
           }
         end
@@ -158,6 +166,12 @@ module CukeSniffer
     def empty_step_definition_array_builder(definitions, location)
       if definitions.size ==0
         @empty_step_definitions_files << location
+      end
+    end
+
+    def empty_hooks_array_builder(definitions, location)
+      if definitions.size ==0
+        @empty_hooks_files << location
       end
     end
 

@@ -274,7 +274,7 @@
 
         <div>
           <% if feature.background.nil? %>
-              <div id='nil_background'>There is no background to sniff in my_feature.feature!</div>
+              <div id='nil_background'>There is no background to sniff in '<%= feature.location%>'!</div>
           <% elsif feature.background.score > 0 %>
               <div class="red_number" style="float:left; padding-left: 1%"><%= feature.background.score %></div>
               <div style="float: left; width: 45%;"><%= feature.background.type + ": " + feature.background.name %></div>
@@ -366,6 +366,12 @@
 <div class="shrink_section" id="hooks_data">
   <% if cuke_sniffer.hooks.count == 0 %>
       <div class="notes">No Hook smells!</div>
+  <% end %>
+  <% empty_hooks_index = 0 %>
+  <% cuke_sniffer.empty_hooks_files.each do |hooks_location| %>
+      <div id="empty_hooks_<%=empty_hooks_index%>" class="notes">There were no Hooks to sniff in '<%= hooks_location %>'!</div>
+      <br>
+      <% empty_hooks_index +=1 %>
   <% end %>
   <% index = 0 %>
   <% cuke_sniffer.hooks.each do |hook| %>

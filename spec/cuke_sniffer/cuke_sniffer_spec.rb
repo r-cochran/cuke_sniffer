@@ -623,7 +623,7 @@ describe CukeSniffer do
       cuke_sniffer = CukeSniffer::CLI.new(Dir.getwd + "/" + @file_name, nil, nil)
       cuke_sniffer.output_html
 
-      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'features_data']//div[@id = 'nil_background']").text.should == "There is no background to sniff in #{@file_name}!"
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'features_data']//div[@id = 'nil_background']").text.should == "There is no background to sniff in '#{Dir.getwd + "/" + @file_name}'!"
 
       delete_cuke_sniffer_results
     end
@@ -663,7 +663,48 @@ describe CukeSniffer do
       File.delete("#{temp_dir+"/"+@file_name_empty}")
       File.delete("#{temp_dir+"/"+@file_name_empty_two}")
       File.delete("#{temp_dir+"/"+@file_name_non_empty}")
-      Dir.delete(temp_dir);
+      Dir.delete(temp_dir)
+    end
+
+    it "produces a no objects to sniff message for each empty hooks file" do
+
+      hooks_block_empty = [
+
+      ]
+
+      hooks_block_empty_two = [
+
+      ]
+
+      hooks_block_non_empty = [
+          "Before('~@tag') do",
+          "end",
+
+          "After('@tag') do",
+          "end"
+      ]
+
+      temp_dir = Dir.mktmpdir
+
+      @file_name_empty = "my_hooks.rb"
+      build_file(hooks_block_empty, @file_name_empty, temp_dir)
+
+      @file_name_empty_two = "my_hooks_two.rb"
+      build_file(hooks_block_empty_two, @file_name_empty_two, temp_dir)
+
+      @file_name_non_empty = "my_hooks_non_empty.rb"
+      build_file(hooks_block_non_empty, @file_name_non_empty, temp_dir)
+
+      cuke_sniffer = CukeSniffer::CLI.new(nil,nil, temp_dir)
+      cuke_sniffer.output_html
+
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'hooks_data']//div[@id='empty_hooks_0']").text.should == "There were no Hooks to sniff in '#{temp_dir+"/"+@file_name_empty}'!"
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'hooks_data']//div[@id='empty_hooks_1']").text.should == "There were no Hooks to sniff in '#{temp_dir+"/"+@file_name_empty_two}'!"
+
+      File.delete("#{temp_dir+"/"+@file_name_empty}")
+      File.delete("#{temp_dir+"/"+@file_name_empty_two}")
+      File.delete("#{temp_dir+"/"+@file_name_non_empty}")
+      Dir.delete(temp_dir)
     end
   end
 
