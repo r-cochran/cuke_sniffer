@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'tmpdir'
 
 describe CukeSniffer do
 
@@ -601,7 +600,8 @@ describe CukeSniffer do
     end
 
     it "produces a no objects to sniff message when there is no feature" do
-      temp_dir = Dir.mktmpdir
+
+      temp_dir =  make_dir("scenarios/temp")
       cuke_sniffer = CukeSniffer::CLI.new(temp_dir, nil, nil)
       cuke_sniffer.output_html
 
@@ -612,7 +612,7 @@ describe CukeSniffer do
     end
 
     it "produces a no objects to sniff message when there is no step definitions" do
-      temp_dir = Dir.mktmpdir
+      temp_dir =  make_dir("step_definitions/temp")
       cuke_sniffer = CukeSniffer::CLI.new(nil, temp_dir, nil)
       cuke_sniffer.output_html
 
@@ -623,7 +623,7 @@ describe CukeSniffer do
     end
 
     it "produces a no objects to sniff message when there is no hooks" do
-      temp_dir = Dir.mktmpdir
+      temp_dir =  make_dir("support/temp")
       cuke_sniffer = CukeSniffer::CLI.new(nil, nil, temp_dir)
       cuke_sniffer.output_html
 
@@ -642,7 +642,7 @@ describe CukeSniffer do
           "When the calculator adds",
           "Then the result is two"
       ]
-      temp_dir = Dir.mktmpdir
+      temp_dir =  make_dir("scenarios/temp")
       file_name = "my_feature.feature"
       build_file(feature_block, file_name, temp_dir)
 
@@ -666,7 +666,7 @@ describe CukeSniffer do
           "Some Then line",
           "end"
       ]
-      temp_dir = Dir.mktmpdir
+      temp_dir =  make_dir("step_definitions/temp")
       file_name = "my_definition_steps.rb"
       build_file(step_definitions_block, file_name, temp_dir)
 
@@ -692,7 +692,7 @@ describe CukeSniffer do
           "end"
       ]
 
-      temp_dir = Dir.mktmpdir
+      temp_dir =  make_dir("support/temp")
       file_name = "my_hooks.rb"
       build_file(hook_block, file_name, temp_dir)
 
@@ -714,9 +714,15 @@ describe CukeSniffer do
     return doc
   end
 
+  def make_dir(dir_add_on)
+    temp_dir = Dir.mkdir(File.join(File.dirname(__FILE__) + "/../../features/",dir_add_on))
+    File.dirname(__FILE__) + "/../../features/"+dir_add_on
+  end
+
   def delete_cuke_sniffer_results
     File.delete(File.join(File.dirname(__FILE__),'..','..','cuke_sniffer_results.html'))
   end
+
   def cleanup_file_and_dir(file_name, temp_dir)
     delete_cuke_sniffer_results
     File.delete(temp_dir + "/" + file_name)
@@ -741,7 +747,3 @@ describe CukeSniffer do
     end
   end
 end
-
-
-
-
