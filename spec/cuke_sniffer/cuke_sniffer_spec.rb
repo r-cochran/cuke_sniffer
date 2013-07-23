@@ -643,10 +643,10 @@ describe CukeSniffer do
           "Then the result is two"
       ]
       temp_dir =  make_dir("scenarios/temp")
-      file_name = "my_feature.feature"
-      build_file(feature_block, file_name, temp_dir)
+      file_name = temp_dir+"/my_feature.feature"
+      build_file(feature_block, file_name)
 
-      cuke_sniffer = CukeSniffer::CLI.new(temp_dir + "/" + file_name, nil, nil)
+      cuke_sniffer = CukeSniffer::CLI.new( file_name, nil, nil)
       cuke_sniffer.output_html
 
       build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'features_data']/div[@class = 'notes']").text.should == "Excellent! No smells found for Features and Scenarios!"
@@ -667,10 +667,10 @@ describe CukeSniffer do
           "end"
       ]
       temp_dir =  make_dir("step_definitions/temp")
-      file_name = "my_definition_steps.rb"
-      build_file(step_definitions_block, file_name, temp_dir)
+      file_name = temp_dir+"/my_definition_steps.rb"
+      build_file(step_definitions_block, file_name)
 
-      cuke_sniffer = CukeSniffer::CLI.new(nil, temp_dir + "/" + file_name, nil)
+      cuke_sniffer = CukeSniffer::CLI.new(nil, file_name, nil)
       cuke_sniffer.output_html
 
       build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'step_definitions_data']/div[@class = 'notes']").text.should == "Excellent! No smells found for Step Definitions!"
@@ -693,10 +693,10 @@ describe CukeSniffer do
       ]
 
       temp_dir =  make_dir("support/temp")
-      file_name = "my_hooks.rb"
-      build_file(hook_block, file_name, temp_dir)
+      file_name = temp_dir+"/my_hooks.rb"
+      build_file(hook_block, file_name)
 
-      cuke_sniffer = CukeSniffer::CLI.new(nil, nil, temp_dir + "/" + file_name)
+      cuke_sniffer = CukeSniffer::CLI.new(nil, nil,file_name)
       cuke_sniffer.output_html
 
       build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'hooks_data']/div[@class = 'notes']").text.should == "Excellent! No smells found for Hooks!"
@@ -725,7 +725,7 @@ describe CukeSniffer do
 
   def cleanup_file_and_dir(file_name, temp_dir)
     delete_cuke_sniffer_results
-    File.delete(temp_dir + "/" + file_name)
+    File.delete( file_name)
     Dir.delete(temp_dir)
   end
 
