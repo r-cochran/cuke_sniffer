@@ -12,6 +12,7 @@ are potential misuses or errors. Cuke_sniffer follows a 'golf score' type system
 where the lower the number, the better. 'Min' refers to the overall best score
 for a particular object and the 'Max' is the overall worst object score.
 
+
 `SEE LICENSE FOR CURRENT CUKE_SNIFFER USE DETAILS`
 
 [Patch Notes] (https://github.com/r-cochran/cuke_sniffer/wiki/Patch-notes)
