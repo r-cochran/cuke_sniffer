@@ -598,6 +598,121 @@ describe CukeSniffer do
 
       end
     end
+    it "produces a no objects to sniff message when there is no feature" do
+      cuke_sniffer = CukeSniffer::CLI.new(nil)
+      cuke_sniffer.output_html
+
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'features_data']/div[@class = 'notes']").text.should == "There were no Features to sniff in '#{Dir.getwd}'!"
+
+      delete_cuke_sniffer_results
+
+    end
+
+    it "produces a no objects to sniff message when there is no step definitions" do
+      cuke_sniffer = CukeSniffer::CLI.new(nil, nil)
+      cuke_sniffer.output_html
+
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'step_definitions_data']/div[@class = 'notes']").text.should == "There were no Step Definitions to sniff in '#{Dir.getwd}'!"
+
+      delete_cuke_sniffer_results
+
+    end
+
+    it "produces a no objects to sniff message when there is no hooks" do
+
+      cuke_sniffer = CukeSniffer::CLI.new(nil, nil, nil)
+      cuke_sniffer.output_html
+
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'hooks_data']/div[@class = 'notes']").text.should == "There were no Hooks to sniff in '#{Dir.getwd}'!"
+
+      delete_cuke_sniffer_results
+
+    end
+
+    it "produces a no smells found message when there are no rule violations for features" do
+      feature_block = [
+          "Feature: Complex Calculator",
+          "Scenario: Add two numbers",
+          "Given the first number is one",
+          "And the second number is one",
+          "When the calculator adds",
+          "Then the result is two"
+      ]
+      file_name = "my_feature.feature"
+      build_file(feature_block, file_name)
+
+      cuke_sniffer = CukeSniffer::CLI.new(file_name)
+      cuke_sniffer.output_html
+
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'features_data']/div[@class = 'notes']").text.should == "Excellent! No smells found for Features and Scenarios!"
+
+      cleanup_file_and_html(file_name)
+    end
+
+    it "produces a no smells found message when there are no rule violations for step definitions" do
+      step_definitions_block = [
+          "Given /^I have something$/ do",
+          "Some Given line",
+          "end",
+          "When /^I got something$/ do",
+          "Some When line",
+          "end",
+          "Then /^I return something$/ do",
+          "Some Then line",
+          "end"
+      ]
+      file_name = "my_definition_steps.rb"
+      build_file(step_definitions_block, file_name)
+
+      cuke_sniffer = CukeSniffer::CLI.new(nil, file_name)
+      cuke_sniffer.output_html
+
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'step_definitions_data']/div[@class = 'notes']").text.should == "Excellent! No smells found for Step Definitions!"
+
+      cleanup_file_and_html(file_name)
+    end
+
+    it "produces a no smells found message when there are no rule violations for Hooks" do
+      hook_block = [
+          "After('@tag') do",
+          "begin",
+          "var = 20",
+          "rescue",
+          "end",
+          "Before('@tag') do",
+          "begin",
+          "var = 2",
+          "rescue",
+          "end"
+      ]
+
+      file_name = "my_hooks.rb"
+      build_file(hook_block, file_name)
+
+      cuke_sniffer = CukeSniffer::CLI.new(nil, nil,file_name)
+      cuke_sniffer.output_html
+
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'hooks_data']/div[@class = 'notes']").text.should == "Excellent! No smells found for Hooks!"
+
+      cleanup_file_and_html(file_name)
+    end
+  end
+
+  def build_nokogiri_from_cuke_sniffer_results
+    file_name = File.join(File.dirname(__FILE__),'..','..','cuke_sniffer_results.html')
+    file = File.open(file_name)
+    doc = Nokogiri::HTML(file)
+    file.close
+    doc
+  end
+
+  def delete_cuke_sniffer_results
+    File.delete(File.join(File.dirname(__FILE__),'..','..','cuke_sniffer_results.html'))
+  end
+
+  def cleanup_file_and_html(file_name)
+    delete_cuke_sniffer_results
+    File.delete( file_name)
   end
 
   describe "XML output" do
