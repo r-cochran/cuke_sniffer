@@ -249,7 +249,7 @@
 </div>
 <div class="shrink_section" id="features_data">
   <% if cuke_sniffer.features.count == 0 %>
-      <div class="notes">There were no Features to sniff in '<%= Dir.getwd %>'!</div>
+      <div class="notes">There were no Features to sniff in '<%= cuke_sniffer.features_location %>'!</div>
   <% elsif cuke_sniffer.features.count >= 1 && cuke_sniffer.scenarios.count >=1 && cuke_sniffer.summary[:features][:total_score] ==0 && cuke_sniffer.summary[:scenarios][:total_score] ==0 %>
       <div class="notes">Excellent! No smells found for Features and Scenarios!</div>
   <% end %>
@@ -310,7 +310,7 @@
 </div>
 <div class="shrink_section" id="step_definitions_data">
   <% if cuke_sniffer.step_definitions.count == 0 %>
-      <div class="notes">There were no Step Definitions to sniff in '<%= Dir.getwd %>'!</div>
+      <div class="notes">There were no Step Definitions to sniff in '<%= cuke_sniffer.step_definitions_location %>'!</div>
   <% elsif cuke_sniffer.step_definitions.count >= 1 && cuke_sniffer.summary[:step_definitions][:total_score] ==0 %>
       <div class="notes">Excellent! No smells found for Step Definitions!</div>
   <% end %>
@@ -360,7 +360,7 @@
 </div>
 <div class="shrink_section" id="hooks_data">
   <% if cuke_sniffer.hooks.count == 0 %>
-      <div class="notes">There were no Hooks to sniff in '<%= Dir.getwd %>'!</div>
+      <div class="notes">There were no Hooks to sniff in '<%= cuke_sniffer.hooks_location %>'!</div>
   <% elsif cuke_sniffer.hooks.count >= 1 && cuke_sniffer.summary[:hooks][:total_score] ==0 %>
       <div class="notes">Excellent! No smells found for Hooks!</div>
   <% end %>

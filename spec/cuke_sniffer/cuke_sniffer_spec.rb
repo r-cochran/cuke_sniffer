@@ -599,34 +599,34 @@ describe CukeSniffer do
       end
     end
     it "produces a no objects to sniff message when there is no feature" do
-      cuke_sniffer = CukeSniffer::CLI.new(nil)
+      temp_dir =  make_dir("scenarios/temp")
+      cuke_sniffer = CukeSniffer::CLI.new(temp_dir)
       cuke_sniffer.output_html
 
-      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'features_data']/div[@class = 'notes']").text.should == "There were no Features to sniff in '#{Dir.getwd}'!"
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'features_data']/div[@class = 'notes']").text.should == "There were no Features to sniff in '#{cuke_sniffer.features_location}'!"
 
-      delete_cuke_sniffer_results
-
+      delete_cuke_sniffer_html_and_temp_dir(temp_dir)
     end
 
     it "produces a no objects to sniff message when there is no step definitions" do
-      cuke_sniffer = CukeSniffer::CLI.new(nil, nil)
+      temp_dir =  make_dir("step_definitions/temp")
+      cuke_sniffer = CukeSniffer::CLI.new(nil, temp_dir)
       cuke_sniffer.output_html
 
-      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'step_definitions_data']/div[@class = 'notes']").text.should == "There were no Step Definitions to sniff in '#{Dir.getwd}'!"
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'step_definitions_data']/div[@class = 'notes']").text.should == "There were no Step Definitions to sniff in '#{cuke_sniffer.step_definitions_location}'!"
 
-      delete_cuke_sniffer_results
-
+      delete_cuke_sniffer_html_and_temp_dir(temp_dir)
     end
 
     it "produces a no objects to sniff message when there is no hooks" do
+      temp_dir =  make_dir("support/temp")
+      cuke_sniffer = CukeSniffer::CLI.new(nil, nil, temp_dir)
 
-      cuke_sniffer = CukeSniffer::CLI.new(nil, nil, nil)
       cuke_sniffer.output_html
+      puts cuke_sniffer.hooks_location
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'hooks_data']/div[@class = 'notes']").text.should == "There were no Hooks to sniff in '#{cuke_sniffer.hooks_location}'!"
 
-      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'hooks_data']/div[@class = 'notes']").text.should == "There were no Hooks to sniff in '#{Dir.getwd}'!"
-
-      delete_cuke_sniffer_results
-
+      delete_cuke_sniffer_html_and_temp_dir(temp_dir)
     end
 
     it "produces a no smells found message when there are no rule violations for features" do
@@ -698,20 +698,26 @@ describe CukeSniffer do
     end
   end
 
+  def make_dir(dir_add_on)
+    temp_dir = Dir.mkdir(File.join(File.dirname(__FILE__) + "/../../features/",dir_add_on))
+    File.dirname(__FILE__) + "/../../features/"+dir_add_on
+  end
+
   def build_nokogiri_from_cuke_sniffer_results
     file_name = File.join(File.dirname(__FILE__),'..','..','cuke_sniffer_results.html')
     file = File.open(file_name)
     doc = Nokogiri::HTML(file)
     file.close
-    doc 
+    doc
   end
 
-  def delete_cuke_sniffer_results
+  def delete_cuke_sniffer_html_and_temp_dir(temp_dir)
     File.delete(File.join(File.dirname(__FILE__),'..','..','cuke_sniffer_results.html'))
+    Dir.delete(temp_dir)
   end
 
   def cleanup_file_and_html(file_name)
-    delete_cuke_sniffer_results
+    File.delete(File.join(File.dirname(__FILE__),'..','..','cuke_sniffer_results.html'))
     File.delete( file_name)
   end
 
