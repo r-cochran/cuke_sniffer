@@ -77,10 +77,15 @@ module CukeSniffer
     # Handles creation of all Feature and StepDefinition objects
     # Then catalogs all step definition calls to be used for rules and identification
     # of dead steps.
-    def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd, hooks_location = Dir.getwd)
-      @features_location = features_location
-      @step_definitions_location = step_definitions_location
-      @hooks_location = hooks_location
+    def initialize(parameters = {:features_location => nil, :step_definitions_location => nil, :hooks_location => nil})
+
+      @features_location = parameters[:features_location]
+      @step_definitions_location = parameters[:step_definitions_location]
+      @hooks_location = parameters[:hooks_location]
+
+      @features_location ||= Dir.getwd
+      @hooks_location ||= Dir.getwd
+      @step_definitions_location ||= Dir.getwd
       @features = []
       @scenarios = []
       @step_definitions = []
