@@ -161,3 +161,6 @@ pip-log.txt
 
 /.idea
 /.bundle
+
+*.gem
+test_output
