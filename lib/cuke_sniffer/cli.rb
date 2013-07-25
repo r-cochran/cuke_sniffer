@@ -63,13 +63,15 @@ module CukeSniffer
     #  cuke_sniffer = CukeSniffer::CLI.new
     #
     # Against single files
-    #  cuke_sniffer = CukeSniffer::CLI.new("my_feature.feature", nil)
+    #  cuke_sniffer = CukeSniffer::CLI.new({:features_location =>"my_feature.feature"})
     # Or
-    #  cuke_sniffer = CukeSniffer::CLI.new(nil, "my_steps.rb")
+    #  cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location =>"my_steps.rb"})
+    # Or
+    #  cuke_sniffer = CukeSniffer::CLI.new({:hooks_location =>"my_hooks.rb"})
     #
     #
     # Against folders
-    #  cuke_sniffer = CukeSniffer::CLI.new("my_features_directory\", "my_steps_directory\")
+    #  cuke_sniffer = CukeSniffer::CLI.new({:features_location =>"my_features_directory\", :step_definitions_location =>"my_steps_directory\"})
     #
     # You can mix and match all of the above examples
     #

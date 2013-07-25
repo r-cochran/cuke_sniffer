@@ -58,7 +58,7 @@ XML output
 Or 
 
     require 'cuke_sniffer'
-    cuke_sniffer = CukeSniffer::CLI.new(<your_features_folder>, <your_step_definitions_folder>, <your_hooks_directory>)
+    cuke_sniffer = CukeSniffer::CLI.new(:features_location => <your_features_folder>, :step_definitions_location => <your_step_definitions_folder>, :hooks_location =><your_hooks_directory>)
     cuke_sniffer.output_html
     
 Customizing Rules
