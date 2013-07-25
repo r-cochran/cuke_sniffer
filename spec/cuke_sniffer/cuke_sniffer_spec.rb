@@ -8,10 +8,6 @@ describe CukeSniffer do
   end
 
   describe "Handling Project" do
-    before(:each) do
-      @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
-      @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
-    end
 
     it "should determine if it is above the project threshold" do
       cuke_sniffer = CukeSniffer::CLI.new({:features_location=> @features_location,:step_definitions_location => @step_definitions_location})
@@ -26,8 +22,6 @@ describe CukeSniffer do
   describe "Handling Features" do
 
     before(:each) do
-      @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
-      @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
       @file_name = "my_feature.feature"
     end
 
@@ -75,8 +69,6 @@ describe CukeSniffer do
 
   describe "Handling Step Definitions" do
     before(:each) do
-      @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
-      @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
       @file_name = "my_step_definitions.rb"
     end
 
@@ -208,8 +200,6 @@ describe CukeSniffer do
 
   describe "Handling Dead Step Definitions" do
     before(:each) do
-      @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
-      @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
       @file_name = "my_step_definitions.rb"
     end
 
@@ -365,8 +355,6 @@ describe CukeSniffer do
 
   describe "Handling Hooks" do
     before(:each) do
-      @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
-      @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
       @file_name = "hooks.rb"
       @file_path = Dir.getwd + "/" + @file_name
     end
@@ -498,8 +486,6 @@ describe CukeSniffer do
 
   describe "HTML output" do
     before(:each) do
-      @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
-      @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
       @file_name = "my_html.html"
     end
 
@@ -623,7 +609,7 @@ describe CukeSniffer do
       cuke_sniffer = CukeSniffer::CLI.new({:hooks_location => temp_dir})
 
       cuke_sniffer.output_html
-      puts cuke_sniffer.hooks_location
+
       build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'hooks_data']/div[@class = 'notes']").text.should == "There were no Hooks to sniff in '#{cuke_sniffer.hooks_location}'!"
 
       delete_cuke_sniffer_html_and_temp_dir(temp_dir)
@@ -723,8 +709,6 @@ describe CukeSniffer do
 
   describe "XML output" do
     before(:each) do
-      @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
-      @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
       @file_name = "my_xml.xml"
     end
 
