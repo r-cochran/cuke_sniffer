@@ -703,7 +703,7 @@ describe CukeSniffer do
     file = File.open(file_name)
     doc = Nokogiri::HTML(file)
     file.close
-    doc
+    doc 
   end
 
   def delete_cuke_sniffer_results
