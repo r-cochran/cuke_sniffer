@@ -12,8 +12,11 @@ Other Options for Running include:
                                               Runs CukeSniffer then outputs an
                                               html/xml file in the current
                                               directory (with optional name).
-  -h, --help                                : You get this lovely document."
-
+  -h, --help                                : You get this lovely document.
+  -p, --project <project_root>              : Root directory of project
+  -f, --features <feature_path>             : Path to features directory
+  -s, --step_definitions <step_def_path>    : Path to step definitions directory
+  -hk, --hooks <hooks_path>                 : Path to support directory            "
 
 if ARGV.include? "-h" or ARGV.include? "--help"
   puts help_cmd_txt
@@ -30,6 +33,34 @@ end
 
 def print_results(cuke_sniffer)
   puts cuke_sniffer.output_results
+end
+
+if ARGV.include? "--project" or ARGV.include? "-p"
+  index = ARGV.index("--project")
+  index ||= ARGV.index("-p")
+  project_root = ARGV[index + 1]
+  cuke_sniffer = CukeSniffer::CLI.new({:features_location => project_root, :step_definitions_location => project_root, :hooks_location => project_root})
+end
+
+if ARGV.include? "--features" or ARGV.include? "-f"
+  index = ARGV.index("--features")
+  index ||= ARGV.index("-f")
+  features_directory = ARGV[index + 1]
+  cuke_sniffer = CukeSniffer::CLI.new({:features_location => features_directory})
+end
+
+if ARGV.include? "--step_definitions" or ARGV.include? "-s"
+  index = ARGV.index("--step_definitions")
+  index ||= ARGV.index("-s")
+  step_definition_directory = ARGV[index + 1]
+  cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location => step_definition_directory})
+end
+
+if ARGV.include? "--hooks" or ARGV.include? "-hk"
+  index = ARGV.index("--hooks")
+  index ||= ARGV.index("-hk")
+  hook_directory = ARGV[index + 1]
+  cuke_sniffer = CukeSniffer::CLI.new({:hooks_location => hook_directory})
 end
 
 if ARGV.include? "--out" or ARGV.include? "-o"
