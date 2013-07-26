@@ -6,89 +6,78 @@ require 'cuke_sniffer'
 help_cmd_txt = "Welcome to CukeSniffer!
 Calling CukeSniffer with no arguments will run it against the current directory.
 Other Options for Running include:
-  <feature_file_path>, <step_def_file_path> : Runs CukeSniffer against the
-                                              specified paths.
   -o, --out <type> (name)                   : Where <type> is 'html' or 'xml'.
                                               Runs CukeSniffer then outputs an
                                               html/xml file in the current
                                               directory (with optional name).
-  -h, --help                                : You get this lovely document.
-  -p, --project <project_root>              : Root directory of project
-  -f, --features <feature_path>             : Path to features directory
-  -s, --step_definitions <step_def_path>    : Path to step definitions directory
-  -hk, --hooks <hooks_path>                 : Path to support directory            "
+  -h,  --help                               : You get this lovely document.
+  -p,  --project <project_root>             : Root directory of project.
+  -f,  --features <feature_path>            : Path to features directory.
+  -s,  --step_definitions <step_def_path>   : Path to step definitions directory.
+  -hk, --hooks <hooks_path>                 : Path to support directory.            "
+
+def find_index_by_regex_match(list, regex)
+  list.each do |item|
+    return list.index(item) if item =~ regex
+  end
+  nil
+end
+
+def build_cli_hash(argv)
+  cucumber_hash ={
+      :hooks_location => /-hk|--hooks/,
+      :features_location => /-f|--features/,
+      :step_definitions_location => /-s|--step_definitions/,
+      :project_location => /-p|--project/}
+  cli_hash = {}
+  cucumber_hash.each do |symbol, regex|
+    index_of_key = find_index_by_regex_match(argv, regex)
+    if !index_of_key.nil?
+      cli_hash[symbol] = argv[index_of_key + 1]
+    end
+  end
+  cli_hash
+end
+
+def handle_output(argv)
+  return if find_index_by_regex_match(argv, /-o|--out/).nil?
+  output_type_hash = {
+      :html => "html",
+      :xml => "xml"
+  }
+  output_type_hash.each_value do |value|
+    index_of_key = argv.index(value)
+    if !index_of_key.nil?
+      file_type = argv[index_of_key]
+
+      #cuke_sniffer -o html
+      #cuke_sniffer -o html -o xml
+      file_name = argv[index_of_key+1]
+      call_output(file_type, file_name)
+    else
+      @cuke_sniffer.output_results
+    end
+  end
+end
+
+def call_output(file_type, file_name)
+  case file_type
+    when "xml"
+      @cuke_sniffer.output_xml(file_name)
+    when "html"
+      @cuke_sniffer.output_html(file_name)
+    else
+      puts "#{file_type} is not a supported version of cuke_sniffer output."
+  end
+end
 
 if ARGV.include? "-h" or ARGV.include? "--help"
   puts help_cmd_txt
   exit
 end
 
-cuke_sniffer = nil
-if (ARGV[0] != nil and File.directory?(ARGV[0])) and (ARGV[1] != nil and File.directory?
-(ARGV[1]))
-  cuke_sniffer = CukeSniffer::CLI.new(ARGV[0], ARGV[1])
-else
-  cuke_sniffer = CukeSniffer::CLI.new
-end
-
-def print_results(cuke_sniffer)
-  puts cuke_sniffer.output_results
-end
-
-if ARGV.include? "--project" or ARGV.include? "-p"
-  index = ARGV.index("--project")
-  index ||= ARGV.index("-p")
-  project_root = ARGV[index + 1]
-  cuke_sniffer = CukeSniffer::CLI.new({:features_location => project_root, :step_definitions_location => project_root, :hooks_location => project_root})
-end
-
-if ARGV.include? "--features" or ARGV.include? "-f"
-  index = ARGV.index("--features")
-  index ||= ARGV.index("-f")
-  features_directory = ARGV[index + 1]
-  cuke_sniffer = CukeSniffer::CLI.new({:features_location => features_directory})
-end
-
-if ARGV.include? "--step_definitions" or ARGV.include? "-s"
-  index = ARGV.index("--step_definitions")
-  index ||= ARGV.index("-s")
-  step_definition_directory = ARGV[index + 1]
-  cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location => step_definition_directory})
-end
-
-if ARGV.include? "--hooks" or ARGV.include? "-hk"
-  index = ARGV.index("--hooks")
-  index ||= ARGV.index("-hk")
-  hook_directory = ARGV[index + 1]
-  cuke_sniffer = CukeSniffer::CLI.new({:hooks_location => hook_directory})
-end
-
-if ARGV.include? "--out" or ARGV.include? "-o"
-  index = ARGV.index("--out")
-  index ||= ARGV.index("-o")
-  out_type = ARGV[index + 1]
-  case out_type
-    when "html"
-      file_name = ARGV[index + 2]
-      if file_name.nil?
-        cuke_sniffer.output_html
-      else
-        file_name = file_name + ".html" unless file_name =~ /\.html$/
-        cuke_sniffer.output_html(file_name)
-      end
-    when "xml"
-      file_name = ARGV[index + 2]
-      if file_name.nil?
-        cuke_sniffer.output_xml
-      else
-        file_name = file_name + ".xml" unless file_name =~ /\.xml$/
-        cuke_sniffer.output_xml(file_name)
-      end
-    else
-      print_results(cuke_sniffer)
-  end
-else
-  print_results(cuke_sniffer)
-end
+arguments_hash = build_cli_hash(ARGV)
+@cuke_sniffer = CukeSniffer::CLI.new(arguments_hash)
+handle_output(ARGV)
 
 puts "Completed Sniffing."

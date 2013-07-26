@@ -493,10 +493,39 @@ describe CukeSniffer do
       File.delete(@file_name) if File.exist?(@file_name)
     end
 
+    describe "convert_array_condition_into_list_of_strings" do
+
+      it "breaks the array into groups of five" do
+        cuke_sniffer = CukeSniffer::CLI.new()
+        input = ["hi","how","are","you","should","and","become","wow", "boo","moo"]
+
+        cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, should","and, become, wow, boo, moo"])
+
+      end
+
+      it "puts remainder into last group" do
+        cuke_sniffer = CukeSniffer::CLI.new()
+        input = ["hi","how","are","you","should","and","become","wow", "boo","moo","entry"]
+
+        cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, should","and, become, wow, boo, moo","entry"])
+
+        input = ["hi","how","are","you"]
+
+        cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you"])
+
+      end
+    end
+
     it "should generate an html report" do
       cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location ,:step_definitions_location=> @step_definitions_location})
       cuke_sniffer.output_html(@file_name)
       File.exists?(@file_name).should == true
+    end
+
+    it "should append .html to the end of passed file name if it does have an extension already" do
+      cuke_sniffer = CukeSniffer::CLI.new()
+      cuke_sniffer.output_html("my_html")
+      File.exists?("my_html.html").should be_true
     end
 
     it "should order the hooks during output to html" do
@@ -545,7 +574,6 @@ describe CukeSniffer do
       cuke_sniffer.step_definitions.should == [big_step, little_step]
     end
 
-
     it "should order the features during output to html" do
       file_name = "my_feature.feature"
       build_file(["Feature: I am a feature"], file_name)
@@ -562,28 +590,7 @@ describe CukeSniffer do
 
       File.delete(file_name)
     end
-    describe "convert_array_condition_into_list_of_strings" do
 
-      it "breaks the array into groups of five" do
-        cuke_sniffer = CukeSniffer::CLI.new()
-        input = ["hi","how","are","you","should","and","become","wow", "boo","moo"]
-
-        cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, should","and, become, wow, boo, moo"])
-
-      end
-
-      it "puts remainder into last group" do
-        cuke_sniffer = CukeSniffer::CLI.new()
-        input = ["hi","how","are","you","should","and","become","wow", "boo","moo","entry"]
-
-        cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, should","and, become, wow, boo, moo","entry"])
-
-        input = ["hi","how","are","you"]
-
-        cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you"])
-
-      end
-    end
     it "produces a no objects to sniff message when there is no feature" do
       temp_dir =  make_dir("scenarios/temp")
       cuke_sniffer = CukeSniffer::CLI.new({:features_location => temp_dir})
@@ -684,6 +691,28 @@ describe CukeSniffer do
     end
   end
 
+  describe "XML output" do
+    before(:each) do
+      @file_name = "my_xml.xml"
+    end
+
+    after(:each) do
+      File.delete(@file_name) if File.exist?(@file_name)
+    end
+
+    it "should append .xml to the end of passed file name if it does have an extension already" do
+      cuke_sniffer = CukeSniffer::CLI.new()
+      cuke_sniffer.output_xml("my_xml")
+      File.exists?("my_xml.xml").should be_true
+    end
+
+    it "should generate a well formed xml of the content by respectable sections" do
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location=>@features_location, :step_definitions_location=> @step_definitions_location})
+      cuke_sniffer.output_xml(@file_name)
+      File.exists?(@file_name).should == true
+    end
+  end
+
   def make_dir(dir_add_on)
     temp_dir = Dir.mkdir(File.join(File.dirname(__FILE__) + "/../../features/",dir_add_on))
     File.dirname(__FILE__) + "/../../features/"+dir_add_on
@@ -705,22 +734,6 @@ describe CukeSniffer do
   def cleanup_file_and_html(file_name)
     File.delete(File.join(File.dirname(__FILE__),'..','..','cuke_sniffer_results.html'))
     File.delete( file_name)
-  end
-
-  describe "XML output" do
-    before(:each) do
-      @file_name = "my_xml.xml"
-    end
-
-    after(:each) do
-      File.delete(@file_name) if File.exist?(@file_name)
-    end
-
-    it "should generate a well formed xml of the content by respectable sections" do
-      cuke_sniffer = CukeSniffer::CLI.new({:features_location=>@features_location, :step_definitions_location=> @step_definitions_location})
-      cuke_sniffer.output_xml(@file_name)
-      File.exists?(@file_name).should == true
-    end
   end
 end
 

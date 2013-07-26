@@ -212,6 +212,7 @@ module CukeSniffer
 
       markup_erb = ERB.new extract_markup(markup_source)
       output = markup_erb.result(binding)
+      file_name = file_name + ".html" unless file_name =~ /\.html$/
       File.open(file_name, 'w') do |f|
         f.write(output)
       end
@@ -230,6 +231,7 @@ module CukeSniffer
     def output_xml(file_name = "cuke_sniffer.xml")
       doc = Nokogiri::XML::Document.new
       doc.root = self.to_xml
+      file_name = file_name + ".xml" unless file_name =~ /\.xml$/
       open(file_name, "w") do |file|
         file << doc.serialize
       end
