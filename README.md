@@ -37,7 +37,32 @@ Note for JRuby: Make sure you have your
 
 Or
 
-    cuke_sniffer <your_features_folder> <your_step_definitions_folder> <your_hooks_directory>
+    cuke_sniffer -f <your_features_folder> -s <your_step_definitions_folder> -hk <your_hooks_directory> 
+
+Or
+	
+	cuke_sniffer -p <your_project_root>
+	cuke_sniffer --project <your_project_root>
+
+Or
+	
+	cuke_sniffer -f <your_features_folder>
+	cuke_sniffer --features <your_features_folder>
+
+Or
+	
+	cuke_sniffer -s <your_step_definitions_folder>
+	cuke_sniffer --step_definitions <your_step_definitions_folder>
+
+Or
+
+	cuke_sniffer -hk <your_hooks_directory>
+	cuke_sniffer --hooks <your_hooks_directory>
+
+Or
+
+	cuke_sniffer -f <your_features_folder> -s <your_step_definitions_folder>
+
 
 HTML output
 
@@ -58,7 +83,12 @@ XML output
 Or 
 
     require 'cuke_sniffer'
-    cuke_sniffer = CukeSniffer::CLI.new(<your_features_folder>, <your_step_definitions_folder>, <your_hooks_directory>)
+    cuke_sniffer = CukeSniffer::CLI.new(
+		{	
+			:features_location => <your_features_folder>, 
+			:step_definitions_location => <your_step_definitions_folder>, 
+			:hooks_location => <your_hooks_directory>
+		})
     cuke_sniffer.output_html
     
 Customizing Rules

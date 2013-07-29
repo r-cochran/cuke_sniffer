@@ -1,6 +1,7 @@
 # encoding: utf-8
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$stdout = File.new( 'test_output', 'w' )
 
 require 'rspec'
 require 'cuke_sniffer'
