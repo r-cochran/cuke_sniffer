@@ -57,7 +57,7 @@ def handle_output(argv)
       end
     end
   else
-    @cuke_sniffer.output_results
+    puts @cuke_sniffer.output_results
   end
 end
 
