@@ -40,32 +40,33 @@ def build_cli_hash(argv)
 end
 
 def handle_output(argv)
-  return if find_index_by_regex_match(argv, /-o|--out/).nil?
-  output_type_hash = {
-      :html => "html",
-      :xml => "xml"
-  }
-  output_type_hash.each_value do |value|
-    index_of_key = argv.index(value)
-    if !index_of_key.nil?
-      file_type = argv[index_of_key]
+  if find_index_by_regex_match(argv, /-o|--out/)
+    output_type_hash = {
+        :html => "html",
+        :xml => "xml"
+    }
+    output_type_hash.each_value do |value|
+      index_of_key = argv.index(value)
+      if !index_of_key.nil?
+        file_type = argv[index_of_key]
 
-      #cuke_sniffer -o html
-      #cuke_sniffer -o html -o xml
-      file_name = argv[index_of_key+1]
-      call_output(file_type, file_name)
-    else
-      @cuke_sniffer.output_results
+        #cuke_sniffer -o html
+        #cuke_sniffer -o html -o xml
+        file_name = argv[index_of_key+1]
+        call_output(file_type, file_name)
+      end
     end
+  else
+    @cuke_sniffer.output_results
   end
 end
 
 def call_output(file_type, file_name)
   case file_type
     when "xml"
-      @cuke_sniffer.output_xml(file_name)
+      file_name.nil? ? @cuke_sniffer.output_xml : @cuke_sniffer.output_xml(file_name)
     when "html"
-      @cuke_sniffer.output_html(file_name)
+      file_name.nil? ? @cuke_sniffer.output_html : @cuke_sniffer.output_html(file_name)
     else
       puts "#{file_type} is not a supported version of cuke_sniffer output."
   end
@@ -79,5 +80,6 @@ end
 arguments_hash = build_cli_hash(ARGV)
 @cuke_sniffer = CukeSniffer::CLI.new(arguments_hash)
 handle_output(ARGV)
+
 
 puts "Completed Sniffing."
