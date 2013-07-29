@@ -8,13 +8,9 @@ describe CukeSniffer do
   end
 
   describe "Handling Project" do
-    before(:each) do
-      @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
-      @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
-    end
 
     it "should determine if it is above the project threshold" do
-      cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location,:step_definitions_location => @step_definitions_location})
       start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
       CukeSniffer::Constants::THRESHOLDS["Project"] = 2
       cuke_sniffer.summary[:total_score] = 3
@@ -26,8 +22,6 @@ describe CukeSniffer do
   describe "Handling Features" do
 
     before(:each) do
-      @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
-      @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
       @file_name = "my_feature.feature"
     end
 
@@ -36,14 +30,14 @@ describe CukeSniffer do
     end
 
     it "should use the passed locations for features to store create features" do
-      cuke_sniffer = CukeSniffer::CLI.new(@features_location)
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location})
       fail "features were not initialized" if cuke_sniffer.features == {}
     end
 
     it "should be able to utilize a single feature file for parsing" do
       feature_block = ["Feature: I am the only feature."]
       build_file(feature_block, @file_name)
-      cuke_sniffer = CukeSniffer::CLI.new(@file_name)
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @file_name})
       actual_features = remove_rules(cuke_sniffer.features)
       actual_features.should == [CukeSniffer::Feature.new(@file_name)]
     end
@@ -55,7 +49,7 @@ describe CukeSniffer do
           '* I am a bad <var>'
       ]
       build_file(feature_block, @file_name)
-      expect { CukeSniffer::CLI.new(@file_name) }.to_not raise_error
+      expect { CukeSniffer::CLI.new({:features_location => @file_name}) }.to_not raise_error
     end
 
     it "should be able to accept an examples table in a scenario outline with empty values" do
@@ -68,15 +62,13 @@ describe CukeSniffer do
           "|       |"
       ]
       build_file(feature_block, @file_name)
-      expect { CukeSniffer::CLI.new(@file_name, nil, nil) }.to_not raise_error
+      expect { CukeSniffer::CLI.new({:features_location => @features_location}) }.to_not raise_error
     end
 
   end
 
   describe "Handling Step Definitions" do
     before(:each) do
-      @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
-      @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
       @file_name = "my_step_definitions.rb"
     end
 
@@ -85,7 +77,7 @@ describe CukeSniffer do
     end
 
     it "should use the passed locations for step definitions to store create step_definitions" do
-      cuke_sniffer = CukeSniffer::CLI.new(nil, @step_definitions_location)
+      cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location => @step_definitions_location})
       fail "step definitions were not initialized" if cuke_sniffer.step_definitions == []
     end
 
@@ -95,7 +87,7 @@ describe CukeSniffer do
           "end"
       ]
       build_file(step_definition_block, @file_name)
-      cuke_sniffer = CukeSniffer::CLI.new(nil, @file_name)
+      cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location => @file_name})
       actual_step_definitions = remove_rules(cuke_sniffer.step_definitions)
       actual_step_definitions.should == [CukeSniffer::StepDefinition.new("#@file_name:1", step_definition_block)]
     end
@@ -124,7 +116,7 @@ describe CukeSniffer do
       ]
       step_definition_with_nested_call = CukeSniffer::StepDefinition.new("NestedStep:1", step_definition_block)
 
-      cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location ,:step_definitions_location => @step_definitions_location})
       cuke_sniffer.features = [feature]
       cuke_sniffer.step_definitions = [live_step_definition, step_definition_with_nested_call]
 
@@ -146,7 +138,7 @@ describe CukeSniffer do
       ]
       build_file(step_definition_block, @file_name)
 
-      cuke_sniffer = CukeSniffer::CLI.new(nil, @file_name)
+      cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location => @file_name})
       cuke_sniffer.step_definitions.count.should == 2
     end
 
@@ -158,13 +150,13 @@ describe CukeSniffer do
       ]
       build_file(step_definition_block, @file_name)
       expected_step_definitions = [CukeSniffer::StepDefinition.new(@file_name + ":1", step_definition_block)]
-      cuke_sniffer = CukeSniffer::CLI.new(nil, @file_name)
+      cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location => @file_name})
       actual_step_definitions = remove_rules(cuke_sniffer.step_definitions)
       actual_step_definitions.should == expected_step_definitions
     end
 
     it "should determine if it is below the step definition threshold" do
-      cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location, nil)
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location ,:step_definitions_location => @step_definitions_location})
       start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
       CukeSniffer::Constants::THRESHOLDS["Project"] = 200
       cuke_sniffer.good?.should == true
@@ -172,7 +164,7 @@ describe CukeSniffer do
     end
 
     it "should determine the percentage of problems compared to the step definition threshold" do
-      cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location ,:step_definitions_location => @step_definitions_location})
       start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
       CukeSniffer::Constants::THRESHOLDS["Project"] = 2
       cuke_sniffer.summary[:total_score] = 3
@@ -199,7 +191,7 @@ describe CukeSniffer do
       ]
       step_definition_file_name = "my_steps.rb"
       build_file(step_definition_block, step_definition_file_name)
-      cuke_sniffer = CukeSniffer::CLI.new(feature_file_name, step_definition_file_name, nil)
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location => feature_file_name, :step_definitions_location => step_definition_file_name})
       cuke_sniffer.step_definitions.first.calls.should == {}
       File.delete(feature_file_name)
       File.delete(step_definition_file_name)
@@ -208,8 +200,6 @@ describe CukeSniffer do
 
   describe "Handling Dead Step Definitions" do
     before(:each) do
-      @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
-      @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
       @file_name = "my_step_definitions.rb"
     end
 
@@ -224,7 +214,7 @@ describe CukeSniffer do
           "end"]
       build_file(step_definition_block, @file_name)
 
-      cuke_sniffer = CukeSniffer::CLI.new(@features_location, Dir.getwd)
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location, :step_definitions_location => Dir.getwd})
       dead_steps = cuke_sniffer.get_dead_steps
       dead_steps[:total].should >= 1
       dead_steps.empty?.should be_false
@@ -275,7 +265,7 @@ describe CukeSniffer do
       ]
       build_file(step_definition_block, step_definition_file_name)
 
-      cuke_sniffer = CukeSniffer::CLI.new(feature_file_location, step_definition_file_name)
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location => feature_file_location, :step_definitions_location => step_definition_file_name})
       cuke_sniffer.get_dead_steps.should == {:total => 0}
 
       File.delete(feature_file_location)
@@ -309,7 +299,7 @@ describe CukeSniffer do
       ]
       bill_step_definition = CukeSniffer::StepDefinition.new(@file_name +":3", step_definition_block)
 
-      cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location ,:step_definitions_location => @step_definitions_location})
       cuke_sniffer.features = [feature]
       cuke_sniffer.step_definitions = [john_step_definition, bill_step_definition]
 
@@ -365,8 +355,6 @@ describe CukeSniffer do
 
   describe "Handling Hooks" do
     before(:each) do
-      @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
-      @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
       @file_name = "hooks.rb"
       @file_path = Dir.getwd + "/" + @file_name
     end
@@ -382,7 +370,7 @@ describe CukeSniffer do
           "end"
       ]
       build_file(hook_block, @file_name)
-      cuke_sniffer = CukeSniffer::CLI.new(nil, nil, @file_path)
+      cuke_sniffer = CukeSniffer::CLI.new({:hooks_location => @file_path})
       actual_hooks = remove_rules(cuke_sniffer.hooks)
       actual_hooks.should == [CukeSniffer::Hook.new(@file_path + ":1", hook_block)]
     end
@@ -397,7 +385,7 @@ describe CukeSniffer do
           "end"
       ]
       build_file(hook_block, @file_name)
-      cuke_sniffer = CukeSniffer::CLI.new(nil, nil, @file_path)
+      cuke_sniffer = CukeSniffer::CLI.new({:hooks_location => @file_path})
       actual_hooks = remove_rules(cuke_sniffer.hooks)
       actual_hooks.should == [
           CukeSniffer::Hook.new(@file_path + ":1", hook_block[0..2]),
@@ -413,7 +401,7 @@ describe CukeSniffer do
       ]
       @file_name = "env.rb"
       build_file(hook_block, @file_name)
-      cuke_sniffer = CukeSniffer::CLI.new(nil, nil, Dir.getwd + "/" + @file_name)
+      cuke_sniffer = CukeSniffer::CLI.new({:hooks_location => Dir.getwd + "/" + @file_name})
       actual_hooks = remove_rules(cuke_sniffer.hooks)
       actual_hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "/"+ @file_name +":1", hook_block)]
     end
@@ -424,7 +412,7 @@ describe CukeSniffer do
           "end"
       ]
       build_file(hook_block, @file_name)
-      cuke_sniffer = CukeSniffer::CLI.new(nil, nil, Dir.getwd)
+      cuke_sniffer = CukeSniffer::CLI.new({:hooks_location => Dir.getwd})
       cuke_sniffer.improvement_list.should_not be_empty
     end
 
@@ -498,8 +486,6 @@ describe CukeSniffer do
 
   describe "HTML output" do
     before(:each) do
-      @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
-      @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
       @file_name = "my_html.html"
     end
 
@@ -507,10 +493,39 @@ describe CukeSniffer do
       File.delete(@file_name) if File.exist?(@file_name)
     end
 
+    describe "convert_array_condition_into_list_of_strings" do
+
+      it "breaks the array into groups of five" do
+        cuke_sniffer = CukeSniffer::CLI.new()
+        input = ["hi","how","are","you","should","and","become","wow", "boo","moo"]
+
+        cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, should","and, become, wow, boo, moo"])
+
+      end
+
+      it "puts remainder into last group" do
+        cuke_sniffer = CukeSniffer::CLI.new()
+        input = ["hi","how","are","you","should","and","become","wow", "boo","moo","entry"]
+
+        cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, should","and, become, wow, boo, moo","entry"])
+
+        input = ["hi","how","are","you"]
+
+        cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you"])
+
+      end
+    end
+
     it "should generate an html report" do
-      cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location ,:step_definitions_location => @step_definitions_location})
       cuke_sniffer.output_html(@file_name)
       File.exists?(@file_name).should == true
+    end
+
+    it "should append .html to the end of passed file name if it does have an extension already" do
+      cuke_sniffer = CukeSniffer::CLI.new()
+      cuke_sniffer.output_html("my_html")
+      File.exists?("my_html.html").should be_true
     end
 
     it "should order the hooks during output to html" do
@@ -559,7 +574,6 @@ describe CukeSniffer do
       cuke_sniffer.step_definitions.should == [big_step, little_step]
     end
 
-
     it "should order the features during output to html" do
       file_name = "my_feature.feature"
       build_file(["Feature: I am a feature"], file_name)
@@ -576,34 +590,109 @@ describe CukeSniffer do
 
       File.delete(file_name)
     end
-    describe "convert_array_condition_into_list_of_strings" do
 
-      it "breaks the array into groups of five" do
-        cuke_sniffer = CukeSniffer::CLI.new()
-        input = ["hi","how","are","you","should","and","become","wow", "boo","moo"]
+    it "produces a no objects to sniff message when there is no feature" do
+      temp_dir =  make_dir("scenarios/temp")
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location => temp_dir})
+      cuke_sniffer.output_html
 
-        cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, should","and, become, wow, boo, moo"])
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'features_data']/div[@class = 'notes']").text.should == "There were no Features to sniff in '#{cuke_sniffer.features_location}'!"
 
-      end
+      delete_cuke_sniffer_html_and_temp_dir(temp_dir)
+    end
 
-      it "puts remainder into last group" do
-        cuke_sniffer = CukeSniffer::CLI.new()
-        input = ["hi","how","are","you","should","and","become","wow", "boo","moo","entry"]
+    it "produces a no objects to sniff message when there is no step definitions" do
+      temp_dir =  make_dir("step_definitions/temp")
+      cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location => temp_dir})
+      cuke_sniffer.output_html
 
-        cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you, should","and, become, wow, boo, moo","entry"])
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'step_definitions_data']/div[@class = 'notes']").text.should == "There were no Step Definitions to sniff in '#{cuke_sniffer.step_definitions_location}'!"
 
-        input = ["hi","how","are","you"]
+      delete_cuke_sniffer_html_and_temp_dir(temp_dir)
+    end
 
-        cuke_sniffer.convert_array_condition_into_list_of_strings(input).should match_array(["hi, how, are, you"])
+    it "produces a no objects to sniff message when there is no hooks" do
+      temp_dir =  make_dir("support/temp")
+      cuke_sniffer = CukeSniffer::CLI.new({:hooks_location => temp_dir})
 
-      end
+      cuke_sniffer.output_html
+
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'hooks_data']/div[@class = 'notes']").text.should == "There were no Hooks to sniff in '#{cuke_sniffer.hooks_location}'!"
+
+      delete_cuke_sniffer_html_and_temp_dir(temp_dir)
+    end
+
+    it "produces a no smells found message when there are no rule violations for features" do
+      feature_block = [
+          "Feature: Complex Calculator",
+          "Scenario: Add two numbers",
+          "Given the first number is one",
+          "And the second number is one",
+          "When the calculator adds",
+          "Then the result is two"
+      ]
+      file_name = "my_feature.feature"
+      build_file(feature_block, file_name)
+
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location => file_name})
+      cuke_sniffer.output_html
+
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'features_data']/div[@class = 'notes']").text.should == "Excellent! No smells found for Features and Scenarios!"
+
+      cleanup_file_and_html(file_name)
+    end
+
+    it "produces a no smells found message when there are no rule violations for step definitions" do
+      step_definitions_block = [
+          "Given /^I have something$/ do",
+          "Some Given line",
+          "end",
+          "When /^I got something$/ do",
+          "Some When line",
+          "end",
+          "Then /^I return something$/ do",
+          "Some Then line",
+          "end"
+      ]
+      file_name = "my_definition_steps.rb"
+      build_file(step_definitions_block, file_name)
+
+      cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location => file_name})
+      cuke_sniffer.output_html
+
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'step_definitions_data']/div[@class = 'notes']").text.should == "Excellent! No smells found for Step Definitions!"
+
+      cleanup_file_and_html(file_name)
+    end
+
+    it "produces a no smells found message when there are no rule violations for Hooks" do
+      hook_block = [
+          "After('@tag') do",
+          "begin",
+          "var = 20",
+          "rescue",
+          "end",
+          "Before('@tag') do",
+          "begin",
+          "var = 2",
+          "rescue",
+          "end"
+      ]
+
+      file_name = "my_hooks.rb"
+      build_file(hook_block, file_name)
+
+      cuke_sniffer = CukeSniffer::CLI.new({:hooks_location => file_name})
+      cuke_sniffer.output_html
+
+      build_nokogiri_from_cuke_sniffer_results.xpath("//div[@id = 'hooks_data']/div[@class = 'notes']").text.should == "Excellent! No smells found for Hooks!"
+
+      cleanup_file_and_html(file_name)
     end
   end
 
   describe "XML output" do
     before(:each) do
-      @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
-      @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
       @file_name = "my_xml.xml"
     end
 
@@ -611,11 +700,40 @@ describe CukeSniffer do
       File.delete(@file_name) if File.exist?(@file_name)
     end
 
+    it "should append .xml to the end of passed file name if it does have an extension already" do
+      cuke_sniffer = CukeSniffer::CLI.new()
+      cuke_sniffer.output_xml("my_xml")
+      File.exists?("my_xml.xml").should be_true
+    end
+
     it "should generate a well formed xml of the content by respectable sections" do
-      cuke_sniffer = CukeSniffer::CLI.new(@features_location, @step_definitions_location)
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location, :step_definitions_location => @step_definitions_location})
       cuke_sniffer.output_xml(@file_name)
       File.exists?(@file_name).should == true
     end
+  end
+
+  def make_dir(dir_add_on)
+    temp_dir = Dir.mkdir(File.join(File.dirname(__FILE__) + "/../../features/",dir_add_on))
+    File.dirname(__FILE__) + "/../../features/"+dir_add_on
+  end
+
+  def build_nokogiri_from_cuke_sniffer_results
+    file_name = File.join(File.dirname(__FILE__),'..','..','cuke_sniffer_results.html')
+    file = File.open(file_name)
+    doc = Nokogiri::HTML(file)
+    file.close
+    doc
+  end
+
+  def delete_cuke_sniffer_html_and_temp_dir(temp_dir)
+    File.delete(File.join(File.dirname(__FILE__),'..','..','cuke_sniffer_results.html'))
+    Dir.delete(temp_dir)
+  end
+
+  def cleanup_file_and_html(file_name)
+    File.delete(File.join(File.dirname(__FILE__),'..','..','cuke_sniffer_results.html'))
+    File.delete( file_name)
   end
 end
 

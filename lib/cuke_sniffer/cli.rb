@@ -63,13 +63,15 @@ module CukeSniffer
     #  cuke_sniffer = CukeSniffer::CLI.new
     #
     # Against single files
-    #  cuke_sniffer = CukeSniffer::CLI.new("my_feature.feature", nil)
+    #  cuke_sniffer = CukeSniffer::CLI.new({:features_location =>"my_feature.feature"})
     # Or
-    #  cuke_sniffer = CukeSniffer::CLI.new(nil, "my_steps.rb")
+    #  cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location =>"my_steps.rb"})
+    # Or
+    #  cuke_sniffer = CukeSniffer::CLI.new({:hooks_location =>"my_hooks.rb"})
     #
     #
     # Against folders
-    #  cuke_sniffer = CukeSniffer::CLI.new("my_features_directory\", "my_steps_directory\")
+    #  cuke_sniffer = CukeSniffer::CLI.new({:features_location =>"my_features_directory\", :step_definitions_location =>"my_steps_directory\"})
     #
     # You can mix and match all of the above examples
     #
@@ -77,10 +79,15 @@ module CukeSniffer
     # Handles creation of all Feature and StepDefinition objects
     # Then catalogs all step definition calls to be used for rules and identification
     # of dead steps.
-    def initialize(features_location = Dir.getwd, step_definitions_location = Dir.getwd, hooks_location = Dir.getwd)
-      @features_location = features_location
-      @step_definitions_location = step_definitions_location
-      @hooks_location = hooks_location
+    def initialize(parameters = {})
+
+      @features_location = parameters[:features_location]
+      @step_definitions_location = parameters[:step_definitions_location]
+      @hooks_location = parameters[:hooks_location]
+
+      @features_location ||= Dir.getwd
+      @hooks_location ||= Dir.getwd
+      @step_definitions_location ||= Dir.getwd
       @features = []
       @scenarios = []
       @step_definitions = []
@@ -205,6 +212,7 @@ module CukeSniffer
 
       markup_erb = ERB.new extract_markup(markup_source)
       output = markup_erb.result(binding)
+      file_name = file_name + ".html" unless file_name =~ /\.html$/
       File.open(file_name, 'w') do |f|
         f.write(output)
       end
@@ -223,6 +231,7 @@ module CukeSniffer
     def output_xml(file_name = "cuke_sniffer.xml")
       doc = Nokogiri::XML::Document.new
       doc.root = self.to_xml
+      file_name = file_name + ".xml" unless file_name =~ /\.xml$/
       open(file_name, "w") do |file|
         file << doc.serialize
       end
