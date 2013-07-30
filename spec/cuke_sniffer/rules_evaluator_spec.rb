@@ -18,7 +18,7 @@ describe CukeSniffer::RulesEvaluator do
   end
 
   after(:each) do
-    File.delete(@file_name) if File.exist?(@file_name)
+    delete_temp_files
   end
 
   it "should take an instance of CLI and Rules to store" do

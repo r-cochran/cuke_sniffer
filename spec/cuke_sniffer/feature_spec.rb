@@ -11,7 +11,7 @@ describe CukeSniffer::Feature do
   end
 
   after(:each) do
-    File.delete(@file_name)
+    delete_temp_files
   end
 
   it "should gather all feature tags" do
@@ -241,7 +241,7 @@ describe "FeatureRules" do
   end
 
   after(:each) do
-    File.delete(@file_name)
+    delete_temp_files
   end
 
   it "should punish Features with no content" do

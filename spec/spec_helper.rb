@@ -1,7 +1,6 @@
 # encoding: utf-8
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$stdout = File.new( 'test_output', 'w' )
 
 require 'rspec'
 require 'cuke_sniffer'
@@ -13,6 +12,26 @@ def build_file(lines, file_name = @file_name)
   file = File.open(file_name, "w")
   lines.each { |line| file.puts(line) }
   file.close
+end
+
+def delete_temp_files
+  file_list = [
+      @file_name,
+      "cuke_sniffer_results.html",
+      "cuke_sniffer.xml"
+  ]
+  file_list.each do |file_name|
+    File.delete(file_name) if !file_name.nil? and File.exists?(file_name)
+  end
+
+  reset_test_output
+end
+
+def reset_test_output
+  $stdout.close if $stdout.class == File
+  $stdout = STDOUT
+  File.delete("test_output") if File.exists?("test_output")
+  $stdout = File.new( 'test_output', 'w' )
 end
 
 def verify_rule(object, rule, count = 1)

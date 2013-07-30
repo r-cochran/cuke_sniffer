@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe CukeSniffer::Hook do
+  after(:each) do
+    delete_temp_files
+  end
 
   it "should break down the content of a hook and store it" do
     hook_block = [
@@ -44,7 +47,6 @@ describe "HookRules" do
   def run_rule_against_hook(hook_block, rule)
     @cli.hooks = [CukeSniffer::Hook.new(@file_name + ":1", hook_block)]
     CukeSniffer::RulesEvaluator.new(@cli, [rule])
-
   end
 
   def test_hook_rule(hook_block, symbol, count = 1)
@@ -61,10 +63,13 @@ describe "HookRules" do
     verify_no_rule(@cli.hooks.first, rule)
   end
 
-
   before(:each) do
     @cli = CukeSniffer::CLI.new()
     @file_name = "hooks.rb"
+  end
+
+  after(:each) do
+    delete_temp_files
   end
 
   it "should punish Hooks without content" do

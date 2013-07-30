@@ -1,4 +1,5 @@
 require 'roxml'
+
 module CukeSniffer
 
   # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
