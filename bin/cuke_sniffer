@@ -49,9 +49,6 @@ def handle_output(argv)
       index_of_key = argv.index(value)
       if !index_of_key.nil?
         file_type = argv[index_of_key]
-
-        #cuke_sniffer -o html
-        #cuke_sniffer -o html -o xml
         file_name = argv[index_of_key+1]
         call_output(file_type, file_name)
       end

@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe CukeSniffer::Scenario do
 
+  after(:all) do
+    delete_temp_files
+  end
+
   it "should retain the passed location, name, and the steps of the scenario step after initialization" do
     scenario_block = [
         "Scenario: Test Scenario",
@@ -379,6 +383,7 @@ describe "ScenarioRules" do
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     build_file([], @file_name)
     feature = CukeSniffer::Feature.new(@file_name)
+    delete_temp_files
     feature.scenarios =[scenario]
     @cli.features = [feature]
     CukeSniffer::RulesEvaluator.new(@cli, [rule])
@@ -403,8 +408,8 @@ describe "ScenarioRules" do
     @cli = CukeSniffer::CLI.new()
   end
 
-  after(:each) do
-    File.delete(@file_name)
+  after(:all) do
+    delete_temp_files
   end
 
   it "should punish Scenarios without a name" do
@@ -736,6 +741,7 @@ describe "BackgroundRules" do
     background = CukeSniffer::Scenario.new("location:1", background_block)
     build_file([], @file_name)
     feature = CukeSniffer::Feature.new(@file_name)
+    delete_temp_files
     feature.background = background
     @cli.features = [feature]
     CukeSniffer::RulesEvaluator.new(@cli, [rule])
@@ -758,8 +764,8 @@ describe "BackgroundRules" do
     @cli = CukeSniffer::CLI.new()
   end
 
-  after(:each) do
-    File.delete(@file_name)
+  after(:all) do
+    delete_temp_files
   end
 
   it "should not punish Backgrounds without a name" do

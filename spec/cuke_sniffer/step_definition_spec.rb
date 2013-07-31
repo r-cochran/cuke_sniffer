@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe CukeSniffer::StepDefinition do
+  after(:all) do
+    delete_temp_files
+  end
 
   it "should retain the passed location of the step after initialization" do
     step_definition_block = [
@@ -336,6 +339,10 @@ describe "StepDefinitionRules" do
 
   before(:each) do
     @cli = CukeSniffer::CLI.new()
+  end
+
+  after(:all) do
+    delete_temp_files
   end
 
   it "should punish Step Definitions with no code" do
