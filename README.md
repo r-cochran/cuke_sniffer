@@ -75,6 +75,11 @@ XML output
     cuke_sniffer -o xml
 	cuke_sniffer -o xml <name_of_object>
 
+PDF output
+
+    cuke_sniffer -o pdf
+    cuke_sniffer -o <name_of_object>
+
 ###From Ruby files
 
     require 'cuke_sniffer'
@@ -293,6 +298,14 @@ The xml output follows the same object structure as the classes in this gem.
 					rule
 						phrase
 						score
+
+
+PDF Output
+----------
+
+The PDF output option uses a modified version of the HTML output markup file to generate a PDF. The PDF generated
+has expanded all sections that would have been hidden in the HTML report. 
+
 		
 Submitting Issues
 -----
