@@ -1,4 +1,5 @@
 require 'erb'
+require 'pdfkit'
 require 'roxml'
 
 module CukeSniffer
@@ -202,10 +203,7 @@ module CukeSniffer
     # Or
     #  cuke_sniffer.output_html("results01-01-0001.html")
     def output_html(file_name = "cuke_sniffer_results.html", cuke_sniffer = self, markup_source = File.join(File.dirname(__FILE__), 'report'))
-      @features = @features.sort_by { |feature| feature.total_score }.reverse
-      @step_definitions = @step_definitions.sort_by { |step_definition| step_definition.score }.reverse
-      @hooks = @hooks.sort_by { |hook| hook.score }.reverse
-      @rules = @rules.sort_by { |rule| rule.score }.reverse
+      gather_cuke_data_for_report
 
       enabled_rules = rules_template(true, "Enabled Rules",markup_source)
       disabled_rules = rules_template(false, "Disabled Rules",markup_source)
@@ -217,6 +215,38 @@ module CukeSniffer
         f.write(output)
       end
     end
+
+    # Creates a pdf file with the collected project details
+    # file_name defaults to cuke_sniffer_results.pdf unless specified.
+    # Currently the pdf report is exactly the same as the html report with all
+    # divs expanded. 
+    def output_pdf(file_name = "cuke_sniffer_results.pdf", cuke_sniffer = self, markup_source = File.join(File.dirname(__FILE__), 'report'))
+      gather_cuke_data_for_report
+
+      enabled_rules = rules_template(true, "Enabled Rules", markup_source)
+      disabled_rules = rules_template(false, "Disabled Rules", markup_source)
+
+      markup_erb = ERB.new extract_markup(markup_source, "pdf_report.html.erb")
+      output = markup_erb.result(binding)
+      file_name = file_name + ".pdf" unless file_name =~ /\.pdf$/
+
+      create_pdf_from_html(output, file_name)
+    end
+
+
+    def create_pdf_from_html(html_file, file_name)
+      pdfkit = PDFKit.new(html_file, :page_size => 'Letter')
+      pdfkit.to_file(Dir.pwd + "/" + file_name)
+    end
+
+
+    def gather_cuke_data_for_report
+      @features = @features.sort_by { |feature| feature.total_score }.reverse
+      @step_definitions = @step_definitions.sort_by { |step_definition| step_definition.score }.reverse
+      @hooks = @hooks.sort_by { |hook| hook.score }.reverse
+      @rules = @rules.sort_by { |rule| rule.score }.reverse
+    end
+
 
     def rules_template(state, heading,markup_source, cuke_sniffer = self)
       markup_rules = ERB.new extract_markup(markup_source, "rules.html.erb")
