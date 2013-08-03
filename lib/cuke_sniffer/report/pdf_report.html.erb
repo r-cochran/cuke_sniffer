@@ -2,8 +2,6 @@
 <style>
 
  .title {
-        padding-left: 1%;
-        width: 35%;
         background-color: green;
         color: white;
         border-top: 0;
@@ -19,7 +17,6 @@
     }
 
     .table_top {
-        width: 20%;
         font-size: 14pt;
         padding: 0;
     }
@@ -47,7 +44,7 @@
     .rule_notes {
         margin-left: 1%;
         border-left: 2px solid #90ee90;
-        border-top: 2px solid #90ee90;
+        border-top: 1px solid #90ee90;
         padding-bottom: 14px;
         text-indent: 1%;
         display: block;
@@ -238,7 +235,7 @@
   <% cuke_sniffer.features.each do |feature| %>
       <% next if feature.total_score <= 0 %>
       <div style="">
-        <div class="red_number" style="float:left"><%= feature.total_score + feature.scenarios_score %></div>
+        <div class="red_number" style="float:left"><%= feature.total_score + feature.scenarios_score %>&nbsp;</div>
         <div class="notes"><%= feature.name %></div>
       </div>
       <div id="feature_<%= index %>" class="sub_section">
@@ -257,7 +254,7 @@
 
         <div>
           <% unless feature.background.nil? or feature.background.score > 0 %>
-              <div class="red_number" style=""><%= feature.background.score %></div>
+              <div class="red_number" style=""><%= feature.background.score %>&nbsp;</div>
               <div style="float: left; width: 45%;"><%= feature.background.type + ": " + feature.background.name %></div>
               <div style="">
                 <% feature.background.rules_hash.each_key do |rule| %>
@@ -270,7 +267,7 @@
         <div>
           <% feature.scenarios.each do |scenario| %>
               <% next if scenario.score <= 0 %>
-              <div class="red_number" style="float:left; padding-left: 1%"><%= scenario.score %></div>
+              <div class="red_number" style="float:left; padding-left: 1%"><%= scenario.score %>&nbsp;</div>
               <div style="float: left; width: 45%;"><%= scenario.type + ": " + scenario.name %></div>
               <div style="float: left; border-left: 2px solid #90ee90; border-top: 2px solid #90ee90; text-indent: 1%">
                 <% scenario.rules_hash.each_key do |rule| %>
@@ -299,7 +296,7 @@
   <% cuke_sniffer.step_definitions.each do |step_definition| %>
       <% next if step_definition.score <= 0 %>
       <div style="cursor: pointer; padding-top: 3px">
-        <div class="red_number" style="float:left"><%= step_definition.score %></div>
+        <div class="red_number" style="float:left"><%= step_definition.score %>&nbsp;</div>
         <% parameters = " " %>
         <% step_definition.parameters.each do |param| %>
             <% if param == step_definition.parameters.first %>
@@ -349,7 +346,7 @@
   <% cuke_sniffer.hooks.each do |hook| %>
       <% next if hook.score <= 0 %>
       <div style="padding-top: 3px;">
-        <div class="red_number" style="float:left"><%= hook.score %></div>
+        <div class="red_number" style="float:left"><%= hook.score %>&nbsp;</div>
         <% tags = "(" %>
         <% hook.tags.each do |tag| %>
             <% tags << tag %>

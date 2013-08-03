@@ -27,5 +27,6 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.homepage = 'https://github.com/r-cochran/cuke_sniffer'
   s.add_runtime_dependency 'roxml'
+  s.add_runtime_dependency 'pdfkit'
   s.executables = ["cuke_sniffer"]
 end

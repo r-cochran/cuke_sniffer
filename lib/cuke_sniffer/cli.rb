@@ -202,13 +202,13 @@ module CukeSniffer
     #  cuke_sniffer.output_html
     # Or
     #  cuke_sniffer.output_html("results01-01-0001.html")
-    def output_html(file_name = "cuke_sniffer_results.html", cuke_sniffer = self, markup_source = File.join(File.dirname(__FILE__), 'report'))
+    def output_html(file_name = "cuke_sniffer_results.html", cuke_sniffer = self, markup_source = File.join(File.dirname(__FILE__), 'report'), template_name = "markup.html.erb")
       gather_cuke_data_for_report
 
       enabled_rules = rules_template(true, "Enabled Rules",markup_source)
       disabled_rules = rules_template(false, "Disabled Rules",markup_source)
 
-      markup_erb = ERB.new extract_markup(markup_source)
+      markup_erb = ERB.new extract_markup(markup_source, template_name)
       output = markup_erb.result(binding)
       file_name = file_name + ".html" unless file_name =~ /\.html$/
       File.open(file_name, 'w') do |f|
@@ -220,23 +220,20 @@ module CukeSniffer
     # file_name defaults to cuke_sniffer_results.pdf unless specified.
     # Currently the pdf report is exactly the same as the html report with all
     # divs expanded. 
-    def output_pdf(file_name = "cuke_sniffer_results.pdf", cuke_sniffer = self, markup_source = File.join(File.dirname(__FILE__), 'report'))
+    def output_pdf(file_name = "cuke_sniffer_results.pdf")
       gather_cuke_data_for_report
 
-      enabled_rules = rules_template(true, "Enabled Rules", markup_source)
-      disabled_rules = rules_template(false, "Disabled Rules", markup_source)
+      output_html(file_name, self, File.join(File.dirname(__FILE__), 'report'), "pdf_report.html.erb")
 
-      markup_erb = ERB.new extract_markup(markup_source, "pdf_report.html.erb")
-      output = markup_erb.result(binding)
-      file_name = file_name + ".pdf" unless file_name =~ /\.pdf$/
-
-      create_pdf_from_html(output, file_name)
+      create_pdf_from_html(file_name)
     end
 
 
-    def create_pdf_from_html(html_file, file_name)
-      pdfkit = PDFKit.new(html_file, :page_size => 'Letter')
-      pdfkit.to_file(Dir.pwd + "/" + file_name)
+    def create_pdf_from_html(file_name)
+      temp_html_file = File.open(file_name + ".html")
+      pdfkit = PDFKit.new(temp_html_file, :page_size => 'A3')
+      pdfkit.to_file(file_name)
+      File.delete(temp_html_file)
     end
 
 
