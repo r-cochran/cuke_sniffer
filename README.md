@@ -12,6 +12,7 @@ are potential misuses or errors. Cuke_sniffer follows a 'golf score' type system
 where the lower the number, the better. 'Min' refers to the overall best score
 for a particular object and the 'Max' is the overall worst object score.
 
+
 `SEE LICENSE FOR CURRENT CUKE_SNIFFER USE DETAILS`
 
 [Patch Notes] (https://github.com/r-cochran/cuke_sniffer/wiki/Patch-notes)
@@ -73,6 +74,11 @@ XML output
 
     cuke_sniffer -o xml
 	cuke_sniffer -o xml <name_of_object>
+
+PDF output
+
+    cuke_sniffer -o pdf
+    cuke_sniffer -o <name_of_object>
 
 ###From Ruby files
 
@@ -292,6 +298,14 @@ The xml output follows the same object structure as the classes in this gem.
 					rule
 						phrase
 						score
+
+
+PDF Output
+----------
+
+The PDF output option uses a modified version of the HTML output markup file to generate a PDF. The PDF generated
+has expanded all sections that would have been hidden in the HTML report. 
+
 		
 Submitting Issues
 -----
@@ -302,3 +316,5 @@ Authored by: Robert Cochran, Chris Vaughn, Robert Anderson
 Contributions by [Manifest Solutions](http://manifestcorp.com/Home.aspx)
 
 [All Contributors](https://github.com/r-cochran/cuke_sniffer/contributors)
+=======
+Contributed by [Manifest Solutions](http://manifestcorp.com/Home.aspx)

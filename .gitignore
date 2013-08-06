@@ -164,3 +164,6 @@ pip-log.txt
 
 *.gem
 test_output
+
+#Reports 
+features/cuke_sniffer_results.*
