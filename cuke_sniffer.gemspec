@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
              "lib/cuke_sniffer/step_definition.rb",
              "lib/cuke_sniffer/report/markup.html.erb",
              "lib/cuke_sniffer/report/rules.html.erb",
+             "lib/cuke_sniffer/report/pdf_report.html.erb",
              "lib/cuke_sniffer/rule.rb",
              "lib/cuke_sniffer/summary_node.rb",
              "lib/cuke_sniffer/rules_evaluator.rb",
@@ -26,5 +27,6 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.homepage = 'https://github.com/r-cochran/cuke_sniffer'
   s.add_runtime_dependency 'roxml'
+  s.add_runtime_dependency 'pdfkit'
   s.executables = ["cuke_sniffer"]
 end

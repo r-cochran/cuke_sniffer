@@ -1,0 +1,384 @@
+<link rel="stylesheet" type="text/css" >
+<style>
+
+ .title {
+        background-color: green;
+        color: white;
+        border-top: 0;
+        border-bottom: 0;
+        font-weight: bold;
+        font-size: 21pt;
+        cursor: pointer;
+    }
+
+    .shrink_section {
+        border: 2px solid #90ee90;
+        display: block;
+    }
+
+    .table_top {
+        font-size: 14pt;
+        padding: 0;
+    }
+
+    .divide_row {
+        border-bottom: 1px solid black;
+    }
+
+    .red_number {
+        color: red;
+        font-weight: bold;
+    }
+
+    .notes {
+        font-weight: bold;
+    }
+
+    .sub_section {
+        display: block;
+        margin-left: 1%;
+        margin-right: 1%;
+        border-top: 2px solid #add8e6;
+    }
+
+    .rule_notes {
+        margin-left: 1%;
+        border-left: 2px solid #90ee90;
+        border-top: 1px solid #90ee90;
+        padding-bottom: 14px;
+        text-indent: 1%;
+        display: block;
+        padding-left: 1%;
+        margin-bottom: 15px;
+        clear: left;
+
+    }
+
+    .rule_style {
+        margin: 0;
+        text_indent: 3%;
+
+    }
+    .rule_heading {
+        font-weight: bold;
+    }
+    ol  {
+        list-style-type:none;
+        display: block;
+
+    }
+
+    .rule_details {
+        text-indent: 0%;
+    } 
+
+</style>
+
+<div style="float: left; color: green; font-size: 20px; font-weight: bold; padding-bottom: 1px;">
+  Cuke Sniffer
+</div>
+<br style="clear:both">
+<div style="border-top: 2px solid lightgreen; text-align: right;">
+  <div style="float: right; background-color:green;border-right:2px solid #fff; color:white;padding:4px; padding-left:40px;font-size:11pt;font-weight:bold;padding-right:10px;">
+    Score: <%= cuke_sniffer.summary[:total_score] %></div>
+</div>
+<br style="clear:both">
+
+<div class="title">
+  Summary
+</div>
+<div class="shrink_section" style="display: block;" id="summary_data">
+  <% data_symbols = [:features, :scenarios, :step_definitions, :hooks] %>
+  <table style="width: 100%;" class="notes">
+    <tr class="divide_row">
+      <td class="table_top"></td>
+      <td class="table_top">Features</td>
+      <td class="table_top">Scenarios</td>
+      <td class="table_top">Step Definitions</td>
+      <td class="table_top">Hooks</td>
+    </tr>
+    <tr>
+      <td>Total Score</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= cuke_sniffer.summary[symbol][:total_score] %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td>Count</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= cuke_sniffer.summary[symbol][:total].inspect %></td>
+      <% end %>
+    </tr>
+    <tr/>
+    <tr>
+      <td>Lowest Score</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= cuke_sniffer.summary[symbol][:min] %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td>Highest Score</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= cuke_sniffer.summary[symbol][:max] %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td>Average Score</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= cuke_sniffer.summary[symbol][:average] %></td>
+      <% end %>
+    </tr>
+    <tr/>
+
+    <tr>
+      <td>Threshold</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= cuke_sniffer.summary[symbol][:threshold] %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td>Good</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= ((cuke_sniffer.summary[symbol][:good].to_f/cuke_sniffer.summary[symbol][:total].to_f) * 100).round(2) %>
+            %
+          </td>
+      <% end %>
+    </tr>
+    <tr>
+      <td>Bad</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= ((cuke_sniffer.summary[symbol][:bad].to_f/cuke_sniffer.summary[symbol][:total].to_f) * 100).round(2) %>
+            %
+          </td>
+      <% end %>
+    </tr>
+  </table>
+</div>
+<br style="clear:both">
+
+<div class="title">
+  Improvement List
+</div>
+<div class="shrink_section" id="improvement_list_data">
+  <% if cuke_sniffer.summary[:improvement_list].empty? %>
+      <div class="notes">No Improvements to make!</div>
+  <% end %>
+  <table style="width: 100%">
+    <% cuke_sniffer.summary[:improvement_list].each do |improvement, count| %>
+        <tr>
+          <td class="red_number"><%= count %></td>
+          <td class="notes"><%= improvement %></td>
+        </tr>
+    <% end %>
+  </table>
+</div>
+<br style="clear:both">
+
+<div id="rulesTab" class="title">
+  Rules
+</div>
+
+<div class="shrink_section" id="rules">
+  <%= enabled_rules %>
+  <%= disabled_rules %>
+</div>
+
+<br style="clear:both">
+
+<div class="title">
+  Dead Steps
+</div>
+<div class="shrink_section" id="dead_steps_data">
+  <% dead_steps = cuke_sniffer.get_dead_steps %>
+  <% dead_steps.delete(:total) %>
+  <% dead_step_count = dead_steps.values.flatten.count %>
+  <% if dead_step_count == 0 %>
+      <div class="notes">No dead steps found!</div>
+  <% elsif dead_step_count == 1 %>
+      <div class="notes" style="color: red"><%= dead_step_count %> Dead Step found.</div>
+  <% else %>
+      <div class="notes" style="color: red"><%= dead_step_count %> Dead Steps found.</div>
+  <% end %>
+
+  <table style="width: 100%">
+    <% dead_steps.each_key do |file_name| %>
+        <tr>
+          <td>
+            <div style=""><%= file_name.gsub(cuke_sniffer.step_definitions_location, "") %>
+              .rb
+            </div>
+            <table style="width: 100%; padding-left: 3%;">
+              <% dead_steps[file_name].each do |regex| %>
+                  <tr>
+                    <td style="width: 3%"><%= regex.match(/(?<line>\d+):/)[:line] %></td>
+                    <td><%= regex.match(/:(?<regex>.*)/)[:regex] %></td>
+                  </tr>
+              <% end %>
+            </table>
+          </td>
+        </tr>
+    <% end %>
+  </table>
+</div>
+<br style="clear:both">
+
+<div class="title">
+  Features
+</div>
+<div class="shrink_section" id="features_data">
+  <% if cuke_sniffer.features.count == 0 %>
+      <div class="notes">There were no Features to sniff in '<%= cuke_sniffer.features_location %>'!</div>
+  <% elsif cuke_sniffer.features.count >= 1 && cuke_sniffer.scenarios.count >=1 && cuke_sniffer.summary[:features][:total_score] ==0 && cuke_sniffer.summary[:scenarios][:total_score] ==0 %>
+      <div class="notes">Excellent! No smells found for Features and Scenarios!</div>
+  <% end %>
+  <% index = 0 %>
+  <% cuke_sniffer.features.each do |feature| %>
+      <% next if feature.total_score <= 0 %>
+      <div style="">
+        <div class="red_number" style="float:left"><%= feature.total_score + feature.scenarios_score %>&nbsp;</div>
+        <div class="notes"><%= feature.name %></div>
+      </div>
+      <div id="feature_<%= index %>" class="sub_section">
+        <div style="">
+          <% if feature.rules_hash.empty? %>
+              <pre style="margin: 0;">      </pre>
+          <% end %>
+          <% feature.rules_hash.each_key do |rule| %>
+              <pre style="margin: 0;"><%= rule %></pre>
+          <% end %>
+        </div>
+        <div style="text-indent: 1%; padding-bottom: 4px">
+          <%= feature.location.gsub(cuke_sniffer.features_location, "") %>
+        </div>
+        <br style="clear:both">
+
+        <div>
+          <% unless feature.background.nil? or feature.background.score > 0 %>
+              <div class="red_number" style=""><%= feature.background.score %>&nbsp;</div>
+              <div style="float: left; width: 45%;"><%= feature.background.type + ": " + feature.background.name %></div>
+              <div style="">
+                <% feature.background.rules_hash.each_key do |rule| %>
+                    <pre style="margin: 0; text_indent: 3%;"><%= rule %></pre>
+                <% end %>
+              </div>
+              <br style="clear:both">
+          <% end %>
+        </div>
+        <div>
+          <% feature.scenarios.each do |scenario| %>
+              <% next if scenario.score <= 0 %>
+              <div class="red_number" style="float:left; padding-left: 1%"><%= scenario.score %>&nbsp;</div>
+              <div style="float: left; width: 45%;"><%= scenario.type + ": " + scenario.name %></div>
+              <div style="float: left; border-left: 2px solid #90ee90; border-top: 2px solid #90ee90; text-indent: 1%">
+                <% scenario.rules_hash.each_key do |rule| %>
+                    <pre style="margin: 0; text_indent: 3%;"><%= rule %></pre>
+                <% end %>
+              </div>
+              <br style="clear:both">
+          <% end %>
+        </div>
+      </div>
+      <% index += 1 %>
+  <% end %>
+</div>
+<br style="clear:both">
+
+<div class="title">
+  Step Definitions
+</div>
+<div class="shrink_section" id="step_definitions_data">
+  <% if cuke_sniffer.step_definitions.count == 0 %>
+      <div class="notes">There were no Step Definitions to sniff in '<%= cuke_sniffer.step_definitions_location %>'!</div>
+  <% elsif cuke_sniffer.step_definitions.count >= 1 && cuke_sniffer.summary[:step_definitions][:total_score] ==0 %>
+      <div class="notes">Excellent! No smells found for Step Definitions!</div>
+  <% end %>
+  <% index = 0 %>
+  <% cuke_sniffer.step_definitions.each do |step_definition| %>
+      <% next if step_definition.score <= 0 %>
+      <div style="cursor: pointer; padding-top: 3px">
+        <div class="red_number" style="float:left"><%= step_definition.score %>&nbsp;</div>
+        <% parameters = " " %>
+        <% step_definition.parameters.each do |param| %>
+            <% if param == step_definition.parameters.first %>
+                <% parameters << "| " %>
+            <% end %>
+            <% parameters << param %>
+
+            <% if param == step_definition.parameters.last %>
+                <% parameters << " |" %>
+            <% else %>
+                <% parameters << ", " %>
+            <% end %>
+        <% end %>
+        <div style="float: left" class="notes"><%= "/" + step_definition.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex] + "/ do " + parameters %></div>
+        <div class="notes"><%= step_definition.calls.keys.count %> Call(s)</div>
+      </div>
+      <div id="step_definition_<%= index %>" style="display:block;">
+        <br style="clear:both">
+
+        <div class="sub_section" style="display:block">
+          <div style="">
+            <% step_definition.rules_hash.each_key do |rule| %>
+                <pre style="margin: 0;"><%= rule %></pre>
+            <% end %>
+          </div>
+          <div style="text-indent: 1%">
+            <p style="margin:0"><%= step_definition.location.gsub(cuke_sniffer.step_definitions_location, "") %></p>
+          </div>
+        </div>
+      </div>
+      <br style="clear:both">
+      <% index += 1 %>
+  <% end %>
+</div>
+<br style="clear:both">
+
+<div class="title">
+  Hooks
+</div>
+<div class="shrink_section" id="hooks_data">
+  <% if cuke_sniffer.hooks.count == 0 %>
+      <div class="notes">There were no Hooks to sniff in '<%= cuke_sniffer.hooks_location %>'!</div>
+  <% elsif cuke_sniffer.hooks.count >= 1 && cuke_sniffer.summary[:hooks][:total_score] ==0 %>
+      <div class="notes">Excellent! No smells found for Hooks!</div>
+  <% end %>
+  <% index = 0 %>
+  <% cuke_sniffer.hooks.each do |hook| %>
+      <% next if hook.score <= 0 %>
+      <div style="padding-top: 3px;">
+        <div class="red_number" style="float:left"><%= hook.score %>&nbsp;</div>
+        <% tags = "(" %>
+        <% hook.tags.each do |tag| %>
+            <% tags << tag %>
+            <% tags << ", " unless tag == hook.tags.last %>
+        <% end %>
+        <% tags += ")" %>
+        <% parameters = "| " %>
+        <% hook.parameters.each do |parameter| %>
+            <% parameters << parameter %>
+            <% parameters << ", " unless parameter == hook.parameters.last %>
+        <% end %>
+        <% parameters += " |" %>
+        <% name = hook.type %>
+        <% name += tags unless tags == "()" %>
+        <% name += " do " %>
+        <% name += parameters unless parameters == "|  |" %>
+        <div class="notes"><%= name %></div>
+      </div>
+      <div id="hook_<%= index %>" style="display:block;">
+        <div class="sub_section" style="display:block;">
+          <div>
+            <% hook.rules_hash.each_key do |rule| %>
+                <pre style="margin: 0;"><%= rule %></pre>
+            <% end %>
+          </div>
+          <div style="text-indent: 1%">
+            <%= hook.location.gsub(cuke_sniffer.hooks_location, "") %>
+          </div>
+          <br style="clear:both">
+        </div>
+      </div>
+      <% index += 1 %>
+  <% end %>
+</div>
+<br style="clear:both">

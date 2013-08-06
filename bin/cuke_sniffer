@@ -6,9 +6,9 @@ require 'cuke_sniffer'
 help_cmd_txt = "Welcome to CukeSniffer!
 Calling CukeSniffer with no arguments will run it against the current directory.
 Other Options for Running include:
-  -o, --out <type> (name)                   : Where <type> is 'html' or 'xml'.
+  -o, --out <type> (name)                   : Where <type> is 'html', 'xml', or 'pdf'.
                                               Runs CukeSniffer then outputs an
-                                              html/xml file in the current
+                                              html/xml/pdf file in the current
                                               directory (with optional name).
   -h,  --help                               : You get this lovely document.
   -p,  --project <project_root>             : Root directory of project.
@@ -43,7 +43,8 @@ def handle_output(argv)
   if find_index_by_regex_match(argv, /-o|--out/)
     output_type_hash = {
         :html => "html",
-        :xml => "xml"
+        :xml => "xml",
+        :pdf => "pdf"
     }
     output_type_hash.each_value do |value|
       index_of_key = argv.index(value)
@@ -61,9 +62,11 @@ end
 def call_output(file_type, file_name)
   case file_type
     when "xml"
-      file_name.nil? ? @cuke_sniffer.output_xml : @cuke_sniffer.output_xml(file_name)
+      file_name.nil? ? @cuke_sniffer.output_xml  : @cuke_sniffer.output_xml(file_name)
     when "html"
       file_name.nil? ? @cuke_sniffer.output_html : @cuke_sniffer.output_html(file_name)
+    when "pdf"
+      file_name.nil? ? @cuke_sniffer.output_pdf  : @cuke_sniffer.output_pdf(file_name)
     else
       puts "#{file_type} is not a supported version of cuke_sniffer output."
   end
