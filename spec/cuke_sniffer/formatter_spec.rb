@@ -121,11 +121,14 @@ describe CukeSniffer::Formatter do
 
   describe "creating console output" do
     it "should print a concise summary of the project to the console" do
-      $stdout = File.new( 'test_output', 'w' )
+      @file_name = 'test_output'
+      file_output = File.new( @file_name, 'w' )
+      $stdout = file_output
       cuke_sniffer = CukeSniffer::CLI.new()
       CukeSniffer::Formatter.output_console(cuke_sniffer)
       $stdout = STDOUT
-      File.exists?('test_output').should be_true
+      file_output.close
+      File.exists?(@file_name).should be_true
     end
   end
 

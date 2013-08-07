@@ -36,7 +36,7 @@ module CukeSniffer
       Average: #{hooks_results[:average]}
   Improvements to make:"
 
-      cuke_sniffer.summary[:improvement_list].each_key { |improvement| output << "\n    (#{summary[:improvement_list][improvement]})#{improvement}" }
+      cuke_sniffer.summary[:improvement_list].each_key { |improvement| output << "\n    (#{cuke_sniffer.summary[:improvement_list][improvement]})#{improvement}" }
       puts output
     end
 
