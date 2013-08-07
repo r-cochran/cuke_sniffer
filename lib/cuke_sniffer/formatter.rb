@@ -35,7 +35,8 @@ module CukeSniffer
       Max: #{hooks_results[:max]} (#{hooks_results[:max_file]})
       Average: #{hooks_results[:average]}
   Improvements to make:"
-      create_improvement_list(cuke_sniffer.summary[:improvement_list]).each { |item| output << "\n    #{item}" }
+
+      cuke_sniffer.summary[:improvement_list].each_key { |improvement| output << "\n    (#{summary[:improvement_list][improvement]})#{improvement}" }
       puts output
     end
 
@@ -82,12 +83,6 @@ module CukeSniffer
     def self.output_pdf(cuke_sniffer, file_name = DEFAULT_OUTPUT_FILE_NAME)
       output_html(cuke_sniffer, file_name, "pdf_report.html.erb")
       create_pdf_from_html(file_name)
-    end
-
-    def self.create_improvement_list(improvement_list)
-      output = []
-      improvement_list.each_key { |improvement| output << "(#{summary[:improvement_list][improvement]})#{improvement}" }
-      output
     end
 
     def self.create_pdf_from_html(file_name)
