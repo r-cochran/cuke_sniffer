@@ -7,6 +7,7 @@ require 'cuke_sniffer'
 require 'roxml'
 
 include CukeSniffer::RuleConfig
+include CukeSniffer::Constants
 
 def build_file(lines, file_name = @file_name)
   file = File.open(file_name, "w")
@@ -17,21 +18,13 @@ end
 def delete_temp_files
   file_list = [
       @file_name,
-      "cuke_sniffer_results.html",
-      "cuke_sniffer.xml"
+      DEFAULT_OUTPUT_FILE_NAME + ".html",
+      DEFAULT_OUTPUT_FILE_NAME + ".xml",
+      DEFAULT_OUTPUT_FILE_NAME + ".pdf"
   ]
   file_list.each do |file_name|
     File.delete(file_name) if !file_name.nil? and File.exists?(file_name)
   end
-
-  reset_test_output
-end
-
-def reset_test_output
-  $stdout.close if $stdout.class == File
-  $stdout = STDOUT
-  File.delete("test_output") if File.exists?("test_output")
-  $stdout = File.new( 'test_output', 'w' )
 end
 
 def verify_rule(object, rule, count = 1)

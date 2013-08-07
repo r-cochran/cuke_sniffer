@@ -41,29 +41,18 @@ module CukeSniffer
     attr_accessor :code
 
     # location must be in the format of "file_path\file_name.rb:line_number"
-    # raw_code is an array of strings that represents the step definition
+    # step_definition_block is an array of strings that represents the step definition
     # must contain the regex line and its pairing end
-    def initialize(location, raw_code)
-      super(location)
-
+    def initialize(location, step_definition_block)
       @parameters = []
       @calls = {}
       @nested_steps = {}
-      @start_line = location.match(/:(?<line>\d*)$/)[:line].to_i
-
-      end_match_index = (raw_code.size - 1) - raw_code.reverse.index("end")
-      @code = raw_code[1...end_match_index]
-
-      raw_code.each do |line|
-        if line =~ STEP_DEFINITION_REGEX
-          matches = STEP_DEFINITION_REGEX.match(line)
-          @regex = Regexp.new(matches[:step])
-          @parameters = matches[:parameters].split(/,\s*/).collect{|param| param.strip} if matches[:parameters]
-        end
-      end
+      super(location)
+      extract_start_line(location)
+      extract_code(step_definition_block)
+      extract_step_definition_signature(step_definition_block)
 
       detect_nested_steps
-      evaluate_score
     end
 
     # Adds new location => step_string pairs to the calls hash
@@ -72,12 +61,7 @@ module CukeSniffer
     end
 
     def ==(comparison_object) # :nodoc:
-      super(comparison_object) &&
-      comparison_object.regex == regex &&
-      comparison_object.code == code &&
-      comparison_object.parameters == parameters &&
-      comparison_object.calls == calls &&
-      comparison_object.nested_steps == nested_steps
+      comparison_object.regex == regex && comparison_object.parameters == parameters
     end
 
     def condensed_call_list
@@ -151,7 +135,29 @@ module CukeSniffer
       end
     end
 
-    def evaluate_score
+    def extract_step_definition_signature(step_definition_block)
+      regex_line = find_regex_line(step_definition_block)
+      unless regex_line.nil?
+        matches = STEP_DEFINITION_REGEX.match(regex_line)
+        @regex = Regexp.new(matches[:step])
+        @parameters = matches[:parameters].split(/,\s*/).collect { |param| param.strip } if matches[:parameters]
+      end
+    end
+
+    def extract_start_line(location)
+      @start_line = location.match(/:(?<line>\d*)$/)[:line].to_i
+    end
+
+    def extract_code(step_definition_block)
+      end_match_index = (step_definition_block.size - 1) - step_definition_block.reverse.index("end")
+      @code = step_definition_block[1...end_match_index]
+    end
+
+    def find_regex_line(step_definition_block)
+      step_definition_block.each do |line|
+        return line if line =~ STEP_DEFINITION_REGEX
+      end
+      nil
     end
   end
 end

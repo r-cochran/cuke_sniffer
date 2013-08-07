@@ -169,31 +169,7 @@ module CukeSniffer
 
     # Prints out a summary of the results and the list of improvements to be made
     def output_results
-      feature_results = @summary[:features]
-      scenario_results = @summary[:scenarios]
-      step_definition_results = @summary[:step_definitions]
-      hooks_results = @summary[:hooks]
-      output = "Suite Summary
-  Total Score: #{@summary[:total_score]}
-    Features
-      Min: #{feature_results[:min]} (#{feature_results[:min_file]})
-      Max: #{feature_results[:max]} (#{feature_results[:max_file]})
-      Average: #{feature_results[:average]}
-    Scenarios
-      Min: #{scenario_results[:min]} (#{scenario_results[:min_file]})
-      Max: #{scenario_results[:max]} (#{scenario_results[:max_file]})
-      Average: #{scenario_results[:average]}
-    Step Definitions
-      Min: #{step_definition_results[:min]} (#{step_definition_results[:min_file]})
-      Max: #{step_definition_results[:max]} (#{step_definition_results[:max_file]})
-      Average: #{step_definition_results[:average]}
-    Hooks
-      Min: #{hooks_results[:min]} (#{hooks_results[:min_file]})
-      Max: #{hooks_results[:max]} (#{hooks_results[:max_file]})
-      Average: #{hooks_results[:average]}
-  Improvements to make:"
-      create_improvement_list.each { |item| output << "\n    #{item}" }
-      output
+      CukeSniffer::Formatter.output_console(self)
     end
 
     # Creates a html file with the collected project details
@@ -202,52 +178,16 @@ module CukeSniffer
     #  cuke_sniffer.output_html
     # Or
     #  cuke_sniffer.output_html("results01-01-0001.html")
-    def output_html(file_name = "cuke_sniffer_results.html", cuke_sniffer = self, markup_source = File.join(File.dirname(__FILE__), 'report'), template_name = "markup.html.erb")
-      gather_cuke_data_for_report
-
-      enabled_rules = rules_template(true, "Enabled Rules",markup_source)
-      disabled_rules = rules_template(false, "Disabled Rules",markup_source)
-
-      markup_erb = ERB.new extract_markup(markup_source, template_name)
-      output = markup_erb.result(binding)
-      file_name = file_name + ".html" unless file_name =~ /\.html$/
-      File.open(file_name, 'w') do |f|
-        f.write(output)
-      end
+    def output_html(file_name = DEFAULT_OUTPUT_FILE_NAME + ".html", cuke_sniffer = self, markup_source = File.join(File.dirname(__FILE__), 'report'), template_name = "markup.html.erb")
+      CukeSniffer::Formatter.output_html(self, file_name)
     end
 
     # Creates a pdf file with the collected project details
     # file_name defaults to cuke_sniffer_results.pdf unless specified.
     # Currently the pdf report is exactly the same as the html report with all
     # divs expanded. 
-    def output_pdf(file_name = "cuke_sniffer_results.pdf")
-      gather_cuke_data_for_report
-
-      output_html(file_name, self, File.join(File.dirname(__FILE__), 'report'), "pdf_report.html.erb")
-
-      create_pdf_from_html(file_name)
-    end
-
-
-    def create_pdf_from_html(file_name)
-      temp_html_file = File.open(file_name + ".html")
-      pdfkit = PDFKit.new(temp_html_file, :page_size => 'A3')
-      pdfkit.to_file(file_name)
-      File.delete(temp_html_file)
-    end
-
-
-    def gather_cuke_data_for_report
-      @features = @features.sort_by { |feature| feature.total_score }.reverse
-      @step_definitions = @step_definitions.sort_by { |step_definition| step_definition.score }.reverse
-      @hooks = @hooks.sort_by { |hook| hook.score }.reverse
-      @rules = @rules.sort_by { |rule| rule.score }.reverse
-    end
-
-
-    def rules_template(state, heading,markup_source, cuke_sniffer = self)
-      markup_rules = ERB.new extract_markup(markup_source, "rules.html.erb")
-      markup_rules.result(binding)
+    def output_pdf(file_name = DEFAULT_OUTPUT_FILE_NAME + ".pdf")
+      CukeSniffer::Formatter::output_pdf(self, file_name)
     end
 
     # Creates a xml file with the collected project details
@@ -255,13 +195,8 @@ module CukeSniffer
     #  cuke_sniffer.output_xml
     # Or
     #  cuke_sniffer.output_xml("cuke_sniffer01-01-0001.xml")
-    def output_xml(file_name = "cuke_sniffer.xml")
-      doc = Nokogiri::XML::Document.new
-      doc.root = self.to_xml
-      file_name = file_name + ".xml" unless file_name =~ /\.xml$/
-      open(file_name, "w") do |file|
-        file << doc.serialize
-      end
+    def output_xml(file_name = DEFAULT_OUTPUT_FILE_NAME + ".xml")
+      CukeSniffer::Formatter.output_xml(self, file_name)
     end
 
     # Gathers all StepDefinitions that have no calls
@@ -326,16 +261,6 @@ module CukeSniffer
       rule.reason = value[:reason]
       rule.targets = value[:targets]
       rule
-    end
-
-    def convert_array_condition_into_list_of_strings(condition_list)
-      result = []
-      while (condition_list.size>0)
-        five_words = condition_list.slice!(0,5)
-        result << five_words.join(", ")
-      end
-
-      return result
     end
 
     private
@@ -495,12 +420,6 @@ module CukeSniffer
       }
     end
 
-    def create_improvement_list
-      output = []
-      @summary[:improvement_list].each_key { |improvement| output << "(#{summary[:improvement_list][improvement]})#{improvement}" }
-      output
-    end
-
     def extract_steps_from_features
       steps = {}
       @features.each do |feature|
@@ -567,15 +486,6 @@ module CukeSniffer
         end
       end
       steps
-    end
-
-    def extract_markup(markup_source, template_name = "markup.html.erb")
-      markup_location = "#{markup_source}/#{template_name}"
-      markup = ""
-      File.open(markup_location).lines.each do |line|
-        markup << line
-      end
-      markup
     end
 
     def build_hooks(file_name)

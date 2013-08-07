@@ -5,130 +5,242 @@
       <enabled>true</enabled>
       <phrase>Scenario Outline with no examples.</phrase>
       <score>100</score>
-      <conditions>
-        <condition>
-          <name>bacon</name>
-          <value>sup</value>
-        </condition>
-        <condition>
-          <name>eggs</name>
-          <value>you know it</value>
-        </condition>
-      </conditions>
+      <conditions/>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>object.type == "Scenario Outline" and object.examples_table.size == 1</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Scenario Outline with no examples table.</phrase>
       <score>100</score>
       <conditions/>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>object.type == "Scenario Outline" and object.examples_table.empty?</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Recursive nested step call.</phrase>
       <score>100</score>
       <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>object.nested_steps.each_value {|nested_step| store_rule(object, rule) if nested_step =~ object.regex}
+                        false</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>There is a background with a tag. This feature file cannot run!</phrase>
       <score>100</score>
       <conditions/>
+      <targets>
+        <targets>["Background"]</targets>
+      </targets>
+      <reason>object.tags.size &gt; 0</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Comment comes between tag and properly executing line. This feature file cannot run!</phrase>
       <score>100</score>
       <conditions/>
+      <targets>
+        <targets>["Feature", "Scenario"]</targets>
+      </targets>
+      <reason>flag = false
+                        unless object.tags.empty?
+                          object.tags[1..-1].each do | tags |
+                            if tags =~ /^\s*\#.*$/
+                              flag = true
+                              break
+                            end
+                          end
+                        end
+                        flag</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>{class} has no description.</phrase>
       <score>25</score>
       <conditions/>
+      <targets>
+        <targets>["Feature", "Scenario"]</targets>
+      </targets>
+      <reason>object.name.empty?</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Feature with no scenarios.</phrase>
       <score>25</score>
       <conditions/>
+      <targets>
+        <targets>["Feature"]</targets>
+      </targets>
+      <reason>object.scenarios.empty?</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Commented step.</phrase>
       <score>25</score>
       <conditions/>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>object.steps.each do |step|
+                          store_rule(object, rule) if is_comment?(step)
+                        end
+                        false
+                        </reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Commented example.</phrase>
       <score>25</score>
       <conditions/>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>if object.type == 'Scenario Outline'
+                          object.examples_table.each {|example| store_rule(object, rule) if is_comment?(example)}
+                        end
+                        false
+                        </reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>No steps in Scenario.</phrase>
       <score>25</score>
       <conditions/>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>object.steps.empty?</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Step that is only one word long.</phrase>
       <score>25</score>
       <conditions/>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>object.steps.each {|step| store_rule(object, rule) if step.split.count == 2}
+                        false
+                       </reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>No code in Step Definition.</phrase>
       <score>25</score>
       <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>object.code.empty?</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Around hook without 2 parameters for Scenario and Block.</phrase>
       <score>25</score>
       <conditions/>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>object.type == "Around" and object.parameters.count != 2</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Around hook does not call its block.</phrase>
       <score>25</score>
       <conditions/>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>flag = true
+                        flag = false if object.type != 'Around'
+                        block_call = "#{object.parameters[1]}.call"
+                          object.code.each do |line|
+                            if line.include?(block_call)
+                              flag = false
+                              break
+                            end
+                          end
+                        flag</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
       <score>25</score>
       <conditions/>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>(object.code.empty? != true and object.code.join.match(/.*begin.*rescue.*/).nil?)</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Hook that both expects and ignores the same tag. This hook will not function as expected.</phrase>
       <score>25</score>
       <conditions/>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>all_tags = []
+                        object.tags.each { |single_tag| all_tags &lt;&lt; single_tag.split(',') }
+                        all_tags.flatten!
+                        flag = false
+                        all_tags.each do |single_tag|
+                          tag = single_tag.gsub("~", "")
+                          if all_tags.include?(tag) and all_tags.include?("~#{tag}")
+                            flag =  true
+                            break
+                          end
+                        end
+                        flag
+                        </reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>{class} has numbers in the description.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Feature", "Scenario", "Background"]</targets>
+      </targets>
+      <reason>object.name =~ /\d+/</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Feature file has no content.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Feature"]</targets>
+      </targets>
+      <reason>object.feature_lines == []</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Feature has a background with no scenarios.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Feature"]</targets>
+      </targets>
+      <reason>object.scenarios.empty? and !object.background.nil?</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Feature has a background with one scenario.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Feature"]</targets>
+      </targets>
+      <reason>object.scenarios.size == 1 and !object.background.nil?</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -140,30 +252,59 @@
           <value>7</value>
         </condition>
       </conditions>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>object.steps.count &gt; rule.conditions[:max]</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Scenario steps out of Given/When/Then order.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>step_order = object.get_step_order
+                        ["But", "*", "And"].each { |type| step_order.delete(type) }
+                        if(step_order != %w(Given When Then) and step_order != %w(When Then))
+                          store_rule(object, rule)
+                        end
+                        false</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Invalid first step. Began with And/But.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>object.steps.first =~ /^\s*(And|But).*$/</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Step includes a * instead of Given/When/Then/And/But.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>object.steps.each do | step |
+                          store_rule(object, rule) if( step =~ /^\s*[*].*$/)
+                       end
+                       false
+                       </reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Scenario Outline with only one example.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>object.type == 'Scenario Outline' and object.examples_table.size == 2 and !is_comment?(object.examples_table[1])</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -175,12 +316,25 @@
           <value>10</value>
         </condition>
       </conditions>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>object.type == 'Scenario Outline' and (object.examples_table.size - 1) &gt;= rule.conditions[:max]</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Given/When/Then used multiple times in the same {class}.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>
+                        step_order = object.get_step_order
+                        phrase = rule.phrase.gsub('{class}', type)
+                        ['Given', 'When', 'Then'].each {|step_start| store_rule(object, rule, phrase) if step_order.count(step_start) &gt; 1}
+                        false
+                       </reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -192,60 +346,135 @@
           <value>4</value>
         </condition>
       </conditions>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>object.parameters.size &gt; rule.conditions[:max]</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Lazy Debugging through puts, p, or print</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>object.code.each {|line| store_rule(object, rule) if line.strip =~ /^(p|puts)( |\()('|\"|%(q|Q)?\{)/}
+                        false</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Pending step definition. Implement or remove.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>object.code.each {|line|
+                          if line =~ /^\s*pending\s*$/
+                            store_rule(object, rule)
+                            break
+                          end
+                        }
+                        false</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Same tag appears on Feature.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Feature"]</targets>
+      </targets>
+      <reason>if(object.scenarios.count &gt;= 2)
+                          object.scenarios[1..-1].each do |scenario|
+                            object.scenarios.first.tags.each do |tag|
+                              store_rule(object, rule) if scenario.tags.include?(tag)
+                            end
+                          end
+                        end
+                        false</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Tag appears on all scenarios.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Feature"]</targets>
+      </targets>
+      <reason>unless object.scenarios.empty?
+                          base_tag_list = object.scenarios.first.tags.clone
+                          object.scenarios.each do |scenario|
+                            base_tag_list.each do |tag|
+                              base_tag_list.delete(tag) unless scenario.tags.include?(tag)
+                            end
+                          end
+                          base_tag_list.count.times { store_rule(object, rule) }
+                        end
+                        false</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>There are commas in the description, creating possible multirunning scenarios or features.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Feature", "Scenario"]</targets>
+      </targets>
+      <reason>object.name.include?(",")</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>{class} has a commented out tag</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Feature", "Scenario"]</targets>
+      </targets>
+      <reason>object.tags.each do | tag |
+                          store_rule(object, rule, rule.phrase.gsub("{class}", type)) if is_comment?(tag)
+                        end
+                        false</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Hook with no content.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>object.code == []</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Hook is only comments.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>flag = true
+                        object.code.each do |line|
+                          flag = false if line.match(/^\s*\#.*$/).nil?
+                        end
+                        flag</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Hook has duplicate tags.</phrase>
       <score>10</score>
       <conditions/>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>all_tags = []
+                        object.tags.each { |single_tag| all_tags &lt;&lt; single_tag.split(',') }
+                        all_tags.flatten!
+                        unique_tags = all_tags.uniq
+
+                        true unless all_tags == unique_tags</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -257,6 +486,10 @@
           <value>8</value>
         </condition>
       </conditions>
+      <targets>
+        <targets>["Feature", "Scenario"]</targets>
+      </targets>
+      <reason>object.tags.size &gt;= rule.conditions[:max]</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -268,6 +501,10 @@
           <value>180</value>
         </condition>
       </conditions>
+      <targets>
+        <targets>["Feature", "Scenario", "Background"]</targets>
+      </targets>
+      <reason>object.name.length &gt;= rule.conditions[:max]</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -279,6 +516,18 @@
           <value>["page", "site", "url", "button", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen"]</value>
         </condition>
       </conditions>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>object.steps.each do |step|
+                          next if is_comment?(step)
+                          rule.conditions[:words].each do |word|
+                            new_phrase = rule.phrase.gsub(/{.*}/, word)
+                            store_rule(object, rule, new_phrase) if step.include?(word)
+                          end
+                        end
+                        false
+                       </reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -290,24 +539,42 @@
           <value>10</value>
         </condition>
       </conditions>
+      <targets>
+        <targets>["Feature"]</targets>
+      </targets>
+      <reason>object.scenarios.size &gt;= rule.conditions[:max]</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Date used.</phrase>
       <score>1</score>
       <conditions/>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>object.steps.each {|step| store_rule(object, rule) if step =~ DATE_REGEX}
+                        false</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Nested step call.</phrase>
       <score>1</score>
       <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>!object.nested_steps.empty?</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Commented code in Step Definition.</phrase>
       <score>1</score>
       <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>object.code.each {|line| store_rule(object, rule) if is_comment?(line)}
+                        false</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -319,6 +586,17 @@
           <value>2</value>
         </condition>
       </conditions>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>object.code.each do |line|
+                          match_data = line.match /^\s*sleep(\s|\()(?&lt;sleep_time&gt;.*)\)?/
+                          if match_data
+                            sleep_value = match_data[:sleep_time].to_f
+                            store_rule(object, rule) if sleep_value &lt; rule.conditions[:max]
+                          end
+                        end
+                        false</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -330,12 +608,28 @@
           <value>2</value>
         </condition>
       </conditions>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>object.code.each do |line|
+                          match_data = line.match /^\s*sleep(\s|\()(?&lt;sleep_time&gt;.*)\)?/
+                          if match_data
+                            sleep_value = match_data[:sleep_time].to_f
+                            store_rule(object, rule) if sleep_value &gt; rule.conditions[:min]
+                          end
+                        end
+                        false</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
       <phrase>Todo found. Resolve it.</phrase>
       <score>1</score>
       <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>object.code.each {|line| store_rule(object, rule) if line =~ /\#(TODO|todo)/}
+                        false</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -347,6 +641,10 @@
           <value>hooks.rb</value>
         </condition>
       </conditions>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>object.location.include?(rule.conditions[:file]) != true</reason>
     </rule>
   </rules>
   <features_summary>
@@ -391,11 +689,11 @@
       <total>1</total>
     </improvement>
     <improvement>
-      <rule>Hook found outside of the designated hooks file</rule>
+      <rule>Hook is only comments.</rule>
       <total>1</total>
     </improvement>
     <improvement>
-      <rule>Hook is only comments.</rule>
+      <rule>Hook found outside of the designated hooks file</rule>
       <total>1</total>
     </improvement>
     <improvement>
@@ -424,12 +722,12 @@
           </steps>
           <examples/>
           <score>0</score>
-          <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/complex_calculator.feature:3</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/complex_calculator.feature:3</location>
           <rules/>
         </scenario>
       </scenarios>
       <score>0</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/complex_calculator.feature</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/complex_calculator.feature</location>
       <rules/>
     </feature>
     <feature>
@@ -441,7 +739,7 @@
           </steps>
           <examples/>
           <score>10</score>
-          <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/nested_directory/nested_feature.feature:3</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/nested_directory/nested_feature.feature:3</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -451,7 +749,7 @@
         </scenario>
       </scenarios>
       <score>0</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/nested_directory/nested_feature.feature</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/nested_directory/nested_feature.feature</location>
       <rules/>
     </feature>
     <feature>
@@ -466,12 +764,12 @@
           </steps>
           <examples/>
           <score>0</score>
-          <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/simple_calculator.feature:3</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/simple_calculator.feature:3</location>
           <rules/>
         </scenario>
       </scenarios>
       <score>0</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/simple_calculator.feature</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/simple_calculator.feature</location>
       <rules/>
     </feature>
   </features>
@@ -485,11 +783,11 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/complex_calculator.feature:4</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/complex_calculator.feature:4</location>
           <call>the first number is "1"</call>
         </call>
         <call>
-          <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:2</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:2</location>
           <call>the first number is "1"</call>
         </call>
       </calls>
@@ -497,7 +795,7 @@
         <code>@first_number = first_number.to_i</code>
       </code>
       <score>0</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/step_definitions/complex_calculator_steps.rb:1</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/complex_calculator_steps.rb:1</location>
       <rules/>
     </step_definition>
     <step_definition>
@@ -509,7 +807,7 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/complex_calculator.feature:5</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/complex_calculator.feature:5</location>
           <call>the second number is "1"</call>
         </call>
       </calls>
@@ -517,7 +815,7 @@
         <code>@second_number = second_number.to_i</code>
       </code>
       <score>0</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/step_definitions/complex_calculator_steps.rb:5</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/complex_calculator_steps.rb:5</location>
       <rules/>
     </step_definition>
     <step_definition>
@@ -529,7 +827,7 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/complex_calculator.feature:7</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/complex_calculator.feature:7</location>
           <call>the result is "2"</call>
         </call>
       </calls>
@@ -537,7 +835,7 @@
         <code>result.to_i.should == @first_number + @second_number</code>
       </code>
       <score>0</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/step_definitions/complex_calculator_steps.rb:9</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/complex_calculator_steps.rb:9</location>
       <rules/>
     </step_definition>
     <step_definition>
@@ -547,7 +845,7 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/nested_directory/nested_feature.feature:4</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/nested_directory/nested_feature.feature:4</location>
           <call>I am a nested step</call>
         </call>
       </calls>
@@ -555,7 +853,7 @@
         <code>puts "i have no functionality"</code>
       </code>
       <score>10</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/step_definitions/nested_steps/nested_steps.rb:1</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/nested_steps/nested_steps.rb:1</location>
       <rules>
         <rule>
           <phrase>Lazy Debugging through puts, p, or print</phrase>
@@ -569,13 +867,13 @@
       <parameters/>
       <nested_steps>
         <nested_step>
-          <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:2</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:2</location>
           <call>the first number is "1"</call>
         </nested_step>
       </nested_steps>
       <calls>
         <call>
-          <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/simple_calculator.feature:4</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/simple_calculator.feature:4</location>
           <call>the first number is 1</call>
         </call>
       </calls>
@@ -583,7 +881,7 @@
         <code>steps "Given the first number is \"1\""</code>
       </code>
       <score>1</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:1</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:1</location>
       <rules>
         <rule>
           <phrase>Nested step call.</phrase>
@@ -598,7 +896,7 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/simple_calculator.feature:5</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/simple_calculator.feature:5</location>
           <call>the second number is 1</call>
         </call>
       </calls>
@@ -606,7 +904,7 @@
         <code>@second_number = 1</code>
       </code>
       <score>0</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:5</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:5</location>
       <rules/>
     </step_definition>
     <step_definition>
@@ -616,11 +914,11 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/complex_calculator.feature:6</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/complex_calculator.feature:6</location>
           <call>the calculator adds</call>
         </call>
         <call>
-          <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/simple_calculator.feature:6</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/simple_calculator.feature:6</location>
           <call>the calculator adds</call>
         </call>
       </calls>
@@ -628,7 +926,7 @@
         <code>@result = @first_number + @second_number</code>
       </code>
       <score>0</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:9</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:9</location>
       <rules/>
     </step_definition>
     <step_definition>
@@ -638,7 +936,7 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/scenarios/simple_calculator.feature:7</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/simple_calculator.feature:7</location>
           <call>the result is 2</call>
         </call>
       </calls>
@@ -646,7 +944,7 @@
         <code>@result.should == 2</code>
       </code>
       <score>0</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:13</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:13</location>
       <rules/>
     </step_definition>
   </step_definitions>
@@ -660,18 +958,18 @@
       <parameters/>
       <code/>
       <score>21</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/support/env.rb:1</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/support/env.rb:1</location>
       <rules>
         <rule>
           <phrase>Hook with no content.</phrase>
           <score>1</score>
         </rule>
         <rule>
-          <phrase>Hook found outside of the designated hooks file</phrase>
+          <phrase>Hook is only comments.</phrase>
           <score>1</score>
         </rule>
         <rule>
-          <phrase>Hook is only comments.</phrase>
+          <phrase>Hook found outside of the designated hooks file</phrase>
           <score>1</score>
         </rule>
       </rules>
@@ -685,7 +983,7 @@
         <code>puts "after configuration"</code>
       </code>
       <score>25</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/support/hooks.rb:1</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/support/hooks.rb:1</location>
       <rules>
         <rule>
           <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
@@ -704,7 +1002,7 @@
         <code>puts "before @tag ran"</code>
       </code>
       <score>25</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/support/hooks.rb:5</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/support/hooks.rb:5</location>
       <rules>
         <rule>
           <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
@@ -723,7 +1021,7 @@
         <code>puts "before ~@tag ran"</code>
       </code>
       <score>25</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/support/hooks.rb:9</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/support/hooks.rb:9</location>
       <rules>
         <rule>
           <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
@@ -742,7 +1040,7 @@
         <code>puts "after @tag ran"</code>
       </code>
       <score>25</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/support/hooks.rb:13</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/support/hooks.rb:13</location>
       <rules>
         <rule>
           <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
@@ -762,7 +1060,7 @@
         <code>puts "after @tag ran"</code>
       </code>
       <score>25</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/support/hooks.rb:17</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/support/hooks.rb:17</location>
       <rules>
         <rule>
           <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
@@ -779,7 +1077,7 @@
         <code>puts "closing down."</code>
       </code>
       <score>25</score>
-      <location>C:/devl/workspaces/cuke_sniffer/cuke_sniffer/features/support/hooks.rb:21</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/features/support/hooks.rb:21</location>
       <rules>
         <rule>
           <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>

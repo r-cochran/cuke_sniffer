@@ -8,7 +8,6 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.ruby_opts = "-I lib:spec"
   spec.pattern = 'spec/**/*_spec.rb'
   spec.rspec_opts = "--color"
-  $stdout = File.new( 'test_output', 'w' )
 end
 task :spec
 

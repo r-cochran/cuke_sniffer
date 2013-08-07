@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     cuke_sniffer (0.0.6)
+      pdfkit
       roxml
 
 GEM
@@ -30,6 +31,7 @@ GEM
     nokogiri (1.5.5)
     nokogiri (1.5.5-java)
     nokogiri (1.5.5-x86-mingw32)
+    pdfkit (0.5.4)
     rake (10.0.2)
     roxml (3.3.1)
       activesupport (>= 2.3.0)
@@ -52,6 +54,7 @@ DEPENDENCIES
   cucumber
   cuke_sniffer!
   nokogiri
+  pdfkit
   rake
   roxml
   rspec

@@ -8,7 +8,7 @@
             <% if value.kind_of?(Array) %>
                 <div class="rule_details"><%= key.capitalize%>: </div>
 
-                <% result = convert_array_condition_into_list_of_strings(value) %>
+                <% result = CukeSniffer::Formatter.convert_array_condition_into_list_of_strings(value) %>
                 <% result.first.prepend("[")  %>
                 <% result.last << "]"  %>
                 <% result.each do |words| %>
