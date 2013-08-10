@@ -81,79 +81,77 @@ module CukeSniffer
     # Then catalogs all step definition calls to be used for rules and identification
     # of dead steps.
     def initialize(parameters = {})
-
-      @features_location = parameters[:features_location]
-      @step_definitions_location = parameters[:step_definitions_location]
-      @hooks_location = parameters[:hooks_location]
-
-      @features_location ||= Dir.getwd
-      @hooks_location ||= Dir.getwd
-      @step_definitions_location ||= Dir.getwd
-      @features = []
-      @scenarios = []
-      @step_definitions = []
-      @hooks = []
-      @rules = []
+      @features_location = parameters[:features_location] ? parameters[:features_location] : Dir.getwd
+      @step_definitions_location = parameters[:step_definitions_location] ? parameters[:step_definitions_location] : Dir.getwd
+      @hooks_location = parameters[:hooks_location] ? parameters[:hooks_location] : Dir.getwd
+      @rules = CukeSniffer::CukeSnifferHelper.build_rules(RULES)
 
       puts "\nFeatures:"
-      #extract this to a method that accepts a block and yields for the build pattern
-      unless features_location.nil?
-        if File.file?(features_location)
-          @features = [CukeSniffer::Feature.new(features_location)]
-        else
-          build_file_list_from_folder(features_location, ".feature").each { |location|
-            @features << CukeSniffer::Feature.new(location)
-            print '.'
-          }
-        end
-      end
-
-      @scenarios = get_all_scenarios(@features)
+      @features = build_objects_for_extension_from_location(features_location, "feature") { |location| CukeSniffer::Feature.new(location) }
+      @scenarios = CukeSniffer::CukeSnifferHelper.get_all_scenarios(@features)
 
       puts("\nStep Definitions:")
-      unless step_definitions_location.nil?
-        if File.file?(step_definitions_location)
-          @step_definitions = [build_step_definitions(step_definitions_location)]
-        else
-          build_file_list_from_folder(step_definitions_location, ".rb").each { |location|
-            @step_definitions << build_step_definitions(location)
-            print '.'
-          }
-        end
-      end
-      @step_definitions.flatten!
+      @step_definitions = build_objects_for_extension_from_location(step_definitions_location, "rb") { |location| build_step_definitions(location) }
 
       puts("\nHooks:")
-      unless hooks_location.nil?
-        if File.file?(hooks_location)
-          @hooks = [build_hooks(hooks_location)]
+      @hooks = build_objects_for_extension_from_location(hooks_location, "rb") { |location| build_hooks(location) }
+
+      CukeSniffer::RulesEvaluator.new(self, @rules)
+
+      puts "\nCataloging Step Calls: "
+      catalog_step_calls
+
+      puts "\nAssessing Score: "
+      assess_score
+
+    end
+
+    def build_step_definitions(file_name)
+      build_object_for_extension_from_file(file_name, STEP_DEFINITION_REGEX, CukeSniffer::StepDefinition)
+    end
+
+    def build_hooks(file_name)
+      build_object_for_extension_from_file(file_name, HOOK_REGEX, CukeSniffer::Hook)
+    end
+
+    def build_objects_for_extension_from_location(pattern_location, extension, &block)
+      list = []
+      unless pattern_location.nil?
+        if File.file?(pattern_location)
+          list = [block.call(pattern_location)]
         else
-          build_file_list_from_folder(hooks_location, ".rb").each { |location|
-            @hooks << build_hooks(location)
+          Dir["#{pattern_location}/**/*.#{extension}"].each { |location|
+            list << block.call(location)
             print '.'
           }
         end
       end
-      @hooks.flatten!
+      list.flatten
+    end
 
-      @rules = CukeSniffer::CLI.build_rules(RULES)
-      CukeSniffer::RulesEvaluator.new(self, @rules)
-      @summary = {
-          :total_score => 0,
-          :features => {},
-          :step_definitions => {},
-          :hooks => {},
-          :improvement_list => {}
-      }
-      puts "\nCataloging Step Calls: "
-      catalog_step_calls
-      puts "\nAssessing Score: "
-      assess_score
-      @improvement_list = @summary[:improvement_list]
-      @features_summary = load_summary_data(@summary[:features])
-      @scenarios_summary = load_summary_data(@summary[:scenarios])
-      @step_definitions_summary = load_summary_data(@summary[:step_definitions])
-      @hooks_summary = load_summary_data(@summary[:hooks])
+    def build_object_for_extension_from_file(file_name, regex, cuke_sniffer_class)
+      file_lines = []
+      step_file = File.open(file_name)
+      step_file.each_line { |line| file_lines << line }
+      step_file.close
+
+      counter = 0
+      code = []
+      object_list = []
+      found_first_object = false
+      until counter >= file_lines.length
+        if file_lines[counter] =~ regex and !code.empty? and found_first_object
+          location = "#{file_name}:#{counter+1 - code.count}"
+          object_list << cuke_sniffer_class.new(location, code)
+          code = []
+        end
+        found_first_object = true if file_lines[counter] =~ regex
+        code << file_lines[counter].strip
+        counter+=1
+      end
+      location = "#{file_name}:#{counter+1 -code.count}"
+      object_list << cuke_sniffer_class.new(location, code) unless code.empty? or !found_first_object
+      object_list
     end
 
     # Returns the status of the overall project based on a comparison of the score to the threshold score
@@ -228,288 +226,46 @@ module CukeSniffer
     # Determines all normal and nested step calls and assigns them to the corresponding step definition.
     # Does direct and fuzzy matching
     def catalog_step_calls
-      steps = get_all_steps
+      steps = CukeSniffer::CukeSnifferHelper.get_all_steps(@features, @step_definitions)
       @step_definitions.each do |step_definition|
         print '.'
         calls = steps.find_all { |location, step| step.gsub(STEP_STYLES, "") =~ step_definition.regex }
         calls.each { |call| step_definition.add_call(call[0], call[1].gsub(STEP_STYLES, "")) }
       end
 
-      converted_steps = convert_steps_with_expressions(get_steps_with_expressions(steps))
-      catalog_possible_dead_steps(converted_steps)
-    end
-
-
-    def self.build_rules(rules)
-      return [] if rules.nil?
-      rules.collect do |key, value|
-        build_rule(value)
-      end
-    end
-
-    def self.build_rule(value)
-      rule = CukeSniffer::Rule.new
-      rule.phrase = value[:phrase]
-      rule.score = value[:score]
-      rule.enabled = value[:enabled]
-      conditional_keys = value.keys - [:phrase, :score, :enabled, :targets, :reason]
-      conditions = {}
-      conditional_keys.each do |key|
-        conditions[key] = (value[key].kind_of? Array) ? Array.new(value[key]) : value[key]
-      end
-      rule.conditions = conditions
-      rule.reason = value[:reason]
-      rule.targets = value[:targets]
-      rule
+      steps_with_expressions = CukeSniffer::CukeSnifferHelper.get_steps_with_expressions(steps)
+      converted_steps = CukeSniffer::CukeSnifferHelper.convert_steps_with_expressions(steps_with_expressions)
+      CukeSniffer::CukeSnifferHelper.catalog_possible_dead_steps(@step_definitions, converted_steps)
     end
 
     private
 
-    def extract_variables_from_example(example)
-      example = example[example.index('|')..example.length]
-      example.split(/\s*\|\s*/) - [""]
+    def initialize_summary
+      @summary = {
+          :total_score => 0,
+          :improvement_list => {}
+      }
     end
 
     def assess_score
-      @summary[:features] = assess_array(@features, "Feature")
-      @summary[:scenarios] = assess_array(@scenarios, "Scenario")
-      @summary[:step_definitions] = assess_array(@step_definitions, "StepDefinition")
-      @summary[:hooks] = assess_array(@hooks, "Hook")
-      sort_improvement_list
+      initialize_summary
+      summarize(:features, @features, "Feature", @features_summary)
+      summarize(:scenarios, @scenarios, "Scenario", @scenarios_summary)
+      summarize(:step_definitions, @step_definitions, "StepDefinition", @step_definitions_summary)
+      summarize(:hooks, @hooks, "Hook", @hooks_summary)
+      @summary[:improvement_list] = CukeSniffer::SummaryHelper.sort_improvement_list(@summary[:improvement_list])
+      @improvement_list = @summary[:improvement_list]
     end
 
-    def get_all_steps
-      feature_steps = extract_steps_from_features
-      step_definition_steps = extract_steps_from_step_definitions
-      feature_steps.merge step_definition_steps
-    end
-
-    def get_steps_with_expressions(steps)
-      steps_with_expressions = {}
-      steps.each do |step_location, step_value|
-        if step_value =~ /\#{.*}/
-          steps_with_expressions[step_location] = step_value
-        end
+    def summarize(symbol, list, name, summary_object)
+      @summary[symbol] = CukeSniffer::SummaryHelper.assess_rule_target_list(list, name)
+      @summary[:total_score] = @summary[symbol][:total_score]
+      @summary[symbol][:improvement_list].each do |phrase, count|
+        @summary[:improvement_list][phrase] ||= 0
+        @summary[:improvement_list][phrase] += @summary[symbol][:improvement_list][phrase]
       end
-      steps_with_expressions
+      summary_object = CukeSniffer::SummaryHelper::load_summary_data(@summary[symbol])
     end
 
-    def catalog_possible_dead_steps(steps_with_expressions)
-      @step_definitions.each do |step_definition|
-        next unless step_definition.calls.empty?
-        regex_as_string = step_definition.regex.to_s.gsub(/\(\?-mix:\^?/, "").gsub(/\$\)$/, "")
-        steps_with_expressions.each do |step_location, step_value|
-          if regex_as_string =~ step_value
-            step_definition.add_call(step_location, step_value)
-          end
-        end
-      end
-    end
-
-    def convert_steps_with_expressions(steps_with_expressions)
-      step_regexs = {}
-      steps_with_expressions.each do |step_location, step_value|
-        modified_step = step_value.gsub(/\#{[^}]*}/, '.*')
-        step_regexs[step_location] = Regexp.new('^' + modified_step + '$')
-      end
-      step_regexs
-    end
-
-    def load_summary_data(summary_hash)
-      summary_node = SummaryNode.new
-      summary_node.count = summary_hash[:total]
-      summary_node.score = summary_hash[:total_score]
-      summary_node.average = summary_hash[:average]
-      summary_node.threshold = summary_hash[:threshold]
-      summary_node.good = summary_hash[:good]
-      summary_node.bad = summary_hash[:bad]
-      summary_node
-    end
-
-    def build_file_list_from_folder(folder_name, extension)
-      list = []
-      Dir.entries(folder_name).each_entry do |file_name|
-        unless FILE_IGNORE_LIST.include?(file_name)
-          file_name = "#{folder_name}/#{file_name}"
-          if File.directory?(file_name)
-            list << build_file_list_from_folder(file_name, extension)
-          elsif file_name.downcase.include?(extension)
-            list << file_name
-          end
-        end
-      end
-      list.flatten
-    end
-
-    def build_step_definitions(file_name)
-      step_file_lines = []
-      step_file = File.open(file_name)
-      step_file.each_line { |line| step_file_lines << line }
-      step_file.close
-
-      counter = 0
-      step_code = []
-      step_definitions = []
-      found_first_step = false
-      until counter >= step_file_lines.length
-        if step_file_lines[counter] =~ STEP_DEFINITION_REGEX and !step_code.empty? and found_first_step
-          step_definitions << CukeSniffer::StepDefinition.new("#{file_name}:#{counter+1 - step_code.count}", step_code)
-          step_code = []
-        end
-        found_first_step = true if step_file_lines[counter] =~ STEP_DEFINITION_REGEX
-        step_code << step_file_lines[counter].strip
-        counter+=1
-      end
-      step_definitions << CukeSniffer::StepDefinition.new("#{file_name}:#{counter+1 -step_code.count}", step_code) unless step_code.empty? or !found_first_step
-      step_definitions
-    end
-
-    def assess_array(array, type)
-      min, max, min_file, max_file = nil
-      total = 0
-      good = 0
-      bad = 0
-      total_score = 0
-      unless array.empty?
-        array.each do |node|
-          score = node.score
-          @summary[:total_score] += score
-          total_score += score
-          node.rules_hash.each_key do |key|
-            @summary[:improvement_list][key] ||= 0
-            @summary[:improvement_list][key] += node.rules_hash[key]
-          end
-          min, min_file = score, node.location if (min.nil? or score < min)
-          max, max_file = score, node.location if (max.nil? or score > max)
-          if node.good?
-            good += 1
-          else
-            bad += 1
-          end
-          total += score
-        end
-      end
-      {
-          :total => array.count,
-          :total_score => total_score,
-          :min => min,
-          :min_file => min_file,
-          :max => max,
-          :max_file => max_file,
-          :average => (total.to_f/array.count.to_f).round(2),
-          :threshold => THRESHOLDS[type],
-          :good => good,
-          :bad => bad,
-      }
-    end
-
-    def get_all_scenarios(features)
-      scenarios = []
-      features.each do |feature|
-        scenarios << feature.background unless feature.background.nil?
-        scenarios << feature.scenarios
-      end
-      scenarios.flatten
-    end
-
-    def sort_improvement_list
-      sorted_array = @summary[:improvement_list].sort_by { |improvement, occurrence| occurrence }
-      @summary[:improvement_list] = {}
-      sorted_array.reverse.each { |node|
-        @summary[:improvement_list][node[0]] = node[1]
-      }
-    end
-
-    def extract_steps_from_features
-      steps = {}
-      @features.each do |feature|
-        steps.merge! extract_scenario_steps(feature.background) unless feature.background.nil?
-        feature.scenarios.each do |scenario|
-          if scenario.type == "Scenario Outline"
-            steps.merge! extract_scenario_outline_steps(scenario)
-          else
-            steps.merge! extract_scenario_steps(scenario)
-          end
-        end
-      end
-      steps
-    end
-
-    def extract_scenario_steps(scenario)
-      steps_hash = {}
-      counter = 1
-      scenario.steps.each do |step|
-        location = scenario.location.gsub(/:\d*$/, ":#{scenario.start_line + counter}")
-        steps_hash[location] = step
-        counter += 1
-      end
-      steps_hash
-    end
-
-    def extract_scenario_outline_steps(scenario)
-      steps = {}
-      examples = scenario.examples_table
-      return {} if examples.empty?
-      variable_list = extract_variables_from_example(examples.first)
-      (1...examples.size).each do |example_counter|
-        #TODO Abstraction needed for this regex matcher (constants?)
-        next if examples[example_counter] =~ /^\#.*$/
-        row_variables = extract_variables_from_example(examples[example_counter])
-        step_counter = 1
-        scenario.steps.each do |step|
-          step_line = scenario.start_line + step_counter
-          location = "#{scenario.location.gsub(/\d+$/, step_line.to_s)}(Example #{example_counter})"
-          steps[location] = build_updated_step_from_example(step, variable_list, row_variables)
-          step_counter += 1
-        end
-      end
-      steps
-    end
-
-    def build_updated_step_from_example(step, variable_list, row_variables)
-      new_step = step.dup
-      variable_list.each do |variable|
-        if step.include? variable
-          table_variable_to_insert = row_variables[variable_list.index(variable)]
-          table_variable_to_insert ||= ""
-          new_step.gsub!("<#{variable}>", table_variable_to_insert)
-        end
-      end
-      new_step
-    end
-
-    def extract_steps_from_step_definitions
-      steps = {}
-      @step_definitions.each do |definition|
-        definition.nested_steps.each_key do |key|
-          steps[key] = definition.nested_steps[key]
-        end
-      end
-      steps
-    end
-
-    def build_hooks(file_name)
-      hooks_file_lines = []
-      hooks_file = File.open(file_name)
-      hooks_file.each_line { |line| hooks_file_lines << line }
-      hooks_file.close
-
-      counter = 0
-      hooks_code = []
-      hooks = []
-      found_first_hook = false
-      until counter >= hooks_file_lines.length
-        if hooks_file_lines[counter] =~ HOOK_REGEX and !hooks_code.empty? and found_first_hook
-          hooks << CukeSniffer::Hook.new("#{file_name}:#{counter+1 - hooks_code.count}", hooks_code)
-          hooks_code = []
-        end
-        found_first_hook = true if hooks_file_lines[counter] =~ HOOK_REGEX
-        hooks_code << hooks_file_lines[counter].strip
-        counter+=1
-      end
-      hooks << CukeSniffer::Hook.new("#{file_name}:#{counter+1 -hooks_code.count}", hooks_code) unless hooks_code.empty? or !found_first_hook
-      hooks
-    end
   end
-
 end

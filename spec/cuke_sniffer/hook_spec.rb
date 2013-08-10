@@ -50,14 +50,14 @@ describe "HookRules" do
   end
 
   def test_hook_rule(hook_block, symbol, count = 1)
-    rule = CukeSniffer::CLI.build_rule(RULES[symbol])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[symbol])
     run_rule_against_hook(hook_block, rule)
     rule.phrase.gsub!("{class}", "Hook")
     verify_rule(@cli.hooks.first, rule, count)
   end
 
   def test_no_hook_rule(hook_block, symbol)
-    rule = CukeSniffer::CLI.build_rule(RULES[symbol])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[symbol])
     run_rule_against_hook(hook_block, rule)
     rule.phrase.gsub!("{class}", "Hook")
     verify_no_rule(@cli.hooks.first, rule)

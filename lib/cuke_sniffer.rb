@@ -12,6 +12,8 @@ require 'cuke_sniffer/hook'
 require 'cuke_sniffer/rule'
 require 'cuke_sniffer/summary_node'
 require 'cuke_sniffer/rules_evaluator'
+require 'cuke_sniffer/cuke_sniffer_helper'
+require 'cuke_sniffer/summary_helper'
 require 'cuke_sniffer/cli'
 require 'cuke_sniffer/formatter'
 

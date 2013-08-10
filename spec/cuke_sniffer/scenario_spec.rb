@@ -390,14 +390,14 @@ describe "ScenarioRules" do
   end
 
   def test_scenario_rule(scenario_block, symbol, count = 1)
-    rule = CukeSniffer::CLI.build_rule(RULES[symbol])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[symbol])
     run_rule_against_scenario(scenario_block, rule)
     rule.phrase.gsub!("{class}", "Scenario")
     verify_rule(@cli.features.first.scenarios.first, rule, count)
   end
 
   def test_no_scenario_rule(scenario_block, symbol)
-    rule = CukeSniffer::CLI.build_rule(RULES[symbol])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[symbol])
     run_rule_against_scenario(scenario_block, rule)
     rule.phrase.gsub!("{class}", "Scenario")
     verify_no_rule(@cli.features.first.scenarios.first, rule)
@@ -628,7 +628,7 @@ describe "ScenarioRules" do
         "When I log in to the site",
         "Then I am on the home page",
     ]
-    rule = CukeSniffer::CLI.build_rule(RULES[:implementation_word])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[:implementation_word])
     run_rule_against_scenario(scenario_block, rule)
     scenario = @cli.features[0].scenarios[0]
 
@@ -748,13 +748,13 @@ describe "BackgroundRules" do
   end
 
   def test_background_rule(background_block, symbol, count = 1)
-    rule = CukeSniffer::CLI.build_rule(RULES[symbol])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[symbol])
     run_rule_against_background(background_block, rule)
     verify_rule(@cli.features.first.background, rule, count)
   end
 
   def test_no_background_rule(background_block, symbol)
-    rule = CukeSniffer::CLI.build_rule(RULES[symbol])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[symbol])
     run_rule_against_background(background_block, rule)
     verify_no_rule(@cli.features.first.background, rule)
   end
@@ -833,7 +833,7 @@ describe "BackgroundRules" do
         "And is ignored",
         "When comes third"
     ]
-    rule = CukeSniffer::CLI.build_rule(RULES[:out_of_order_steps])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[:out_of_order_steps])
     run_rule_against_background(background_block, rule)
     @cli.features.first.background.rules_hash.include?(rule.phrase).should be_false
   end
@@ -909,7 +909,7 @@ describe "BackgroundRules" do
         "When I log in to the site",
         "Then I am on the home page",
     ]
-    rule = CukeSniffer::CLI.build_rule(RULES[:implementation_word])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[:implementation_word])
     run_rule_against_background(background_block, rule)
     background= @cli.features.first.background
 

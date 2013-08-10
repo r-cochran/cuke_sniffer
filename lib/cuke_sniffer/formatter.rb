@@ -1,5 +1,4 @@
 require 'erb'
-require 'pdfkit'
 
 module CukeSniffer
   # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
@@ -74,22 +73,6 @@ module CukeSniffer
       open(file_name, "w") do |file|
         file << doc.serialize
       end
-    end
-
-    # Creates a pdf file with the collected project details
-    # file_name defaults to cuke_sniffer_results.pdf unless specified.
-    # Currently the pdf report is exactly the same as the html report with all
-    # divs expanded.
-    def self.output_pdf(cuke_sniffer, file_name = DEFAULT_OUTPUT_FILE_NAME)
-      output_html(cuke_sniffer, file_name, "pdf_report.html.erb")
-      create_pdf_from_html(file_name)
-    end
-
-    def self.create_pdf_from_html(file_name)
-      temp_html_file = File.open(file_name + ".html")
-      pdfkit = PDFKit.new(temp_html_file, :page_size => 'A3')
-      pdfkit.to_file(file_name)
-      File.delete(temp_html_file)
     end
 
     def self.convert_array_condition_into_list_of_strings(condition_list)

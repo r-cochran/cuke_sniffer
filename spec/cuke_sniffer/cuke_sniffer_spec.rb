@@ -437,7 +437,7 @@ describe CukeSniffer do
         multiple_rule_set[n][:score] = n
       end
 
-      rules = CukeSniffer::CLI.build_rules(multiple_rule_set)
+      rules = CukeSniffer::CukeSnifferHelper.build_rules(multiple_rule_set)
 
       multiple_rule_set.count.times do |n|
         rules[n].enabled.should == multiple_rule_set[n][:enabled]
@@ -447,12 +447,12 @@ describe CukeSniffer do
     end
 
     it "should return an empty array when the rules hash is nil" do
-      rules = CukeSniffer::CLI.build_rules(nil)
+      rules = CukeSniffer::CukeSnifferHelper.build_rules(nil)
       rules.should == []
     end
 
     it "should return an empty array when the rules hash is an empty hash" do
-      rules = CukeSniffer::CLI.build_rules( {} )
+      rules = CukeSniffer::CukeSnifferHelper.build_rules( {} )
       rules.should == []
     end
 
@@ -462,7 +462,7 @@ describe CukeSniffer do
           :phrase => "Rule phrase.",
           :score => 0
       }
-      rule = CukeSniffer::CLI.build_rule(rule_hash)
+      rule = CukeSniffer::CukeSnifferHelper.build_rule(rule_hash)
       rule.conditions.should == {}
     end
 
@@ -476,7 +476,7 @@ describe CukeSniffer do
           :max => max,
           :min => min
       }
-      rule = CukeSniffer::CLI.build_rule(rule_hash)
+      rule = CukeSniffer::CukeSnifferHelper.build_rule(rule_hash)
       rule.conditions[:max].should == max
       rule.conditions[:min].should == min
     end

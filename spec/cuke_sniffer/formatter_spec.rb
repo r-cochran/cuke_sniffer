@@ -281,29 +281,4 @@ describe CukeSniffer::Formatter do
 
   end
 
-  describe "creating pdf output" do
-    before(:each) do
-      @file_name = "my_pdf.pdf"
-    end
-
-    xit "should generate a well formed pdf file of the content similar to that of the html." do
-      cuke_sniffer = CukeSniffer::CLI.new()
-      CukeSniffer::Formatter.output_pdf(cuke_sniffer)
-      File.exists?(DEFAULT_OUTPUT_FILE_NAME + ".pdf").should be_true
-    end
-
-    xit "should generate a pdf file for a custom passed name" do
-      cuke_sniffer = CukeSniffer::CLI.new()
-      CukeSniffer::Formatter.output_pdf(cuke_sniffer, @file_name)
-      File.exists?(@file_name).should be_true
-    end
-
-    xit "should add the pdf extension if forgotten to the passed file name." do
-      @file_name = "my_pdf"
-      cuke_sniffer = CukeSniffer::CLI.new()
-      CukeSniffer::Formatter.output_pdf(cuke_sniffer, @file_name)
-      File.exists?(@file_name + ".pdf").should be_true
-    end
-  end
-
 end
