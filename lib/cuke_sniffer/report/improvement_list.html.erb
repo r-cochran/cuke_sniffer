@@ -1,0 +1,17 @@
+<div class="title" onclick="toggleById('improvement_list_data', this)">
+  Improvement List +
+</div>
+<div class="shrink_section" id="improvement_list_data">
+  <% if improvement_list.empty? %>
+      <div class="notes">No Improvements to make!</div>
+  <% end %>
+  <table style="width: 100%">
+    <% improvement_list.each do |improvement, count| %>
+        <tr>
+          <td class="red_number"><%= count %></td>
+          <td class="notes"><%= improvement %></td>
+        </tr>
+    <% end %>
+  </table>
+</div>
+<br style="clear:both">

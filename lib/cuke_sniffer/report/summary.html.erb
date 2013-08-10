@@ -1,0 +1,71 @@
+<div class="title" onclick="toggleById('summary_data', this)">
+  Summary -
+</div>
+<div class="shrink_section" style="display: block;" id="summary_data">
+  <% data_symbols = [:features, :scenarios, :step_definitions, :hooks] %>
+  <table style="width: 100%;" class="notes">
+    <tr class="divide_row">
+      <td class="table_top"></td>
+      <td class="table_top">Features</td>
+      <td class="table_top">Scenarios</td>
+      <td class="table_top">Step Definitions</td>
+      <td class="table_top">Hooks</td>
+    </tr>
+    <tr>
+      <td>Total Score</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= summary[symbol][:total_score] %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td>Count</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= summary[symbol][:total].inspect %></td>
+      <% end %>
+    </tr>
+    <tr/>
+    <tr>
+      <td>Lowest Score</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= summary[symbol][:min] %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td>Highest Score</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= summary[symbol][:max] %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td>Average Score</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= summary[symbol][:average] %></td>
+      <% end %>
+    </tr>
+    <tr/>
+
+    <tr>
+      <td>Threshold</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= summary[symbol][:threshold] %></td>
+      <% end %>
+    </tr>
+    <tr>
+      <td>Good</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= ((summary[symbol][:good].to_f/summary[symbol][:total].to_f) * 100).round(2) %>
+            %
+          </td>
+      <% end %>
+    </tr>
+    <tr>
+      <td>Bad</td>
+      <% data_symbols.each do |symbol| %>
+          <td><%= ((summary[symbol][:bad].to_f/summary[symbol][:total].to_f) * 100).round(2) %>
+            %
+          </td>
+      <% end %>
+    </tr>
+  </table>
+</div>
+<br style="clear:both">

@@ -1,0 +1,49 @@
+<div class="title" onclick="toggleById('hooks_data', this)">
+  Hooks +
+</div>
+<div class="shrink_section" id="hooks_data">
+  <% if cuke_sniffer.hooks.count == 0 %>
+      <div class="notes">There were no Hooks to sniff in '<%= cuke_sniffer.hooks_location %>'!</div>
+  <% elsif cuke_sniffer.hooks.count >= 1 && cuke_sniffer.summary[:hooks][:total_score] ==0 %>
+      <div class="notes">Excellent! No smells found for Hooks!</div>
+  <% end %>
+  <% index = 0 %>
+  <% cuke_sniffer.hooks.each do |hook| %>
+      <% next if hook.score <= 0 %>
+      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_<%=index%>'))">
+        <div class="red_number" style="float:left"><%= hook.score %></div>
+        <% tags = "(" %>
+        <% hook.tags.each do |tag| %>
+            <% tags << tag %>
+            <% tags << ", " unless tag == hook.tags.last %>
+        <% end %>
+        <% tags += ")" %>
+        <% parameters = "| " %>
+        <% hook.parameters.each do |parameter| %>
+            <% parameters << parameter %>
+            <% parameters << ", " unless parameter == hook.parameters.last %>
+        <% end %>
+        <% parameters += " |" %>
+        <% name = hook.type %>
+        <% name += tags unless tags == "()" %>
+        <% name += " do " %>
+        <% name += parameters unless parameters == "|  |" %>
+        <div class="notes"><%= name %></div>
+      </div>
+      <div id="hook_<%= index %>" style="display:none;">
+        <div class="sub_section" style="display:block;">
+          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
+            <% hook.rules_hash.each_key do |rule| %>
+                <pre style="margin: 0;"><%= rule %></pre>
+            <% end %>
+          </div>
+          <div style="text-indent: 1%">
+            <%= hook.location.gsub(cuke_sniffer.hooks_location, "") %>
+          </div>
+          <br style="clear:both">
+        </div>
+      </div>
+      <% index += 1 %>
+  <% end %>
+</div>
+<br style="clear:both">

@@ -112,6 +112,16 @@ module CukeSniffer
       CukeSniffer::Formatter.output_html(self, file_name)
     end
 
+    # Creates a html file with minimum information: Summary, Rules, Improvement List.
+    # file_name defaults to "cuke_sniffer_results.html" unless specified
+    # Second parameter used for passing into the markup.
+    #  cuke_sniffer.output_min_html
+    # Or
+    #  cuke_sniffer.output_min_html("results01-01-0001.html")
+    def output_min_html(file_name = DEFAULT_OUTPUT_FILE_NAME + ".html", cuke_sniffer = self, markup_source = File.join(File.dirname(__FILE__), 'report'), template_name = "markup.html.erb")
+      CukeSniffer::Formatter.output_min_html(self, file_name)
+    end
+
     # Creates a xml file with the collected project details
     # file_name defaults to "cuke_sniffer.xml" unless specified
     #  cuke_sniffer.output_xml
