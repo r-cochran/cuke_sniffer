@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
              "lib/cuke_sniffer/rules_evaluator.rb",
              'lib/cuke_sniffer/cuke_sniffer_helper.rb',
              'lib/cuke_sniffer/summary_helper.rb',
+             'lib/cuke_sniffer/dead_steps_helper.rb',
              "lib/cuke_sniffer/cli.rb",
              "lib/cuke_sniffer/hook.rb",
              "bin/cuke_sniffer"

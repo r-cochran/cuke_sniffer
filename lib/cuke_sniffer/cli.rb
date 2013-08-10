@@ -80,9 +80,19 @@ module CukeSniffer
     # Then catalogs all step definition calls to be used for rules and identification
     # of dead steps.
     def initialize(parameters = {})
-      initialize_features(parameters[:features_location])
-      initialize_step_definitions(parameters[:step_definitions_location])
-      initialize_hooks(parameters[:hooks_location])
+      @features_location = parameters[:features_location] ? parameters[:features_location] : Dir.getwd
+      puts "\nFeatures:"
+      @features = build_objects_for_extension_from_location(features_location, "feature") { |location| CukeSniffer::Feature.new(location) }
+      @scenarios = CukeSniffer::CukeSnifferHelper.get_all_scenarios(@features)
+
+      @step_definitions_location = parameters[:step_definitions_location] ? parameters[:step_definitions_location] : Dir.getwd
+      puts("\nStep Definitions: ")
+      @step_definitions = build_objects_for_extension_from_location(@step_definitions_location, "rb") { |location| build_step_definitions(location) }
+
+      @hooks_location = parameters[:hooks_location] ? parameters[:hooks_location] : Dir.getwd
+      puts("\nHooks:")
+      @hooks = build_objects_for_extension_from_location(@hooks_location, "rb") { |location| build_hooks(location) }
+
       evaluate_rules
       catalog_step_calls
       assess_score
@@ -128,25 +138,7 @@ module CukeSniffer
     # 1: String of the file with a dead step with an array of the line and regex of each dead step
     # 2: Symbol of :total with an integer that is the total number of dead steps
     def get_dead_steps
-      dead_steps_hash = {}
-      @step_definitions.each do |step_definition|
-        location_match = step_definition.location.match(/(?<file>.*).rb:(?<line>\d+)/)
-        file_name = location_match[:file]
-        regex = step_definition.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex]
-        dead_steps_hash[file_name] ||= []
-        dead_steps_hash[file_name] << "#{location_match[:line]}: /#{regex}/" if step_definition.calls.empty?
-      end
-      total = 0
-      dead_steps_hash.each_key do |key|
-        unless dead_steps_hash[key] == []
-          total += dead_steps_hash[key].size
-          dead_steps_hash[key].sort_by! { |row| row[/^\d+/].to_i }
-        else
-          dead_steps_hash.delete(key)
-        end
-      end
-      dead_steps_hash[:total] = total
-      dead_steps_hash
+      CukeSniffer::DeadStepsHelper::build_dead_steps_hash(@step_definitions)
     end
 
     # Determines all normal and nested step calls and assigns them to the corresponding step definition.
@@ -166,25 +158,6 @@ module CukeSniffer
     end
 
     private
-
-    def initialize_features(location)
-      @features_location = location ? location : Dir.getwd
-      puts "\nFeatures:"
-      @features = build_objects_for_extension_from_location(features_location, "feature") { |location| CukeSniffer::Feature.new(location) }
-      @scenarios = CukeSniffer::CukeSnifferHelper.get_all_scenarios(@features)
-    end
-
-    def initialize_step_definitions(location)
-      @step_definitions_location = location ? location : Dir.getwd
-      puts("\nStep Definitions:")
-      @step_definitions = build_objects_for_extension_from_location(step_definitions_location, "rb") { |location| build_step_definitions(location) }
-    end
-
-    def initialize_hooks(location)
-      @hooks_location = location ? location : Dir.getwd
-      puts("\nHooks:")
-      @hooks = build_objects_for_extension_from_location(hooks_location, "rb") { |location| build_hooks(location) }
-    end
 
     def evaluate_rules
       @rules = CukeSniffer::CukeSnifferHelper.build_rules(RULES)
@@ -227,18 +200,21 @@ module CukeSniffer
       build_object_for_extension_from_file(file_name, HOOK_REGEX, CukeSniffer::Hook)
     end
 
-    def build_objects_for_extension_from_location(pattern_location, extension, &block)
+    def build_file_list_for_extension_from_location(pattern_location, extension)
       list = []
       unless pattern_location.nil?
         if File.file?(pattern_location)
-          list = [block.call(pattern_location)]
+          [pattern_location]
         else
-          Dir["#{pattern_location}/**/*.#{extension}"].each { |location|
-            list << block.call(location)
-            print '.'
-          }
+          Dir["#{pattern_location}/**/*.#{extension}"]
         end
       end
+    end
+
+    def build_objects_for_extension_from_location(pattern_location, extension, &block)
+      file_list = build_file_list_for_extension_from_location(pattern_location, extension)
+      list = []
+      file_list.each {|file_name| list << block.call(file_name) }
       list.flatten
     end
 
