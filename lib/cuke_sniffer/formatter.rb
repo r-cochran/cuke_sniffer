@@ -11,32 +11,25 @@ module CukeSniffer
 
     # Prints out a summary of the results and the list of improvements to be made
     def self.output_console(cuke_sniffer)
-      feature_results = cuke_sniffer.summary[:features]
-      scenario_results = cuke_sniffer.summary[:scenarios]
-      step_definition_results = cuke_sniffer.summary[:step_definitions]
-      hooks_results = cuke_sniffer.summary[:hooks]
-      output = "Suite Summary
-  Total Score: #{cuke_sniffer.summary[:total_score]}
-    Features
-      Min: #{feature_results[:min]} (#{feature_results[:min_file]})
-      Max: #{feature_results[:max]} (#{feature_results[:max_file]})
-      Average: #{feature_results[:average]}
-    Scenarios
-      Min: #{scenario_results[:min]} (#{scenario_results[:min_file]})
-      Max: #{scenario_results[:max]} (#{scenario_results[:max_file]})
-      Average: #{scenario_results[:average]}
-    Step Definitions
-      Min: #{step_definition_results[:min]} (#{step_definition_results[:min_file]})
-      Max: #{step_definition_results[:max]} (#{step_definition_results[:max_file]})
-      Average: #{step_definition_results[:average]}
-    Hooks
-      Min: #{hooks_results[:min]} (#{hooks_results[:min_file]})
-      Max: #{hooks_results[:max]} (#{hooks_results[:max_file]})
-      Average: #{hooks_results[:average]}
-  Improvements to make:"
+      output = "Suite Summary" +
+                "  Total Score: #{cuke_sniffer.summary[:total_score]}\n" +
+                "#{console_summary("Features", cuke_sniffer.summary[:features])}\n" +
+                "#{console_summary("Scenarios", cuke_sniffer.summary[:scenarios])}\n" +
+                "#{console_summary("Step Definitions", cuke_sniffer.summary[:step_definitions])}\n" +
+                "#{console_summary("Hooks", cuke_sniffer.summary[:hooks])}\n" +
+                "  Improvements to make:\n"
 
-      cuke_sniffer.summary[:improvement_list].each_key { |improvement| output << "\n    (#{cuke_sniffer.summary[:improvement_list][improvement]})#{improvement}" }
+      cuke_sniffer.summary[:improvement_list].each_key do |improvement|
+        output << "\n    (#{cuke_sniffer.summary[:improvement_list][improvement]}) #{improvement}"
+      end
       puts output
+    end
+
+    def self.console_summary(name, summary)
+      "  #{name}\n" +
+      "    Min: #{summary[:min]} (#{summary[:min_file]})\n" +
+      "    Max: #{summary[:max]} (#{summary[:max_file]})\n" +
+      "    Average: #{summary[:average]}\n"
     end
 
     # Creates a html file with the collected project details
