@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
              "lib/cuke_sniffer/step_definition.rb",
              "lib/cuke_sniffer/report/markup.html.erb",
              "lib/cuke_sniffer/report/rules.html.erb",
-             "lib/cuke_sniffer/report/pdf_report.html.erb",
              "lib/cuke_sniffer/rule.rb",
              "lib/cuke_sniffer/formatter.rb",
              "lib/cuke_sniffer/summary_node.rb",

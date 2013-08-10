@@ -20,7 +20,6 @@ def delete_temp_files
       @file_name,
       DEFAULT_OUTPUT_FILE_NAME + ".html",
       DEFAULT_OUTPUT_FILE_NAME + ".xml",
-      DEFAULT_OUTPUT_FILE_NAME + ".pdf"
   ]
   file_list.each do |file_name|
     File.delete(file_name) if !file_name.nil? and File.exists?(file_name)

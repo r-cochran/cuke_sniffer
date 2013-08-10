@@ -1,5 +1,4 @@
 require 'erb'
-require 'pdfkit'
 require 'roxml'
 
 module CukeSniffer
@@ -178,14 +177,6 @@ module CukeSniffer
     #  cuke_sniffer.output_html("results01-01-0001.html")
     def output_html(file_name = DEFAULT_OUTPUT_FILE_NAME + ".html", cuke_sniffer = self, markup_source = File.join(File.dirname(__FILE__), 'report'), template_name = "markup.html.erb")
       CukeSniffer::Formatter.output_html(self, file_name)
-    end
-
-    # Creates a pdf file with the collected project details
-    # file_name defaults to cuke_sniffer_results.pdf unless specified.
-    # Currently the pdf report is exactly the same as the html report with all
-    # divs expanded. 
-    def output_pdf(file_name = DEFAULT_OUTPUT_FILE_NAME + ".pdf")
-      CukeSniffer::Formatter::output_pdf(self, file_name)
     end
 
     # Creates a xml file with the collected project details
