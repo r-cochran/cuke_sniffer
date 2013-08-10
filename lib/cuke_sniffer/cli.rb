@@ -80,77 +80,12 @@ module CukeSniffer
     # Then catalogs all step definition calls to be used for rules and identification
     # of dead steps.
     def initialize(parameters = {})
-      @features_location = parameters[:features_location] ? parameters[:features_location] : Dir.getwd
-      @step_definitions_location = parameters[:step_definitions_location] ? parameters[:step_definitions_location] : Dir.getwd
-      @hooks_location = parameters[:hooks_location] ? parameters[:hooks_location] : Dir.getwd
-      @rules = CukeSniffer::CukeSnifferHelper.build_rules(RULES)
-
-      puts "\nFeatures:"
-      @features = build_objects_for_extension_from_location(features_location, "feature") { |location| CukeSniffer::Feature.new(location) }
-      @scenarios = CukeSniffer::CukeSnifferHelper.get_all_scenarios(@features)
-
-      puts("\nStep Definitions:")
-      @step_definitions = build_objects_for_extension_from_location(step_definitions_location, "rb") { |location| build_step_definitions(location) }
-
-      puts("\nHooks:")
-      @hooks = build_objects_for_extension_from_location(hooks_location, "rb") { |location| build_hooks(location) }
-
-      CukeSniffer::RulesEvaluator.new(self, @rules)
-
-      puts "\nCataloging Step Calls: "
+      initialize_features(parameters[:features_location])
+      initialize_step_definitions(parameters[:step_definitions_location])
+      initialize_hooks(parameters[:hooks_location])
+      evaluate_rules
       catalog_step_calls
-
-      puts "\nAssessing Score: "
       assess_score
-
-    end
-
-    def build_step_definitions(file_name)
-      build_object_for_extension_from_file(file_name, STEP_DEFINITION_REGEX, CukeSniffer::StepDefinition)
-    end
-
-    def build_hooks(file_name)
-      build_object_for_extension_from_file(file_name, HOOK_REGEX, CukeSniffer::Hook)
-    end
-
-    def build_objects_for_extension_from_location(pattern_location, extension, &block)
-      list = []
-      unless pattern_location.nil?
-        if File.file?(pattern_location)
-          list = [block.call(pattern_location)]
-        else
-          Dir["#{pattern_location}/**/*.#{extension}"].each { |location|
-            list << block.call(location)
-            print '.'
-          }
-        end
-      end
-      list.flatten
-    end
-
-    def build_object_for_extension_from_file(file_name, regex, cuke_sniffer_class)
-      file_lines = []
-      step_file = File.open(file_name)
-      step_file.each_line { |line| file_lines << line }
-      step_file.close
-
-      counter = 0
-      code = []
-      object_list = []
-      found_first_object = false
-      until counter >= file_lines.length
-        if file_lines[counter] =~ regex and !code.empty? and found_first_object
-          location = "#{file_name}:#{counter+1 - code.count}"
-          object_list << cuke_sniffer_class.new(location, code)
-          code = []
-        end
-        found_first_object = true if file_lines[counter] =~ regex
-        code << file_lines[counter].strip
-        counter+=1
-      end
-      location = "#{file_name}:#{counter+1 -code.count}"
-      object_list << cuke_sniffer_class.new(location, code) unless code.empty? or !found_first_object
-      object_list
     end
 
     # Returns the status of the overall project based on a comparison of the score to the threshold score
@@ -217,6 +152,7 @@ module CukeSniffer
     # Determines all normal and nested step calls and assigns them to the corresponding step definition.
     # Does direct and fuzzy matching
     def catalog_step_calls
+      puts "\nCataloging Step Calls: "
       steps = CukeSniffer::CukeSnifferHelper.get_all_steps(@features, @step_definitions)
       @step_definitions.each do |step_definition|
         print '.'
@@ -231,6 +167,30 @@ module CukeSniffer
 
     private
 
+    def initialize_features(location)
+      @features_location = location ? location : Dir.getwd
+      puts "\nFeatures:"
+      @features = build_objects_for_extension_from_location(features_location, "feature") { |location| CukeSniffer::Feature.new(location) }
+      @scenarios = CukeSniffer::CukeSnifferHelper.get_all_scenarios(@features)
+    end
+
+    def initialize_step_definitions(location)
+      @step_definitions_location = location ? location : Dir.getwd
+      puts("\nStep Definitions:")
+      @step_definitions = build_objects_for_extension_from_location(step_definitions_location, "rb") { |location| build_step_definitions(location) }
+    end
+
+    def initialize_hooks(location)
+      @hooks_location = location ? location : Dir.getwd
+      puts("\nHooks:")
+      @hooks = build_objects_for_extension_from_location(hooks_location, "rb") { |location| build_hooks(location) }
+    end
+
+    def evaluate_rules
+      @rules = CukeSniffer::CukeSnifferHelper.build_rules(RULES)
+      CukeSniffer::RulesEvaluator.new(self, @rules)
+    end
+
     def initialize_summary
       @summary = {
           :total_score => 0,
@@ -239,6 +199,7 @@ module CukeSniffer
     end
 
     def assess_score
+      puts "\nAssessing Score: "
       initialize_summary
       summarize(:features, @features, "Feature", @features_summary)
       summarize(:scenarios, @scenarios, "Scenario", @scenarios_summary)
@@ -256,6 +217,52 @@ module CukeSniffer
         @summary[:improvement_list][phrase] += @summary[symbol][:improvement_list][phrase]
       end
       summary_object = CukeSniffer::SummaryHelper::load_summary_data(@summary[symbol])
+    end
+
+    def build_step_definitions(file_name)
+      build_object_for_extension_from_file(file_name, STEP_DEFINITION_REGEX, CukeSniffer::StepDefinition)
+    end
+
+    def build_hooks(file_name)
+      build_object_for_extension_from_file(file_name, HOOK_REGEX, CukeSniffer::Hook)
+    end
+
+    def build_objects_for_extension_from_location(pattern_location, extension, &block)
+      list = []
+      unless pattern_location.nil?
+        if File.file?(pattern_location)
+          list = [block.call(pattern_location)]
+        else
+          Dir["#{pattern_location}/**/*.#{extension}"].each { |location|
+            list << block.call(location)
+            print '.'
+          }
+        end
+      end
+      list.flatten
+    end
+
+
+    def build_object_for_extension_from_file(file_name, regex, cuke_sniffer_class)
+      file_lines = IO.readlines(file_name)
+
+      counter = 0
+      code = []
+      object_list = []
+      found_first_object = false
+      until counter >= file_lines.length
+        if file_lines[counter] =~ regex and !code.empty? and found_first_object
+          location = "#{file_name}:#{counter+1 - code.count}"
+          object_list << cuke_sniffer_class.new(location, code)
+          code = []
+        end
+        found_first_object = true if file_lines[counter] =~ regex
+        code << file_lines[counter].strip
+        counter+=1
+      end
+      location = "#{file_name}:#{counter+1 -code.count}"
+      object_list << cuke_sniffer_class.new(location, code) unless code.empty? or !found_first_object
+      object_list
     end
 
   end

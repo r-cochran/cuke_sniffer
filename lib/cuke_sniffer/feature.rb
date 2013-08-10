@@ -33,7 +33,7 @@ module CukeSniffer
       @scenarios = []
       @scenarios_score = 0
       @total_score = 0
-      @feature_lines = extract_feature_from_file(file_name)
+      @feature_lines = IO.readlines(file_name)
       split_feature(file_name, feature_lines) unless @feature_lines == []
     end
 
@@ -49,14 +49,6 @@ module CukeSniffer
     end
 
     private
-
-    def extract_feature_from_file(file_name)
-      feature_lines = []
-      feature_file = File.open(file_name)
-      feature_file.each_line { |line| feature_lines << line }
-      feature_file.close
-      feature_lines
-    end
 
     def split_feature(file_name, feature_lines)
       index = 0
