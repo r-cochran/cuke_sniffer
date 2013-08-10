@@ -35,8 +35,7 @@ module CukeSniffer
             :phrase => "Recursive nested step call.",
             :score => FATAL,
             :targets => ["StepDefinition"],
-            :reason => "object.nested_steps.each_value {|nested_step| store_rule(object, rule) if nested_step =~ object.regex}
-                        false"
+            :reason => "object.nested_steps.each_value {|nested_step| store_rule(object, rule) if nested_step =~ object.regex}"
         },
         :background_with_tag => {
             :enabled => true,
@@ -85,9 +84,7 @@ module CukeSniffer
             :targets => ["Scenario", "Background"],
             :reason => "object.steps.each do |step|
                           store_rule(object, rule) if is_comment?(step)
-                        end
-                        false
-                        "
+                        end"
         },
         :commented_example => {
             :enabled => true,
@@ -96,9 +93,7 @@ module CukeSniffer
             :targets => ["Scenario"],
             :reason => "if object.type == 'Scenario Outline'
                           object.examples_table.each {|example| store_rule(object, rule) if is_comment?(example)}
-                        end
-                        false
-                        "
+                        end"
         },
         :no_steps => {
             :enabled => true,
@@ -112,9 +107,7 @@ module CukeSniffer
             :phrase => "Step that is only one word long.",
             :score => ERROR,
             :targets => ["Scenario", "Background"],
-            :reason => "object.steps.each {|step| store_rule(object, rule) if step.split.count == 2}
-                        false
-                       "
+            :reason => "object.steps.each {|step| store_rule(object, rule) if step.split.count == 2}"
         },
         :no_code => {
             :enabled => true,
@@ -181,7 +174,7 @@ module CukeSniffer
             :phrase => "{class} has numbers in the description.",
             :score => WARNING,
             :targets => ["Feature", "Scenario", "Background"],
-            :reason => "object.name =~ /\\d+/"
+            :reason => "!(object.name =~ /\\d+/).nil?"
         },
         :empty_feature => {
             :enabled => true,
@@ -221,8 +214,7 @@ module CukeSniffer
                         ["But", "*", "And"].each { |type| step_order.delete(type) }
                         if(step_order != %w(Given When Then) and step_order != %w(When Then))
                           store_rule(object, rule)
-                        end
-                        false'
+                        end'
 
         },
         :invalid_first_step => {
@@ -230,7 +222,7 @@ module CukeSniffer
             :phrase => "Invalid first step. Began with And/But.",
             :score => WARNING,
             :targets => ["Scenario", "Background"],
-            :reason => "object.steps.first =~ /^\\s*(And|But).*$/"
+            :reason => "!(object.steps.first =~ /^\\s*(And|But).*$/).nil?"
         },
         :asterisk_step => {
             :enabled => true,
@@ -240,7 +232,6 @@ module CukeSniffer
             :reason => "object.steps.each do | step |
                           store_rule(object, rule) if( step =~ /^\\s*[*].*$/)
                        end
-                       false
                        "
         },
         :one_example => {
@@ -266,9 +257,7 @@ module CukeSniffer
             :reason => "
                         step_order = object.get_step_order
                         phrase = rule.phrase.gsub('{class}', type)
-                        ['Given', 'When', 'Then'].each {|step_start| store_rule(object, rule, phrase) if step_order.count(step_start) > 1}
-                        false
-                       "
+                        ['Given', 'When', 'Then'].each {|step_start| store_rule(object, rule, phrase) if step_order.count(step_start) > 1}"
         },
         :too_many_parameters => {
             :enabled => true,
@@ -284,8 +273,7 @@ module CukeSniffer
             :phrase => "Lazy Debugging through puts, p, or print",
             :score => WARNING,
             :targets => ["StepDefinition"],
-            :reason => "object.code.each {|line| store_rule(object, rule) if line.strip =~ /^(p|puts)( |\\()('|\\\"|%(q|Q)?\\{)/}
-                        false"
+            :reason => "object.code.each {|line| store_rule(object, rule) if line.strip =~ /^(p|puts)( |\\()('|\\\"|%(q|Q)?\\{)/}"
         },
         :pending => {
             :enabled => true,
@@ -297,8 +285,7 @@ module CukeSniffer
                             store_rule(object, rule)
                             break
                           end
-                        }
-                        false"
+                        }"
         },
         :feature_same_tag => {
             :enabled => true,
@@ -311,8 +298,7 @@ module CukeSniffer
                               store_rule(object, rule) if scenario.tags.include?(tag)
                             end
                           end
-                        end
-                        false'
+                        end'
         },
         :scenario_same_tag => {
             :enabled => true,
@@ -328,8 +314,7 @@ module CukeSniffer
                             end
                           end
                           base_tag_list.count.times { store_rule(object, rule) }
-                        end
-                        false"
+                        end"
         },
         :commas_in_description => {
             :enabled => true,
@@ -345,8 +330,7 @@ module CukeSniffer
             :targets => ["Feature", "Scenario"],
             :reason => 'object.tags.each do | tag |
                           store_rule(object, rule, rule.phrase.gsub("{class}", type)) if is_comment?(tag)
-                        end
-                        false'
+                        end'
         },
         :empty_hook => {
             :enabled => true,
@@ -375,7 +359,6 @@ module CukeSniffer
                         object.tags.each { |single_tag| all_tags << single_tag.split(',') }
                         all_tags.flatten!
                         unique_tags = all_tags.uniq
-
                         true unless all_tags == unique_tags"
         }
     }
@@ -409,9 +392,7 @@ module CukeSniffer
                             new_phrase = rule.phrase.gsub(/{.*}/, word)
                             store_rule(object, rule, new_phrase) if step.include?(word)
                           end
-                        end
-                        false
-                       "
+                        end"
 
         },
         :too_many_scenarios => {
@@ -427,8 +408,7 @@ module CukeSniffer
             :phrase => "Date used.",
             :score => INFO,
             :targets => ["Scenario", "Background"],
-            :reason => "object.steps.each {|step| store_rule(object, rule) if step =~ DATE_REGEX}
-                        false"
+            :reason => "object.steps.each {|step| store_rule(object, rule) if step =~ DATE_REGEX}"
         },
         :nested_step => {
             :enabled => true,
@@ -442,8 +422,7 @@ module CukeSniffer
             :phrase => "Commented code in Step Definition.",
             :score => INFO,
             :targets => ["StepDefinition"],
-            :reason => "object.code.each {|line| store_rule(object, rule) if is_comment?(line)}
-                        false"
+            :reason => "object.code.each {|line| store_rule(object, rule) if is_comment?(line)}"
         },
         :small_sleep => {
             :enabled => true,
@@ -457,8 +436,7 @@ module CukeSniffer
                             sleep_value = match_data[:sleep_time].to_f
                             store_rule(object, rule) if sleep_value < rule.conditions[:max]
                           end
-                        end
-                        false"
+                        end"
         },
         :large_sleep => {
             :enabled => true,
@@ -472,8 +450,7 @@ module CukeSniffer
                             sleep_value = match_data[:sleep_time].to_f
                             store_rule(object, rule) if sleep_value > rule.conditions[:min]
                           end
-                        end
-                        false"
+                        end"
         },
         :todo => {
             :enabled => true,

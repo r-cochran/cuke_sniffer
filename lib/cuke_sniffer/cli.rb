@@ -80,19 +80,7 @@ module CukeSniffer
     # Then catalogs all step definition calls to be used for rules and identification
     # of dead steps.
     def initialize(parameters = {})
-      @features_location = parameters[:features_location] ? parameters[:features_location] : Dir.getwd
-      puts "\nFeatures:"
-      @features = build_objects_for_extension_from_location(features_location, "feature") { |location| CukeSniffer::Feature.new(location) }
-      @scenarios = CukeSniffer::CukeSnifferHelper.get_all_scenarios(@features)
-
-      @step_definitions_location = parameters[:step_definitions_location] ? parameters[:step_definitions_location] : Dir.getwd
-      puts("\nStep Definitions: ")
-      @step_definitions = build_objects_for_extension_from_location(@step_definitions_location, "rb") { |location| build_step_definitions(location) }
-
-      @hooks_location = parameters[:hooks_location] ? parameters[:hooks_location] : Dir.getwd
-      puts("\nHooks:")
-      @hooks = build_objects_for_extension_from_location(@hooks_location, "rb") { |location| build_hooks(location) }
-
+      initialize_rule_targets(parameters)
       evaluate_rules
       catalog_step_calls
       assess_score
@@ -158,6 +146,21 @@ module CukeSniffer
     end
 
     private
+
+    def initialize_rule_targets(parameters)
+      @features_location = parameters[:features_location] ? parameters[:features_location] : Dir.getwd
+      puts "\nFeatures:"
+      @features = build_objects_for_extension_from_location(features_location, "feature") { |location| CukeSniffer::Feature.new(location) }
+      @scenarios = CukeSniffer::CukeSnifferHelper.get_all_scenarios(@features)
+
+      @step_definitions_location = parameters[:step_definitions_location] ? parameters[:step_definitions_location] : Dir.getwd
+      puts("\nStep Definitions: ")
+      @step_definitions = build_objects_for_extension_from_location(@step_definitions_location, "rb") { |location| build_step_definitions(location) }
+
+      @hooks_location = parameters[:hooks_location] ? parameters[:hooks_location] : Dir.getwd
+      puts("\nHooks:")
+      @hooks = build_objects_for_extension_from_location(@hooks_location, "rb") { |location| build_hooks(location) }
+    end
 
     def evaluate_rules
       @rules = CukeSniffer::CukeSnifferHelper.build_rules(RULES)

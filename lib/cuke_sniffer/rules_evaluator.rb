@@ -45,7 +45,7 @@ module CukeSniffer
       @rules.each do |rule|
         fail "No targets for rule: #{rule.phrase}" if rule.targets.nil? or rule.targets.empty?
         next unless rule.targets.include? type and rule.enabled
-        if eval(rule.reason)
+        if eval(rule.reason) == true
           phrase = rule.phrase.gsub("{class}", type)
           store_rule(object, rule, phrase)
         end
