@@ -33,26 +33,12 @@ module CukeSniffer
     # location must be in the format of "file_path\file_name.rb:line_number"
     # raw_code is an array of strings that represents the step definition
     # must contain the hook declaration line and the pairing end
-    def initialize(location, raw_code)
+    def initialize(location, hook_block)
       super(location)
-
       @start_line = location.match(/:(?<line>\d*)$/)[:line].to_i
-      @type = nil
-      @tags = []
-      @parameters = []
-
-      end_match_index = (raw_code.size - 1) - raw_code.reverse.index("end")
-      @code = raw_code[1...end_match_index]
-
-      raw_code.each do |line|
-        if line =~ HOOK_REGEX
-          matches = HOOK_REGEX.match(line)
-          @type = matches[:type]
-          hook_tag_regexp = /["']([^"']*)["']/
-          matches[:tags].scan(hook_tag_regexp).each { |tag| @tags << tag[0] } if matches[:tags]
-          @parameters = matches[:parameters].split(/,\s*/) if matches[:parameters]
-        end
-      end
+      end_match_index = (hook_block.size - 1) - hook_block.reverse.index("end")
+      @code = hook_block[1...end_match_index]
+      initialize_hook_signature(hook_block)
     end
 
     def ==(comparison_object) # :nodoc:
@@ -61,6 +47,31 @@ module CukeSniffer
           comparison_object.tags == tags &&
           comparison_object.parameters == parameters &&
           comparison_object.code == code
+    end
+
+    private
+
+    def initialize_hook_signature(hook_block)
+      @type = nil
+      @tags = []
+      @parameters = []
+
+      hook_signature = extract_hook_signature(hook_block)
+      matches = HOOK_REGEX.match(hook_signature)
+      @type = matches[:type]
+      initialize_tags(matches[:tags]) if matches[:tags]
+      @parameters = matches[:parameters].split(/,\s*/) if matches[:parameters]
+    end
+
+    def extract_hook_signature(hook_block)
+      hook_block.each do |line|
+        return line if line =~ HOOK_REGEX
+      end
+    end
+
+    def initialize_tags(tag_list)
+      hook_tag_regexp = /["']([^"']*)["']/
+      tag_list.scan(hook_tag_regexp).each { |tag| @tags << tag[0] }
     end
   end
 end
