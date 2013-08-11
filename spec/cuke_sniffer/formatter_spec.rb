@@ -161,6 +161,12 @@ describe CukeSniffer::Formatter do
       File.exists?("my_html.html").should be_true
     end
 
+    it "should have a minimum output mode where only cuke_sniffer details are present." do
+      cuke_sniffer = CukeSniffer::CLI.new()
+      CukeSniffer::Formatter.output_min_html(cuke_sniffer, @file_name)
+      File.exists?(@file_name).should == true
+    end
+
     describe "messages for when no object of a type was found" do
 
       it "should say that there were no features to sniff when no features were found." do

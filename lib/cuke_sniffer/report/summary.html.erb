@@ -14,32 +14,32 @@
     <tr>
       <td>Total Score</td>
       <% data_symbols.each do |symbol| %>
-          <td><%= summary[symbol][:total_score] %></td>
+          <td><%= cuke_sniffer.summary[symbol][:total_score] %></td>
       <% end %>
     </tr>
     <tr>
       <td>Count</td>
       <% data_symbols.each do |symbol| %>
-          <td><%= summary[symbol][:total].inspect %></td>
+          <td><%= cuke_sniffer.summary[symbol][:total].inspect %></td>
       <% end %>
     </tr>
     <tr/>
     <tr>
       <td>Lowest Score</td>
       <% data_symbols.each do |symbol| %>
-          <td><%= summary[symbol][:min] %></td>
+          <td><%= cuke_sniffer.summary[symbol][:min] %></td>
       <% end %>
     </tr>
     <tr>
       <td>Highest Score</td>
       <% data_symbols.each do |symbol| %>
-          <td><%= summary[symbol][:max] %></td>
+          <td><%= cuke_sniffer.summary[symbol][:max] %></td>
       <% end %>
     </tr>
     <tr>
       <td>Average Score</td>
       <% data_symbols.each do |symbol| %>
-          <td><%= summary[symbol][:average] %></td>
+          <td><%= cuke_sniffer.summary[symbol][:average] %></td>
       <% end %>
     </tr>
     <tr/>
@@ -47,13 +47,13 @@
     <tr>
       <td>Threshold</td>
       <% data_symbols.each do |symbol| %>
-          <td><%= summary[symbol][:threshold] %></td>
+          <td><%= cuke_sniffer.summary[symbol][:threshold] %></td>
       <% end %>
     </tr>
     <tr>
       <td>Good</td>
       <% data_symbols.each do |symbol| %>
-          <td><%= ((summary[symbol][:good].to_f/summary[symbol][:total].to_f) * 100).round(2) %>
+          <td><%= ((cuke_sniffer.summary[symbol][:good].to_f/cuke_sniffer.summary[symbol][:total].to_f) * 100).round(2) %>
             %
           </td>
       <% end %>
@@ -61,7 +61,7 @@
     <tr>
       <td>Bad</td>
       <% data_symbols.each do |symbol| %>
-          <td><%= ((summary[symbol][:bad].to_f/summary[symbol][:total].to_f) * 100).round(2) %>
+          <td><%= ((cuke_sniffer.summary[symbol][:bad].to_f/cuke_sniffer.summary[symbol][:total].to_f) * 100).round(2) %>
             %
           </td>
       <% end %>

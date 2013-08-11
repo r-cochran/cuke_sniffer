@@ -43,20 +43,20 @@ module CukeSniffer
     #  cuke_sniffer.output_html
     # Or
     #  cuke_sniffer.output_html("results01-01-0001.html")
-    def self.output_html(cuke_sniffer, file_name = DEFAULT_OUTPUT_FILE_NAME)
+    def self.output_html(cuke_sniffer, file_name = DEFAULT_OUTPUT_FILE_NAME, template_name = "standard_template")
       file_name = file_name + ".html" unless file_name =~ /\.html$/
       cuke_sniffer = sort_cuke_sniffer_lists(cuke_sniffer)
 
-      summary = summary_template(cuke_sniffer.summary)
+      summary = ERB.new(extract_markup("summary.html.erb")).result(binding)
       enabled_rules = rules_template(cuke_sniffer, true, "Enabled Rules")
       disabled_rules = rules_template(cuke_sniffer, false, "Disabled Rules")
-      improvement_list = improvement_list_template(cuke_sniffer.summary[:improvement_list])
-      dead_steps = dead_steps_template(cuke_sniffer)
-      features = features_template(cuke_sniffer)
-      step_definitions = step_definitions_template(cuke_sniffer)
-      hooks = hooks_template(cuke_sniffer)
+      improvement_list = ERB.new(extract_markup("improvement_list.html.erb")).result(binding)
+      dead_steps = ERB.new(extract_markup("dead_steps.html.erb")).result(binding)
+      features = ERB.new(extract_markup("features.html.erb")).result(binding)
+      step_definitions = ERB.new(extract_markup("step_definitions.html.erb")).result(binding)
+      hooks = ERB.new(extract_markup("hooks.html.erb")).result(binding)
 
-      markup_erb = ERB.new extract_markup("markup.html.erb")
+      markup_erb = ERB.new extract_markup("#{template_name}.html.erb")
       output = markup_erb.result(binding)
 
       File.open(file_name, 'w') do |f|
@@ -70,37 +70,13 @@ module CukeSniffer
     #  cuke_sniffer.output_min_html
     # Or
     #  cuke_sniffer.output_min_html("results01-01-0001.html")
-    def self.output_min_html(cuke_sniffer, file_name = DEFAULT_OUTPUT_FILE_NAME, template_name = "markup.html.erb")
-    end
-
-    def self.summary_template(summary)
-      ERB.new(extract_markup("summary.html.erb")).result(binding)
-    end
-
-    def self.improvement_list_template(improvement_list)
-      ERB.new(extract_markup("improvement_list.html.erb")).result(binding)
+    def self.output_min_html(cuke_sniffer, file_name = DEFAULT_OUTPUT_FILE_NAME)
+      output_html(cuke_sniffer, file_name, "min_template")
     end
 
     def self.rules_template(cuke_sniffer, state, heading)
-      ERB.new(extract_markup("rules.html.erb")).result(binding)
+      ERB.new(extract_markup("sub_rules.html.erb")).result(binding)
     end
-
-    def self.dead_steps_template(cuke_sniffer)
-      ERB.new(extract_markup("dead_steps.html.erb")).result(binding)
-    end
-
-    def self.features_template(cuke_sniffer)
-      ERB.new(extract_markup("features.html.erb")).result(binding)
-    end
-
-    def self.step_definitions_template(cuke_sniffer)
-      ERB.new(extract_markup("step_definitions.html.erb")).result(binding)
-    end
-
-    def self.hooks_template(cuke_sniffer)
-      ERB.new(extract_markup("hooks.html.erb")).result(binding)
-    end
-
 
     # Creates a xml file with the collected project details
     # file_name defaults to "cuke_sniffer.xml" unless specified
