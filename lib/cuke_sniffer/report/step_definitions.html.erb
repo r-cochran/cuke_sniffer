@@ -3,9 +3,9 @@
 </div>
 <div class="shrink_section" id="step_definitions_data">
   <% if cuke_sniffer.step_definitions.count == 0 %>
-      <div class="notes">There were no Step Definitions to sniff in '<%= cuke_sniffer.step_definitions_location %>'!</div>
+      <div class="empty_set_message">There were no Step Definitions to sniff in '<%= cuke_sniffer.step_definitions_location %>'!</div>
   <% elsif cuke_sniffer.step_definitions.count >= 1 && cuke_sniffer.summary[:step_definitions][:total_score] ==0 %>
-      <div class="notes">Excellent! No smells found for Step Definitions!</div>
+      <div class="empty_set_message">Excellent! No smells found for Step Definitions!</div>
   <% end %>
   <% index = 0 %>
   <% cuke_sniffer.step_definitions.each do |step_definition| %>

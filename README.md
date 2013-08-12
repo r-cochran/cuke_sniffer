@@ -303,7 +303,3 @@ To submit an issue you have found in CukeSniffer, please use the GitHub issue pa
 Authored by: Robert Cochran, Chris Vaughn, Robert Anderson
 
 Contributions by [Manifest Solutions](http://manifestcorp.com/Home.aspx)
-
-[All Contributors](https://github.com/r-cochran/cuke_sniffer/contributors)
-=======
-Contributed by [Manifest Solutions](http://manifestcorp.com/Home.aspx)

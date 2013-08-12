@@ -14,12 +14,18 @@ module CukeSniffer
       summary = cuke_sniffer.summary
       output = "Suite Summary" +
                 "  Total Score: #{summary[:total_score]}\n" +
-                console_summary("Features", summary[:features]) +
-                console_summary("Scenarios", summary[:scenarios]) +
-                console_summary("Step Definitions", summary[:step_definitions]) +
-                console_summary("Hooks", summary[:hooks]) +
+                get_output_summary_nodes(cuke_sniffer) +
                 console_improvement_list(summary[:improvement_list])
+
       puts output
+    end
+
+    def self.get_output_summary_nodes(cuke_sniffer)
+      output = ""
+      [:features, :scenarios, :step_definitions, :hooks].each do |summary_section|
+        output += console_summary(summary_section.to_s.gsub("_", " ").capitalize, cuke_sniffer.summary[summary_section])
+      end
+      output
     end
 
     def self.console_summary(name, summary)
@@ -44,22 +50,30 @@ module CukeSniffer
     # Or
     #  cuke_sniffer.output_html("results01-01-0001.html")
     def self.output_html(cuke_sniffer, file_name = DEFAULT_OUTPUT_FILE_NAME, template_name = "standard_template")
-      file_name = file_name + ".html" unless file_name =~ /\.html$/
       cuke_sniffer = sort_cuke_sniffer_lists(cuke_sniffer)
 
-      summary = ERB.new(extract_markup("summary.html.erb")).result(binding)
+      summary = build_page(cuke_sniffer, "summary.html.erb")
       rules = rules_template(cuke_sniffer)
-      improvement_list = ERB.new(extract_markup("improvement_list.html.erb")).result(binding)
-      dead_steps = ERB.new(extract_markup("dead_steps.html.erb")).result(binding)
-      features = ERB.new(extract_markup("features.html.erb")).result(binding)
-      step_definitions = ERB.new(extract_markup("step_definitions.html.erb")).result(binding)
-      hooks = ERB.new(extract_markup("hooks.html.erb")).result(binding)
+      improvement_list = build_page(cuke_sniffer, "improvement_list.html.erb")
+      dead_steps = build_page(cuke_sniffer, "dead_steps.html.erb")
+      features = build_page(cuke_sniffer, "features.html.erb")
+      step_definitions = build_page(cuke_sniffer, "step_definitions.html.erb")
+      hooks = build_page(cuke_sniffer, "hooks.html.erb")
 
-      markup_erb = ERB.new extract_markup("#{template_name}.html.erb")
-      output = markup_erb.result(binding)
+      output = ERB.new(extract_markup("#{template_name}.html.erb")).result(binding)
 
-      File.open(file_name, 'w') do |f|
-        f.write(output)
+      File.open(format_html_file_name(file_name), 'w') do |f| f.write(output) end
+    end
+
+    def self.build_page(cuke_sniffer, erb_file)
+      ERB.new(extract_markup(erb_file)).result(binding)
+    end
+
+    def self.format_html_file_name(file_name)
+      if file_name =~ /\.html$/
+        file_name
+      else
+        file_name + ".html"
       end
     end
 

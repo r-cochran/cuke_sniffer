@@ -3,9 +3,9 @@
 </div>
 <div class="shrink_section" id="features_data">
   <% if cuke_sniffer.features.count == 0 %>
-      <div class="notes">There were no Features to sniff in '<%= cuke_sniffer.features_location %>'!</div>
+      <div class="empty_set_message">There were no Features to sniff in '<%= cuke_sniffer.features_location %>'!</div>
   <% elsif cuke_sniffer.features.count >= 1 && cuke_sniffer.scenarios.count >=1 && cuke_sniffer.summary[:features][:total_score] ==0 && cuke_sniffer.summary[:scenarios][:total_score] ==0 %>
-      <div class="notes">Excellent! No smells found for Features and Scenarios!</div>
+      <div class="empty_set_message">Excellent! No smells found for Features and Scenarios!</div>
   <% end %>
   <% index = 0 %>
   <% cuke_sniffer.features.each do |feature| %>

@@ -173,7 +173,7 @@ describe CukeSniffer::Formatter do
         features_location = "temp"
         create_html_report_for_empty_type(:features_location, features_location)
         expected_message = "There were no Features to sniff in '#{features_location}'!"
-        xpath = "//div[@id = 'features_data']/div[@class = 'notes']"
+        xpath = "//div[@id = 'features_data']/div[@class = 'empty_set_message']"
         build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text.should == expected_message
       end
 
@@ -181,7 +181,7 @@ describe CukeSniffer::Formatter do
         step_definitions_location = "temp"
         create_html_report_for_empty_type(:step_definitions_location, step_definitions_location)
         expected_message = "There were no Step Definitions to sniff in '#{step_definitions_location}'!"
-        xpath = "//div[@id = 'step_definitions_data']/div[@class = 'notes']"
+        xpath = "//div[@id = 'step_definitions_data']/div[@class = 'empty_set_message']"
         build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text.should == expected_message
       end
 
@@ -189,7 +189,7 @@ describe CukeSniffer::Formatter do
         hooks_location = "temp"
         create_html_report_for_empty_type(:hooks_location, hooks_location)
         expected_message = "There were no Hooks to sniff in '#{hooks_location}'!"
-        xpath = "//div[@id = 'hooks_data']/div[@class = 'notes']"
+        xpath = "//div[@id = 'hooks_data']/div[@class = 'empty_set_message']"
         build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text.should == expected_message
       end
 
@@ -213,7 +213,7 @@ describe CukeSniffer::Formatter do
         CukeSniffer::Formatter.output_html(cuke_sniffer)
 
         expected_message = "Excellent! No smells found for Features and Scenarios!"
-        xpath = "//div[@id = 'features_data']/div[@class = 'notes']"
+        xpath = "//div[@id = 'features_data']/div[@class = 'empty_set_message']"
         build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text.should == expected_message
       end
 
@@ -236,7 +236,7 @@ describe CukeSniffer::Formatter do
         CukeSniffer::Formatter.output_html(cuke_sniffer)
 
         expected_message = "Excellent! No smells found for Step Definitions!"
-        xpath = "//div[@id = 'step_definitions_data']/div[@class = 'notes']"
+        xpath = "//div[@id = 'step_definitions_data']/div[@class = 'empty_set_message']"
         build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text.should == expected_message
       end
 
@@ -261,7 +261,7 @@ describe CukeSniffer::Formatter do
         CukeSniffer::Formatter.output_html(cuke_sniffer)
 
         expected_message = "Excellent! No smells found for Hooks!"
-        xpath = "//div[@id = 'hooks_data']/div[@class = 'notes']"
+        xpath = "//div[@id = 'hooks_data']/div[@class = 'empty_set_message']"
         build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text.should == expected_message
       end
     end

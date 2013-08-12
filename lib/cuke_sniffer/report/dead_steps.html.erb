@@ -6,11 +6,11 @@
   <% dead_steps.delete(:total) %>
   <% dead_step_count = dead_steps.values.flatten.count %>
   <% if dead_step_count == 0 %>
-      <div class="notes">No dead steps found!</div>
+      <div class="empty_set_message">No dead steps found!</div>
   <% elsif dead_step_count == 1 %>
-      <div class="notes" style="color: red"><%= dead_step_count %> Dead Step found.</div>
+      <div class="empty_set_message" style="color: red"><%= dead_step_count %> Dead Step found.</div>
   <% else %>
-      <div class="notes" style="color: red"><%= dead_step_count %> Dead Steps found.</div>
+      <div class="empty_set_message" style="color: red"><%= dead_step_count %> Dead Steps found.</div>
   <% end %>
 
   <table style="width: 100%">

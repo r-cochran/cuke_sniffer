@@ -4,7 +4,7 @@
 <div class="shrink_section" id="improvement_list_data">
   <% improvement_list = cuke_sniffer.summary[:improvement_list] %>
   <% if improvement_list.empty? %>
-      <div class="notes">No Improvements to make!</div>
+      <div class="empty_set_message">No Improvements to make!</div>
   <% end %>
   <table style="width: 100%">
     <% improvement_list.each do |improvement, count| %>

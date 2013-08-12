@@ -3,9 +3,9 @@
 </div>
 <div class="shrink_section" id="hooks_data">
   <% if cuke_sniffer.hooks.count == 0 %>
-      <div class="notes">There were no Hooks to sniff in '<%= cuke_sniffer.hooks_location %>'!</div>
+      <div class="empty_set_message">There were no Hooks to sniff in '<%= cuke_sniffer.hooks_location %>'!</div>
   <% elsif cuke_sniffer.hooks.count >= 1 && cuke_sniffer.summary[:hooks][:total_score] ==0 %>
-      <div class="notes">Excellent! No smells found for Hooks!</div>
+      <div class="empty_set_message">Excellent! No smells found for Hooks!</div>
   <% end %>
   <% index = 0 %>
   <% cuke_sniffer.hooks.each do |hook| %>

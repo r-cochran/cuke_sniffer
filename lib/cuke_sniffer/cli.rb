@@ -108,7 +108,7 @@ module CukeSniffer
     #  cuke_sniffer.output_html
     # Or
     #  cuke_sniffer.output_html("results01-01-0001.html")
-    def output_html(file_name = DEFAULT_OUTPUT_FILE_NAME + ".html", cuke_sniffer = self, markup_source = File.join(File.dirname(__FILE__), 'report'), template_name = "markup.html.erb")
+    def output_html(file_name = DEFAULT_OUTPUT_FILE_NAME + ".html")
       CukeSniffer::Formatter.output_html(self, file_name)
     end
 
@@ -118,7 +118,7 @@ module CukeSniffer
     #  cuke_sniffer.output_min_html
     # Or
     #  cuke_sniffer.output_min_html("results01-01-0001.html")
-    def output_min_html(file_name = DEFAULT_OUTPUT_FILE_NAME + ".html", cuke_sniffer = self, markup_source = File.join(File.dirname(__FILE__), 'report'), template_name = "markup.html.erb")
+    def output_min_html(file_name = DEFAULT_OUTPUT_FILE_NAME + ".html")
       CukeSniffer::Formatter.output_min_html(self, file_name)
     end
 
@@ -158,18 +158,26 @@ module CukeSniffer
     private
 
     def initialize_rule_targets(parameters)
-      @features_location = parameters[:features_location] ? parameters[:features_location] : Dir.getwd
-      puts "\nFeatures:"
-      @features = build_objects_for_extension_from_location(features_location, "feature") { |location| CukeSniffer::Feature.new(location) }
-      @scenarios = CukeSniffer::CukeSnifferHelper.get_all_scenarios(@features)
+      initialize_locations(parameters)
+      initialize_feature_objects
 
-      @step_definitions_location = parameters[:step_definitions_location] ? parameters[:step_definitions_location] : Dir.getwd
       puts("\nStep Definitions: ")
       @step_definitions = build_objects_for_extension_from_location(@step_definitions_location, "rb") { |location| build_step_definitions(location) }
 
-      @hooks_location = parameters[:hooks_location] ? parameters[:hooks_location] : Dir.getwd
       puts("\nHooks:")
       @hooks = build_objects_for_extension_from_location(@hooks_location, "rb") { |location| build_hooks(location) }
+    end
+
+    def initialize_locations(parameters)
+      @features_location = parameters[:features_location] ? parameters[:features_location] : Dir.getwd
+      @step_definitions_location = parameters[:step_definitions_location] ? parameters[:step_definitions_location] : Dir.getwd
+      @hooks_location = parameters[:hooks_location] ? parameters[:hooks_location] : Dir.getwd
+    end
+
+    def initialize_feature_objects
+      puts "\nFeatures:"
+      @features = build_objects_for_extension_from_location(features_location, "feature") { |location| CukeSniffer::Feature.new(location) }
+      @scenarios = CukeSniffer::CukeSnifferHelper.get_all_scenarios(@features)
     end
 
     def evaluate_rules
