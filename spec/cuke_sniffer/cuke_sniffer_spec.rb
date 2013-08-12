@@ -2,14 +2,9 @@ require 'spec_helper'
 
 describe CukeSniffer do
 
-  before(:each) do
-    @features_location = File.dirname(__FILE__) + "/../../features/scenarios"
-    @step_definitions_location = File.dirname(__FILE__) + "/../../features/step_definitions"
-  end
-
   describe "Handling Project" do
     it "should determine if it is above the project threshold" do
-      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location,:step_definitions_location => @step_definitions_location})
+      cuke_sniffer = CukeSniffer::CLI.new()
       start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
       CukeSniffer::Constants::THRESHOLDS["Project"] = 2
       cuke_sniffer.summary[:total_score] = 3
@@ -29,8 +24,10 @@ describe CukeSniffer do
     end
 
     it "should use the passed locations for features to store create features" do
-      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location})
-      fail "features were not initialized" if cuke_sniffer.features == {}
+      feature_block = ["Feature: I am the only feature."]
+      build_file(feature_block, @file_name)
+      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @file_name})
+      fail "features were not initialized" if cuke_sniffer.features == []
     end
 
     it "should be able to utilize a single feature file for parsing" do
@@ -61,7 +58,7 @@ describe CukeSniffer do
           "|       |"
       ]
       build_file(feature_block, @file_name)
-      expect { CukeSniffer::CLI.new({:features_location => @features_location}) }.to_not raise_error
+      expect { CukeSniffer::CLI.new({:features_location => @file_name}) }.to_not raise_error
     end
 
   end
@@ -76,7 +73,12 @@ describe CukeSniffer do
     end
 
     it "should use the passed locations for step definitions to store create step_definitions" do
-      cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location => @step_definitions_location})
+      step_definition_block = [
+          "Given /^I am a step$/ do",
+          "end"
+      ]
+      build_file(step_definition_block, @file_name)
+      cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location => @file_name})
       fail "step definitions were not initialized" if cuke_sniffer.step_definitions == []
     end
 
@@ -115,7 +117,7 @@ describe CukeSniffer do
       ]
       step_definition_with_nested_call = CukeSniffer::StepDefinition.new("NestedStep:1", step_definition_block)
 
-      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location ,:step_definitions_location => @step_definitions_location})
+      cuke_sniffer = CukeSniffer::CLI.new()
       cuke_sniffer.features = [feature]
       cuke_sniffer.step_definitions = [live_step_definition, step_definition_with_nested_call]
 
@@ -155,7 +157,7 @@ describe CukeSniffer do
     end
 
     it "should determine if it is below the step definition threshold" do
-      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location ,:step_definitions_location => @step_definitions_location})
+      cuke_sniffer = CukeSniffer::CLI.new()
       start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
       CukeSniffer::Constants::THRESHOLDS["Project"] = 200
       cuke_sniffer.good?.should == true
@@ -163,7 +165,7 @@ describe CukeSniffer do
     end
 
     it "should determine the percentage of problems compared to the step definition threshold" do
-      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location ,:step_definitions_location => @step_definitions_location})
+      cuke_sniffer = CukeSniffer::CLI.new()
       start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
       CukeSniffer::Constants::THRESHOLDS["Project"] = 2
       cuke_sniffer.summary[:total_score] = 3
@@ -213,7 +215,7 @@ describe CukeSniffer do
           "end"]
       build_file(step_definition_block, @file_name)
 
-      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location, :step_definitions_location => Dir.getwd})
+      cuke_sniffer = CukeSniffer::CLI.new()
       dead_steps = cuke_sniffer.get_dead_steps
       dead_steps[:total].should >= 1
       dead_steps.empty?.should be_false
@@ -298,7 +300,7 @@ describe CukeSniffer do
       ]
       bill_step_definition = CukeSniffer::StepDefinition.new(@file_name +":3", step_definition_block)
 
-      cuke_sniffer = CukeSniffer::CLI.new({:features_location => @features_location ,:step_definitions_location => @step_definitions_location})
+      cuke_sniffer = CukeSniffer::CLI.new()
       cuke_sniffer.features = [feature]
       cuke_sniffer.step_definitions = [john_step_definition, bill_step_definition]
 
