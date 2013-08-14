@@ -63,17 +63,21 @@
         border-top: 2px solid #add8e6;
     }
 
+    .empty_set_message {
+        font-weight: bold;
+        margin-left: 1%;
+    }
+
     .rule_notes {
         margin-left: 1%;
         border-left: 2px solid #90ee90;
         border-top: 2px solid #90ee90;
-        padding-bottom: 14px;
-        text-indent: 1%;
         display: block;
-        padding-left: 1%;
-        margin-bottom: 15px;
         clear: left;
-
+        padding-bottom: 0%;
+        text-indent: 0%;
+        padding-left: 0.5%;
+        margin-bottom: 0.5%;
     }
 
     .rule_style {
@@ -83,15 +87,18 @@
     }
     .rule_heading {
         font-weight: bold;
+        margin: 0.25%;
     }
+
     ol  {
         list-style-type:none;
         display: block;
+        padding-left: 1%
 
     }
 
     .rule_details {
-        text-indent: 0%;
+
     }
 
 </style>
@@ -102,7 +109,7 @@
 <br style="clear:both">
 <div style="border-top: 2px solid lightgreen; text-align: right;">
   <div style="float: right; background-color:green;border-right:2px solid #fff; color:white;padding:4px; padding-left:40px;font-size:11pt;font-weight:bold;padding-right:10px;">
-    Score: 192</div>
+    Score: 171</div>
 </div>
 <br style="clear:both">
 
@@ -238,36 +245,18 @@
 </div>
 <br style="clear:both">
 
+
 <div class="title" onclick="toggleById('improvement_list_data', this)">
   Improvement List +
 </div>
 <div class="shrink_section" id="improvement_list_data">
   
+  
   <table style="width: 100%">
     
         <tr>
-          <td class="red_number">6</td>
-          <td class="notes">Hook without a begin/rescue. Reduced visibility when debugging.</td>
-        </tr>
-    
-        <tr>
           <td class="red_number">1</td>
-          <td class="notes">Hook with no content.</td>
-        </tr>
-    
-        <tr>
-          <td class="red_number">1</td>
-          <td class="notes">Hook is only comments.</td>
-        </tr>
-    
-        <tr>
-          <td class="red_number">1</td>
-          <td class="notes">Hook found outside of the designated hooks file</td>
-        </tr>
-    
-        <tr>
-          <td class="red_number">1</td>
-          <td class="notes">Nested step call.</td>
+          <td class="notes">Scenario steps out of Given/When/Then order.</td>
         </tr>
     
         <tr>
@@ -277,7 +266,27 @@
     
         <tr>
           <td class="red_number">1</td>
-          <td class="notes">Scenario steps out of Given/When/Then order.</td>
+          <td class="notes">Nested step call.</td>
+        </tr>
+    
+        <tr>
+          <td class="red_number">1</td>
+          <td class="notes">Hook found outside of the designated hooks file</td>
+        </tr>
+    
+        <tr>
+          <td class="red_number">1</td>
+          <td class="notes">Hook is only comments.</td>
+        </tr>
+    
+        <tr>
+          <td class="red_number">1</td>
+          <td class="notes">Hook with no content.</td>
+        </tr>
+    
+        <tr>
+          <td class="red_number">6</td>
+          <td class="notes">Hook without a begin/rescue. Reduced visibility when debugging.</td>
         </tr>
     
   </table>
@@ -517,7 +526,7 @@
         <div class="rule_details">Score: 1</div>
         
             
-                <div class="rule_details">Words: </div>
+                <div class="rule_details">Words:</div>
 
                 
                 
@@ -601,379 +610,5 @@
   <p class="rule_heading">Disabled Rules</p>
   
 </ol>
-</div>
-
-<br style="clear:both">
-
-<div class="title" onclick="toggleById('dead_steps_data', this)">
-  Dead Steps +
-</div>
-<div class="shrink_section" id="dead_steps_data">
-  
-  
-  
-  
-      <div class="notes">No dead steps found!</div>
-  
-
-  <table style="width: 100%">
-    
-  </table>
-</div>
-<br style="clear:both">
-
-<div class="title" onclick="toggleById('features_data', this)">
-  Features +
-</div>
-<div class="shrink_section" id="features_data">
-  
-  
-  
-      
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('feature_0'))">
-        <div class="red_number" style="float:left">20</div>
-        <div class="notes">I am a nested feature</div>
-      </div>
-      <div id="feature_0" class="sub_section">
-        <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6; padding-bottom: 4px">
-          
-              <pre style="margin: 0;">      </pre>
-          
-          
-        </div>
-        <div style="text-indent: 1%; padding-bottom: 4px">
-          /features/scenarios/nested_directory/nested_feature.feature
-        </div>
-        <br style="clear:both">
-
-        <div>
-          
-        </div>
-        <div>
-          
-              
-              <div class="red_number" style="float:left; padding-left: 1%">10</div>
-              <div style="float: left; width: 45%;">Scenario: A nested scenario should be parseable</div>
-              <div style="margin-left:1%;float: left; border-left: 2px solid #90ee90; border-top: 2px solid #90ee90; text-indent: 1%">
-                
-                    <pre style="margin: 0; text_indent: 3%;">Scenario steps out of Given/When/Then order.</pre>
-                
-              </div>
-              <br style="clear:both">
-          
-        </div>
-      </div>
-      
-  
-      
-      
-</div>
-<br style="clear:both">
-
-<div class="title" onclick="toggleById('step_definitions_data', this)">
-  Step Definitions +
-</div>
-<div class="shrink_section" id="step_definitions_data">
-  
-  
-  
-      
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('step_definition_0'))">
-        <div class="red_number" style="float:left">10</div>
-        
-        
-        <div style="float: left" class="notes">/^I am a nested step$/ do </div>
-        <div style="float: right; padding-right:1%" class="notes">1 Call(s)</div>
-      </div>
-      <div id="step_definition_0" style="display:none;">
-        <br style="clear:both">
-
-        <div class="sub_section" style="display:block">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Lazy Debugging through puts, p, or print</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            <p style="margin:0">/features/step_definitions/nested_steps/nested_steps.rb:1</p>
-          </div>
-        </div>
-      </div>
-      <br style="clear:both">
-      
-  
-      
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('step_definition_1'))">
-        <div class="red_number" style="float:left">1</div>
-        
-        
-        <div style="float: left" class="notes">/^the first number is 1$/ do </div>
-        <div style="float: right; padding-right:1%" class="notes">1 Call(s)</div>
-      </div>
-      <div id="step_definition_1" style="display:none;">
-        <br style="clear:both">
-
-        <div class="sub_section" style="display:block">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Nested step call.</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            <p style="margin:0">/features/step_definitions/simple_calculator_steps.rb:1</p>
-          </div>
-        </div>
-      </div>
-      <br style="clear:both">
-      
-  
-      
-      
-      
-      
-      
-      
-</div>
-<br style="clear:both">
-
-<div class="title" onclick="toggleById('hooks_data', this)">
-  Hooks +
-</div>
-<div class="shrink_section" id="hooks_data">
-  
-  
-  
-      
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_0'))">
-        <div class="red_number" style="float:left">25</div>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="notes">at_exit do </div>
-      </div>
-      <div id="hook_0" style="display:none;">
-        <div class="sub_section" style="display:block;">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Hook without a begin/rescue. Reduced visibility when debugging.</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            /features/support/hooks.rb:21
-          </div>
-          <br style="clear:both">
-        </div>
-      </div>
-      
-  
-      
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_1'))">
-        <div class="red_number" style="float:left">25</div>
-        
-        
-            
-            
-        
-            
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="notes">After(~@tag,@tag2, @tag3) do </div>
-      </div>
-      <div id="hook_1" style="display:none;">
-        <div class="sub_section" style="display:block;">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Hook without a begin/rescue. Reduced visibility when debugging.</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            /features/support/hooks.rb:17
-          </div>
-          <br style="clear:both">
-        </div>
-      </div>
-      
-  
-      
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_2'))">
-        <div class="red_number" style="float:left">25</div>
-        
-        
-            
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="notes">After(@tag) do </div>
-      </div>
-      <div id="hook_2" style="display:none;">
-        <div class="sub_section" style="display:block;">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Hook without a begin/rescue. Reduced visibility when debugging.</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            /features/support/hooks.rb:13
-          </div>
-          <br style="clear:both">
-        </div>
-      </div>
-      
-  
-      
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_3'))">
-        <div class="red_number" style="float:left">25</div>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="notes">AfterConfiguration do </div>
-      </div>
-      <div id="hook_3" style="display:none;">
-        <div class="sub_section" style="display:block;">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Hook without a begin/rescue. Reduced visibility when debugging.</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            /features/support/hooks.rb:1
-          </div>
-          <br style="clear:both">
-        </div>
-      </div>
-      
-  
-      
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_4'))">
-        <div class="red_number" style="float:left">25</div>
-        
-        
-            
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="notes">Before(@tag) do </div>
-      </div>
-      <div id="hook_4" style="display:none;">
-        <div class="sub_section" style="display:block;">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Hook without a begin/rescue. Reduced visibility when debugging.</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            /features/support/hooks.rb:5
-          </div>
-          <br style="clear:both">
-        </div>
-      </div>
-      
-  
-      
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_5'))">
-        <div class="red_number" style="float:left">25</div>
-        
-        
-            
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="notes">Before(~@tag) do </div>
-      </div>
-      <div id="hook_5" style="display:none;">
-        <div class="sub_section" style="display:block;">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Hook without a begin/rescue. Reduced visibility when debugging.</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            /features/support/hooks.rb:9
-          </div>
-          <br style="clear:both">
-        </div>
-      </div>
-      
-  
-      
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_6'))">
-        <div class="red_number" style="float:left">21</div>
-        
-        
-            
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="notes">Before(@tag1) do </div>
-      </div>
-      <div id="hook_6" style="display:none;">
-        <div class="sub_section" style="display:block;">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Hook with no content.</pre>
-            
-                <pre style="margin: 0;">Hook is only comments.</pre>
-            
-                <pre style="margin: 0;">Hook found outside of the designated hooks file</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            /features/support/env.rb:1
-          </div>
-          <br style="clear:both">
-        </div>
-      </div>
-      
-  
 </div>
 <br style="clear:both">

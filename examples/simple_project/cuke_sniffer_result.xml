@@ -29,8 +29,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>object.nested_steps.each_value {|nested_step| store_rule(object, rule) if nested_step =~ object.regex}
-                        false</reason>
+      <reason>object.nested_steps.each_value {|nested_step| store_rule(object, rule) if nested_step =~ object.regex}</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -91,9 +90,7 @@
       </targets>
       <reason>object.steps.each do |step|
                           store_rule(object, rule) if is_comment?(step)
-                        end
-                        false
-                        </reason>
+                        end</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -105,9 +102,7 @@
       </targets>
       <reason>if object.type == 'Scenario Outline'
                           object.examples_table.each {|example| store_rule(object, rule) if is_comment?(example)}
-                        end
-                        false
-                        </reason>
+                        end</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -127,9 +122,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>object.steps.each {|step| store_rule(object, rule) if step.split.count == 2}
-                        false
-                       </reason>
+      <reason>object.steps.each {|step| store_rule(object, rule) if step.split.count == 2}</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -210,7 +203,7 @@
       <targets>
         <targets>["Feature", "Scenario", "Background"]</targets>
       </targets>
-      <reason>object.name =~ /\d+/</reason>
+      <reason>!(object.name =~ /\d+/).nil?</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -269,8 +262,7 @@
                         ["But", "*", "And"].each { |type| step_order.delete(type) }
                         if(step_order != %w(Given When Then) and step_order != %w(When Then))
                           store_rule(object, rule)
-                        end
-                        false</reason>
+                        end</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -280,7 +272,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>object.steps.first =~ /^\s*(And|But).*$/</reason>
+      <reason>!(object.steps.first =~ /^\s*(And|But).*$/).nil?</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -293,7 +285,6 @@
       <reason>object.steps.each do | step |
                           store_rule(object, rule) if( step =~ /^\s*[*].*$/)
                        end
-                       false
                        </reason>
     </rule>
     <rule>
@@ -332,9 +323,7 @@
       <reason>
                         step_order = object.get_step_order
                         phrase = rule.phrase.gsub('{class}', type)
-                        ['Given', 'When', 'Then'].each {|step_start| store_rule(object, rule, phrase) if step_order.count(step_start) &gt; 1}
-                        false
-                       </reason>
+                        ['Given', 'When', 'Then'].each {|step_start| store_rule(object, rule, phrase) if step_order.count(step_start) &gt; 1}</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -359,8 +348,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>object.code.each {|line| store_rule(object, rule) if line.strip =~ /^(p|puts)( |\()('|\"|%(q|Q)?\{)/}
-                        false</reason>
+      <reason>object.code.each {|line| store_rule(object, rule) if line.strip =~ /^(p|puts)( |\()('|\"|%(q|Q)?\{)/}</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -375,8 +363,7 @@
                             store_rule(object, rule)
                             break
                           end
-                        }
-                        false</reason>
+                        }</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -392,8 +379,7 @@
                               store_rule(object, rule) if scenario.tags.include?(tag)
                             end
                           end
-                        end
-                        false</reason>
+                        end</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -411,8 +397,7 @@
                             end
                           end
                           base_tag_list.count.times { store_rule(object, rule) }
-                        end
-                        false</reason>
+                        end</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -434,8 +419,7 @@
       </targets>
       <reason>object.tags.each do | tag |
                           store_rule(object, rule, rule.phrase.gsub("{class}", type)) if is_comment?(tag)
-                        end
-                        false</reason>
+                        end</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -473,7 +457,6 @@
                         object.tags.each { |single_tag| all_tags &lt;&lt; single_tag.split(',') }
                         all_tags.flatten!
                         unique_tags = all_tags.uniq
-
                         true unless all_tags == unique_tags</reason>
     </rule>
     <rule>
@@ -525,9 +508,7 @@
                             new_phrase = rule.phrase.gsub(/{.*}/, word)
                             store_rule(object, rule, new_phrase) if step.include?(word)
                           end
-                        end
-                        false
-                       </reason>
+                        end</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -552,8 +533,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>object.steps.each {|step| store_rule(object, rule) if step =~ DATE_REGEX}
-                        false</reason>
+      <reason>object.steps.each {|step| store_rule(object, rule) if step =~ DATE_REGEX}</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -573,8 +553,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>object.code.each {|line| store_rule(object, rule) if is_comment?(line)}
-                        false</reason>
+      <reason>object.code.each {|line| store_rule(object, rule) if is_comment?(line)}</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -595,8 +574,7 @@
                             sleep_value = match_data[:sleep_time].to_f
                             store_rule(object, rule) if sleep_value &lt; rule.conditions[:max]
                           end
-                        end
-                        false</reason>
+                        end</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -617,8 +595,7 @@
                             sleep_value = match_data[:sleep_time].to_f
                             store_rule(object, rule) if sleep_value &gt; rule.conditions[:min]
                           end
-                        end
-                        false</reason>
+                        end</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -647,57 +624,9 @@
       <reason>object.location.include?(rule.conditions[:file]) != true</reason>
     </rule>
   </rules>
-  <features_summary>
-    <score>0</score>
-    <count>3</count>
-    <average>0.0</average>
-    <good>3</good>
-    <bad>0</bad>
-    <threshold>30</threshold>
-  </features_summary>
-  <scenarios_summary>
-    <score>10</score>
-    <count>3</count>
-    <average>3.33</average>
-    <good>3</good>
-    <bad>0</bad>
-    <threshold>30</threshold>
-  </scenarios_summary>
-  <step_definitions_summary>
-    <score>11</score>
-    <count>8</count>
-    <average>1.38</average>
-    <good>8</good>
-    <bad>0</bad>
-    <threshold>20</threshold>
-  </step_definitions_summary>
-  <hooks_summary>
-    <score>171</score>
-    <count>7</count>
-    <average>24.43</average>
-    <good>0</good>
-    <bad>7</bad>
-    <threshold>20</threshold>
-  </hooks_summary>
   <improvement_list>
     <improvement>
-      <rule>Hook without a begin/rescue. Reduced visibility when debugging.</rule>
-      <total>6</total>
-    </improvement>
-    <improvement>
-      <rule>Hook with no content.</rule>
-      <total>1</total>
-    </improvement>
-    <improvement>
-      <rule>Hook is only comments.</rule>
-      <total>1</total>
-    </improvement>
-    <improvement>
-      <rule>Hook found outside of the designated hooks file</rule>
-      <total>1</total>
-    </improvement>
-    <improvement>
-      <rule>Nested step call.</rule>
+      <rule>Scenario steps out of Given/When/Then order.</rule>
       <total>1</total>
     </improvement>
     <improvement>
@@ -705,8 +634,24 @@
       <total>1</total>
     </improvement>
     <improvement>
-      <rule>Scenario steps out of Given/When/Then order.</rule>
+      <rule>Nested step call.</rule>
       <total>1</total>
+    </improvement>
+    <improvement>
+      <rule>Hook found outside of the designated hooks file</rule>
+      <total>1</total>
+    </improvement>
+    <improvement>
+      <rule>Hook is only comments.</rule>
+      <total>1</total>
+    </improvement>
+    <improvement>
+      <rule>Hook with no content.</rule>
+      <total>1</total>
+    </improvement>
+    <improvement>
+      <rule>Hook without a begin/rescue. Reduced visibility when debugging.</rule>
+      <total>6</total>
     </improvement>
   </improvement_list>
   <features>
@@ -722,12 +667,12 @@
           </steps>
           <examples/>
           <score>0</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/complex_calculator.feature:3</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/complex_calculator.feature:3</location>
           <rules/>
         </scenario>
       </scenarios>
       <score>0</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/complex_calculator.feature</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/complex_calculator.feature</location>
       <rules/>
     </feature>
     <feature>
@@ -739,7 +684,7 @@
           </steps>
           <examples/>
           <score>10</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/nested_directory/nested_feature.feature:3</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/nested_directory/nested_feature.feature:3</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -749,7 +694,7 @@
         </scenario>
       </scenarios>
       <score>0</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/nested_directory/nested_feature.feature</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/nested_directory/nested_feature.feature</location>
       <rules/>
     </feature>
     <feature>
@@ -764,12 +709,12 @@
           </steps>
           <examples/>
           <score>0</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/simple_calculator.feature:3</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/simple_calculator.feature:3</location>
           <rules/>
         </scenario>
       </scenarios>
       <score>0</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/simple_calculator.feature</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/simple_calculator.feature</location>
       <rules/>
     </feature>
   </features>
@@ -783,11 +728,11 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/complex_calculator.feature:4</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/complex_calculator.feature:4</location>
           <call>the first number is "1"</call>
         </call>
         <call>
-          <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:2</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/step_definitions/simple_calculator_steps.rb:2</location>
           <call>the first number is "1"</call>
         </call>
       </calls>
@@ -795,7 +740,7 @@
         <code>@first_number = first_number.to_i</code>
       </code>
       <score>0</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/complex_calculator_steps.rb:1</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/step_definitions/complex_calculator_steps.rb:1</location>
       <rules/>
     </step_definition>
     <step_definition>
@@ -807,7 +752,7 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/complex_calculator.feature:5</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/complex_calculator.feature:5</location>
           <call>the second number is "1"</call>
         </call>
       </calls>
@@ -815,7 +760,7 @@
         <code>@second_number = second_number.to_i</code>
       </code>
       <score>0</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/complex_calculator_steps.rb:5</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/step_definitions/complex_calculator_steps.rb:5</location>
       <rules/>
     </step_definition>
     <step_definition>
@@ -827,7 +772,7 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/complex_calculator.feature:7</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/complex_calculator.feature:7</location>
           <call>the result is "2"</call>
         </call>
       </calls>
@@ -835,7 +780,7 @@
         <code>result.to_i.should == @first_number + @second_number</code>
       </code>
       <score>0</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/complex_calculator_steps.rb:9</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/step_definitions/complex_calculator_steps.rb:9</location>
       <rules/>
     </step_definition>
     <step_definition>
@@ -845,7 +790,7 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/nested_directory/nested_feature.feature:4</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/nested_directory/nested_feature.feature:4</location>
           <call>I am a nested step</call>
         </call>
       </calls>
@@ -853,7 +798,7 @@
         <code>puts "i have no functionality"</code>
       </code>
       <score>10</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/nested_steps/nested_steps.rb:1</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/step_definitions/nested_steps/nested_steps.rb:1</location>
       <rules>
         <rule>
           <phrase>Lazy Debugging through puts, p, or print</phrase>
@@ -867,13 +812,13 @@
       <parameters/>
       <nested_steps>
         <nested_step>
-          <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:2</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/step_definitions/simple_calculator_steps.rb:2</location>
           <call>the first number is "1"</call>
         </nested_step>
       </nested_steps>
       <calls>
         <call>
-          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/simple_calculator.feature:4</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/simple_calculator.feature:4</location>
           <call>the first number is 1</call>
         </call>
       </calls>
@@ -881,7 +826,7 @@
         <code>steps "Given the first number is \"1\""</code>
       </code>
       <score>1</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:1</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/step_definitions/simple_calculator_steps.rb:1</location>
       <rules>
         <rule>
           <phrase>Nested step call.</phrase>
@@ -896,7 +841,7 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/simple_calculator.feature:5</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/simple_calculator.feature:5</location>
           <call>the second number is 1</call>
         </call>
       </calls>
@@ -904,7 +849,7 @@
         <code>@second_number = 1</code>
       </code>
       <score>0</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:5</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/step_definitions/simple_calculator_steps.rb:5</location>
       <rules/>
     </step_definition>
     <step_definition>
@@ -914,11 +859,11 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/complex_calculator.feature:6</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/complex_calculator.feature:6</location>
           <call>the calculator adds</call>
         </call>
         <call>
-          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/simple_calculator.feature:6</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/simple_calculator.feature:6</location>
           <call>the calculator adds</call>
         </call>
       </calls>
@@ -926,7 +871,7 @@
         <code>@result = @first_number + @second_number</code>
       </code>
       <score>0</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:9</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/step_definitions/simple_calculator_steps.rb:9</location>
       <rules/>
     </step_definition>
     <step_definition>
@@ -936,7 +881,7 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/development/ruby_projects/cuke_sniffer/features/scenarios/simple_calculator.feature:7</location>
+          <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/simple_calculator.feature:7</location>
           <call>the result is 2</call>
         </call>
       </calls>
@@ -944,7 +889,7 @@
         <code>@result.should == 2</code>
       </code>
       <score>0</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/step_definitions/simple_calculator_steps.rb:13</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/step_definitions/simple_calculator_steps.rb:13</location>
       <rules/>
     </step_definition>
   </step_definitions>
@@ -958,7 +903,7 @@
       <parameters/>
       <code/>
       <score>21</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/support/env.rb:1</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/support/env.rb:1</location>
       <rules>
         <rule>
           <phrase>Hook with no content.</phrase>
@@ -983,7 +928,7 @@
         <code>puts "after configuration"</code>
       </code>
       <score>25</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/support/hooks.rb:1</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/support/hooks.rb:1</location>
       <rules>
         <rule>
           <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
@@ -1002,7 +947,7 @@
         <code>puts "before @tag ran"</code>
       </code>
       <score>25</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/support/hooks.rb:5</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/support/hooks.rb:5</location>
       <rules>
         <rule>
           <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
@@ -1021,7 +966,7 @@
         <code>puts "before ~@tag ran"</code>
       </code>
       <score>25</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/support/hooks.rb:9</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/support/hooks.rb:9</location>
       <rules>
         <rule>
           <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
@@ -1040,7 +985,7 @@
         <code>puts "after @tag ran"</code>
       </code>
       <score>25</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/support/hooks.rb:13</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/support/hooks.rb:13</location>
       <rules>
         <rule>
           <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
@@ -1060,7 +1005,7 @@
         <code>puts "after @tag ran"</code>
       </code>
       <score>25</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/support/hooks.rb:17</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/support/hooks.rb:17</location>
       <rules>
         <rule>
           <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
@@ -1077,7 +1022,7 @@
         <code>puts "closing down."</code>
       </code>
       <score>25</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/features/support/hooks.rb:21</location>
+      <location>C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/support/hooks.rb:21</location>
       <rules>
         <rule>
           <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
