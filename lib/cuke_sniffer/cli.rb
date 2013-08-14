@@ -235,7 +235,10 @@ module CukeSniffer
     def build_objects_for_extension_from_location(pattern_location, extension, &block)
       file_list = build_file_list_for_extension_from_location(pattern_location, extension)
       list = []
-      file_list.each {|file_name| list << block.call(file_name) }
+      file_list.each {|file_name|
+        print '.'
+        list << block.call(file_name)
+      }
       list.flatten
     end
 
