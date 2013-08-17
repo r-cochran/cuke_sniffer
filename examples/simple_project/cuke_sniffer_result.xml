@@ -359,7 +359,7 @@
         <targets>["StepDefinition"]</targets>
       </targets>
       <reason>object.code.each {|line|
-                          if line =~ /^\s*pending\s*$/
+                          if line =~ /^\s*pending(\(.*\))?(\s*[#].*)?$/
                             store_rule(object, rule)
                             break
                           end
@@ -626,19 +626,11 @@
   </rules>
   <improvement_list>
     <improvement>
-      <rule>Scenario steps out of Given/When/Then order.</rule>
-      <total>1</total>
+      <rule>Hook without a begin/rescue. Reduced visibility when debugging.</rule>
+      <total>6</total>
     </improvement>
     <improvement>
-      <rule>Lazy Debugging through puts, p, or print</rule>
-      <total>1</total>
-    </improvement>
-    <improvement>
-      <rule>Nested step call.</rule>
-      <total>1</total>
-    </improvement>
-    <improvement>
-      <rule>Hook found outside of the designated hooks file</rule>
+      <rule>Hook with no content.</rule>
       <total>1</total>
     </improvement>
     <improvement>
@@ -646,12 +638,20 @@
       <total>1</total>
     </improvement>
     <improvement>
-      <rule>Hook with no content.</rule>
+      <rule>Hook found outside of the designated hooks file</rule>
       <total>1</total>
     </improvement>
     <improvement>
-      <rule>Hook without a begin/rescue. Reduced visibility when debugging.</rule>
-      <total>6</total>
+      <rule>Nested step call.</rule>
+      <total>1</total>
+    </improvement>
+    <improvement>
+      <rule>Lazy Debugging through puts, p, or print</rule>
+      <total>1</total>
+    </improvement>
+    <improvement>
+      <rule>Scenario steps out of Given/When/Then order.</rule>
+      <total>1</total>
     </improvement>
   </improvement_list>
   <features>

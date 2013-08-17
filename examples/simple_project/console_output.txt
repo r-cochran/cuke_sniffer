@@ -26,12 +26,12 @@ Suite Summary  Total Score: 171
     Max: 25 (C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/support/hooks.rb:1)
     Average: 24.43
   Improvements to make:
-    (1) Scenario steps out of Given/When/Then order.
-    (1) Lazy Debugging through puts, p, or print
-    (1) Nested step call.
-    (1) Hook found outside of the designated hooks file
-    (1) Hook is only comments.
-    (1) Hook with no content.
     (6) Hook without a begin/rescue. Reduced visibility when debugging.
+    (1) Hook with no content.
+    (1) Hook is only comments.
+    (1) Hook found outside of the designated hooks file
+    (1) Nested step call.
+    (1) Lazy Debugging through puts, p, or print
+    (1) Scenario steps out of Given/When/Then order.
 
 Completed Sniffing.

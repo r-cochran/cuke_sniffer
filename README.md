@@ -6,7 +6,7 @@ cuke_sniffer
 [![Code Climate](https://codeclimate.com/github/r-cochran/cuke_sniffer.png)](https://codeclimate.com/github/r-cochran/cuke_sniffer)
 
 ##Purpose
-A ruby library used to root out smells in your cukes. Tailored for identifying 		 critical problems as well as general improvements to your project/features/scenarios/step definitions.
+A ruby library used to root out smells in your cukes. Tailored for identifying critical problems as well as general improvements to your project/features/scenarios/step definitions.
 
 Scoring is based on the number of 'smells' in a cucumber project, where smells
 are potential misuses or errors. Cuke_sniffer follows a 'golf score' type system
@@ -40,6 +40,14 @@ cuke_sniffer data can be used in several different formats. Follow the links to 
 [HTML Output] (https://github.com/r-cochran/cuke_sniffer/wiki/Html-Output)
 
 [Xml Output] (https://github.com/r-cochran/cuke_sniffer/wiki/Xml-Output)
+
+---
+Helping Out
+-----
+To better help others in the community with comparison of the scores we need data. We would appreciate it if you could submit a min_html report for your projects. This report has no identifiable data for you or your project and has only the summary, improvement list, and rules section. 
+
+Feel like programming? Fork the project and grab something from the [backlog] (https://trello.com/board/cuke-sniffer/51635ebc2a64e41173017526) or come up with something you think that will advance the project!
+
 
 ---
 Submitting Issues
