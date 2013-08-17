@@ -54,18 +54,7 @@ module CukeSniffer
     #  cuke_sniffer.output_html("results01-01-0001.html")
     def self.output_html(cuke_sniffer, file_name = DEFAULT_OUTPUT_FILE_NAME, template_name = "standard_template")
       cuke_sniffer = sort_cuke_sniffer_lists(cuke_sniffer)
-
-      legend = build_page(cuke_sniffer, "legend.html.erb")
-      summary = build_page(cuke_sniffer, "summary.html.erb")
-      rules = rules_template(cuke_sniffer)
-      improvement_list = build_page(cuke_sniffer, "improvement_list.html.erb")
-      dead_steps = build_page(cuke_sniffer, "dead_steps.html.erb")
-      features = build_page(cuke_sniffer, "features.html.erb")
-      step_definitions = build_page(cuke_sniffer, "step_definitions.html.erb")
-      hooks = build_page(cuke_sniffer, "hooks.html.erb")
-
       output = ERB.new(extract_markup("#{template_name}.html.erb")).result(binding)
-
       File.open(format_html_file_name(file_name), 'w') do |f| f.write(output) end
     end
 

@@ -109,6 +109,13 @@
 </div>
 <br style="clear:both">
 
+<%
+   legend = build_page(cuke_sniffer, "legend.html.erb")
+   summary = build_page(cuke_sniffer, "summary.html.erb")
+   rules = rules_template(cuke_sniffer)
+   improvement_list = build_page(cuke_sniffer, "improvement_list.html.erb")
+%>
+
 <%= legend %>
 
 <%= summary %>
