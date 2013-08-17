@@ -52,6 +52,7 @@ module CukeSniffer
     def self.output_html(cuke_sniffer, file_name = DEFAULT_OUTPUT_FILE_NAME, template_name = "standard_template")
       cuke_sniffer = sort_cuke_sniffer_lists(cuke_sniffer)
 
+      legend = build_page(cuke_sniffer, "legend.html.erb")
       summary = build_page(cuke_sniffer, "summary.html.erb")
       rules = rules_template(cuke_sniffer)
       improvement_list = build_page(cuke_sniffer, "improvement_list.html.erb")

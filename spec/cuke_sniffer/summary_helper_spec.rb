@@ -14,8 +14,7 @@ describe CukeSniffer::SummaryHelper do
         "top rule" => 3
     }
     actual_sorted_improvement_list = CukeSniffer::SummaryHelper.sort_improvement_list(improvement_list)
-    actual_sorted_improvement_list.should == expected_sorted_improvement_list
-
+    actual_sorted_improvement_list.keys.should == expected_sorted_improvement_list.keys
   end
 
   describe "summarizing a list of rule target objects" do

@@ -9,7 +9,7 @@ module CukeSniffer
     def self.sort_improvement_list(improvement_list)
       sorted_array = improvement_list.sort_by { |improvement, occurrence| occurrence }.reverse
       sorted_improvement_list = {}
-      sorted_array.reverse.each { |node|
+      sorted_array.each { |node|
         sorted_improvement_list[node[0]] = node[1]
       }
       sorted_improvement_list
