@@ -3,9 +3,11 @@ module CukeSniffer
   # Copyright:: Copyright (C) 2013 Robert Cochran
   # License::   Distributes under the MIT License
   # Mixins: CukeSniffer::Constants
+  # A static class used to help with handling summary data for CukeSniffer::CLI
   class SummaryHelper
     include CukeSniffer::Constants
 
+    # Sorts the list of improvements in descending order of times found.
     def self.sort_improvement_list(improvement_list)
       sorted_array = improvement_list.sort_by { |improvement, occurrence| occurrence }.reverse
       sorted_improvement_list = {}
@@ -15,6 +17,7 @@ module CukeSniffer
       sorted_improvement_list
     end
 
+    # Builds a default assessment hash.
     def self.make_assessment_hash
       {
           :total => 0,
@@ -31,6 +34,7 @@ module CukeSniffer
       }
     end
 
+    # Initializes an assessment hash for the rule target list
     def self.initialize_assessment_hash(rule_target_list, type)
       assessment_hash = make_assessment_hash
       assessment_hash[:total] = rule_target_list.count
@@ -47,6 +51,7 @@ module CukeSniffer
       assessment_hash
     end
 
+    # Returns a summary hash for the rule_target_list
     def self.assess_rule_target_list(rule_target_list, type)
       assessment_hash = initialize_assessment_hash(rule_target_list, type)
       rule_target_list.each do |rule_target|
@@ -70,6 +75,7 @@ module CukeSniffer
       assessment_hash
     end
 
+    # Returns a CukeSniffer::SummaryNode object for the passed hash
     def self.load_summary_data(summary_hash)
       summary_node = SummaryNode.new
       summary_node.count = summary_hash[:total]

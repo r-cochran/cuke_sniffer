@@ -20,6 +20,7 @@ module CukeSniffer
       puts output
     end
 
+    # Returns a string of formatted output for all the object sections of summary
     def self.get_output_summary_nodes(cuke_sniffer)
       output = ""
       [:features, :scenarios, :step_definitions, :hooks].each do |summary_section|
@@ -28,6 +29,7 @@ module CukeSniffer
       output
     end
 
+    # Formats the section data for a summary object
     def self.console_summary(name, summary)
       "  #{name}\n" +
       "    Min: #{summary[:min]} (#{summary[:min_file]})\n" +
@@ -35,6 +37,7 @@ module CukeSniffer
       "    Average: #{summary[:average]}\n"
     end
 
+    # Formats the improvement list data for summary
     def self.console_improvement_list(improvement_list)
       output = "  Improvements to make:\n"
       improvement_list.each do |improvement, count|
@@ -66,10 +69,12 @@ module CukeSniffer
       File.open(format_html_file_name(file_name), 'w') do |f| f.write(output) end
     end
 
+    # Returns an ERB page built up for the passed file name
     def self.build_page(cuke_sniffer, erb_file)
       ERB.new(extract_markup(erb_file)).result(binding)
     end
 
+    # Assigns an html extension if one is not provided for the passed file name
     def self.format_html_file_name(file_name)
       if file_name =~ /\.html$/
         file_name
@@ -88,12 +93,14 @@ module CukeSniffer
       output_html(cuke_sniffer, file_name, "min_template")
     end
 
+    # Returns the Rules erb page that utilizes sub page sections of enabled and disabled rules
     def self.rules_template(cuke_sniffer)
       enabled_rules = sub_rules_template(cuke_sniffer, true, "Enabled Rules")
       disabled_rules = sub_rules_template(cuke_sniffer, false, "Disabled Rules")
       ERB.new(extract_markup("rules.html.erb")).result(binding)
     end
 
+    # Returns the sub rules erb page for enabled status of a rule
     def self.sub_rules_template(cuke_sniffer, state, heading)
       ERB.new(extract_markup("sub_rules.html.erb")).result(binding)
     end
@@ -113,6 +120,7 @@ module CukeSniffer
       end
     end
 
+    # Formats a list of rule conditions into a compact string of 5 or less elements per row.
     def self.convert_array_condition_into_list_of_strings(condition_list)
       result = []
       while condition_list.size > 0
@@ -122,6 +130,7 @@ module CukeSniffer
       result
     end
 
+    # Sorts all of the lists on a cuke_sniffer object to be in descending order for each objects score.
     def self.sort_cuke_sniffer_lists(cuke_sniffer)
       cuke_sniffer.features = cuke_sniffer.features.sort_by { |feature| feature.total_score }.reverse
       cuke_sniffer.step_definitions = cuke_sniffer.step_definitions.sort_by { |step_definition| step_definition.score }.reverse
@@ -130,6 +139,7 @@ module CukeSniffer
       cuke_sniffer
     end
 
+    # Returns the markup for a desired erb file.
     def self.extract_markup(template_name = "markup.html.erb", markup_source = MARKUP_SOURCE)
       markup_location = "#{markup_source}/#{template_name}"
       markup = ""

@@ -1,8 +1,11 @@
 module CukeSniffer
-
+  # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
+  # Copyright:: Copyright (C) 2013 Robert Cochran
+  # License::   Distributes under the MIT License
+  # Static class used for aiding cuke_sniffer in various tasks
   class CukeSnifferHelper
 
-    #SCENARIO HELPER METHODS
+    # Iterates over the passed features list and returns all steps found in scenarios and backgrounds.
     def self.extract_steps_from_features(features)
       steps = {}
       features.each do |feature|
@@ -18,6 +21,7 @@ module CukeSniffer
       steps
     end
 
+    # Iterates over the passed features list and returns all scenarios and backgrounds found.
     def self.get_all_scenarios(features)
       scenarios = []
       features.each do |feature|
@@ -27,12 +31,13 @@ module CukeSniffer
       scenarios.flatten
     end
 
-
+    # Grabs the values from an example without the bars
     def self.extract_variables_from_example(example)
       example = example[example.index('|')..example.length]
       example.split(/\s*\|\s*/) - [""]
     end
 
+    # Creates a step call from the details of an example table
     def self.build_updated_step_from_example(step, variable_list, row_variables)
       new_step = step.dup
       variable_list.each do |variable|
@@ -45,6 +50,7 @@ module CukeSniffer
       new_step
     end
 
+    # Creates a hash of steps with the build up example step calls.
     def self.extract_scenario_outline_steps(scenario)
       steps = {}
       examples = scenario.examples_table
@@ -65,6 +71,7 @@ module CukeSniffer
       steps
     end
 
+    # Returns all steps found in a scenario
     def self.extract_scenario_steps(scenario)
       steps_hash = {}
       counter = 1
@@ -76,8 +83,7 @@ module CukeSniffer
       steps_hash
     end
 
-    #RULE HELPER METHODS
-
+    # Builds a list of rule objects out of a hash. See CukeSniffer::RulesConfig for hash example.
     def self.build_rules(rules)
       return [] if rules.nil?
       rules.collect do |key, value|
@@ -85,6 +91,7 @@ module CukeSniffer
       end
     end
 
+    # Builds rule object out of a hash. See CukeSniffer::RulesConfig for hash example.
     def self.build_rule(rule_hash)
       rule = CukeSniffer::Rule.new
       rule.phrase = rule_hash[:phrase]
@@ -101,8 +108,7 @@ module CukeSniffer
       rule
     end
 
-    #STEP DEFINITION HELPER METHODS
-
+    # Returns a list of all nested step calls found in a step definition.
     def self.extract_steps_from_step_definitions(step_definitions)
       steps = {}
       step_definitions.each do |definition|
@@ -113,6 +119,7 @@ module CukeSniffer
       steps
     end
 
+    # Returns a fuzzy match for a step definition for cataloging steps.
     def self.convert_steps_with_expressions(steps_with_expressions)
       step_regex_hash = {}
       steps_with_expressions.each do |step_location, step_value|
@@ -122,12 +129,14 @@ module CukeSniffer
       step_regex_hash
     end
 
+    # Extracts all possible step calls from the passed features and step definitions.
     def self.get_all_steps(features, step_definitions)
       feature_steps = CukeSniffer::CukeSnifferHelper.extract_steps_from_features(features)
       step_definition_steps = CukeSniffer::CukeSnifferHelper.extract_steps_from_step_definitions(step_definitions)
       feature_steps.merge step_definition_steps
     end
 
+    # Applies all possible fuzzy calls to a step definition.
     def self.catalog_possible_dead_steps(step_definitions, steps_with_expressions)
       step_definitions.each do |step_definition|
         next unless step_definition.calls.empty?
@@ -141,6 +150,7 @@ module CukeSniffer
       step_definitions
     end
 
+    # Returns a list of all step definitions with a capture group
     def self.get_steps_with_expressions(steps)
       steps_with_expressions = {}
       steps.each do |step_location, step_value|
