@@ -281,7 +281,7 @@ module CukeSniffer
             :score => WARNING,
             :targets => ["StepDefinition"],
             :reason => "object.code.each {|line|
-                          if line =~ /^\\s*pending\\s*$/
+                          if line =~ /^\\s*pending(\\(.*\\))?(\\s*[#].*)?$/
                             store_rule(object, rule)
                             break
                           end

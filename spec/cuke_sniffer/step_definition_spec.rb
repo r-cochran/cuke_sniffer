@@ -454,6 +454,42 @@ describe "StepDefinitionRules" do
     test_step_definition_rule(step_definition_block, :pending)
   end
 
+  it "should punish each instance of a pending with an attached message step definition" do
+    step_definition_block = [
+        "Given /^step with comments$/ do",
+        "pending(\"happiness\")",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :pending)
+  end
+
+  it "should punish each instance of a pending with a trailing comment in step definition" do
+    step_definition_block = [
+        "Given /^step with comments$/ do",
+        "pending # express the regexp above with the code you wish you had",
+        "end"
+    ]
+    test_step_definition_rule(step_definition_block, :pending)
+  end
+
+  it "should not punish anything named else that uses pending. Method Name." do
+    step_definition_block = [
+        "Given /^step with comments$/ do",
+        "pendingMethodName",
+        "end"
+    ]
+    test_no_step_definition_rule(step_definition_block, :pending)
+  end
+
+  it "should not punish anything named else that uses pending. Variable assignment." do
+    step_definition_block = [
+        "Given /^step with comments$/ do",
+        "pending = 'testing'",
+        "end"
+    ]
+    test_no_step_definition_rule(step_definition_block, :pending)
+  end
+
   it "should punish each small sleep in a step definition" do
     step_definition_block = [
         "Given /^small sleeping step$/ do",
