@@ -143,6 +143,18 @@ describe CukeSniffer do
       cuke_sniffer.step_definitions.count.should == 2
     end
 
+    it "should be able to identify step definitions that are defined in parentheses." do
+      step_definition_block = [
+          "Given(/^I am a step$/) do",
+          "  puts 'stuff'",
+          "end"
+      ]
+      build_file(step_definition_block, @file_name)
+
+      cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location => @file_name})
+      cuke_sniffer.step_definitions.count.should == 1
+    end
+
     it "should create a list of step definition objects from a step definition file." do
       step_definition_block = [
           "Given /^I am a step$/ do",
