@@ -10,7 +10,7 @@
   <% index = 0 %>
   <% cuke_sniffer.step_definitions.each do |step_definition| %>
       <% next if step_definition.score <= 0 %>
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('step_definition_<%=index%>'))">
+      <div style="display:inline;cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('step_definition_<%=index%>'))">
         <div class="red_number" style="float:left"><%= step_definition.score %></div>
         <% parameters = "" %>
         <% step_definition.parameters.each do |param| %>
@@ -25,12 +25,10 @@
                 <% parameters << ", " %>
             <% end %>
         <% end %>
-        <div style="float: left" class="notes"><%= "/" + step_definition.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex] + "/ do " + parameters %></div>
-        <div style="float: right; padding-right:1%" class="notes"><%= step_definition.calls.keys.count %> Call(s)</div>
+        <div style="padding-left:0.5%; display:inline;" class="notes"><%= "/" + step_definition.regex.to_s.match(/\(\?\-mix\:(?<regex>.*)\)/)[:regex] + "/ do " + parameters %></div>
+        <div style="float: right; padding-right:1%; display:inline;" class="notes"><%= step_definition.calls.keys.count %> Call(s)</div>
       </div>
       <div id="step_definition_<%= index %>" style="display:none;">
-        <br style="clear:both">
-
         <div class="sub_section" style="display:block">
           <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
             <% step_definition.rules_hash.each_key do |rule| %>

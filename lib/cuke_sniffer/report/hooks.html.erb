@@ -10,8 +10,8 @@
   <% index = 0 %>
   <% cuke_sniffer.hooks.each do |hook| %>
       <% next if hook.score <= 0 %>
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_<%=index%>'))">
-        <div class="red_number" style="float:left"><%= hook.score %></div>
+      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_<%=index%>'))">
+        <div class="red_number" style="display:inline;"><%= hook.score %></div>
         <% tags = "(" %>
         <% hook.tags.each do |tag| %>
             <% tags << tag %>
@@ -28,7 +28,7 @@
         <% name += tags unless tags == "()" %>
         <% name += " do " %>
         <% name += parameters unless parameters == "|  |" %>
-        <div class="notes"><%= name %></div>
+        <div class="notes" style="display:inline; padding-left: 0.5%"><%= name %></div>
       </div>
       <div id="hook_<%= index %>" style="display:none;">
         <div class="sub_section" style="display:block;">

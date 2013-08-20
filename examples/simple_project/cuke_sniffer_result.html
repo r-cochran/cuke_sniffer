@@ -46,10 +46,9 @@
     }
 
     .red_number {
-        width: 3%;
-        color: red;
-        text-indent: 1%;
+        color:red;
         font-weight: bold;
+        display:inline;
     }
 
     .notes {
@@ -806,37 +805,52 @@
   
       
       <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('feature_0'))">
-        <div class="red_number" style="float:left">20</div>
-        <div class="notes">I am a nested feature</div>
+        <table>
+          <tr>
+            <td valign="top" style="color:red;font-weight: bold;">
+              20
+            </td>
+            <td class="notes">
+              
+                  I am a nested feature
+              
+            </td>
+          </tr>
+        </table>
       </div>
       <div id="feature_0" class="sub_section">
-        <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6; padding-bottom: 4px">
-          
-              <pre style="margin: 0;">      </pre>
-          
-          
-        </div>
-        <div style="text-indent: 1%; padding-bottom: 4px">
-          /features/scenarios/nested_directory/nested_feature.feature
-        </div>
-        <br style="clear:both">
-
-        <div>
-          
-        </div>
-        <div>
-          
+        <table>
+          <tr>
+            <td style="border-right: 2px solid #add8e6; width:60%;">
               
-              <div class="red_number" style="float:left; padding-left: 1%">10</div>
-              <div style="float: left; width: 45%;">Scenario: A nested scenario should be parseable</div>
-              <div style="margin-left:1%;float: left; border-left: 2px solid #90ee90; border-top: 2px solid #90ee90; text-indent: 1%">
-                
-                    <pre style="margin: 0; text_indent: 3%;">Scenario steps out of Given/When/Then order.</pre>
-                
-              </div>
-              <br style="clear:both">
+                  <pre style="margin: 0;">      </pre>
+              
+              
+            </td>
+            <td valign="top">
+              /features/scenarios/nested_directory/nested_feature.feature
+            </td>
+          </tr>
+          <tr>
+            
+          </tr>
           
-        </div>
+              <tr>
+                
+                <td valign="top" style="border-right: 2px solid #90ee90;">
+                  <div>
+                    <div class="red_number">10</div>
+                    <div class="notes" style="display:inline">Scenario: A nested scenario should be parseable</div>
+                  </div>
+                </td>
+                <td style="border-top: 2px solid #90ee90;">
+                  
+                      <pre style="margin: 0; text_indent: 3%;">Scenario steps out of Given/When/Then order.</pre>
+                  
+                </td>
+              </tr>
+          
+        </table>
       </div>
       
   
@@ -854,16 +868,14 @@
   
   
       
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('step_definition_0'))">
+      <div style="display:inline;cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('step_definition_0'))">
         <div class="red_number" style="float:left">10</div>
         
         
-        <div style="float: left" class="notes">/^I am a nested step$/ do </div>
-        <div style="float: right; padding-right:1%" class="notes">1 Call(s)</div>
+        <div style="padding-left:0.5%; display:inline;" class="notes">/^I am a nested step$/ do </div>
+        <div style="float: right; padding-right:1%; display:inline;" class="notes">1 Call(s)</div>
       </div>
       <div id="step_definition_0" style="display:none;">
-        <br style="clear:both">
-
         <div class="sub_section" style="display:block">
           <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
             
@@ -879,16 +891,14 @@
       
   
       
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('step_definition_1'))">
+      <div style="display:inline;cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('step_definition_1'))">
         <div class="red_number" style="float:left">1</div>
         
         
-        <div style="float: left" class="notes">/^the first number is 1$/ do </div>
-        <div style="float: right; padding-right:1%" class="notes">1 Call(s)</div>
+        <div style="padding-left:0.5%; display:inline;" class="notes">/^the first number is 1$/ do </div>
+        <div style="float: right; padding-right:1%; display:inline;" class="notes">1 Call(s)</div>
       </div>
       <div id="step_definition_1" style="display:none;">
-        <br style="clear:both">
-
         <div class="sub_section" style="display:block">
           <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
             
@@ -921,8 +931,8 @@
   
   
       
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_0'))">
-        <div class="red_number" style="float:left">25</div>
+      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_0'))">
+        <div class="red_number" style="display:inline;">25</div>
         
         
         
@@ -933,7 +943,7 @@
         
         
         
-        <div class="notes">at_exit do </div>
+        <div class="notes" style="display:inline; padding-left: 0.5%">at_exit do </div>
       </div>
       <div id="hook_0" style="display:none;">
         <div class="sub_section" style="display:block;">
@@ -951,8 +961,8 @@
       
   
       
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_1'))">
-        <div class="red_number" style="float:left">25</div>
+      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_1'))">
+        <div class="red_number" style="display:inline;">25</div>
         
         
             
@@ -969,7 +979,7 @@
         
         
         
-        <div class="notes">After(~@tag,@tag2, @tag3) do </div>
+        <div class="notes" style="display:inline; padding-left: 0.5%">After(~@tag,@tag2, @tag3) do </div>
       </div>
       <div id="hook_1" style="display:none;">
         <div class="sub_section" style="display:block;">
@@ -987,8 +997,8 @@
       
   
       
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_2'))">
-        <div class="red_number" style="float:left">25</div>
+      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_2'))">
+        <div class="red_number" style="display:inline;">25</div>
         
         
             
@@ -1002,7 +1012,7 @@
         
         
         
-        <div class="notes">After(@tag) do </div>
+        <div class="notes" style="display:inline; padding-left: 0.5%">After(@tag) do </div>
       </div>
       <div id="hook_2" style="display:none;">
         <div class="sub_section" style="display:block;">
@@ -1020,8 +1030,8 @@
       
   
       
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_3'))">
-        <div class="red_number" style="float:left">25</div>
+      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_3'))">
+        <div class="red_number" style="display:inline;">25</div>
         
         
         
@@ -1032,7 +1042,7 @@
         
         
         
-        <div class="notes">AfterConfiguration do </div>
+        <div class="notes" style="display:inline; padding-left: 0.5%">AfterConfiguration do </div>
       </div>
       <div id="hook_3" style="display:none;">
         <div class="sub_section" style="display:block;">
@@ -1050,8 +1060,8 @@
       
   
       
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_4'))">
-        <div class="red_number" style="float:left">25</div>
+      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_4'))">
+        <div class="red_number" style="display:inline;">25</div>
         
         
             
@@ -1065,7 +1075,7 @@
         
         
         
-        <div class="notes">Before(@tag) do </div>
+        <div class="notes" style="display:inline; padding-left: 0.5%">Before(@tag) do </div>
       </div>
       <div id="hook_4" style="display:none;">
         <div class="sub_section" style="display:block;">
@@ -1083,8 +1093,8 @@
       
   
       
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_5'))">
-        <div class="red_number" style="float:left">25</div>
+      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_5'))">
+        <div class="red_number" style="display:inline;">25</div>
         
         
             
@@ -1098,7 +1108,7 @@
         
         
         
-        <div class="notes">Before(~@tag) do </div>
+        <div class="notes" style="display:inline; padding-left: 0.5%">Before(~@tag) do </div>
       </div>
       <div id="hook_5" style="display:none;">
         <div class="sub_section" style="display:block;">
@@ -1116,8 +1126,8 @@
       
   
       
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('hook_6'))">
-        <div class="red_number" style="float:left">21</div>
+      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_6'))">
+        <div class="red_number" style="display:inline;">21</div>
         
         
             
@@ -1131,7 +1141,7 @@
         
         
         
-        <div class="notes">Before(@tag1) do </div>
+        <div class="notes" style="display:inline; padding-left: 0.5%">Before(@tag1) do </div>
       </div>
       <div id="hook_6" style="display:none;">
         <div class="sub_section" style="display:block;">

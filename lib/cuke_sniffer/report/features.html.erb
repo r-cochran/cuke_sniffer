@@ -11,48 +11,72 @@
   <% cuke_sniffer.features.each do |feature| %>
       <% next if feature.total_score <= 0 %>
       <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('feature_<%=index%>'))">
-        <div class="red_number" style="float:left"><%= feature.total_score + feature.scenarios_score %></div>
-        <div class="notes"><%= feature.name %></div>
+        <table>
+          <tr>
+            <td valign="top" style="color:red;font-weight: bold;">
+              <%= feature.total_score + feature.scenarios_score %>
+            </td>
+            <td class="notes">
+              <% if feature.name.nil? or feature.name == "" %>
+                  No Feature Description
+              <% else %>
+                  <%= feature.name %>
+              <% end %>
+            </td>
+          </tr>
+        </table>
       </div>
       <div id="feature_<%= index %>" class="sub_section">
-        <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6; padding-bottom: 4px">
-          <% if feature.rules_hash.empty? %>
-              <pre style="margin: 0;">      </pre>
-          <% end %>
-          <% feature.rules_hash.each_key do |rule| %>
-              <pre style="margin: 0;"><%= rule %></pre>
-          <% end %>
-        </div>
-        <div style="text-indent: 1%; padding-bottom: 4px">
-          <%= feature.location.gsub(cuke_sniffer.features_location, "") %>
-        </div>
-        <br style="clear:both">
-
-        <div>
-          <% unless feature.background.nil? or feature.background.score > 0 %>
-              <div class="red_number" style="float:left; padding-left: 1%"><%= feature.background.score %></div>
-              <div style="float: left; width: 45%;"><%= feature.background.type + ": " + feature.background.name %></div>
-              <div style="margin-left:1%;float: left; border-left: 2px solid #90ee90; border-top: 2px solid #90ee90;text-indent: 1%;">
-                <% feature.background.rules_hash.each_key do |rule| %>
-                    <pre style="margin: 0; text_indent: 3%;"><%= rule %></pre>
-                <% end %>
-              </div>
-              <br style="clear:both">
-          <% end %>
-        </div>
-        <div>
+        <table>
+          <tr>
+            <td style="border-right: 2px solid #add8e6; width:60%;">
+              <% if feature.rules_hash.empty? %>
+                  <pre style="margin: 0;">      </pre>
+              <% end %>
+              <% feature.rules_hash.each_key do |rule| %>
+                  <pre style="margin: 0;"><%= rule %></pre>
+              <% end %>
+            </td>
+            <td valign="top">
+              <%= feature.location.gsub(cuke_sniffer.features_location, "") %>
+            </td>
+          </tr>
+          <tr>
+            <% unless feature.background.nil? or feature.background.score > 0 %>
+                <table>
+                  <tr>
+                    <td valign="top" style="color:red;font-weight: bold;">
+                      <%= feature.background.score %>
+                    </td>
+                    <td class="notes" style="border-right: 2px solid #90ee90;">
+                      <%= feature.background.type + ": " + feature.background.name %>
+                    </td>
+                    <td>
+                      <% feature.background.rules_hash.each_key do |rule| %>
+                          <pre style="margin: 0; text_indent: 3%;"><%= rule %></pre>
+                      <% end %>
+                    </td>
+                  </tr>
+                </table>
+            <% end %>
+          </tr>
           <% feature.scenarios.each do |scenario| %>
-              <% next if scenario.score <= 0 %>
-              <div class="red_number" style="float:left; padding-left: 1%"><%= scenario.score %></div>
-              <div style="float: left; width: 45%;"><%= scenario.type + ": " + scenario.name %></div>
-              <div style="margin-left:1%;float: left; border-left: 2px solid #90ee90; border-top: 2px solid #90ee90; text-indent: 1%">
-                <% scenario.rules_hash.each_key do |rule| %>
-                    <pre style="margin: 0; text_indent: 3%;"><%= rule %></pre>
-                <% end %>
-              </div>
-              <br style="clear:both">
+              <tr>
+                <% next if scenario.score <= 0 %>
+                <td valign="top" style="border-right: 2px solid #90ee90;">
+                  <div>
+                    <div class="red_number"><%= scenario.score %></div>
+                    <div class="notes" style="display:inline"><%= scenario.type + ": " + scenario.name %></div>
+                  </div>
+                </td>
+                <td style="border-top: 2px solid #90ee90;">
+                  <% scenario.rules_hash.each_key do |rule| %>
+                      <pre style="margin: 0; text_indent: 3%;"><%= rule %></pre>
+                  <% end %>
+                </td>
+              </tr>
           <% end %>
-        </div>
+        </table>
       </div>
       <% index += 1 %>
   <% end %>
