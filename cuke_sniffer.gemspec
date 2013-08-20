@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = 'cuke_sniffer'
-  s.version = '0.0.6'
-  s.date = '2013-08-17'
+  s.version = '0.0.6.1'
+  s.date = '2013-08-20'
   s.summary = "CukeSniffer"
   s.description = "A ruby library used to root out smells in your cukes."
   s.authors = ["Robert Cochran", "Chris Vaughn", "Robert Anderson"]

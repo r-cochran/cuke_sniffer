@@ -11,6 +11,44 @@ describe CukeSniffer do
       cuke_sniffer.good?.should == false
       CukeSniffer::Constants::THRESHOLDS["Project"] = start_threshold
     end
+
+    it "should tabulate a total score for the project when summarizing the data." do
+      cuke_sniffer = CukeSniffer::CLI.new()
+
+      features_score = 300
+      @file_name = "my_feature.feature"
+      feature_block = [
+          "Feature:"
+      ]
+      build_file(feature_block, @file_name)
+      feature = CukeSniffer::Feature.new(@file_name)
+      feature.score = features_score
+
+      step_definition_block = [
+          "Given /^stuff$/ do",
+          "puts 'stuff'",
+          "end"
+      ]
+      step_definition = CukeSniffer::StepDefinition.new("location.rb:1", step_definition_block)
+      step_definitions_score = 299
+      step_definition.score = step_definitions_score
+
+      hook_block = [
+          "Before do",
+          "end"
+      ]
+      hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
+      hooks_score = 23
+      hook.score = hooks_score
+
+      cuke_sniffer.features = [feature]
+      cuke_sniffer.scenarios = []
+      cuke_sniffer.step_definitions = [step_definition]
+      cuke_sniffer.hooks = [hook]
+
+      cuke_sniffer.assess_score
+      cuke_sniffer.summary[:total_score].should == features_score + step_definitions_score + hooks_score
+    end
   end
 
   describe "Handling Features" do

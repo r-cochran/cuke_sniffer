@@ -208,7 +208,4 @@ describe CukeSniffer::SummaryHelper do
     end
   end
 
-  it "should generate a SummaryNode from a summary hash" do
-
-  end
 end

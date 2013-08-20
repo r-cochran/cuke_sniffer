@@ -155,6 +155,17 @@ module CukeSniffer
       CukeSniffer::CukeSnifferHelper.catalog_possible_dead_steps(@step_definitions, converted_steps)
     end
 
+    def assess_score
+      puts "\nAssessing Score: "
+      initialize_summary
+      summarize(:features, @features, "Feature")
+      summarize(:scenarios, @scenarios, "Scenario")
+      summarize(:step_definitions, @step_definitions, "StepDefinition")
+      summarize(:hooks, @hooks, "Hook")
+      @summary[:improvement_list] = CukeSniffer::SummaryHelper.sort_improvement_list(@summary[:improvement_list])
+      @improvement_list = @summary[:improvement_list]
+    end
+
     private
 
     def initialize_rule_targets(parameters)
@@ -192,20 +203,9 @@ module CukeSniffer
       }
     end
 
-    def assess_score
-      puts "\nAssessing Score: "
-      initialize_summary
-      summarize(:features, @features, "Feature", @features_summary)
-      summarize(:scenarios, @scenarios, "Scenario", @scenarios_summary)
-      summarize(:step_definitions, @step_definitions, "StepDefinition", @step_definitions_summary)
-      summarize(:hooks, @hooks, "Hook", @hooks_summary)
-      @summary[:improvement_list] = CukeSniffer::SummaryHelper.sort_improvement_list(@summary[:improvement_list])
-      @improvement_list = @summary[:improvement_list]
-    end
-
-    def summarize(symbol, list, name, summary_object)
+    def summarize(symbol, list, name)
       @summary[symbol] = CukeSniffer::SummaryHelper.assess_rule_target_list(list, name)
-      @summary[:total_score] = @summary[symbol][:total_score]
+      @summary[:total_score] += @summary[symbol][:total_score]
       @summary[symbol][:improvement_list].each do |phrase, count|
         @summary[:improvement_list][phrase] ||= 0
         @summary[:improvement_list][phrase] += @summary[symbol][:improvement_list][phrase]
