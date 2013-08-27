@@ -1,34 +1,58 @@
-<div class="title" onclick="toggleById('step_definitions_data', this)">
+<div class="title" onclick="toggleById('step_definitions_data', this);updateDivScrollForTable('step_definitions_data', 'step_definitions_table', 30);">
   Step Definitions +
 </div>
-<div class="shrink_section" id="step_definitions_data">
+
+<style>
+    .new_sub_section {
+        border: 2px solid #90ee90;
+        padding: 2px;
+        display: none;
+        overflow:auto;
+    }
+</style>
+
+<div class="new_sub_section" id="step_definitions_data">
+  <% index = 0 %>
   <% if cuke_sniffer.step_definitions.count == 0 %>
-      <div class="empty_set_message">There were no Step Definitions to sniff in
-        '<%= cuke_sniffer.step_definitions_location %>'!
-      </div>
+      <div class="empty_set_message">There were no Step Definitions to sniff in '<%= cuke_sniffer.step_definitions_location %>'!</div>
   <% elsif cuke_sniffer.step_definitions.count >= 1 && cuke_sniffer.summary[:step_definitions][:total_score] ==0 %>
       <div class="empty_set_message">Excellent! No smells found for Step Definitions!</div>
   <% end %>
-  <% index = 0 %>
-
-  <table style="width:100%;">
+  <table id="step_definitions_table" style="width:100%;" border="0" cellspacing="0">
     <% cuke_sniffer.step_definitions.each do |step_definition| %>
         <% next if step_definition.score <= 0 %>
-        <tr class="notes" style="cursor:pointer" onclick="updateDisplayStatus(document.getElementById('step_definition_<%=index%>'))">
-          <td>
-            <div style="display:inline;color: red;"><%= step_definition.score %></div>
-            <div style="display:inline;"><%= step_definition.regex.to_s.gsub("(?-mix:", '/')[0...-1] %>/</div>
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('step_definition_detail_<%=index%>'));">
+          <td id="step_definition_score_<%= index %>" valign="top" style="width:1%; color: red">
+            <%= step_definition.score %>
           </td>
-          <td style="text-align: right;"><%= step_definition.calls.size %> Call(s)</td>
+          <td id="step_definition_regex_<%= index %>" style="text-indent: 2px;">
+            /<%= step_definition.regex.to_s.gsub(/[(]\?-mix:/, "")[0...-1] %>/
+          </td>
+          <td id="step_definition_calls_<%= index %>" valign="top" style="text-align:right;width:8%;">
+            Call(s): <%= step_definition.calls.size %>
+          </td>
         </tr>
-        <tr id="step_definition_<%= index %>" style="display:none;">
-          <td style="border-top:2px solid #add8e6">
-            <% step_definition.rules_hash.each_key do |phrase| %>
-                <pre><%= phrase %></pre>
+
+        <tr class="sub_detail" id="step_definition_detail_<%= index %>" style="display: none; background-color: #ccffff;">
+          <td colspan="2">
+            <% SummaryHelper::sort_improvement_list(step_definition.rules_hash).each do |phrase, count| %>
+                <div style="text-indent: 10px;">
+                  <div style="color:red; display:inline-block;">
+                    <%= count %>
+                  </div>
+                  <div style="display:inline-block;">
+                    <%= phrase %>
+                  </div>
+                </div>
             <% end %>
           </td>
-          <td style="text-align: right;border-top:2px solid #add8e6"><%= step_definition.location.gsub(cuke_sniffer.step_definitions_location, '') %></td>
+          <td valign="top" style="text-align: right">
+            <a href="file:///<%= step_definition.location.gsub(/:\d+$/, "") %>" title="Note: Links to file on system this report was generated.">
+              <%= step_definition.location.gsub(cuke_sniffer.step_definitions_location, '') %>
+            </a>
+          </td>
         </tr>
+
         <% index += 1 %>
     <% end %>
   </table>

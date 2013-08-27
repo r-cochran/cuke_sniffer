@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" >
+<link rel="stylesheet" type="text/css">
 
 <script type="text/javascript">
 
@@ -7,7 +7,30 @@
         toggleText(link)
     }
     function updateDisplayStatus(object) {
-        object.style.display = (object.style.display == "block") ? 'none' : "block";
+        if (object.tagName == "TR") {
+            updateDisplayStatusForTR(object);
+        } else {
+            object.style.display = (object.style.display == "block") ? 'none' : "block";
+        }
+    }
+
+    function updateDivScrollForTable(divId, targetTableId, maxRows){
+        div = document.getElementById(divId);
+        table = document.getElementById(targetTableId);
+        if(table.rows.length >= maxRows){
+            div.style.height = "60%";
+            div.style.overflow = "auto";
+        }
+    }
+
+    function updateDisplayStatusForTR(object) {
+        existing_style = object.getAttribute('style');
+        if (object.style.display == "none") {
+            object.setAttribute('style', existing_style.replace("display: none", "display: block-inline"))
+            console.log(object.rows.length);
+        } else {
+            object.setAttribute('style', existing_style.replace("display: block-inline", "display: none"))
+        }
     }
     function toggleText(link) {
         var char_result = link.innerHTML.indexOf("+") > -1 ? "-" : "+";
@@ -46,9 +69,9 @@
     }
 
     .red_number {
-        color:red;
+        color: red;
         font-weight: bold;
-        display:inline;
+        display: inline;
     }
 
     .notes {
@@ -84,13 +107,14 @@
         text_indent: 3%;
 
     }
+
     .rule_heading {
         font-weight: bold;
         margin: 0.25%;
     }
 
-    ol  {
-        list-style-type:none;
+    ol {
+        list-style-type: none;
         display: block;
         padding-left: 1%
 

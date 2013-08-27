@@ -1,49 +1,64 @@
-<div class="title" onclick="toggleById('hooks_data', this)">
+<div class="title" onclick="toggleById('hooks_data', this);updateDivScrollForTable('hooks_data', 'hooks_table', 30);">
   Hooks +
 </div>
-<div class="shrink_section" id="hooks_data">
+<div class="new_sub_section" id="hooks_data">
   <% if cuke_sniffer.hooks.count == 0 %>
       <div class="empty_set_message">There were no Hooks to sniff in '<%= cuke_sniffer.hooks_location %>'!</div>
   <% elsif cuke_sniffer.hooks.count >= 1 && cuke_sniffer.summary[:hooks][:total_score] ==0 %>
       <div class="empty_set_message">Excellent! No smells found for Hooks!</div>
   <% end %>
   <% index = 0 %>
-  <% cuke_sniffer.hooks.each do |hook| %>
-      <% next if hook.score <= 0 %>
-      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_<%=index%>'))">
-        <div class="red_number" style="display:inline;"><%= hook.score %></div>
-        <% tags = "(" %>
-        <% hook.tags.each do |tag| %>
-            <% tags << tag %>
-            <% tags << ", " unless tag == hook.tags.last %>
-        <% end %>
-        <% tags += ")" %>
-        <% parameters = "| " %>
-        <% hook.parameters.each do |parameter| %>
-            <% parameters << parameter %>
-            <% parameters << ", " unless parameter == hook.parameters.last %>
-        <% end %>
-        <% parameters += " |" %>
-        <% name = hook.type %>
-        <% name += tags unless tags == "()" %>
-        <% name += " do " %>
-        <% name += parameters unless parameters == "|  |" %>
-        <div class="notes" style="display:inline; padding-left: 0.5%"><%= name %></div>
-      </div>
-      <div id="hook_<%= index %>" style="display:none;">
-        <div class="sub_section" style="display:block;">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            <% hook.rules_hash.each_key do |rule| %>
-                <pre style="margin: 0;"><%= rule %></pre>
+  <table id="hooks_table" style="width:100%;" border="0" cellspacing="0">
+    <% cuke_sniffer.hooks.each do |hook| %>
+        <% next if hook.score <= 0 %>
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_<%=index%>'));">
+          <td id="hook_score_<%= index %>" valign="top" style="width:1%; color: red">
+            <%= hook.score %>
+          </td>
+          <td id="hook_name_<%= index %>" style="text-indent: 2px;">
+            <% tags = "(" %>
+            <% hook.tags.each do |tag| %>
+                <% tags << tag %>
+                <% tags << ", " unless tag == hook.tags.last %>
             <% end %>
-          </div>
-          <div style="text-indent: 1%">
-            <%= hook.location.gsub(cuke_sniffer.hooks_location, "") %>
-          </div>
-          <br style="clear:both">
-        </div>
-      </div>
-      <% index += 1 %>
-  <% end %>
+            <% tags += ")" %>
+            <% parameters = "| " %>
+            <% hook.parameters.each do |parameter| %>
+                <% parameters << parameter %>
+                <% parameters << ", " unless parameter == hook.parameters.last %>
+            <% end %>
+            <% parameters += " |" %>
+            <% name = hook.type %>
+            <% name += tags unless tags == "()" %>
+            <% name += " do " %>
+            <% name += parameters unless parameters == "|  |" %>
+            <%= name %>
+          </td>
+          </td>
+        </tr>
+
+        <tr class="sub_detail" id="hook_detail_<%= index %>" style="display: none; background-color: #ccffff;">
+          <td colspan="2">
+            <% SummaryHelper::sort_improvement_list(hook.rules_hash).each do |phrase, count| %>
+                <div style="text-indent: 10px;">
+                  <div style="color:red; display:inline-block;">
+                    <%= count %>
+                  </div>
+                  <div style="display:inline-block;">
+                    <%= phrase %>
+                  </div>
+                </div>
+            <% end %>
+          </td>
+          <td valign="top" style="text-align: right">
+            <a href="file:///<%= hook.location.gsub(/:\d+$/, "") %>" title="Note: Links to file on system this report was generated.">
+              <%= hook.location.gsub(cuke_sniffer.hooks_location, '') %>
+            </a>
+          </td>
+        </tr>
+
+        <% index += 1 %>
+    <% end %>
+  </table>
 </div>
 <br style="clear:both">

@@ -180,8 +180,8 @@ describe CukeSniffer::Formatter do
       it "should say that there were no features to sniff when no step definitions were found." do
         step_definitions_location = "temp"
         create_html_report_for_empty_type(:step_definitions_location, step_definitions_location)
-        expected_message = "There were no Step Definitions to sniff in\r\n        '#{step_definitions_location}'!\r\n      "
-        xpath = "//div[@id = 'step_definitions_data']/div[@class = 'empty_set_message']"
+        expected_message = "There were no Step Definitions to sniff in '#{step_definitions_location}'!"
+        xpath = '//*[@id="step_definitions_data"]/div'
         build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text.should == expected_message
       end
 
@@ -189,7 +189,7 @@ describe CukeSniffer::Formatter do
         hooks_location = "temp"
         create_html_report_for_empty_type(:hooks_location, hooks_location)
         expected_message = "There were no Hooks to sniff in '#{hooks_location}'!"
-        xpath = "//div[@id = 'hooks_data']/div[@class = 'empty_set_message']"
+        xpath = '//*[@id="hooks_data"]/div'
         build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text.should == expected_message
       end
 

@@ -210,6 +210,7 @@ describe CukeSniffer do
       cuke_sniffer = CukeSniffer::CLI.new()
       start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
       CukeSniffer::Constants::THRESHOLDS["Project"] = 200
+      cuke_sniffer.summary[:total_score] = 199
       cuke_sniffer.good?.should == true
       CukeSniffer::Constants::THRESHOLDS["Project"] = start_threshold
     end
