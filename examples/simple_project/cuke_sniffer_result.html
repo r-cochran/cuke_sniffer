@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" >
+<link rel="stylesheet" type="text/css">
 
 <script type="text/javascript">
 
@@ -7,7 +7,32 @@
         toggleText(link)
     }
     function updateDisplayStatus(object) {
-        object.style.display = (object.style.display == "block") ? 'none' : "block";
+        if (object.tagName == "TR") {
+            updateDisplayStatusForTR(object);
+        } else {
+            object.style.display = (object.style.display == "block") ? 'none' : "block";
+        }
+    }
+
+    function updateDivScroll(divId){
+        div = document.getElementById(divId);
+        if(div.offsetHeight >= 500){
+            div.style.height = "60%";
+            div.style.overflow = "auto";
+        } else {
+            div.style.height = "";
+            div.style.overflow = "none";
+        }
+
+    }
+
+    function updateDisplayStatusForTR(object) {
+        existing_style = object.getAttribute('style');
+        if (object.style.display == "none") {
+            object.setAttribute('style', existing_style.replace(/display:\s*none/, "display: block-inline"))
+        } else {
+            object.setAttribute('style', existing_style.replace("display: block-inline", "display: none"))
+        }
     }
     function toggleText(link) {
         var char_result = link.innerHTML.indexOf("+") > -1 ? "-" : "+";
@@ -18,20 +43,30 @@
 </script>
 
 <style>
+    .new_sub_section {
+        border: 2px solid #509f50;
+        padding: 2px;
+        display: none;
+        overflow:auto;
+    }
+
     .title {
         padding-left: 1%;
         width: 25%;
-        background-color: green;
+        background-color: #509f50;
         color: white;
         border-top: 0;
         border-bottom: 0;
         font-weight: bold;
         font-size: 21pt;
         cursor: pointer;
+        font-family: Arial;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
     }
 
     .shrink_section {
-        border: 2px solid #90ee90;
+        border: 2px solid #509f50;
         display: none;
     }
 
@@ -46,9 +81,9 @@
     }
 
     .red_number {
-        color:red;
+        color: red;
         font-weight: bold;
-        display:inline;
+        display: inline;
     }
 
     .notes {
@@ -59,7 +94,7 @@
         display: none;
         margin-left: 1%;
         margin-right: 1%;
-        border-top: 2px solid #add8e6;
+        border-top: 2px solid #509f50;
     }
 
     .empty_set_message {
@@ -84,13 +119,14 @@
         text_indent: 3%;
 
     }
+
     .rule_heading {
         font-weight: bold;
         margin: 0.25%;
     }
 
-    ol  {
-        list-style-type:none;
+    ol {
+        list-style-type: none;
         display: block;
         padding-left: 1%
 
@@ -98,12 +134,12 @@
 
 </style>
 
-<div style="float: left; color: green; font-size: 20px; font-weight: bold; padding-bottom: 1px;">
+<div style="font-family: Arial; float: left; color: #509f50; font-size: 20px; font-weight: bold; padding-bottom: 1px;">
   Cuke Sniffer
 </div>
 <br style="clear:both">
-<div style="border-top: 2px solid lightgreen; text-align: right;">
-  <div style="float: right; background-color:green;border-right:2px solid #fff; color:white;padding:4px; padding-left:40px;font-size:11pt;font-weight:bold;padding-right:10px;">
+<div style="border-top: 2px solid #509f50; text-align: right;">
+  <div style="font-family: Arial;border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;float: right; background-color:#509f50; color:white;padding-left:40px;font-size:11pt;font-weight:bold;padding-right:10px;">
     Score: 192</div>
 </div>
 <br style="clear:both">
@@ -284,7 +320,7 @@
 </div>
 <div class="shrink_section" style="display: block;" id="summary_data">
   
-  <table style="width: 100%;" class="notes">
+  <table style="padding-left:2px; width: 100%;" class="notes" border="0" cellspacing="0">
     <tr class="divide_row">
       <td class="table_top"></td>
       <td class="table_top">Features</td>
@@ -292,20 +328,34 @@
       <td class="table_top">Step Definitions</td>
       <td class="table_top">Hooks</td>
     </tr>
-    <tr>
-      <td>Total Score</td>
+    <tr style="background-color: #ccffff;">
+      <td>
+        Total Score
+        <a title="Total Points for a section.">(?)</a>
+      </td>
       
-          <td>0</td>
+          <td>
+            0
+          </td>
       
-          <td>10</td>
+          <td>
+            10
+          </td>
       
-          <td>11</td>
+          <td>
+            11
+          </td>
       
-          <td>171</td>
+          <td>
+            171
+          </td>
       
     </tr>
     <tr>
-      <td>Count</td>
+      <td>
+        Count
+        <a title="Total Number of objects found in the project.">(?)</a>
+      </td>
       
           <td>3</td>
       
@@ -317,8 +367,11 @@
       
     </tr>
     <tr/>
-    <tr>
-      <td>Lowest Score</td>
+    <tr style="background-color: #ccffff;">
+      <td>
+        Lowest Score
+        <a title="Score of the best object found.">(?)</a>
+      </td>
       
           <td>0</td>
       
@@ -330,7 +383,10 @@
       
     </tr>
     <tr>
-      <td>Highest Score</td>
+      <td>
+        Highest Score
+        <a title="Score of the object with the most to improve on.">(?)</a>
+      </td>
       
           <td>0</td>
       
@@ -341,8 +397,11 @@
           <td>25</td>
       
     </tr>
-    <tr>
-      <td>Average Score</td>
+    <tr style="background-color: #ccffff;">
+      <td>
+        Average Score
+        <a title="Average score of a section.">(?)</a>
+      </td>
       
           <td>0.0</td>
       
@@ -354,9 +413,11 @@
       
     </tr>
     <tr/>
-
     <tr>
-      <td>Threshold</td>
+      <td>
+        Threshold
+        <a title="The maximum score an object can have to be considered good.">(?)</a>
+      </td>
       
           <td>30</td>
       
@@ -367,8 +428,11 @@
           <td>20</td>
       
     </tr>
-    <tr>
-      <td>Good</td>
+    <tr style="background-color: #ccffff;">
+      <td>
+        Good
+        <a title="Percentage of the objects that can be considered good in the project.">(?)</a>
+      </td>
       
           <td>100.0
             %
@@ -388,7 +452,10 @@
       
     </tr>
     <tr>
-      <td>Bad</td>
+      <td>
+        Bad
+        <a title="Percentage of the objects that can be considered bad in the project.">(?)</a>
+      </td>
       
           <td>0.0
             %
@@ -412,48 +479,70 @@
 <br style="clear:both">
 
 
-<div class="title" onclick="toggleById('improvement_list_data', this)">
+<div class="title" onclick="toggleById('improvement_list_data', this) ;updateDivScroll('improvement_list_data', 'improvements_table', 20);">
   Improvement List +
 </div>
-<div class="shrink_section" id="improvement_list_data">
+<div class="new_sub_section" id="improvement_list_data">
   
   
-  <table style="width: 100%">
+  <table id="improvements_table" style="width: 100%" border="0" cellspacing="0">
     
-        <tr>
-          <td class="red_number">6</td>
-          <td class="notes">Hook without a begin/rescue. Reduced visibility when debugging.</td>
-        </tr>
     
-        <tr>
-          <td class="red_number">1</td>
-          <td class="notes">Hook with no content.</td>
+        
+            <tr>
+        
+        <td class="red_number" style="width:1%;">6</td>
+        <td class="notes" style="padding-left: 2px;">Hook without a begin/rescue. Reduced visibility when debugging.</td>
         </tr>
+        
     
-        <tr>
-          <td class="red_number">1</td>
-          <td class="notes">Hook is only comments.</td>
+        
+            <tr style="background-color:#ccffff">
+        
+        <td class="red_number" style="width:1%;">1</td>
+        <td class="notes" style="padding-left: 2px;">Hook with no content.</td>
         </tr>
+        
     
-        <tr>
-          <td class="red_number">1</td>
-          <td class="notes">Hook found outside of the designated hooks file</td>
+        
+            <tr>
+        
+        <td class="red_number" style="width:1%;">1</td>
+        <td class="notes" style="padding-left: 2px;">Hook is only comments.</td>
         </tr>
+        
     
-        <tr>
-          <td class="red_number">1</td>
-          <td class="notes">Nested step call.</td>
+        
+            <tr style="background-color:#ccffff">
+        
+        <td class="red_number" style="width:1%;">1</td>
+        <td class="notes" style="padding-left: 2px;">Hook found outside of the designated hooks file</td>
         </tr>
+        
     
-        <tr>
-          <td class="red_number">1</td>
-          <td class="notes">Lazy Debugging through puts, p, or print</td>
+        
+            <tr>
+        
+        <td class="red_number" style="width:1%;">1</td>
+        <td class="notes" style="padding-left: 2px;">Nested step call.</td>
         </tr>
+        
     
-        <tr>
-          <td class="red_number">1</td>
-          <td class="notes">Scenario steps out of Given/When/Then order.</td>
+        
+            <tr style="background-color:#ccffff">
+        
+        <td class="red_number" style="width:1%;">1</td>
+        <td class="notes" style="padding-left: 2px;">Lazy Debugging through puts, p, or print</td>
         </tr>
+        
+    
+        
+            <tr>
+        
+        <td class="red_number" style="width:1%;">1</td>
+        <td class="notes" style="padding-left: 2px;">Scenario steps out of Given/When/Then order.</td>
+        </tr>
+        
     
   </table>
 </div>
@@ -779,388 +868,521 @@
 </div>
 <br style="clear:both">
 
-<div class="title" onclick="toggleById('dead_steps_data', this)">
+<div class="title" onclick="toggleById('dead_steps_data', this); updateDivScroll('dead_steps_data');">
   Dead Steps +
 </div>
-<div class="shrink_section" id="dead_steps_data">
+<div class="new_sub_section" id="dead_steps_data">
   
   
   
   
-      <div class="empty_set_message">No dead steps found!</div>
+      <div class="notes">No dead steps found!</div>
+  
+  
+  
+</div>
+<br style="clear:both">
+
+<div class="title" onclick="toggleById('features_data', this); updateDivScroll('features_data');">
+  Features +
+</div>
+<div class="new_sub_section" id="features_data">
   
 
-  <table style="width: 100%">
+  <table id="features_table" border="0" cellspacing="0" style="width:100%;padding-left: 2px">
     
+    
+        
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('feature_detail_0'));updateDivScroll('features_data');">
+          <td valign="top" class="red_number" style="width:1%">
+            10
+          </td>
+          <td style="padding-left: 2px; width:100%;">
+            
+                I am a nested feature
+            
+          </td>
+        </tr>
+        <tr id="feature_detail_0" style="display:none;">
+          <td colspan="2">
+            <table border="0" cellspacing="0" style="width:100%;padding-left: 8px;background-color: #ccffff">
+              <tr>
+                <td>
+                  
+                </td>
+                <td style="text-align: right;">
+                  <a href="file:///C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/scenarios/nested_directory/nested_feature.feature" title="Note: Links to file on system this report was generated.">
+                    /features/scenarios/nested_directory/nested_feature.feature
+                  </a>
+                </td>
+              </tr>
+              
+              
+                  
+                  <td valign="top" style="border-top: 2px solid #509f50">
+                    <div style="display:inline; width:1%" class="red_number">10</div>
+                    <div style="display:inline; padding-left: 2px; width:100%;">Scenario: A nested scenario should be parseable</div>
+                  </td>
+                  <td  valign="top" style="padding-left:2px;border-top: 2px solid #509f50">
+                    
+                        <div>
+                          <div style="color:red; display:inline-block; width:1%">
+                            1
+                          </div>
+                          <div style="display:inline-block;">
+                            Scenario steps out of Given/When/Then order.
+                          </div>
+                        </div>
+                    
+                  </td>
+              
+            </table>
+          </td>
+        </tr>
+        
+    
+        
+        
   </table>
 </div>
 <br style="clear:both">
 
-<div class="title" onclick="toggleById('features_data', this)">
-  Features +
-</div>
-<div class="shrink_section" id="features_data">
-  
-  
-  
-      
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('feature_0'))">
-        <table>
-          <tr>
-            <td valign="top" style="color:red;font-weight: bold;">
-              20
-            </td>
-            <td class="notes">
-              
-                  I am a nested feature
-              
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div id="feature_0" class="sub_section">
-        <table>
-          <tr>
-            <td style="border-right: 2px solid #add8e6; width:60%;">
-              
-                  <pre style="margin: 0;">      </pre>
-              
-              
-            </td>
-            <td valign="top">
-              /features/scenarios/nested_directory/nested_feature.feature
-            </td>
-          </tr>
-          <tr>
-            
-          </tr>
-          
-              <tr>
-                
-                <td valign="top" style="border-right: 2px solid #90ee90;">
-                  <div>
-                    <div class="red_number">10</div>
-                    <div class="notes" style="display:inline">Scenario: A nested scenario should be parseable</div>
-                  </div>
-                </td>
-                <td style="border-top: 2px solid #90ee90;">
-                  
-                      <pre style="margin: 0; text_indent: 3%;">Scenario steps out of Given/When/Then order.</pre>
-                  
-                </td>
-              </tr>
-          
-        </table>
-      </div>
-      
-  
-      
-      
-</div>
-<br style="clear:both">
 
-
-<div class="title" onclick="toggleById('step_definitions_data', this)">
+<div class="title" onclick="toggleById('step_definitions_data', this);updateDivScroll('step_definitions_data');">
   Step Definitions +
 </div>
-<div class="shrink_section" id="step_definitions_data">
+
+<div class="new_sub_section" id="step_definitions_data">
   
   
-  
-      
-      <div style="display:inline;cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('step_definition_0'))">
-        <div class="red_number" style="float:left">10</div>
+  <table id="step_definitions_table" style="width:100%;" border="0" cellspacing="0">
+    
+        
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('step_definition_detail_0')); updateDivScroll('step_definitions_data');">
+          <td id="step_definition_score_0" valign="top" style="width:1%; color: red">
+            10
+          </td>
+          <td id="step_definition_regex_0" style="text-indent: 2px;">
+            /^I am a nested step$/
+          </td>
+          <td id="step_definition_calls_0" valign="top" style="text-align:right;width:8%;">
+            Call(s): 1
+          </td>
+        </tr>
+
+        <tr class="sub_detail" id="step_definition_detail_0" style="display: none; background-color: #ccffff;">
+          <td colspan="2">
+            
+                <div style="text-indent: 10px;">
+                  <div style="color:red; display:inline-block;">
+                    1
+                  </div>
+                  <div style="display:inline-block;">
+                    Lazy Debugging through puts, p, or print
+                  </div>
+                </div>
+            
+          </td>
+          <td valign="top" style="text-align: right">
+            <a href="file:///C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/step_definitions/nested_steps/nested_steps.rb" title="Note: Links to file on system this report was generated.">
+              /features/step_definitions/nested_steps/nested_steps.rb:1
+            </a>
+          </td>
+        </tr>
+
+        
+    
+        
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('step_definition_detail_1')); updateDivScroll('step_definitions_data');">
+          <td id="step_definition_score_1" valign="top" style="width:1%; color: red">
+            1
+          </td>
+          <td id="step_definition_regex_1" style="text-indent: 2px;">
+            /^the first number is 1$/
+          </td>
+          <td id="step_definition_calls_1" valign="top" style="text-align:right;width:8%;">
+            Call(s): 1
+          </td>
+        </tr>
+
+        <tr class="sub_detail" id="step_definition_detail_1" style="display: none; background-color: #ccffff;">
+          <td colspan="2">
+            
+                <div style="text-indent: 10px;">
+                  <div style="color:red; display:inline-block;">
+                    1
+                  </div>
+                  <div style="display:inline-block;">
+                    Nested step call.
+                  </div>
+                </div>
+            
+          </td>
+          <td valign="top" style="text-align: right">
+            <a href="file:///C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/step_definitions/simple_calculator_steps.rb" title="Note: Links to file on system this report was generated.">
+              /features/step_definitions/simple_calculator_steps.rb:1
+            </a>
+          </td>
+        </tr>
+
+        
+    
         
         
-        <div style="padding-left:0.5%; display:inline;" class="notes">/^I am a nested step$/ do </div>
-        <div style="float: right; padding-right:1%; display:inline;" class="notes">1 Call(s)</div>
-      </div>
-      <div id="step_definition_0" style="display:none;">
-        <div class="sub_section" style="display:block">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Lazy Debugging through puts, p, or print</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            <p style="margin:0">/features/step_definitions/nested_steps/nested_steps.rb:1</p>
-          </div>
-        </div>
-      </div>
-      <br style="clear:both">
-      
-  
-      
-      <div style="display:inline;cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('step_definition_1'))">
-        <div class="red_number" style="float:left">1</div>
         
         
-        <div style="padding-left:0.5%; display:inline;" class="notes">/^the first number is 1$/ do </div>
-        <div style="float: right; padding-right:1%; display:inline;" class="notes">1 Call(s)</div>
-      </div>
-      <div id="step_definition_1" style="display:none;">
-        <div class="sub_section" style="display:block">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Nested step call.</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            <p style="margin:0">/features/step_definitions/simple_calculator_steps.rb:1</p>
-          </div>
-        </div>
-      </div>
-      <br style="clear:both">
-      
-  
-      
-      
-      
-      
-      
-      
+        
+        
+  </table>
 </div>
 <br style="clear:both">
 
 
-<div class="title" onclick="toggleById('hooks_data', this)">
+<div class="title" onclick="toggleById('hooks_data', this);updateDivScroll('hooks_data');">
   Hooks +
 </div>
-<div class="shrink_section" id="hooks_data">
+<div class="new_sub_section" id="hooks_data">
   
   
-  
-      
-      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_0'))">
-        <div class="red_number" style="display:inline;">25</div>
+  <table id="hooks_table" style="width:100%;" border="0" cellspacing="0">
+    
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="notes" style="display:inline; padding-left: 0.5%">at_exit do </div>
-      </div>
-      <div id="hook_0" style="display:none;">
-        <div class="sub_section" style="display:block;">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Hook without a begin/rescue. Reduced visibility when debugging.</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            /features/support/hooks.rb:21
-          </div>
-          <br style="clear:both">
-        </div>
-      </div>
-      
-  
-      
-      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_1'))">
-        <div class="red_number" style="display:inline;">25</div>
-        
-        
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_0'));updateDivScroll('hooks_data');">
+          <td id="hook_score_0" valign="top" style="width:1%; color: red">
+            25
+          </td>
+          <td id="hook_name_0" style="text-indent: 2px;">
             
             
-        
             
             
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="notes" style="display:inline; padding-left: 0.5%">After(~@tag,@tag2, @tag3) do </div>
-      </div>
-      <div id="hook_1" style="display:none;">
-        <div class="sub_section" style="display:block;">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Hook without a begin/rescue. Reduced visibility when debugging.</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            /features/support/hooks.rb:17
-          </div>
-          <br style="clear:both">
-        </div>
-      </div>
-      
-  
-      
-      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_2'))">
-        <div class="red_number" style="display:inline;">25</div>
-        
-        
             
             
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="notes" style="display:inline; padding-left: 0.5%">After(@tag) do </div>
-      </div>
-      <div id="hook_2" style="display:none;">
-        <div class="sub_section" style="display:block;">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Hook without a begin/rescue. Reduced visibility when debugging.</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            /features/support/hooks.rb:13
-          </div>
-          <br style="clear:both">
-        </div>
-      </div>
-      
-  
-      
-      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_3'))">
-        <div class="red_number" style="display:inline;">25</div>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="notes" style="display:inline; padding-left: 0.5%">AfterConfiguration do </div>
-      </div>
-      <div id="hook_3" style="display:none;">
-        <div class="sub_section" style="display:block;">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Hook without a begin/rescue. Reduced visibility when debugging.</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            /features/support/hooks.rb:1
-          </div>
-          <br style="clear:both">
-        </div>
-      </div>
-      
-  
-      
-      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_4'))">
-        <div class="red_number" style="display:inline;">25</div>
-        
-        
             
             
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="notes" style="display:inline; padding-left: 0.5%">Before(@tag) do </div>
-      </div>
-      <div id="hook_4" style="display:none;">
-        <div class="sub_section" style="display:block;">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
-            
-                <pre style="margin: 0;">Hook without a begin/rescue. Reduced visibility when debugging.</pre>
-            
-          </div>
-          <div style="text-indent: 1%">
-            /features/support/hooks.rb:5
-          </div>
-          <br style="clear:both">
-        </div>
-      </div>
-      
-  
-      
-      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_5'))">
-        <div class="red_number" style="display:inline;">25</div>
-        
-        
             
             
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="notes" style="display:inline; padding-left: 0.5%">Before(~@tag) do </div>
-      </div>
-      <div id="hook_5" style="display:none;">
-        <div class="sub_section" style="display:block;">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
+            at_exit do 
+          </td>
+          </td>
+        </tr>
+
+        <tr class="sub_detail" id="hook_detail_0" style="display: none; background-color: #ccffff;">
+          <td colspan="2">
             
-                <pre style="margin: 0;">Hook without a begin/rescue. Reduced visibility when debugging.</pre>
+                <div style="text-indent: 10px;">
+                  <div style="color:red; display:inline-block;">
+                    1
+                  </div>
+                  <div style="display:inline-block;">
+                    Hook without a begin/rescue. Reduced visibility when debugging.
+                  </div>
+                </div>
             
-          </div>
-          <div style="text-indent: 1%">
-            /features/support/hooks.rb:9
-          </div>
-          <br style="clear:both">
-        </div>
-      </div>
-      
-  
-      
-      <div style="cursor: pointer; padding-top: 3px;" onclick="updateDisplayStatus(document.getElementById('hook_6'))">
-        <div class="red_number" style="display:inline;">21</div>
+          </td>
+          <td valign="top" style="text-align: right">
+            <a href="file:///C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/support/hooks.rb" title="Note: Links to file on system this report was generated.">
+              /features/support/hooks.rb:21
+            </a>
+          </td>
+        </tr>
+
         
+    
         
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_1'));updateDivScroll('hooks_data');">
+          <td id="hook_score_1" valign="top" style="width:1%; color: red">
+            25
+          </td>
+          <td id="hook_name_1" style="text-indent: 2px;">
             
             
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <div class="notes" style="display:inline; padding-left: 0.5%">Before(@tag1) do </div>
-      </div>
-      <div id="hook_6" style="display:none;">
-        <div class="sub_section" style="display:block;">
-          <div style="text-indent: 4%; float: left; width: 45%; border-right: 2px solid #add8e6;">
+                
+                
             
-                <pre style="margin: 0;">Hook with no content.</pre>
+                
+                
             
-                <pre style="margin: 0;">Hook is only comments.</pre>
             
-                <pre style="margin: 0;">Hook found outside of the designated hooks file</pre>
             
-          </div>
-          <div style="text-indent: 1%">
-            /features/support/env.rb:1
-          </div>
-          <br style="clear:both">
-        </div>
-      </div>
-      
-  
+            
+            
+            
+            
+            
+            
+            After(~@tag,@tag2, @tag3) do 
+          </td>
+          </td>
+        </tr>
+
+        <tr class="sub_detail" id="hook_detail_1" style="display: none; background-color: #ccffff;">
+          <td colspan="2">
+            
+                <div style="text-indent: 10px;">
+                  <div style="color:red; display:inline-block;">
+                    1
+                  </div>
+                  <div style="display:inline-block;">
+                    Hook without a begin/rescue. Reduced visibility when debugging.
+                  </div>
+                </div>
+            
+          </td>
+          <td valign="top" style="text-align: right">
+            <a href="file:///C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/support/hooks.rb" title="Note: Links to file on system this report was generated.">
+              /features/support/hooks.rb:17
+            </a>
+          </td>
+        </tr>
+
+        
+    
+        
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_2'));updateDivScroll('hooks_data');">
+          <td id="hook_score_2" valign="top" style="width:1%; color: red">
+            25
+          </td>
+          <td id="hook_name_2" style="text-indent: 2px;">
+            
+            
+                
+                
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            After(@tag) do 
+          </td>
+          </td>
+        </tr>
+
+        <tr class="sub_detail" id="hook_detail_2" style="display: none; background-color: #ccffff;">
+          <td colspan="2">
+            
+                <div style="text-indent: 10px;">
+                  <div style="color:red; display:inline-block;">
+                    1
+                  </div>
+                  <div style="display:inline-block;">
+                    Hook without a begin/rescue. Reduced visibility when debugging.
+                  </div>
+                </div>
+            
+          </td>
+          <td valign="top" style="text-align: right">
+            <a href="file:///C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/support/hooks.rb" title="Note: Links to file on system this report was generated.">
+              /features/support/hooks.rb:13
+            </a>
+          </td>
+        </tr>
+
+        
+    
+        
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_3'));updateDivScroll('hooks_data');">
+          <td id="hook_score_3" valign="top" style="width:1%; color: red">
+            25
+          </td>
+          <td id="hook_name_3" style="text-indent: 2px;">
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            AfterConfiguration do 
+          </td>
+          </td>
+        </tr>
+
+        <tr class="sub_detail" id="hook_detail_3" style="display: none; background-color: #ccffff;">
+          <td colspan="2">
+            
+                <div style="text-indent: 10px;">
+                  <div style="color:red; display:inline-block;">
+                    1
+                  </div>
+                  <div style="display:inline-block;">
+                    Hook without a begin/rescue. Reduced visibility when debugging.
+                  </div>
+                </div>
+            
+          </td>
+          <td valign="top" style="text-align: right">
+            <a href="file:///C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/support/hooks.rb" title="Note: Links to file on system this report was generated.">
+              /features/support/hooks.rb:1
+            </a>
+          </td>
+        </tr>
+
+        
+    
+        
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_4'));updateDivScroll('hooks_data');">
+          <td id="hook_score_4" valign="top" style="width:1%; color: red">
+            25
+          </td>
+          <td id="hook_name_4" style="text-indent: 2px;">
+            
+            
+                
+                
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            Before(@tag) do 
+          </td>
+          </td>
+        </tr>
+
+        <tr class="sub_detail" id="hook_detail_4" style="display: none; background-color: #ccffff;">
+          <td colspan="2">
+            
+                <div style="text-indent: 10px;">
+                  <div style="color:red; display:inline-block;">
+                    1
+                  </div>
+                  <div style="display:inline-block;">
+                    Hook without a begin/rescue. Reduced visibility when debugging.
+                  </div>
+                </div>
+            
+          </td>
+          <td valign="top" style="text-align: right">
+            <a href="file:///C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/support/hooks.rb" title="Note: Links to file on system this report was generated.">
+              /features/support/hooks.rb:5
+            </a>
+          </td>
+        </tr>
+
+        
+    
+        
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_5'));updateDivScroll('hooks_data');">
+          <td id="hook_score_5" valign="top" style="width:1%; color: red">
+            25
+          </td>
+          <td id="hook_name_5" style="text-indent: 2px;">
+            
+            
+                
+                
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            Before(~@tag) do 
+          </td>
+          </td>
+        </tr>
+
+        <tr class="sub_detail" id="hook_detail_5" style="display: none; background-color: #ccffff;">
+          <td colspan="2">
+            
+                <div style="text-indent: 10px;">
+                  <div style="color:red; display:inline-block;">
+                    1
+                  </div>
+                  <div style="display:inline-block;">
+                    Hook without a begin/rescue. Reduced visibility when debugging.
+                  </div>
+                </div>
+            
+          </td>
+          <td valign="top" style="text-align: right">
+            <a href="file:///C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/support/hooks.rb" title="Note: Links to file on system this report was generated.">
+              /features/support/hooks.rb:9
+            </a>
+          </td>
+        </tr>
+
+        
+    
+        
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_6'));updateDivScroll('hooks_data');">
+          <td id="hook_score_6" valign="top" style="width:1%; color: red">
+            21
+          </td>
+          <td id="hook_name_6" style="text-indent: 2px;">
+            
+            
+                
+                
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            Before(@tag1) do 
+          </td>
+          </td>
+        </tr>
+
+        <tr class="sub_detail" id="hook_detail_6" style="display: none; background-color: #ccffff;">
+          <td colspan="2">
+            
+                <div style="text-indent: 10px;">
+                  <div style="color:red; display:inline-block;">
+                    1
+                  </div>
+                  <div style="display:inline-block;">
+                    Hook found outside of the designated hooks file
+                  </div>
+                </div>
+            
+                <div style="text-indent: 10px;">
+                  <div style="color:red; display:inline-block;">
+                    1
+                  </div>
+                  <div style="display:inline-block;">
+                    Hook is only comments.
+                  </div>
+                </div>
+            
+                <div style="text-indent: 10px;">
+                  <div style="color:red; display:inline-block;">
+                    1
+                  </div>
+                  <div style="display:inline-block;">
+                    Hook with no content.
+                  </div>
+                </div>
+            
+          </td>
+          <td valign="top" style="text-align: right">
+            <a href="file:///C:/development/ruby_projects/cuke_sniffer/examples/simple_project/features/support/env.rb" title="Note: Links to file on system this report was generated.">
+              /features/support/env.rb:1
+            </a>
+          </td>
+        </tr>
+
+        
+    
+  </table>
 </div>
 <br style="clear:both">

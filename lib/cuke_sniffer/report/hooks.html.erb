@@ -1,4 +1,4 @@
-<div class="title" onclick="toggleById('hooks_data', this);updateDivScrollForTable('hooks_data', 'hooks_table', 30);">
+<div class="title" onclick="toggleById('hooks_data', this);updateDivScroll('hooks_data');">
   Hooks +
 </div>
 <div class="new_sub_section" id="hooks_data">
@@ -11,7 +11,7 @@
   <table id="hooks_table" style="width:100%;" border="0" cellspacing="0">
     <% cuke_sniffer.hooks.each do |hook| %>
         <% next if hook.score <= 0 %>
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_<%=index%>'));">
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_<%=index%>'));updateDivScroll('hooks_data');">
           <td id="hook_score_<%= index %>" valign="top" style="width:1%; color: red">
             <%= hook.score %>
           </td>

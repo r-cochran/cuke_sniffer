@@ -1,36 +1,49 @@
-<div class="title" onclick="toggleById('dead_steps_data', this)">
+<div class="title" onclick="toggleById('dead_steps_data', this); updateDivScroll('dead_steps_data');">
   Dead Steps +
 </div>
-<div class="shrink_section" id="dead_steps_data">
+<div class="new_sub_section" id="dead_steps_data">
   <% dead_steps = cuke_sniffer.get_dead_steps %>
   <% dead_steps.delete(:total) %>
   <% dead_step_count = dead_steps.values.flatten.count %>
   <% if dead_step_count == 0 %>
-      <div class="empty_set_message">No dead steps found!</div>
+      <div class="notes">No dead steps found!</div>
   <% elsif dead_step_count == 1 %>
-      <div class="empty_set_message" style="color: red"><%= dead_step_count %> Dead Step found.</div>
+      <div class="notes"><%= dead_step_count %> Dead Step found.</div>
   <% else %>
-      <div class="empty_set_message" style="color: red"><%= dead_step_count %> Dead Steps found.</div>
+      <div class="notes"><%= dead_step_count %> Dead Steps found.</div>
   <% end %>
+  <% index = 0 %>
+  <% unless dead_steps.empty? %>
+      <table id="dead_steps_table" style="width:100%; border-top: 2px solid #509f50" border="0" cellspacing="0">
+        <% dead_steps.each_key do |file_name| %>
+            <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('dead_step_file_detail_<%=index%>')); updateDivScroll('dead_steps_data');">
+              <td class="red_number" style="width: 1%"><%= dead_steps[file_name].size %></td>
+              <td id="dead_step_file_<%= index %>">
+                <%= file_name.gsub(cuke_sniffer.step_definitions_location, "") %>
+              </td>
+              <td style="text-align: right; width:5%" valign="top">
+                <a href="file:///<%= file_name.gsub(/:\d+$/, "") %>.rb" title="Note: Links to file on system this report was generated.">
+                  (open file)
+                </a>
+              </td>
+            </tr>
 
-  <table style="width: 100%">
-    <% dead_steps.each_key do |file_name| %>
-        <tr>
-          <td>
-            <div style="text-indent: 2%;font-weight: bold;"><%= file_name.gsub(cuke_sniffer.step_definitions_location, "") %>
-              .rb
-            </div>
-            <table style="width: 100%; padding-left: 3%;">
-              <% dead_steps[file_name].each do |regex| %>
-                  <tr>
-                    <td style="width: 3%"><%= regex.match(/(?<line>\d+):/)[:line] %></td>
-                    <td><%= regex.match(/:(?<regex>.*)/)[:regex] %></td>
-                  </tr>
-              <% end %>
-            </table>
-          </td>
-        </tr>
-    <% end %>
-  </table>
+            <tr class="sub_detail_<%= index %>" id="dead_step_file_detail_<%= index %>" style="display: none; background-color: #ccffff;">
+              <td colspan="3">
+                <table id="sub_detail_table_<%= index %>" style="width:100%;">
+                  <% dead_steps[file_name].each do |regex| %>
+                      <tr>
+                        <td style="text-indent: 8px;"><%= regex.match(/:(?<regex>.*)/)[:regex] %></td>
+                        <td style="text-align: right;">Line: <%= regex.match(/(?<line>\d+):/)[:line] %></td>
+                      </tr>
+                  <% end %>
+                </table>
+              </td>
+            </tr>
+
+            <% index += 1 %>
+        <% end %>
+      </table>
+  <% end %>
 </div>
 <br style="clear:both">

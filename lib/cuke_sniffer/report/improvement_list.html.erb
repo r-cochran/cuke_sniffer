@@ -1,17 +1,23 @@
-<div class="title" onclick="toggleById('improvement_list_data', this)">
+<div class="title" onclick="toggleById('improvement_list_data', this) ;updateDivScroll('improvement_list_data', 'improvements_table', 20);">
   Improvement List +
 </div>
-<div class="shrink_section" id="improvement_list_data">
+<div class="new_sub_section" id="improvement_list_data">
   <% improvement_list = cuke_sniffer.summary[:improvement_list] %>
   <% if improvement_list.empty? %>
       <div class="empty_set_message">No Improvements to make!</div>
   <% end %>
-  <table style="width: 100%">
+  <table id="improvements_table" style="width: 100%" border="0" cellspacing="0">
+    <% index = 0 %>
     <% improvement_list.each do |improvement, count| %>
-        <tr>
-          <td class="red_number"><%= count %></td>
-          <td class="notes"><%= improvement %></td>
+        <% if index.odd? %>
+            <tr style="background-color:#ccffff">
+        <% else %>
+            <tr>
+        <% end %>
+        <td class="red_number" style="width:1%;"><%= count %></td>
+        <td class="notes" style="padding-left: 2px;"><%= improvement %></td>
         </tr>
+        <% index += 1 %>
     <% end %>
   </table>
 </div>

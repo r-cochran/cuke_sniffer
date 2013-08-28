@@ -1,84 +1,95 @@
-<div class="title" onclick="toggleById('features_data', this)">
+<div class="title" onclick="toggleById('features_data', this); updateDivScroll('features_data');">
   Features +
 </div>
-<div class="shrink_section" id="features_data">
+<div class="new_sub_section" id="features_data">
   <% if cuke_sniffer.features.count == 0 %>
       <div class="empty_set_message">There were no Features to sniff in '<%= cuke_sniffer.features_location %>'!</div>
   <% elsif cuke_sniffer.features.count >= 1 && cuke_sniffer.scenarios.count >=1 && cuke_sniffer.summary[:features][:total_score] ==0 && cuke_sniffer.summary[:scenarios][:total_score] ==0 %>
       <div class="empty_set_message">Excellent! No smells found for Features and Scenarios!</div>
   <% end %>
-  <% index = 0 %>
-  <% cuke_sniffer.features.each do |feature| %>
-      <% next if feature.total_score <= 0 %>
-      <div style="cursor: pointer; padding-top: 3px" onclick="updateDisplayStatus(document.getElementById('feature_<%=index%>'))">
-        <table>
-          <tr>
-            <td valign="top" style="color:red;font-weight: bold;">
-              <%= feature.total_score + feature.scenarios_score %>
-            </td>
-            <td class="notes">
-              <% if feature.name.nil? or feature.name == "" %>
-                  No Feature Description
-              <% else %>
-                  <%= feature.name %>
-              <% end %>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div id="feature_<%= index %>" class="sub_section">
-        <table>
-          <tr>
-            <td style="border-right: 2px solid #add8e6; width:60%;">
-              <% if feature.rules_hash.empty? %>
-                  <pre style="margin: 0;">      </pre>
-              <% end %>
-              <% feature.rules_hash.each_key do |rule| %>
-                  <pre style="margin: 0;"><%= rule %></pre>
-              <% end %>
-            </td>
-            <td valign="top">
-              <%= feature.location.gsub(cuke_sniffer.features_location, "") %>
-            </td>
-          </tr>
-          <tr>
-            <% unless feature.background.nil? or feature.background.score > 0 %>
-                <table>
+
+  <table id="features_table" border="0" cellspacing="0" style="width:100%;padding-left: 2px">
+    <% index = 0 %>
+    <% cuke_sniffer.features.each do |feature| %>
+        <% next if feature.total_score == 0 %>
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('feature_detail_<%=index%>'));updateDivScroll('features_data');">
+          <td valign="top" class="red_number" style="width:1%">
+            <%= feature.total_score%>
+          </td>
+          <td style="padding-left: 2px; width:100%;">
+            <% if feature.name.to_s.empty? %>
+                No Feature Description
+            <% else %>
+                <%= feature.name %>
+            <% end %>
+          </td>
+        </tr>
+        <tr id="feature_detail_<%= index %>" style="display:none;">
+          <td colspan="2">
+            <table border="0" cellspacing="0" style="width:100%;padding-left: 8px;background-color: #ccffff">
+              <tr>
+                <td>
+                  <% SummaryHelper::sort_improvement_list(feature.rules_hash).each do |phrase, count| %>
+                      <div>
+                        <div style="color:red; display:inline-block; width:1%">
+                          <%= count %>
+                        </div>
+                        <div style="display:inline-block;">
+                          <%= phrase %>
+                        </div>
+                      </div>
+                  <% end %>
+                </td>
+                <td style="text-align: right;">
+                  <a href="file:///<%= feature.location.gsub(/:\d+$/, "") %>" title="Note: Links to file on system this report was generated.">
+                    <%= feature.location.gsub(cuke_sniffer.features_location, '') %>
+                  </a>
+                </td>
+              </tr>
+              <% unless feature.background.nil? %>
                   <tr>
-                    <td valign="top" style="color:red;font-weight: bold;">
-                      <%= feature.background.score %>
+                    <td valign="top" style="border-top: 2px solid #509f50">
+                      <div style="display:inline; width:1%" class="red_number"><%=feature.background.score%></div>
+                      <div style="display:inline; padding-left: 2px; width:100%;"><%=feature.background.type%>: <%= feature.background.name %></div>
                     </td>
-                    <td class="notes" style="border-right: 2px solid #90ee90;">
-                      <%= feature.background.type + ": " + feature.background.name %>
-                    </td>
-                    <td>
-                      <% feature.background.rules_hash.each_key do |rule| %>
-                          <pre style="margin: 0; text_indent: 3%;"><%= rule %></pre>
+                    <td  valign="top" style="padding-left:2px;border-top: 2px solid #509f50;">
+                      <% SummaryHelper::sort_improvement_list(feature.background.rules_hash).each do |phrase, count| %>
+                          <div>
+                            <div style="color:red; display:inline-block; width:1%">
+                              <%= count %>
+                            </div>
+                            <div style="display:inline-block; padding-left:2px;">
+                              <%= phrase %>
+                            </div>
+                          </div>
                       <% end %>
                     </td>
                   </tr>
-                </table>
-            <% end %>
-          </tr>
-          <% feature.scenarios.each do |scenario| %>
-              <tr>
-                <% next if scenario.score <= 0 %>
-                <td valign="top" style="border-right: 2px solid #90ee90;">
-                  <div>
-                    <div class="red_number"><%= scenario.score %></div>
-                    <div class="notes" style="display:inline"><%= scenario.type + ": " + scenario.name %></div>
-                  </div>
-                </td>
-                <td style="border-top: 2px solid #90ee90;">
-                  <% scenario.rules_hash.each_key do |rule| %>
-                      <pre style="margin: 0; text_indent: 3%;"><%= rule %></pre>
-                  <% end %>
-                </td>
-              </tr>
-          <% end %>
-        </table>
-      </div>
-      <% index += 1 %>
-  <% end %>
+              <% end %>
+              <% feature.scenarios.each do |scenario| %>
+                  <%next if scenario.score == 0 %>
+                  <td valign="top" style="border-top: 2px solid #509f50">
+                    <div style="display:inline; width:1%" class="red_number"><%=scenario.score%></div>
+                    <div style="display:inline; padding-left: 2px; width:100%;"><%=scenario.type%>: <%= scenario.name %></div>
+                  </td>
+                  <td  valign="top" style="padding-left:2px;border-top: 2px solid #509f50">
+                    <% SummaryHelper::sort_improvement_list(scenario.rules_hash).each do |phrase, count| %>
+                        <div>
+                          <div style="color:red; display:inline-block; width:1%">
+                            <%= count %>
+                          </div>
+                          <div style="display:inline-block;">
+                            <%= phrase %>
+                          </div>
+                        </div>
+                    <% end %>
+                  </td>
+              <% end %>
+            </table>
+          </td>
+        </tr>
+        <% index += 1 %>
+    <% end %>
+  </table>
 </div>
 <br style="clear:both">

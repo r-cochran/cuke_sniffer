@@ -3,7 +3,7 @@
 </div>
 <div class="shrink_section" style="display: block;" id="summary_data">
   <% data_symbols = [:features, :scenarios, :step_definitions, :hooks] %>
-  <table style="width: 100%;" class="notes">
+  <table style="padding-left:2px; width: 100%;" class="notes" border="0" cellspacing="0">
     <tr class="divide_row">
       <td class="table_top"></td>
       <td class="table_top">Features</td>
@@ -11,47 +11,69 @@
       <td class="table_top">Step Definitions</td>
       <td class="table_top">Hooks</td>
     </tr>
-    <tr>
-      <td>Total Score</td>
+    <tr style="background-color: #ccffff;">
+      <td>
+        Total Score
+        <a title="Total Points for a section.">(?)</a>
+      </td>
       <% data_symbols.each do |symbol| %>
-          <td><%= cuke_sniffer.summary[symbol][:total_score] %></td>
+          <td>
+            <%= cuke_sniffer.summary[symbol][:total_score] %>
+          </td>
       <% end %>
     </tr>
     <tr>
-      <td>Count</td>
+      <td>
+        Count
+        <a title="Total Number of objects found in the project.">(?)</a>
+      </td>
       <% data_symbols.each do |symbol| %>
           <td><%= cuke_sniffer.summary[symbol][:total].inspect %></td>
       <% end %>
     </tr>
     <tr/>
-    <tr>
-      <td>Lowest Score</td>
+    <tr style="background-color: #ccffff;">
+      <td>
+        Lowest Score
+        <a title="Score of the best object found.">(?)</a>
+      </td>
       <% data_symbols.each do |symbol| %>
           <td><%= cuke_sniffer.summary[symbol][:min] %></td>
       <% end %>
     </tr>
     <tr>
-      <td>Highest Score</td>
+      <td>
+        Highest Score
+        <a title="Score of the object with the most to improve on.">(?)</a>
+      </td>
       <% data_symbols.each do |symbol| %>
           <td><%= cuke_sniffer.summary[symbol][:max] %></td>
       <% end %>
     </tr>
-    <tr>
-      <td>Average Score</td>
+    <tr style="background-color: #ccffff;">
+      <td>
+        Average Score
+        <a title="Average score of a section.">(?)</a>
+      </td>
       <% data_symbols.each do |symbol| %>
           <td><%= cuke_sniffer.summary[symbol][:average] %></td>
       <% end %>
     </tr>
     <tr/>
-
     <tr>
-      <td>Threshold</td>
+      <td>
+        Threshold
+        <a title="The maximum score an object can have to be considered good.">(?)</a>
+      </td>
       <% data_symbols.each do |symbol| %>
           <td><%= cuke_sniffer.summary[symbol][:threshold] %></td>
       <% end %>
     </tr>
-    <tr>
-      <td>Good</td>
+    <tr style="background-color: #ccffff;">
+      <td>
+        Good
+        <a title="Percentage of the objects that can be considered good in the project.">(?)</a>
+      </td>
       <% data_symbols.each do |symbol| %>
           <td><%= ((cuke_sniffer.summary[symbol][:good].to_f/cuke_sniffer.summary[symbol][:total].to_f) * 100).round(2) %>
             %
@@ -59,7 +81,10 @@
       <% end %>
     </tr>
     <tr>
-      <td>Bad</td>
+      <td>
+        Bad
+        <a title="Percentage of the objects that can be considered bad in the project.">(?)</a>
+      </td>
       <% data_symbols.each do |symbol| %>
           <td><%= ((cuke_sniffer.summary[symbol][:bad].to_f/cuke_sniffer.summary[symbol][:total].to_f) * 100).round(2) %>
             %
