@@ -1,150 +1,7 @@
-<link rel="stylesheet" type="text/css">
-
-<script type="text/javascript">
-
-    function toggleById(item, link) {
-        updateDisplayStatus(document.getElementById(item));
-        toggleText(link)
-    }
-    function updateDisplayStatus(object) {
-        if (object.tagName == "TR") {
-            updateDisplayStatusForTR(object);
-        } else {
-            object.style.display = (object.style.display == "block") ? 'none' : "block";
-        }
-    }
-
-    function updateDivScroll(divId){
-        div = document.getElementById(divId);
-        if(div.offsetHeight >= 500){
-            div.style.height = "60%";
-            div.style.overflow = "auto";
-        } else {
-            div.style.height = "";
-            div.style.overflow = "none";
-        }
-
-    }
-
-    function updateDisplayStatusForTR(object) {
-        existing_style = object.getAttribute('style');
-        if (object.style.display == "none") {
-            object.setAttribute('style', existing_style.replace(/display:\s*none/, "display: block-inline"))
-        } else {
-            object.setAttribute('style', existing_style.replace("display: block-inline", "display: none"))
-        }
-    }
-    function toggleText(link) {
-        var char_result = link.innerHTML.indexOf("+") > -1 ? "-" : "+";
-        link.innerHTML = link.innerHTML.replace(/(\+|\-)/, char_result)
-    }
-
-
-</script>
-
-<style>
-    .new_sub_section {
-        border: 2px solid #509f50;
-        padding: 2px;
-        display: none;
-        overflow:auto;
-    }
-
-    .title {
-        padding-left: 1%;
-        width: 25%;
-        background-color: #509f50;
-        color: white;
-        border-top: 0;
-        border-bottom: 0;
-        font-weight: bold;
-        font-size: 21pt;
-        cursor: pointer;
-        font-family: Arial;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-    }
-
-    .shrink_section {
-        border: 2px solid #509f50;
-        display: none;
-    }
-
-    .table_top {
-        width: 20%;
-        font-size: 14pt;
-        padding: 0;
-    }
-
-    .divide_row {
-        border-bottom: 1px solid black;
-    }
-
-    .red_number {
-        color: red;
-        font-weight: bold;
-        display: inline;
-    }
-
-    .notes {
-        font-weight: bold;
-    }
-
-    .sub_section {
-        display: none;
-        margin-left: 1%;
-        margin-right: 1%;
-        border-top: 2px solid #509f50;
-    }
-
-    .empty_set_message {
-        font-weight: bold;
-        margin-left: 1%;
-    }
-
-    .rule_notes {
-        margin-left: 1%;
-        border-left: 2px solid #90ee90;
-        border-top: 2px solid #90ee90;
-        display: block;
-        clear: left;
-        padding-bottom: 0%;
-        text-indent: 0%;
-        padding-left: 0.5%;
-        margin-bottom: 0.5%;
-    }
-
-    .rule_style {
-        margin: 0;
-        text_indent: 3%;
-
-    }
-
-    .rule_heading {
-        font-weight: bold;
-        margin: 0.25%;
-    }
-
-    ol {
-        list-style-type: none;
-        display: block;
-        padding-left: 1%
-
-    }
-
-</style>
-
-<div style="font-family: Arial; float: left; color: #509f50; font-size: 20px; font-weight: bold; padding-bottom: 1px;">
-  Cuke Sniffer
-</div>
-<br style="clear:both">
-<div style="border-top: 2px solid #509f50; text-align: right;">
-  <div style="font-family: Arial;border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;float: right; background-color:#509f50; color:white;padding-left:40px;font-size:11pt;font-weight:bold;padding-right:10px;">
-    Score: <%= cuke_sniffer.summary[:total_score] %></div>
-</div>
-<br style="clear:both">
-
 <%
+   styles = build_page(cuke_sniffer, "css.html.erb")
+   scripts = build_page(cuke_sniffer, "js.html.erb")
+   title = build_page(cuke_sniffer, "title.html.erb")
    legend = build_page(cuke_sniffer, "legend.html.erb")
    summary = build_page(cuke_sniffer, "summary.html.erb")
    rules = rules_template(cuke_sniffer)
@@ -155,18 +12,14 @@
    hooks = build_page(cuke_sniffer, "hooks.html.erb")
 %>
 
+<%= styles %>
+<%= scripts %>
+<%= title %>
 <%= legend %>
-
 <%= summary %>
-
 <%= improvement_list %>
-
 <%= rules %>
-
 <%= dead_steps %>
-
 <%= features %>
-
 <%= step_definitions %>
-
 <%= hooks %>

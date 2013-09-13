@@ -1,4 +1,4 @@
-<div class="title" onclick="toggleById('dead_steps_data', this); updateDivScroll('dead_steps_data');">
+<div class="title" onclick="toggleById('dead_steps_data', this); updateDivScroll('dead_steps_data', 'dead_steps_table');">
   Dead Steps +
 </div>
 <div class="new_sub_section" id="dead_steps_data">
@@ -16,7 +16,7 @@
   <% unless dead_steps.empty? %>
       <table id="dead_steps_table" style="width:100%; border-top: 2px solid #509f50" border="0" cellspacing="0">
         <% dead_steps.each_key do |file_name| %>
-            <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('dead_step_file_detail_<%=index%>')); updateDivScroll('dead_steps_data');">
+            <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('dead_step_file_detail_<%=index%>')); updateDivScroll('dead_steps_data', 'dead_steps_table');">
               <td class="red_number" style="width: 1%"><%= dead_steps[file_name].size %></td>
               <td id="dead_step_file_<%= index %>">
                 <%= file_name.gsub(cuke_sniffer.step_definitions_location, "") %>

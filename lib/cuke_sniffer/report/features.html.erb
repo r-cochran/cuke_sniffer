@@ -1,4 +1,4 @@
-<div class="title" onclick="toggleById('features_data', this); updateDivScroll('features_data');">
+<div class="title" onclick="toggleById('features_data', this); updateDivScroll('features_data', 'features_table');">
   Features +
 </div>
 <div class="new_sub_section" id="features_data">
@@ -12,9 +12,9 @@
     <% index = 0 %>
     <% cuke_sniffer.features.each do |feature| %>
         <% next if feature.total_score == 0 %>
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('feature_detail_<%=index%>'));updateDivScroll('features_data');">
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('feature_detail_<%=index%>'));updateDivScroll('features_data', 'features_table');">
           <td valign="top" class="red_number" style="width:1%">
-            <%= feature.total_score%>
+            <%= feature.total_score %>
           </td>
           <td style="padding-left: 2px; width:100%;">
             <% if feature.name.to_s.empty? %>
@@ -31,7 +31,7 @@
                 <td>
                   <% SummaryHelper::sort_improvement_list(feature.rules_hash).each do |phrase, count| %>
                       <div>
-                        <div style="color:red; display:inline-block; width:1%">
+                        <div style="color:red; display:inline-block;">
                           <%= count %>
                         </div>
                         <div style="display:inline-block;">
@@ -49,13 +49,14 @@
               <% unless feature.background.nil? %>
                   <tr>
                     <td valign="top" style="border-top: 2px solid #509f50">
-                      <div style="display:inline; width:1%" class="red_number"><%=feature.background.score%></div>
-                      <div style="display:inline; padding-left: 2px; width:100%;"><%=feature.background.type%>: <%= feature.background.name %></div>
+                      <div style="display:inline;" class="red_number"><%= feature.background.score %></div>
+                      <div style="display:inline; padding-left: 2px; width:100%;"><%= feature.background.type %>
+                        : <%= feature.background.name %></div>
                     </td>
-                    <td  valign="top" style="padding-left:2px;border-top: 2px solid #509f50;">
+                    <td valign="top" style="padding-left:2px;border-top: 2px solid #509f50;">
                       <% SummaryHelper::sort_improvement_list(feature.background.rules_hash).each do |phrase, count| %>
                           <div>
-                            <div style="color:red; display:inline-block; width:1%">
+                            <div style="color:red; display:inline-block;">
                               <%= count %>
                             </div>
                             <div style="display:inline-block; padding-left:2px;">
@@ -67,23 +68,26 @@
                   </tr>
               <% end %>
               <% feature.scenarios.each do |scenario| %>
-                  <%next if scenario.score == 0 %>
-                  <td valign="top" style="border-top: 2px solid #509f50">
-                    <div style="display:inline; width:1%" class="red_number"><%=scenario.score%></div>
-                    <div style="display:inline; padding-left: 2px; width:100%;"><%=scenario.type%>: <%= scenario.name %></div>
-                  </td>
-                  <td  valign="top" style="padding-left:2px;border-top: 2px solid #509f50">
-                    <% SummaryHelper::sort_improvement_list(scenario.rules_hash).each do |phrase, count| %>
-                        <div>
-                          <div style="color:red; display:inline-block; width:1%">
-                            <%= count %>
+                  <% next if scenario.score == 0 %>
+                  <tr>
+                    <td valign="top" style="border-top: 2px solid #509f50">
+                      <div style="display:inline;" class="red_number"><%= scenario.score %></div>
+                      <div style="display:inline; padding-left: 2px; width:100%;"><%= scenario.type %>
+                        : <%= scenario.name %></div>
+                    </td>
+                    <td valign="top" style="padding-left:2px;border-top: 2px solid #509f50">
+                      <% SummaryHelper::sort_improvement_list(scenario.rules_hash).each do |phrase, count| %>
+                          <div>
+                            <div style="color:red; display:inline-block;">
+                              <%= count %>
+                            </div>
+                            <div style="display:inline-block;">
+                              <%= phrase %>
+                            </div>
                           </div>
-                          <div style="display:inline-block;">
-                            <%= phrase %>
-                          </div>
-                        </div>
-                    <% end %>
-                  </td>
+                      <% end %>
+                    </td>
+                  </tr>
               <% end %>
             </table>
           </td>

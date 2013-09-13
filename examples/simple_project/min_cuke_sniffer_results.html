@@ -1,46 +1,6 @@
+
+
 <link rel="stylesheet" type="text/css">
-
-<script type="text/javascript">
-
-    function toggleById(item, link) {
-        updateDisplayStatus(document.getElementById(item));
-        toggleText(link)
-    }
-    function updateDisplayStatus(object) {
-        if (object.tagName == "TR") {
-            updateDisplayStatusForTR(object);
-        } else {
-            object.style.display = (object.style.display == "block") ? 'none' : "block";
-        }
-    }
-
-    function updateDivScroll(divId){
-        div = document.getElementById(divId);
-        if(div.offsetHeight >= 500){
-            div.style.height = "60%";
-            div.style.overflow = "auto";
-        } else {
-            div.style.height = "";
-            div.style.overflow = "none";
-        }
-
-    }
-
-    function updateDisplayStatusForTR(object) {
-        existing_style = object.getAttribute('style');
-        if (object.style.display == "none") {
-            object.setAttribute('style', existing_style.replace(/display:\s*none/, "display: block-inline"))
-        } else {
-            object.setAttribute('style', existing_style.replace("display: block-inline", "display: none"))
-        }
-    }
-    function toggleText(link) {
-        var char_result = link.innerHTML.indexOf("+") > -1 ? "-" : "+";
-        link.innerHTML = link.innerHTML.replace(/(\+|\-)/, char_result)
-    }
-
-
-</script>
 
 <style>
     .new_sub_section {
@@ -133,7 +93,48 @@
     }
 
 </style>
+<script type="text/javascript">
 
+    function toggleById(item, link) {
+        updateDisplayStatus(document.getElementById(item));
+        toggleText(link)
+    }
+    function updateDisplayStatus(object) {
+        if (object.tagName == "TR") {
+            updateDisplayStatusForTR(object);
+        } else {
+            object.style.display = (object.style.display == "block") ? 'none' : "block";
+        }
+    }
+
+    function updateDivScroll(divId, tableId){
+        div = document.getElementById(divId);
+        table = document.getElementById(tableId);
+        if(table.offsetHeight >= 500){
+            div.style.height = "75%";
+            div.style.overflow = "auto";
+        } else {
+            div.style.height = "";
+            div.style.overflow = "none";
+        }
+
+    }
+
+    function updateDisplayStatusForTR(object) {
+        existing_style = object.getAttribute('style');
+        if (object.style.display == "none") {
+            object.setAttribute('style', existing_style.replace(/display:\s*none/, "display: block-inline"))
+        } else {
+            object.setAttribute('style', existing_style.replace("display: block-inline", "display: none"))
+        }
+    }
+    function toggleText(link) {
+        var char_result = link.innerHTML.indexOf("+") > -1 ? "-" : "+";
+        link.innerHTML = link.innerHTML.replace(/(\+|\-)/, char_result)
+    }
+
+
+</script>
 <div style="font-family: Arial; float: left; color: #509f50; font-size: 20px; font-weight: bold; padding-bottom: 1px;">
   Cuke Sniffer
 </div>
@@ -143,9 +144,6 @@
     Score: 192</div>
 </div>
 <br style="clear:both">
-
-
-
 <style>
     .legend_header {
         font-weight: bold;
@@ -314,7 +312,6 @@
 
 <br>
 
-
 <div class="title" onclick="toggleById('summary_data', this)">
   Summary -
 </div>
@@ -478,8 +475,7 @@
 </div>
 <br style="clear:both">
 
-
-<div class="title" onclick="toggleById('improvement_list_data', this) ;updateDivScroll('improvement_list_data', 'improvements_table', 20);">
+<div class="title" onclick="toggleById('improvement_list_data', this) ;updateDivScroll('improvement_list_data', 'improvements_table');">
   Improvement List +
 </div>
 <div class="new_sub_section" id="improvement_list_data">
@@ -547,7 +543,6 @@
   </table>
 </div>
 <br style="clear:both">
-
 <div id="rulesTab" class="title" onclick="toggleById('rules', this)">
   Rules +
 </div>

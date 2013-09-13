@@ -1,4 +1,4 @@
-<div class="title" onclick="toggleById('step_definitions_data', this);updateDivScroll('step_definitions_data');">
+<div class="title" onclick="toggleById('step_definitions_data', this);updateDivScroll('step_definitions_data', 'step_definitions_table');">
   Step Definitions +
 </div>
 
@@ -12,7 +12,7 @@
   <table id="step_definitions_table" style="width:100%;" border="0" cellspacing="0">
     <% cuke_sniffer.step_definitions.each do |step_definition| %>
         <% next if step_definition.score <= 0 %>
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('step_definition_detail_<%=index%>')); updateDivScroll('step_definitions_data');">
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('step_definition_detail_<%=index%>')); updateDivScroll('step_definitions_data', 'step_definitions_table');">
           <td id="step_definition_score_<%= index %>" valign="top" style="width:1%; color: red">
             <%= step_definition.score %>
           </td>

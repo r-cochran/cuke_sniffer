@@ -1,0 +1,42 @@
+<script type="text/javascript">
+
+    function toggleById(item, link) {
+        updateDisplayStatus(document.getElementById(item));
+        toggleText(link)
+    }
+    function updateDisplayStatus(object) {
+        if (object.tagName == "TR") {
+            updateDisplayStatusForTR(object);
+        } else {
+            object.style.display = (object.style.display == "block") ? 'none' : "block";
+        }
+    }
+
+    function updateDivScroll(divId, tableId){
+        div = document.getElementById(divId);
+        table = document.getElementById(tableId);
+        if(table.offsetHeight >= 500){
+            div.style.height = "75%";
+            div.style.overflow = "auto";
+        } else {
+            div.style.height = "";
+            div.style.overflow = "none";
+        }
+
+    }
+
+    function updateDisplayStatusForTR(object) {
+        existing_style = object.getAttribute('style');
+        if (object.style.display == "none") {
+            object.setAttribute('style', existing_style.replace(/display:\s*none/, "display: block-inline"))
+        } else {
+            object.setAttribute('style', existing_style.replace("display: block-inline", "display: none"))
+        }
+    }
+    function toggleText(link) {
+        var char_result = link.innerHTML.indexOf("+") > -1 ? "-" : "+";
+        link.innerHTML = link.innerHTML.replace(/(\+|\-)/, char_result)
+    }
+
+
+</script>

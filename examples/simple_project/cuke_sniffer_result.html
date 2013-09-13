@@ -1,46 +1,6 @@
+
+
 <link rel="stylesheet" type="text/css">
-
-<script type="text/javascript">
-
-    function toggleById(item, link) {
-        updateDisplayStatus(document.getElementById(item));
-        toggleText(link)
-    }
-    function updateDisplayStatus(object) {
-        if (object.tagName == "TR") {
-            updateDisplayStatusForTR(object);
-        } else {
-            object.style.display = (object.style.display == "block") ? 'none' : "block";
-        }
-    }
-
-    function updateDivScroll(divId){
-        div = document.getElementById(divId);
-        if(div.offsetHeight >= 500){
-            div.style.height = "60%";
-            div.style.overflow = "auto";
-        } else {
-            div.style.height = "";
-            div.style.overflow = "none";
-        }
-
-    }
-
-    function updateDisplayStatusForTR(object) {
-        existing_style = object.getAttribute('style');
-        if (object.style.display == "none") {
-            object.setAttribute('style', existing_style.replace(/display:\s*none/, "display: block-inline"))
-        } else {
-            object.setAttribute('style', existing_style.replace("display: block-inline", "display: none"))
-        }
-    }
-    function toggleText(link) {
-        var char_result = link.innerHTML.indexOf("+") > -1 ? "-" : "+";
-        link.innerHTML = link.innerHTML.replace(/(\+|\-)/, char_result)
-    }
-
-
-</script>
 
 <style>
     .new_sub_section {
@@ -133,7 +93,48 @@
     }
 
 </style>
+<script type="text/javascript">
 
+    function toggleById(item, link) {
+        updateDisplayStatus(document.getElementById(item));
+        toggleText(link)
+    }
+    function updateDisplayStatus(object) {
+        if (object.tagName == "TR") {
+            updateDisplayStatusForTR(object);
+        } else {
+            object.style.display = (object.style.display == "block") ? 'none' : "block";
+        }
+    }
+
+    function updateDivScroll(divId, tableId){
+        div = document.getElementById(divId);
+        table = document.getElementById(tableId);
+        if(table.offsetHeight >= 500){
+            div.style.height = "75%";
+            div.style.overflow = "auto";
+        } else {
+            div.style.height = "";
+            div.style.overflow = "none";
+        }
+
+    }
+
+    function updateDisplayStatusForTR(object) {
+        existing_style = object.getAttribute('style');
+        if (object.style.display == "none") {
+            object.setAttribute('style', existing_style.replace(/display:\s*none/, "display: block-inline"))
+        } else {
+            object.setAttribute('style', existing_style.replace("display: block-inline", "display: none"))
+        }
+    }
+    function toggleText(link) {
+        var char_result = link.innerHTML.indexOf("+") > -1 ? "-" : "+";
+        link.innerHTML = link.innerHTML.replace(/(\+|\-)/, char_result)
+    }
+
+
+</script>
 <div style="font-family: Arial; float: left; color: #509f50; font-size: 20px; font-weight: bold; padding-bottom: 1px;">
   Cuke Sniffer
 </div>
@@ -143,9 +144,6 @@
     Score: 192</div>
 </div>
 <br style="clear:both">
-
-
-
 <style>
     .legend_header {
         font-weight: bold;
@@ -314,7 +312,6 @@
 
 <br>
 
-
 <div class="title" onclick="toggleById('summary_data', this)">
   Summary -
 </div>
@@ -478,8 +475,7 @@
 </div>
 <br style="clear:both">
 
-
-<div class="title" onclick="toggleById('improvement_list_data', this) ;updateDivScroll('improvement_list_data', 'improvements_table', 20);">
+<div class="title" onclick="toggleById('improvement_list_data', this) ;updateDivScroll('improvement_list_data', 'improvements_table');">
   Improvement List +
 </div>
 <div class="new_sub_section" id="improvement_list_data">
@@ -547,7 +543,6 @@
   </table>
 </div>
 <br style="clear:both">
-
 <div id="rulesTab" class="title" onclick="toggleById('rules', this)">
   Rules +
 </div>
@@ -867,8 +862,7 @@
 </ol>
 </div>
 <br style="clear:both">
-
-<div class="title" onclick="toggleById('dead_steps_data', this); updateDivScroll('dead_steps_data');">
+<div class="title" onclick="toggleById('dead_steps_data', this); updateDivScroll('dead_steps_data', 'dead_steps_table');">
   Dead Steps +
 </div>
 <div class="new_sub_section" id="dead_steps_data">
@@ -882,8 +876,7 @@
   
 </div>
 <br style="clear:both">
-
-<div class="title" onclick="toggleById('features_data', this); updateDivScroll('features_data');">
+<div class="title" onclick="toggleById('features_data', this); updateDivScroll('features_data', 'features_table');">
   Features +
 </div>
 <div class="new_sub_section" id="features_data">
@@ -893,7 +886,7 @@
     
     
         
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('feature_detail_0'));updateDivScroll('features_data');">
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('feature_detail_0'));updateDivScroll('features_data', 'features_table');">
           <td valign="top" class="red_number" style="width:1%">
             10
           </td>
@@ -919,22 +912,25 @@
               
               
                   
-                  <td valign="top" style="border-top: 2px solid #509f50">
-                    <div style="display:inline; width:1%" class="red_number">10</div>
-                    <div style="display:inline; padding-left: 2px; width:100%;">Scenario: A nested scenario should be parseable</div>
-                  </td>
-                  <td  valign="top" style="padding-left:2px;border-top: 2px solid #509f50">
-                    
-                        <div>
-                          <div style="color:red; display:inline-block; width:1%">
-                            1
+                  <tr>
+                    <td valign="top" style="border-top: 2px solid #509f50">
+                      <div style="display:inline;" class="red_number">10</div>
+                      <div style="display:inline; padding-left: 2px; width:100%;">Scenario
+                        : A nested scenario should be parseable</div>
+                    </td>
+                    <td valign="top" style="padding-left:2px;border-top: 2px solid #509f50">
+                      
+                          <div>
+                            <div style="color:red; display:inline-block;">
+                              1
+                            </div>
+                            <div style="display:inline-block;">
+                              Scenario steps out of Given/When/Then order.
+                            </div>
                           </div>
-                          <div style="display:inline-block;">
-                            Scenario steps out of Given/When/Then order.
-                          </div>
-                        </div>
-                    
-                  </td>
+                      
+                    </td>
+                  </tr>
               
             </table>
           </td>
@@ -947,8 +943,7 @@
 </div>
 <br style="clear:both">
 
-
-<div class="title" onclick="toggleById('step_definitions_data', this);updateDivScroll('step_definitions_data');">
+<div class="title" onclick="toggleById('step_definitions_data', this);updateDivScroll('step_definitions_data', 'step_definitions_table');">
   Step Definitions +
 </div>
 
@@ -958,7 +953,7 @@
   <table id="step_definitions_table" style="width:100%;" border="0" cellspacing="0">
     
         
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('step_definition_detail_0')); updateDivScroll('step_definitions_data');">
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('step_definition_detail_0')); updateDivScroll('step_definitions_data', 'step_definitions_table');">
           <td id="step_definition_score_0" valign="top" style="width:1%; color: red">
             10
           </td>
@@ -993,7 +988,7 @@
         
     
         
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('step_definition_detail_1')); updateDivScroll('step_definitions_data');">
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('step_definition_detail_1')); updateDivScroll('step_definitions_data', 'step_definitions_table');">
           <td id="step_definition_score_1" valign="top" style="width:1%; color: red">
             1
           </td>
@@ -1037,8 +1032,7 @@
 </div>
 <br style="clear:both">
 
-
-<div class="title" onclick="toggleById('hooks_data', this);updateDivScroll('hooks_data');">
+<div class="title" onclick="toggleById('hooks_data', this);updateDivScroll('hooks_data', 'hooks_table');">
   Hooks +
 </div>
 <div class="new_sub_section" id="hooks_data">
@@ -1047,7 +1041,7 @@
   <table id="hooks_table" style="width:100%;" border="0" cellspacing="0">
     
         
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_0'));updateDivScroll('hooks_data');">
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_0'));updateDivScroll('hooks_data', 'hooks_table');">
           <td id="hook_score_0" valign="top" style="width:1%; color: red">
             25
           </td>
@@ -1090,7 +1084,7 @@
         
     
         
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_1'));updateDivScroll('hooks_data');">
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_1'));updateDivScroll('hooks_data', 'hooks_table');">
           <td id="hook_score_1" valign="top" style="width:1%; color: red">
             25
           </td>
@@ -1139,7 +1133,7 @@
         
     
         
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_2'));updateDivScroll('hooks_data');">
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_2'));updateDivScroll('hooks_data', 'hooks_table');">
           <td id="hook_score_2" valign="top" style="width:1%; color: red">
             25
           </td>
@@ -1185,7 +1179,7 @@
         
     
         
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_3'));updateDivScroll('hooks_data');">
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_3'));updateDivScroll('hooks_data', 'hooks_table');">
           <td id="hook_score_3" valign="top" style="width:1%; color: red">
             25
           </td>
@@ -1228,7 +1222,7 @@
         
     
         
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_4'));updateDivScroll('hooks_data');">
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_4'));updateDivScroll('hooks_data', 'hooks_table');">
           <td id="hook_score_4" valign="top" style="width:1%; color: red">
             25
           </td>
@@ -1274,7 +1268,7 @@
         
     
         
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_5'));updateDivScroll('hooks_data');">
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_5'));updateDivScroll('hooks_data', 'hooks_table');">
           <td id="hook_score_5" valign="top" style="width:1%; color: red">
             25
           </td>
@@ -1320,7 +1314,7 @@
         
     
         
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_6'));updateDivScroll('hooks_data');">
+        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_6'));updateDivScroll('hooks_data', 'hooks_table');">
           <td id="hook_score_6" valign="top" style="width:1%; color: red">
             21
           </td>
