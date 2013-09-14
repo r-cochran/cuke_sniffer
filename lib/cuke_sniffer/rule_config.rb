@@ -394,7 +394,7 @@ module CukeSniffer
             :enabled => true,
             :phrase => "Implementation word used: {word}.",
             :score => INFO,
-            :words => ["page", "site", "url", "button", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen"],
+            :words => ["page", "site", "url", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen", "tab", "database", "DB"],
             :targets => ["Scenario", "Background"],
             :reason => "object.steps.each do |step|
                           next if is_comment?(step)
@@ -405,7 +405,19 @@ module CukeSniffer
                         end"
 
         },
-        :too_many_scenarios => {
+        :implementation_word_button => {
+            :enabled => true,
+            :phrase => "Implementation word used: button.",
+            :score => INFO,
+            :targets => ["Scenario"],
+            :reason => "object.steps.each do |step|
+                          matches = step.match(/(?<prefix>\\w+)\\sbutton/i)
+                          if(!matches.nil? and matches[:prefix].downcase != 'radio')
+                            store_rule(object, rule)
+                          end
+                        end"
+
+        },:too_many_scenarios => {
             :enabled => true,
             :phrase => "Feature with too many scenarios.",
             :score => INFO,
@@ -484,10 +496,13 @@ module CukeSniffer
     # * +:enabled+
     # * +:phrase+
     # * +:score+
+    # * +:targets+
+    # * +:reason+
     # Optional:
     # * +:words+
     # * +:max+
     # * +:min+
+    # * +:file+
     RULES = {}.merge fatal_rules.merge error_rules.merge warning_rules.merge info_rules
   end
 end

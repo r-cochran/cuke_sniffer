@@ -734,6 +734,40 @@ describe "ScenarioRules" do
     test_no_scenario_rule(scenario_block, :comment_after_tag)
   end
 
+  it "should punish implementation words Radio Button, not including button" do
+    scenario_block = [
+        "Scenario: I have a radio button",
+        "When I am the first step",
+        "Then I am the second step with a radio button"
+    ]
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[:implementation_word])
+    run_rule_against_scenario(scenario_block, rule)
+    @cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: radio button.").should be_true
+    @cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: button.").should be_false
+  end
+
+  it "should not punish implementation word Button when Radio Button is used" do
+    scenario_block = [
+        "Scenario: I have a radio button",
+        "When I am the first step",
+        "Then I am the second step with a radio button"
+    ]
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[:implementation_word_button])
+    run_rule_against_scenario(scenario_block, rule)
+    @cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: button.").should be_false
+  end
+
+  it "should punish implementation word button" do
+    scenario_block = [
+        "Scenario: I have a button",
+        "When I am the first step",
+        "Then I am the second step with a button"
+    ]
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[:implementation_word_button])
+    run_rule_against_scenario(scenario_block, rule)
+    @cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: button.").should be_true
+  end
+
 end
 
 describe "BackgroundRules" do
