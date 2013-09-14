@@ -112,8 +112,8 @@ module CukeSniffer
     def self.extract_steps_from_step_definitions(step_definitions)
       steps = {}
       step_definitions.each do |definition|
-        definition.nested_steps.each_key do |key|
-          steps[key] = definition.nested_steps[key]
+        definition.nested_steps.each do |location, step|
+          steps[location] = step
         end
       end
       steps
@@ -124,6 +124,7 @@ module CukeSniffer
       step_regex_hash = {}
       steps_with_expressions.each do |step_location, step_value|
         modified_step = step_value.gsub(/\#{[^}]*}/, '.*')
+        next if modified_step == '.*'
         step_regex_hash[step_location] = Regexp.new('^' + modified_step + '$')
       end
       step_regex_hash

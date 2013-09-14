@@ -59,6 +59,16 @@ module CukeSniffer
                           end
                         end
                         flag"
+        },
+        :universal_nested_step => {
+            :enabled => true,
+            :phrase => "A nested step should not universally match all step definitions.  Dead steps cannot be correctly cataloged.",
+            :score => FATAL,
+            :targets => ["StepDefinition"],
+            :reason => "object.nested_steps.each_value do | step_value |
+                          modified_step = step_value.gsub(/\\\#{[^}]*}/, '.*')
+                          store_rule(object, rule) if modified_step == '.*'
+                        end"
         }
     }
 
