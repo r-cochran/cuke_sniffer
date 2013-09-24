@@ -9,39 +9,6 @@ describe CukeSniffer::Formatter do
     delete_temp_files
   end
 
-  describe "condensing lists of conditions into smaller parts" do
-
-    it "distributes a list of conditions into nodes no larger than 5 items." do
-      expected_array = [
-          "a, b, c, d, e",
-          "f, g, h, i, j"
-      ]
-      input = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
-      CukeSniffer::Formatter.convert_array_condition_into_list_of_strings(input).should match_array(expected_array)
-
-    end
-
-    it "places the overflow of a list into the next group." do
-      expected_array = [
-          "a, b, c, d, e",
-          "f, g, h, i, j",
-          "k"
-      ]
-      input = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"]
-      CukeSniffer::Formatter.convert_array_condition_into_list_of_strings(input).should match_array(expected_array)
-    end
-
-    it "places the lists less than five into a single item." do
-      expected_array = [
-          "a, b, c, d"
-      ]
-      input = ["a", "b", "c", "d"]
-      CukeSniffer::Formatter.convert_array_condition_into_list_of_strings(input).should match_array(expected_array)
-
-    end
-
-  end
-
   describe "sorting cucumber objects by score" do
 
     it "should order the features in descending order by score." do

@@ -102,16 +102,6 @@ module CukeSniffer
       end
     end
 
-    # Formats a list of rule conditions into a compact string of 5 or less elements per row.
-    def self.convert_array_condition_into_list_of_strings(condition_list)
-      result = []
-      while condition_list.size > 0
-        five_words = condition_list.slice!(0, 5)
-        result << five_words.join(", ")
-      end
-      result
-    end
-
     # Sorts all of the lists on a cuke_sniffer object to be in descending order for each objects score.
     def self.sort_cuke_sniffer_lists(cuke_sniffer)
       cuke_sniffer.features = cuke_sniffer.features.sort_by { |feature| feature.total_score }.reverse
