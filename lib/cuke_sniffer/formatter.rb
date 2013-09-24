@@ -84,14 +84,7 @@ module CukeSniffer
 
     # Returns the Rules erb page that utilizes sub page sections of enabled and disabled rules
     def self.rules_template(cuke_sniffer)
-      enabled_rules = sub_rules_template(cuke_sniffer, true, "Enabled Rules")
-      disabled_rules = sub_rules_template(cuke_sniffer, false, "Disabled Rules")
       ERB.new(extract_markup("rules.html.erb")).result(binding)
-    end
-
-    # Returns the sub rules erb page for enabled status of a rule
-    def self.sub_rules_template(cuke_sniffer, state, heading)
-      ERB.new(extract_markup("sub_rules.html.erb")).result(binding)
     end
 
     # Creates a xml file with the collected project details

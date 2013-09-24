@@ -12,7 +12,11 @@
     <% index = 0 %>
     <% cuke_sniffer.features.each do |feature| %>
         <% next if feature.total_score == 0 %>
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('feature_detail_<%=index%>'));updateDivScroll('features_data', 'features_table');">
+        <% if index.odd? %>
+            <tr class="notes blue_title_row" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('feature_detail_<%=index%>'));updateDivScroll('features_data', 'features_table');">
+        <% else %>
+            <tr class="notes white_title_row" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('feature_detail_<%=index%>'));updateDivScroll('features_data', 'features_table');">
+        <% end %>
           <td valign="top" class="red_number" style="width:1%">
             <%= feature.total_score %>
           </td>
@@ -24,9 +28,14 @@
             <% end %>
           </td>
         </tr>
-        <tr id="feature_detail_<%= index %>" style="display:none;">
+        <% if index.odd? %>
+            <tr id="feature_detail_<%= index %>" class="blue_row" style="display:none;">
+        <% else %>
+            <tr id="feature_detail_<%= index %>" class="white_row" style="display:none;">
+        <% end %>
+
           <td colspan="2">
-            <table border="0" cellspacing="0" style="width:100%;padding-left: 8px;background-color: #ccffff">
+            <table border="0" cellspacing="0" class="colored_subsection">
               <tr>
                 <td>
                   <% SummaryHelper::sort_improvement_list(feature.rules_hash).each do |phrase, count| %>

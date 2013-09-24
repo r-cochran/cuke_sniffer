@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
              "lib/cuke_sniffer/report/min_template.html.erb",
              "lib/cuke_sniffer/report/standard_template.html.erb",
              "lib/cuke_sniffer/report/rules.html.erb",
-             "lib/cuke_sniffer/report/sub_rules.html.erb",
              "lib/cuke_sniffer/report/step_definitions.html.erb",
              "lib/cuke_sniffer/report/summary.html.erb",
              "lib/cuke_sniffer/report/legend.html.erb",

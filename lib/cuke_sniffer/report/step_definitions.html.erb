@@ -3,16 +3,20 @@
 </div>
 
 <div class="new_sub_section" id="step_definitions_data">
-  <% index = 0 %>
   <% if cuke_sniffer.step_definitions.count == 0 %>
       <div class="empty_set_message">There were no Step Definitions to sniff in '<%= cuke_sniffer.step_definitions_location %>'!</div>
   <% elsif cuke_sniffer.step_definitions.count >= 1 && cuke_sniffer.summary[:step_definitions][:total_score] ==0 %>
       <div class="empty_set_message">Excellent! No smells found for Step Definitions!</div>
   <% end %>
   <table id="step_definitions_table" style="width:100%;" border="0" cellspacing="0">
+    <% index = 0 %>
     <% cuke_sniffer.step_definitions.each do |step_definition| %>
         <% next if step_definition.score <= 0 %>
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('step_definition_detail_<%=index%>')); updateDivScroll('step_definitions_data', 'step_definitions_table');">
+        <% if index.odd? %>
+            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('step_definition_detail_<%=index%>')); updateDivScroll('step_definitions_data', 'step_definitions_table');">
+        <% else %>
+            <tr class="notes white_title_row" onclick="updateDisplayStatus(document.getElementById('step_definition_detail_<%=index%>')); updateDivScroll('step_definitions_data', 'step_definitions_table');">
+        <% end %>
           <td id="step_definition_score_<%= index %>" valign="top" style="width:1%; color: red">
             <%= step_definition.score %>
           </td>
@@ -24,7 +28,11 @@
           </td>
         </tr>
 
-        <tr class="sub_detail" id="step_definition_detail_<%= index %>" style="display: none; background-color: #ccffff;">
+        <% if index.odd? %>
+            <tr id="step_definition_detail_<%= index %>" class="blue_row" style="display: none;">
+        <% else %>
+            <tr id="step_definition_detail_<%= index %>" class="white_row" style="display: none;">
+        <% end %>
           <td colspan="2">
             <% SummaryHelper::sort_improvement_list(step_definition.rules_hash).each do |phrase, count| %>
                 <div style="text-indent: 10px;">

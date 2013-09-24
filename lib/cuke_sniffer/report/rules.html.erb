@@ -1,9 +1,73 @@
-<div id="rulesTab" class="title" onclick="toggleById('rules', this)">
+<div id="rulesTab" class="title" onclick="toggleById('rules', this);updateDivScroll('rules', 'rules_table');">
   Rules +
 </div>
 
 <div class="shrink_section" id="rules">
-  <%= enabled_rules %>
-  <%= disabled_rules %>
+  <table id="rules_table" style="width: 100%" border="0" cellspacing="0">
+
+    <% index = 1 %>
+    <% cuke_sniffer.rules.each do |rule| %>
+
+        <% if !rule.enabled %>
+            <tr class="notes disabled_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_<%=index%>'));updateDivScroll('rules', 'rules_table');">
+        <% elsif index.odd? %>
+            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_<%=index%>'));updateDivScroll('rules', 'rules_table');">
+        <% else %>
+            <tr class="notes white_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_<%=index%>'));updateDivScroll('rules', 'rules_table');">
+        <% end %>
+
+            <td>
+              <%= rule.phrase %>
+            </td>
+        </tr>
+
+        <% if index.odd? %>
+            <tr id="rule_detail_<%= index %>" class="colored_subsection blue_row" style="display:none;">
+        <% else %>
+            <tr id="rule_detail_<%= index %>" class="colored_subsection white_row" style="display:none;">
+        <% end %>
+        <td style="padding-left:8px;">
+          <table border="0" cellspacing="0">
+            <tr>
+              <td>
+                <b>Score:</b> <%= rule.score %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>Targets:</b> <%= rule.targets.to_s.gsub(/[\]\[\"]/, "") %>
+              </td>
+            </tr>
+            <% unless rule.conditions.empty? %>
+                <tr>
+                  <td>
+                    <b>Conditions:</b>
+                    <table style="padding-left: 4px;">
+                      <% rule.conditions.each do |condition_symbol, value| %>
+                          <tr>
+                            <td>
+                              <%= condition_symbol %>:
+                            </td>
+                            <td>
+                              <%= value %>
+                            </td>
+                          </tr>
+                      <% end %>
+                    </table>
+                  </td>
+                </tr>
+            <% end %>
+            <tr>
+              <td>
+                <b>Reason: </b><%= rule.reason %>
+              </td>
+            </tr>
+          </table>
+        </td>
+        </tr>
+
+        <% index += 1 %>
+    <% end %>
+  </table>
 </div>
 <br style="clear:both">

@@ -12,11 +12,15 @@
   <% else %>
       <div class="notes"><%= dead_step_count %> Dead Steps found.</div>
   <% end %>
-  <% index = 0 %>
   <% unless dead_steps.empty? %>
       <table id="dead_steps_table" style="width:100%; border-top: 2px solid #509f50" border="0" cellspacing="0">
+        <% index = 0 %>
         <% dead_steps.each_key do |file_name| %>
-            <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('dead_step_file_detail_<%=index%>')); updateDivScroll('dead_steps_data', 'dead_steps_table');">
+            <% if index.odd? %>
+                <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('dead_step_file_detail_<%=index%>')); updateDivScroll('dead_steps_data', 'dead_steps_table');">
+            <% else %>
+                <tr class="notes white_title_row" onclick="updateDisplayStatus(document.getElementById('dead_step_file_detail_<%=index%>')); updateDivScroll('dead_steps_data', 'dead_steps_table');">
+            <% end %>
               <td class="red_number" style="width: 1%"><%= dead_steps[file_name].size %></td>
               <td id="dead_step_file_<%= index %>">
                 <%= file_name.gsub(cuke_sniffer.step_definitions_location, "") %>
@@ -28,7 +32,11 @@
               </td>
             </tr>
 
-            <tr class="sub_detail_<%= index %>" id="dead_step_file_detail_<%= index %>" style="display: none; background-color: #ccffff;">
+            <% if index.odd? %>
+                <tr class="blue_row" id="dead_step_file_detail_<%= index %>" style="display: none;">
+            <% else %>
+                <tr class="white_row" id="dead_step_file_detail_<%= index %>" style="display: none;">
+            <% end %>
               <td colspan="3">
                 <table id="sub_detail_table_<%= index %>" style="width:100%;">
                   <% dead_steps[file_name].each do |regex| %>

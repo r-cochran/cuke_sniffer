@@ -7,11 +7,15 @@
   <% elsif cuke_sniffer.hooks.count >= 1 && cuke_sniffer.summary[:hooks][:total_score] ==0 %>
       <div class="empty_set_message">Excellent! No smells found for Hooks!</div>
   <% end %>
-  <% index = 0 %>
   <table id="hooks_table" style="width:100%;" border="0" cellspacing="0">
+    <% index = 0 %>
     <% cuke_sniffer.hooks.each do |hook| %>
         <% next if hook.score <= 0 %>
-        <tr class="notes" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('hook_detail_<%=index%>'));updateDivScroll('hooks_data', 'hooks_table');">
+        <% if index.odd? %>
+            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('hook_detail_<%=index%>'));updateDivScroll('hooks_data', 'hooks_table');">
+        <% else %>
+            <tr class="notes white_title_row" onclick="updateDisplayStatus(document.getElementById('hook_detail_<%=index%>'));updateDivScroll('hooks_data', 'hooks_table');">
+        <% end %>
           <td id="hook_score_<%= index %>" valign="top" style="width:1%; color: red">
             <%= hook.score %>
           </td>
@@ -37,7 +41,12 @@
           </td>
         </tr>
 
-        <tr class="sub_detail" id="hook_detail_<%= index %>" style="display: none; background-color: #ccffff;">
+        <% if index.odd? %>
+            <tr id="hook_detail_<%= index %>" class="blue_row" style="display: none;">
+        <% else %>
+            <tr id="hook_detail_<%= index %>" class="white_row" style="display: none;">
+        <% end %>
+
           <td colspan="2">
             <% SummaryHelper::sort_improvement_list(hook.rules_hash).each do |phrase, count| %>
                 <div style="text-indent: 10px;">
