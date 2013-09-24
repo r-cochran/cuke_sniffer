@@ -1,5 +1,10 @@
-<div class="title" onclick="toggleById('step_definitions_data', this);updateDivScroll('step_definitions_data', 'step_definitions_table');">
+<div class="title" onclick="toggleById('step_definitions_data', this); toggleById('step_definition_function_bar', this); updateDivScroll('step_definitions_data', 'step_definitions_table');">
   Step Definitions +
+</div>
+
+<div id="step_definition_function_bar" class="function_bar">
+  <input type="button" class="function_button" value="Collapse All" onclick="collapseAll('step_definition_detail')" />
+  <input type="button" class="function_button" value="Expand All" onclick="expandAllShiftingRows('step_definition_detail')" />
 </div>
 
 <div class="new_sub_section" id="step_definitions_data">
@@ -29,9 +34,9 @@
         </tr>
 
         <% if index.odd? %>
-            <tr id="step_definition_detail_<%= index %>" class="blue_row" style="display: none;">
+            <tr id="step_definition_detail_<%= index %>" class="blue_row step_definition_detail" style="display: none;">
         <% else %>
-            <tr id="step_definition_detail_<%= index %>" class="white_row" style="display: none;">
+            <tr id="step_definition_detail_<%= index %>" class="white_row step_definition_detail" style="display: none;">
         <% end %>
           <td colspan="2">
             <% SummaryHelper::sort_improvement_list(step_definition.rules_hash).each do |phrase, count| %>

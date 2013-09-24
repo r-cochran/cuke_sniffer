@@ -1,6 +1,12 @@
-<div class="title" onclick="toggleById('hooks_data', this);updateDivScroll('hooks_data', 'hooks_table');">
+<div class="title" onclick="toggleById('hooks_data', this); toggleById('hooks_function_bar', this); updateDivScroll('hooks_data', 'hooks_table');">
   Hooks +
 </div>
+
+<div id="hooks_function_bar" class="function_bar">
+  <input type="button" class="function_button" value="Collapse All" onclick="collapseAll('hook_detail')" />
+  <input type="button" class="function_button" value="Expand All" onclick="expandAllShiftingRows('hook_detail')" />
+</div>
+
 <div class="new_sub_section" id="hooks_data">
   <% if cuke_sniffer.hooks.count == 0 %>
       <div class="empty_set_message">There were no Hooks to sniff in '<%= cuke_sniffer.hooks_location %>'!</div>
@@ -42,9 +48,9 @@
         </tr>
 
         <% if index.odd? %>
-            <tr id="hook_detail_<%= index %>" class="blue_row" style="display: none;">
+            <tr id="hook_detail_<%= index %>" class="blue_row hook_detail" style="display: none;">
         <% else %>
-            <tr id="hook_detail_<%= index %>" class="white_row" style="display: none;">
+            <tr id="hook_detail_<%= index %>" class="white_row hook_detail" style="display: none;">
         <% end %>
 
           <td colspan="2">

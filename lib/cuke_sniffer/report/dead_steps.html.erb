@@ -1,5 +1,9 @@
-<div class="title" onclick="toggleById('dead_steps_data', this); updateDivScroll('dead_steps_data', 'dead_steps_table');">
+<div class="title" onclick="toggleById('dead_steps_data', this); toggleById('dead_steps_function_bar', this);updateDivScroll('dead_steps_data', 'dead_steps_table');">
   Dead Steps +
+</div>
+<div id="dead_steps_function_bar" class="function_bar">
+  <input type="button" class="function_button" value="Collapse All" onclick="collapseAll('dead_step_detail')" />
+  <input type="button" class="function_button" value="Expand All" onclick="expandAllShiftingRows('dead_step_detail')" />
 </div>
 <div class="new_sub_section" id="dead_steps_data">
   <% dead_steps = cuke_sniffer.get_dead_steps %>
@@ -33,9 +37,9 @@
             </tr>
 
             <% if index.odd? %>
-                <tr class="blue_row" id="dead_step_file_detail_<%= index %>" style="display: none;">
+                <tr class="blue_row dead_step_detail" id="dead_step_file_detail_<%= index %>" style="display: none;">
             <% else %>
-                <tr class="white_row" id="dead_step_file_detail_<%= index %>" style="display: none;">
+                <tr class="white_row dead_step_detail" id="dead_step_file_detail_<%= index %>" style="display: none;">
             <% end %>
               <td colspan="3">
                 <table id="sub_detail_table_<%= index %>" style="width:100%;">

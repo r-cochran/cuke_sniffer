@@ -1,6 +1,12 @@
-<div class="title" onclick="toggleById('features_data', this); updateDivScroll('features_data', 'features_table');">
+<div class="title" onclick="toggleById('features_data', this); toggleById('feature_function_bar', this);updateDivScroll('features_data', 'features_table');">
   Features +
 </div>
+
+<div id="feature_function_bar" class="function_bar">
+  <input type="button" class="function_button" value="Collapse All" onclick="collapseAll('feature_detail')" />
+  <input type="button" class="function_button" value="Expand All" onclick="expandAllShiftingRows('feature_detail')" />
+</div>
+
 <div class="new_sub_section" id="features_data">
   <% if cuke_sniffer.features.count == 0 %>
       <div class="empty_set_message">There were no Features to sniff in '<%= cuke_sniffer.features_location %>'!</div>
@@ -29,9 +35,9 @@
           </td>
         </tr>
         <% if index.odd? %>
-            <tr id="feature_detail_<%= index %>" class="blue_row" style="display:none;">
+            <tr id="feature_detail_<%= index %>" class="blue_row feature_detail" style="display:none;">
         <% else %>
-            <tr id="feature_detail_<%= index %>" class="white_row" style="display:none;">
+            <tr id="feature_detail_<%= index %>" class="white_row feature_detail" style="display:none;">
         <% end %>
 
           <td colspan="2">

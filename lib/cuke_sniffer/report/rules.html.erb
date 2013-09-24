@@ -1,13 +1,16 @@
-<div id="rulesTab" class="title" onclick="toggleById('rules', this);updateDivScroll('rules', 'rules_table');">
+<div id="rulesTab" class="title" onclick="toggleById('rules', this);toggleById('rules_function_bar', this);updateDivScroll('rules', 'rules_table');">
   Rules +
+</div>
+
+<div id="rules_function_bar" class="function_bar">
+  <input type="button" class="function_button" value="Collapse All" onclick="collapseAll('rule_detail')" />
+  <input type="button" class="function_button" value="Expand All" onclick="expandAll('rule_detail')" />
 </div>
 
 <div class="shrink_section" id="rules">
   <table id="rules_table" style="width: 100%" border="0" cellspacing="0">
-
     <% index = 1 %>
     <% cuke_sniffer.rules.each do |rule| %>
-
         <% if !rule.enabled %>
             <tr class="notes disabled_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_<%=index%>'));updateDivScroll('rules', 'rules_table');">
         <% elsif index.odd? %>
@@ -22,9 +25,9 @@
         </tr>
 
         <% if index.odd? %>
-            <tr id="rule_detail_<%= index %>" class="colored_subsection blue_row" style="display:none;">
+            <tr id="rule_detail_<%= index %>" class="colored_subsection blue_row rule_detail" style="display:none;">
         <% else %>
-            <tr id="rule_detail_<%= index %>" class="colored_subsection white_row" style="display:none;">
+            <tr id="rule_detail_<%= index %>" class="colored_subsection white_row rule_detail" style="display:none;">
         <% end %>
         <td style="padding-left:8px;">
           <table border="0" cellspacing="0">
