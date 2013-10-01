@@ -70,7 +70,13 @@ describe CukeSniffer do
       build_file(step_definition_block, step_definition_file)
 
 
-      cuke_sniffer = CukeSniffer::CLI.new({:no_catalog => true})
+      cuke_sniffer = CukeSniffer::CLI.new(
+          {
+              :features_location => feature_file_name,
+              :step_definitions_location => step_definition_file,
+              :no_catalog => true
+          }
+      )
 
       cuke_sniffer.step_definitions.first.calls.should be_empty
       cuke_sniffer.cataloged?.should be_false
@@ -99,7 +105,13 @@ describe CukeSniffer do
       build_file(step_definition_block, step_definition_file)
 
 
-      cuke_sniffer = CukeSniffer::CLI.new({:no_catalog => false})
+      cuke_sniffer = CukeSniffer::CLI.new(
+          {
+              :features_location => feature_file_name,
+              :step_definitions_location => step_definition_file,
+              :no_catalog => false
+          }
+      )
 
       cuke_sniffer.step_definitions.first.calls.should_not be_empty
       cuke_sniffer.cataloged?.should be_true
@@ -128,7 +140,12 @@ describe CukeSniffer do
       build_file(step_definition_block, step_definition_file)
 
 
-      cuke_sniffer = CukeSniffer::CLI.new()
+      cuke_sniffer = CukeSniffer::CLI.new(
+          {
+              :features_location => feature_file_name,
+              :step_definitions_location => step_definition_file,
+          }
+      )
 
       cuke_sniffer.step_definitions.first.calls.should_not be_empty
       cuke_sniffer.cataloged?.should be_true
@@ -136,6 +153,7 @@ describe CukeSniffer do
       File.delete(feature_file_name)
       File.delete(step_definition_file)
     end
+
   end
 
   describe "Handling Features" do
