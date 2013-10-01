@@ -205,7 +205,11 @@ module CukeSniffer
     end
 
     def initialize_catalog_status(parameters)
-      @cataloged = parameters[:no_catalog] == true ? false : true
+      if parameters[:no_catalog] == true
+        @cataloged = false
+      else
+        @cataloged = true
+      end
     end
 
     def evaluate_rules
