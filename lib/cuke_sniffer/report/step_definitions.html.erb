@@ -29,7 +29,11 @@
             /<%= step_definition.regex.to_s.gsub(/[(]\?-mix:/, "")[0...-1] %>/
           </td>
           <td id="step_definition_calls_<%= index %>" valign="top" style="text-align:right;width:8%;">
-            Call(s): <%= step_definition.calls.size %>
+            <% if cuke_sniffer.cataloged? %>
+                Call(s): <%= step_definition.calls.size %>
+            <% else %>
+                Not cataloged
+            <% end %>
           </td>
         </tr>
 

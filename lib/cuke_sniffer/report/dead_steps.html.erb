@@ -9,14 +9,16 @@
   <% dead_steps = cuke_sniffer.get_dead_steps %>
   <% dead_steps.delete(:total) %>
   <% dead_step_count = dead_steps.values.flatten.count %>
-  <% if dead_step_count == 0 %>
+  <% if !cuke_sniffer.cataloged? %>
+      <div class="notes">Steps were not cataloged.</div>
+  <% elsif dead_step_count == 0 %>
       <div class="notes">No dead steps found!</div>
   <% elsif dead_step_count == 1 %>
       <div class="notes"><%= dead_step_count %> Dead Step found.</div>
   <% else %>
       <div class="notes"><%= dead_step_count %> Dead Steps found.</div>
   <% end %>
-  <% unless dead_steps.empty? %>
+  <% unless dead_steps.empty? or !cuke_sniffer.cataloged? %>
       <table id="dead_steps_table" style="width:100%; border-top: 2px solid #509f50" border="0" cellspacing="0">
         <% index = 0 %>
         <% dead_steps.each_key do |file_name| %>

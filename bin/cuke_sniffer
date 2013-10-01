@@ -14,7 +14,9 @@ Other Options for Running include:
   -p,  --project <project_root>             : Root directory of project.
   -f,  --features <feature_path>            : Path to features directory.
   -s,  --step_definitions <step_def_path>   : Path to step definitions directory.
-  -hk, --hooks <hooks_path>                 : Path to support directory.            "
+  -hk, --hooks <hooks_path>                 : Path to support directory.
+  -nc, --no_catalog                         : Disable cataloging of steps. Reduced runtime and no
+"
 
 def find_index_by_regex_match(list, regex)
   list.each do |item|
@@ -29,6 +31,7 @@ def build_cli_hash(argv)
       :features_location => /-f|--features/,
       :step_definitions_location => /-s|--step_definitions/,
       :project_location => /-p|--project/}
+
   cli_hash = {}
   cucumber_hash.each do |symbol, regex|
     index_of_key = find_index_by_regex_match(argv, regex)
@@ -36,6 +39,10 @@ def build_cli_hash(argv)
       cli_hash[symbol] = argv[index_of_key + 1]
     end
   end
+
+  cli_hash[:no_catalog] = true if find_index_by_regex_match(argv, /-nc|--no_catalog/)
+  puts find_index_by_regex_match(argv, /-nc|--no_catalog/)
+  puts cli_hash.inspect
   cli_hash
 end
 

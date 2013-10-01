@@ -22,6 +22,7 @@ module CukeSniffer
     xml_accessor :features, :as => [CukeSniffer::Feature], :in => "features"
     xml_accessor :step_definitions, :as => [CukeSniffer::StepDefinition], :in => "step_definitions"
     xml_accessor :hooks, :as => [CukeSniffer::Hook], :in => "hooks"
+    xml_accessor :cataloged
 
 
     # Feature array: All Features gathered from the specified folder
@@ -53,6 +54,9 @@ module CukeSniffer
     # Rules hash: All the rules that exist at runtime and their corresponding data
     attr_accessor :rules
 
+    # Boolean: Status of if the projects step definitions were cataloged for calls
+    attr_accessor :cataloged
+
 
     # Does analysis against the passed features and step definition locations
     #
@@ -73,6 +77,9 @@ module CukeSniffer
     # Against folders
     #  cuke_sniffer = CukeSniffer::CLI.new({:features_location =>"my_features_directory\", :step_definitions_location =>"my_steps_directory\"})
     #
+    # Disabling cataloging for improved runtime and no dead steps identified
+    #  cuke_sniffer = CukeSniffer::CLI.new({:no_catalog => true})
+    #
     # You can mix and match all of the above examples
     #
     # Displays the sequence and a . indicator for each new loop in that process.
@@ -82,7 +89,7 @@ module CukeSniffer
     def initialize(parameters = {})
       initialize_rule_targets(parameters)
       evaluate_rules
-      catalog_step_calls
+      catalog_step_calls if @cataloged
       assess_score
     end
 
@@ -166,6 +173,10 @@ module CukeSniffer
       @improvement_list = @summary[:improvement_list]
     end
 
+    def cataloged?
+      @cataloged
+    end
+
     private
 
     def initialize_rule_targets(parameters)
@@ -177,6 +188,8 @@ module CukeSniffer
 
       puts("\nHooks:")
       @hooks = build_objects_for_extension_from_location(@hooks_location, "rb") { |location| build_hooks(location) }
+
+      initialize_catalog_status(parameters)
     end
 
     def initialize_locations(parameters)
@@ -189,6 +202,10 @@ module CukeSniffer
       puts "\nFeatures:"
       @features = build_objects_for_extension_from_location(features_location, "feature") { |location| CukeSniffer::Feature.new(location) }
       @scenarios = CukeSniffer::CukeSnifferHelper.get_all_scenarios(@features)
+    end
+
+    def initialize_catalog_status(parameters)
+      @cataloged = parameters[:no_catalog] ? false : true
     end
 
     def evaluate_rules

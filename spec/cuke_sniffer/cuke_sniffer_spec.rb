@@ -49,6 +49,93 @@ describe CukeSniffer do
       cuke_sniffer.assess_score
       cuke_sniffer.summary[:total_score].should == features_score + step_definitions_score + hooks_score
     end
+
+    it "should not catalog step definitions when the flag is sent to skip that step is true and keep track that nothing was cataloged" do
+      feature_block = [
+        "Feature: My feature that will not be cataloged",
+        "",
+        "Scenario: A scenario that will not be cataloged",
+        "Give my step",
+        "When my step",
+        "Then my step"
+      ]
+      feature_file_name = "my_feature.feature"
+      build_file(feature_block, feature_file_name)
+
+      step_definition_block = [
+          "Given /^my step$/ do",
+          "end"
+      ]
+      step_definition_file = "step_def.rb"
+      build_file(step_definition_block, step_definition_file)
+
+
+      cuke_sniffer = CukeSniffer::CLI.new({:no_catalog => true})
+
+      cuke_sniffer.step_definitions.first.calls.should be_empty
+      cuke_sniffer.cataloged?.should be_false
+
+      File.delete(feature_file_name)
+      File.delete(step_definition_file)
+    end
+
+    it "should catalog step definitions when the flag is not sent to skip is false that step and keep track that step definitions were cataloged" do
+      feature_block = [
+          "Feature: My feature that will not be cataloged",
+          "",
+          "Scenario: A scenario that will not be cataloged",
+          "Give my step",
+          "When my step",
+          "Then my step"
+      ]
+      feature_file_name = "my_feature.feature"
+      build_file(feature_block, feature_file_name)
+
+      step_definition_block = [
+          "Given /^my step$/ do",
+          "end"
+      ]
+      step_definition_file = "step_def.rb"
+      build_file(step_definition_block, step_definition_file)
+
+
+      cuke_sniffer = CukeSniffer::CLI.new({:no_catalog => false})
+
+      cuke_sniffer.step_definitions.first.calls.should_not be_empty
+      cuke_sniffer.cataloged?.should be_true
+
+      File.delete(feature_file_name)
+      File.delete(step_definition_file)
+    end
+
+    it "should catalog step definitions when the flag is not sent to skip that step and keep track that step definitions were cataloged" do
+      feature_block = [
+          "Feature: My feature that will not be cataloged",
+          "",
+          "Scenario: A scenario that will not be cataloged",
+          "Give my step",
+          "When my step",
+          "Then my step"
+      ]
+      feature_file_name = "my_feature.feature"
+      build_file(feature_block, feature_file_name)
+
+      step_definition_block = [
+          "Given /^my step$/ do",
+          "end"
+      ]
+      step_definition_file = "step_def.rb"
+      build_file(step_definition_block, step_definition_file)
+
+
+      cuke_sniffer = CukeSniffer::CLI.new()
+
+      cuke_sniffer.step_definitions.first.calls.should_not be_empty
+      cuke_sniffer.cataloged?.should be_true
+
+      File.delete(feature_file_name)
+      File.delete(step_definition_file)
+    end
   end
 
   describe "Handling Features" do
