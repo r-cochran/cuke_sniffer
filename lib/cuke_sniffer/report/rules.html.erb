@@ -9,7 +9,7 @@
 
 <div class="shrink_section" id="rules">
   <table id="rules_table" style="width: 100%" border="0" cellspacing="0">
-    <% index = 1 %>
+    <% index = 0 %>
     <% cuke_sniffer.rules.each do |rule| %>
         <% if !rule.enabled %>
             <tr class="notes disabled_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_<%=index%>'));updateDivScroll('rules', 'rules_table');">
