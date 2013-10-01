@@ -41,8 +41,6 @@ def build_cli_hash(argv)
   end
 
   cli_hash[:no_catalog] = true if find_index_by_regex_match(argv, /-nc|--no_catalog/)
-  puts find_index_by_regex_match(argv, /-nc|--no_catalog/)
-  puts cli_hash.inspect
   cli_hash
 end
 

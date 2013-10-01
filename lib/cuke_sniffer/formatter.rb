@@ -32,8 +32,8 @@ module CukeSniffer
     # Formats the section data for a summary object
     def self.console_summary(name, summary)
       "  #{name}\n" +
-      "    Min: #{summary[:min]} (#{summary[:min_file]})\n" +
-      "    Max: #{summary[:max]} (#{summary[:max_file]})\n" +
+      "    Min: #{summary[:min]}\n" +
+      "    Max: #{summary[:max]}\n" +
       "    Average: #{summary[:average]}\n"
     end
 

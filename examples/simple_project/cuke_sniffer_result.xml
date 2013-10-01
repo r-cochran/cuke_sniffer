@@ -62,6 +62,19 @@
     </rule>
     <rule>
       <enabled>true</enabled>
+      <phrase>A nested step should not universally match all step definitions.  Dead steps cannot be correctly cataloged.</phrase>
+      <score>100</score>
+      <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>object.nested_steps.each_value do | step_value |
+                          modified_step = step_value.gsub(/\#{[^}]*}/, '.*')
+                          store_rule(object, rule) if modified_step == '.*'
+                        end</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
       <phrase>{class} has no description.</phrase>
       <score>25</score>
       <conditions/>
@@ -496,7 +509,7 @@
       <conditions>
         <condition>
           <name>words</name>
-          <value>["page", "site", "url", "button", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen"]</value>
+          <value>["page", "site", "url", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen", "tab", "database", "DB"]</value>
         </condition>
       </conditions>
       <targets>
@@ -507,6 +520,21 @@
                           rule.conditions[:words].each do |word|
                             new_phrase = rule.phrase.gsub(/{.*}/, word)
                             store_rule(object, rule, new_phrase) if step.include?(word)
+                          end
+                        end</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Implementation word used: button.</phrase>
+      <score>1</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>object.steps.each do |step|
+                          matches = step.match(/(?&lt;prefix&gt;\w+)\sbutton/i)
+                          if(!matches.nil? and matches[:prefix].downcase != 'radio')
+                            store_rule(object, rule)
                           end
                         end</reason>
     </rule>
@@ -1031,4 +1059,5 @@
       </rules>
     </hook>
   </hooks>
+  <cataloged>true</cataloged>
 </cuke_sniffer>
