@@ -582,7 +582,7 @@
   </table>
 </div>
 <br style="clear:both">
-<div id="rulesTab" class="title" onclick="toggleById('rules', this);toggleById('rules_function_bar', this);updateDivScroll('rules', 'rules_table');">
+<div id="rulesTab" class="title" onclick="toggleById('rules', this);updateDisplayStatus(document.getElementById('rules_function_bar'));updateDivScroll('rules', 'rules_table');">
   Rules +
 </div>
 
@@ -2678,7 +2678,7 @@
   </table>
 </div>
 <br style="clear:both">
-<div class="title" onclick="toggleById('dead_steps_data', this); toggleById('dead_steps_function_bar', this);updateDivScroll('dead_steps_data', 'dead_steps_table');">
+<div class="title" onclick="toggleById('dead_steps_data', this); updateDisplayStatus(document.getElementById('dead_steps_function_bar'));updateDivScroll('dead_steps_data', 'dead_steps_table');">
   Dead Steps +
 </div>
 <div id="dead_steps_function_bar" class="function_bar">
@@ -2782,7 +2782,7 @@
   
 </div>
 <br style="clear:both">
-<div class="title" onclick="toggleById('features_data', this); toggleById('feature_function_bar', this);updateDivScroll('features_data', 'features_table');">
+<div class="title" onclick="toggleById('features_data', this);updateDisplayStatus(document.getElementById('feature_function_bar'));updateDivScroll('features_data', 'features_table');">
   Features +
 </div>
 
@@ -3695,7 +3695,7 @@
 </div>
 <br style="clear:both">
 
-<div class="title" onclick="toggleById('step_definitions_data', this); toggleById('step_definition_function_bar', this); updateDivScroll('step_definitions_data', 'step_definitions_table');">
+<div class="title" onclick="toggleById('step_definitions_data', this);updateDisplayStatus(document.getElementById('step_definition_function_bar'));updateDivScroll('step_definitions_data', 'step_definitions_table');">
   Step Definitions +
 </div>
 
@@ -4068,7 +4068,7 @@
 </div>
 <br style="clear:both">
 
-<div class="title" onclick="toggleById('hooks_data', this); toggleById('hooks_function_bar', this); updateDivScroll('hooks_data', 'hooks_table');">
+<div class="title" onclick="toggleById('hooks_data', this);updateDisplayStatus(document.getElementById('hooks_function_bar'));updateDivScroll('hooks_data', 'hooks_table');">
   Hooks +
 </div>
 
