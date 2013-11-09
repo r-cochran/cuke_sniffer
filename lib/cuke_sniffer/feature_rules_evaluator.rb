@@ -1,5 +1,4 @@
 require 'cuke_sniffer/constants'
-require 'cuke_sniffer/rule_config'
 require 'cuke_sniffer/rule_target'
 
 module CukeSniffer

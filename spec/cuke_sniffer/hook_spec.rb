@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'cuke_sniffer/hook'
 
 describe CukeSniffer::Hook do
   after(:each) do

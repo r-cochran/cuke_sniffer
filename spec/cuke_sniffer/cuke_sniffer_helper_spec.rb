@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'cuke_sniffer/cuke_sniffer_helper'
 
 describe CukeSniffer::CukeSnifferHelper do
 
