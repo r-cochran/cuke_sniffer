@@ -4,6 +4,8 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'rspec'
 require 'cuke_sniffer'
+require 'cuke_sniffer/rule_config'
+require 'cuke_sniffer/constants'
 require 'roxml'
 
 include CukeSniffer::RuleConfig

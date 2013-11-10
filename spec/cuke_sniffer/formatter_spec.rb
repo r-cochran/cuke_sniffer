@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'cuke_sniffer/formatter'
 
 describe CukeSniffer::Formatter do
   before(:each) do

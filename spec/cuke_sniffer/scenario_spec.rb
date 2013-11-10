@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'cuke_sniffer/scenario'
 
 describe CukeSniffer::Scenario do
 

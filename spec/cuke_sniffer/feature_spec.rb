@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'cuke_sniffer/feature'
 
 describe CukeSniffer::Feature do
 
