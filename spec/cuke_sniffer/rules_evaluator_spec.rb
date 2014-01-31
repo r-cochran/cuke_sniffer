@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'cuke_sniffer/rules_evaluator'
 
 describe CukeSniffer::RulesEvaluator do
 
@@ -138,8 +139,8 @@ describe CukeSniffer::RulesEvaluator do
     rule.targets = ["Scenario"]
 
     feature_block = [
-        "Feature: Testing", 
-        "Scenario: Testing Again", 
+        "Feature: Testing",
+        "Scenario: Testing Again",
         "Scenario: Testing Again"
     ]
     build_file(feature_block, @file_name)

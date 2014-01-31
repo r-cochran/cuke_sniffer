@@ -1,3 +1,7 @@
+require 'cuke_sniffer/feature_rules_evaluator'
+
+require 'cuke_sniffer/scenario'
+
 module CukeSniffer
 
   # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)

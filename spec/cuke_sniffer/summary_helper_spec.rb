@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'cuke_sniffer/summary_helper'
 
 describe CukeSniffer::SummaryHelper do
 
