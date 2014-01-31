@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'cuke_sniffer/step_definition'
 
 describe CukeSniffer::StepDefinition do
   after(:all) do

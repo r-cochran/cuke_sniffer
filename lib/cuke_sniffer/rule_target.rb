@@ -1,4 +1,6 @@
-require 'roxml'
+require 'cuke_sniffer/constants'
+require 'cuke_sniffer/rule_config'
+
 module CukeSniffer
 
   # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)

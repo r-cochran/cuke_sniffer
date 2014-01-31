@@ -52,8 +52,9 @@ module CukeSniffer
             :reason =>
                 'def legal?(tag_lines)
   tokens = split_and_flatten tag_lines
+
   tokens.each_with_index do |token, index|
-    return false if comment?(token) && is_nested_comment?(tokens, index)
+    return false if comment?(token) && any_tags_in_front?(tokens, index)
   end
   true
 end
@@ -62,37 +63,20 @@ def split_and_flatten(lines)
   lines.collect { |line| line.split }.flatten
 end
 
-def is_nested_comment?(tokens, index)
+def any_tags_in_front?(tokens, index)
   tokens_in_front = tokens[0...index]
-  tokens_behind = tokens[index + 1..tokens.size]
-
-  tag_in_front = tokens_in_front.any? { |x| tag? x }
-  tag_behind = tokens_behind.any? { |x| tag? x }
-
-  tag_in_front && tag_behind
+  tokens_in_front.any? { |x| tag? x }
 end
 
 def tag?(text)
-  if text.match /\A@/
-    true
-  else
-    false
-  end
+  (text.match /\A@/) ? true : false
 end
 
 def comment?(text)
-  if text.match /\A#/
-    true
-  else
-    false
-  end
+  (text.match /\A#/) ? true : false
 end
 
-if legal? object.tags
-  false
-else
-  true
-end'
+(legal? object.tags) ? false : true'
         },
         :universal_nested_step => {
             :enabled => true,
