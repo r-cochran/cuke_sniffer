@@ -49,16 +49,50 @@ module CukeSniffer
             :phrase => "Comment comes between tag and properly executing line. This feature file cannot run!",
             :score => FATAL,
             :targets => ["Feature", "Scenario"],
-            :reason => "flag = false
-                        unless object.tags.empty?
-                          object.tags[1..-1].each do | tags |
-                            if tags =~ /^\\s*\\#.*$/
-                              flag = true
-                              break
-                            end
-                          end
-                        end
-                        flag"
+            :reason =>
+                'def legal?(tag_lines)
+  tokens = split_and_flatten tag_lines
+  tokens.each_with_index do |token, index|
+    return false if comment?(token) && is_nested_comment?(tokens, index)
+  end
+  true
+end
+
+def split_and_flatten(lines)
+  lines.collect { |line| line.split }.flatten
+end
+
+def is_nested_comment?(tokens, index)
+  tokens_in_front = tokens[0...index]
+  tokens_behind = tokens[index + 1..tokens.size]
+
+  tag_in_front = tokens_in_front.any? { |x| tag? x }
+  tag_behind = tokens_behind.any? { |x| tag? x }
+
+  tag_in_front && tag_behind
+end
+
+def tag?(text)
+  if text.match /\A@/
+    true
+  else
+    false
+  end
+end
+
+def comment?(text)
+  if text.match /\A#/
+    true
+  else
+    false
+  end
+end
+
+if legal? object.tags
+  false
+else
+  true
+end'
         },
         :universal_nested_step => {
             :enabled => true,

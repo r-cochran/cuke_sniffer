@@ -1,5 +1,3 @@
-require 'roxml'
-
 module CukeSniffer
 
   # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
@@ -45,7 +43,8 @@ module CukeSniffer
       @rules.each do |rule|
         fail "No targets for rule: #{rule.phrase}" if rule.targets.nil? or rule.targets.empty?
         next unless rule.targets.include? type and rule.enabled
-        if eval(rule.reason) == true
+        rule_present = eval rule.reason
+        if rule_present
           phrase = rule.phrase.gsub("{class}", type)
           store_rule(object, rule, phrase)
         end
