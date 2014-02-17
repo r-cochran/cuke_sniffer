@@ -769,6 +769,17 @@ describe "ScenarioRules" do
     @cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: button.").should be_true
   end
 
+  it 'should not punish a scenario that has two comments before any tags' do
+    scenario_block = [
+        '# I am a comment',
+        '# I am another comment',
+        '@tag1 @tag2',
+        'Scenario: Test Scenario',
+        'When I am the first step',
+    ]
+    test_no_scenario_rule(scenario_block, :comment_after_tag)
+  end
+
 end
 
 describe "BackgroundRules" do
