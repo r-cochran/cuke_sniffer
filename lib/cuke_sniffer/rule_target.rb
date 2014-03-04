@@ -54,7 +54,6 @@ module CukeSniffer
       comparison_object.rules_hash == rules_hash
     end
 
-
     #TODO Abstraction needed for this regex matcher (constants?)
     def is_comment?(line)
       true if line =~ /^\#.*$/
