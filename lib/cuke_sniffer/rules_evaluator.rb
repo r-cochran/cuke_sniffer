@@ -4,7 +4,7 @@ module CukeSniffer
   # Copyright:: Copyright (C) 2013 Robert Cochran
   # License::   Distributes under the MIT License
   # Evaluates all cucumber components found in CukeSniffer with the passed rules
-  class RulesEvaluator
+  class RulesEvaluator < RuleTarget
     include CukeSniffer::Constants
     attr_accessor :rules
 
@@ -49,7 +49,5 @@ module CukeSniffer
         end
       end
     end
-
-
   end
 end

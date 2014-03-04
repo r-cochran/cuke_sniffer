@@ -15,16 +15,6 @@ module CukeSniffer
     # Small improvements that can be made
     INFO = 1
 
-    def store_rule(object, rule, phrase = rule.phrase)
-      object.score += rule.score
-      object.rules_hash[phrase] ||= 0
-      object.rules_hash[phrase] += 1
-    end
-
-    def is_comment?(line)
-      true if line =~ /^#.*$/
-    end
-
     fatal_rules = {
         :no_examples => {
             :enabled => true,
@@ -45,7 +35,7 @@ module CukeSniffer
             :phrase => "Recursive nested step call.",
             :score => FATAL,
             :targets => ["StepDefinition"],
-            :reason => lambda { |object, rule, type| object.nested_steps.each_value {|nested_step| store_rule(object, rule) if nested_step =~ object.regex}}
+            :reason => lambda { |object, rule, type| object.nested_steps.each_value {|nested_step| object.store_rule(object, rule) if nested_step =~ object.regex}}
         },
         :background_with_tag => {
             :enabled => true,
@@ -95,7 +85,7 @@ end
             :targets => ["StepDefinition"],
             :reason => lambda { |object, rule, type| object.nested_steps.each_value do | step_value |
                           modified_step = step_value.gsub(/\#{[^}]*}/, '.*')
-                          store_rule(object, rule) if modified_step == '.*'
+                          object.store_rule(object, rule) if modified_step == '.*'
                         end}
         }
     }
@@ -121,7 +111,7 @@ end
             :score => ERROR,
             :targets => ["Scenario", "Background"],
             :reason => lambda { |object, rule, type| object.steps.each do |step|
-                          store_rule(object, rule) if is_comment?(step)
+                          object.store_rule(object, rule) if object.is_comment?(step)
                         end}
         },
         :commented_example => {
@@ -130,7 +120,7 @@ end
             :score => ERROR,
             :targets => ["Scenario"],
             :reason => lambda { |object, rule, type| if object.type == 'Scenario Outline'
-                          object.examples_table.each {|example| store_rule(object, rule) if is_comment?(example)}
+                          object.examples_table.each {|example| object.store_rule(object, rule) if object.is_comment?(example)}
                         end}
         },
         :no_steps => {
@@ -145,7 +135,7 @@ end
             :phrase => "Step that is only one word long.",
             :score => ERROR,
             :targets => ["Scenario", "Background"],
-            :reason => lambda { |object, rule, type| object.steps.each {|step| store_rule(object, rule) if step.split.count == 2}}
+            :reason => lambda { |object, rule, type| object.steps.each {|step| object.store_rule(object, rule) if step.split.count == 2}}
         },
         :no_code => {
             :enabled => true,
@@ -251,7 +241,7 @@ end
             :reason => lambda { |object, rule, type| step_order = object.get_step_order
                         ["But", "*", "And"].each { |type| step_order.delete(type) }
                         if(step_order != %w(Given When Then) and step_order != %w(When Then))
-                          store_rule(object, rule)
+                          object.store_rule(object, rule)
                         end}
 
         },
@@ -268,7 +258,7 @@ end
             :score => WARNING,
             :targets => ["Scenario", "Background"],
             :reason => lambda { |object, rule, type| object.steps.each do | step |
-                          store_rule(object, rule) if( step =~ /^\s*[*].*$/)
+                          object.store_rule(object, rule) if( step =~ /^\s*[*].*$/)
                        end
             }
         },
@@ -277,7 +267,7 @@ end
             :phrase => "Scenario Outline with only one example.",
             :score => WARNING,
             :targets => ["Scenario"],
-            :reason => lambda { |object, rule, type| object.type == 'Scenario Outline' and object.examples_table.size == 2 and !is_comment?(object.examples_table[1])}
+            :reason => lambda { |object, rule, type| object.type == 'Scenario Outline' and object.examples_table.size == 2 and !object.is_comment?(object.examples_table[1])}
         },
         :too_many_examples => {
             :enabled => true,
@@ -295,7 +285,7 @@ end
             :reason => lambda { |object, rule, type| 
                         step_order = object.get_step_order
                         phrase = rule.phrase.gsub('{class}', type)
-                        ['Given', 'When', 'Then'].each {|step_start| store_rule(object, rule, phrase) if step_order.count(step_start) > 1}}
+                        ['Given', 'When', 'Then'].each {|step_start| object.store_rule(object, rule, phrase) if step_order.count(step_start) > 1}}
         },
         :too_many_parameters => {
             :enabled => true,
@@ -311,7 +301,7 @@ end
             :phrase => "Lazy Debugging through puts, p, or print",
             :score => WARNING,
             :targets => ["StepDefinition"],
-            :reason => lambda { |object, rule, type| object.code.each {|line| store_rule(object, rule) if line.strip =~ /^(p|puts)( |\()('|"|%(q|Q)?\{)/}}
+            :reason => lambda { |object, rule, type| object.code.each {|line| object.store_rule(object, rule) if line.strip =~ /^(p|puts)( |\()('|"|%(q|Q)?\{)/}}
         },
         :pending => {
             :enabled => true,
@@ -320,7 +310,7 @@ end
             :targets => ["StepDefinition"],
             :reason => lambda { |object, rule, type| object.code.each {|line|
                           if line =~ /^\s*pending(\(.*\))?(\s*[#].*)?$/
-                            store_rule(object, rule)
+                            object.store_rule(object, rule)
                             break
                           end
                         }}
@@ -333,7 +323,7 @@ end
             :reason => lambda { |object, rule, type| if(object.scenarios.count >= 2)
                           object.scenarios[1..-1].each do |scenario|
                             object.scenarios.first.tags.each do |tag|
-                              store_rule(object, rule) if scenario.tags.include?(tag)
+                              object.store_rule(object, rule) if scenario.tags.include?(tag)
                             end
                           end
                         end}
@@ -351,7 +341,7 @@ end
                               base_tag_list.delete(tag) unless scenario.tags.include?(tag)
                             end
                           end
-                          base_tag_list.count.times { store_rule(object, rule) }
+                          base_tag_list.count.times { object.store_rule(object, rule) }
                         end}
         },
         :commas_in_description => {
@@ -367,7 +357,7 @@ end
             :score => WARNING,
             :targets => ["Feature", "Scenario"],
             :reason => lambda { |object, rule, type| object.tags.each do | tag |
-                          store_rule(object, rule, rule.phrase.gsub("{class}", type)) if is_comment?(tag)
+                          object.store_rule(object, rule, rule.phrase.gsub("{class}", type)) if object.is_comment?(tag)
                         end}
         },
         :empty_hook => {
@@ -425,10 +415,10 @@ end
             :words => ["page", "site", "url", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen", "tab", "database", "DB"],
             :targets => ["Scenario", "Background"],
             :reason => lambda { |object, rule, type| object.steps.each do |step|
-                          next if is_comment?(step)
+                          next if object.is_comment?(step)
                           rule.conditions[:words].each do |word|
                             new_phrase = rule.phrase.gsub(/{.*}/, word)
-                            store_rule(object, rule, new_phrase) if step.include?(word)
+                            object.store_rule(object, rule, new_phrase) if step.include?(word)
                           end
                         end}
 
@@ -441,7 +431,7 @@ end
             :reason => lambda { |object, rule, type| object.steps.each do |step|
                           matches = step.match(/(?<prefix>\w+)\sbutton/i)
                           if(!matches.nil? and matches[:prefix].downcase != 'radio')
-                            store_rule(object, rule)
+                            object.store_rule(object, rule)
                           end
                         end}
 
@@ -458,7 +448,7 @@ end
             :phrase => "Date used.",
             :score => INFO,
             :targets => ["Scenario", "Background"],
-            :reason => lambda { |object, rule, type| object.steps.each {|step| store_rule(object, rule) if step =~ DATE_REGEX}}
+            :reason => lambda { |object, rule, type| object.steps.each {|step| object.store_rule(object, rule) if step =~ DATE_REGEX}}
         },
         :nested_step => {
             :enabled => true,
@@ -472,7 +462,7 @@ end
             :phrase => "Commented code in Step Definition.",
             :score => INFO,
             :targets => ["StepDefinition"],
-            :reason => lambda { |object, rule, type| object.code.each {|line| store_rule(object, rule) if is_comment?(line)}}
+            :reason => lambda { |object, rule, type| object.code.each {|line| object.store_rule(object, rule) if object.is_comment?(line)}}
         },
         :small_sleep => {
             :enabled => true,
@@ -484,7 +474,7 @@ end
                           match_data = line.match /^\s*sleep(\s|\()(?<sleep_time>.*)\)?/
                           if match_data
                             sleep_value = match_data[:sleep_time].to_f
-                            store_rule(object, rule) if sleep_value < rule.conditions[:max]
+                            object.store_rule(object, rule) if sleep_value < rule.conditions[:max]
                           end
                         end}
         },
@@ -498,7 +488,7 @@ end
                           match_data = line.match /^\s*sleep(\s|\()(?<sleep_time>.*)\)?/
                           if match_data
                             sleep_value = match_data[:sleep_time].to_f
-                            store_rule(object, rule) if sleep_value > rule.conditions[:min]
+                            object.store_rule(object, rule) if sleep_value > rule.conditions[:min]
                           end
                         end}
         },
@@ -507,7 +497,7 @@ end
             :phrase => "Todo found. Resolve it.",
             :score => INFO,
             :targets => ["StepDefinition"],
-            :reason => lambda { |object, rule, type| object.code.each {|line| store_rule(object, rule) if line =~ /#(TODO|todo)/}
+            :reason => lambda { |object, rule, type| object.code.each {|line| object.store_rule(object, rule) if line =~ /#(TODO|todo)/}
                         false}
         },
         :hook_not_in_hooks_file => {
