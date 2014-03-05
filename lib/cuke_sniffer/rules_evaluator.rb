@@ -4,7 +4,7 @@ module CukeSniffer
   # Copyright:: Copyright (C) 2013 Robert Cochran
   # License::   Distributes under the MIT License
   # Evaluates all cucumber components found in CukeSniffer with the passed rules
-  class RulesEvaluator < RuleTarget
+  class RulesEvaluator
     include CukeSniffer::Constants
     attr_accessor :rules
 
@@ -45,7 +45,7 @@ module CukeSniffer
         next unless rule.targets.include? type and rule.enabled
         if rule.reason.(object, rule, type) == true
           phrase = rule.phrase.gsub("{class}", type)
-          store_rule(object, rule, phrase)
+          object.store_rule(object, rule, phrase)
         end
       end
     end
