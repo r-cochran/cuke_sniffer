@@ -43,21 +43,11 @@ module CukeSniffer
       @rules.each do |rule|
         fail "No targets for rule: #{rule.phrase}" if rule.targets.nil? or rule.targets.empty?
         next unless rule.targets.include? type and rule.enabled
-        if eval(rule.reason) == true
+        if rule.reason.(object, rule, type) == true
           phrase = rule.phrase.gsub("{class}", type)
-          store_rule(object, rule, phrase)
+          object.store_rule(object, rule, phrase)
         end
       end
-    end
-
-    def store_rule(object, rule, phrase = rule.phrase)
-      object.score += rule.score
-      object.rules_hash[phrase] ||= 0
-      object.rules_hash[phrase] += 1
-    end
-
-    def is_comment?(line)
-      true if line =~ /^\#.*$/
     end
   end
 end
