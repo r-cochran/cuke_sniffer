@@ -639,6 +639,20 @@ describe "ScenarioRules" do
     scenario.rules_hash["Implementation word used: site."].should == 1
   end
 
+  it "should not punish Scenarios that use the word table for the tab implementation word" do
+    scenario_block = [
+        "Scenario: Scenario with implementation words",
+        "Given there is fruit on a table",
+        "When check the table for fruit",
+        "Then I find an apple",
+    ]
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[:implementation_word])
+    run_rule_against_scenario(scenario_block, rule)
+    scenario = @cli.features[0].scenarios[0]
+
+    scenario.rules_hash.include?("Implementation word used: tab.").should_not be_true
+  end
+
   it "should punish Scenarios with steps that use fixed Dates(01/01/0001)" do
     scenario_block = [
         "Scenario: Scenario with dates used",

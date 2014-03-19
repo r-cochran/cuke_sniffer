@@ -412,7 +412,7 @@ end
             :enabled => true,
             :phrase => "Implementation word used: {word}.",
             :score => INFO,
-            :words => ["page", "site", "url", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen", "tab", "database", "DB"],
+            :words => ["page", "site", "url", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen", "database", "DB"],
             :targets => ["Scenario", "Background"],
             :reason => lambda { |object, rule, type| object.steps.each do |step|
                           next if object.is_comment?(step)
@@ -435,7 +435,17 @@ end
                           end
                         end}
 
-        },:too_many_scenarios => {
+        },
+        :implementation_word_tab => {
+            :enabled => true,
+            :phrase => "Implementation word used: tab.",
+            :score => INFO,
+            :targets => ["Scenario"],
+            :reason => lambda { |object, rule, type| object.steps.each do |step|
+                object.store_rule(object, rule) if (step.split.include?("tab"))
+            end}
+        },
+        :too_many_scenarios => {
             :enabled => true,
             :phrase => "Feature with too many scenarios.",
             :score => INFO,
