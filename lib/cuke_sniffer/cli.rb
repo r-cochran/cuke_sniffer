@@ -162,10 +162,11 @@ module CukeSniffer
     def catalog_step_calls
       puts "\nCataloging Step Calls: "
       steps = CukeSniffer::CukeSnifferHelper.get_all_steps(@features, @step_definitions)
+      steps_map = build_steps_map(steps)
       @step_definitions.each do |step_definition|
         print '.'
-        calls = steps.find_all { |location, step| step.gsub(STEP_STYLES, "") =~ step_definition.regex }
-        calls.each { |call| step_definition.add_call(call[0], call[1].gsub(STEP_STYLES, "")) }
+        calls = steps_map.find_all {|step, location| step =~ step_definition.regex }
+        step_definition.calls = build_stored_calls_map(calls)
       end
 
       steps_with_expressions = CukeSniffer::CukeSnifferHelper.get_steps_with_expressions(steps)
@@ -295,6 +296,27 @@ module CukeSniffer
       location = "#{file_name}:#{counter+1 -code.count}"
       object_list << cuke_sniffer_class.new(location, code) unless code.empty? or !found_first_object
       object_list
+    end
+
+    def build_stored_calls_map(calls)
+      stored_calls = {}
+      calls.each do |step, locations|
+        locations.each { |location| stored_calls[location] = step}
+      end
+      stored_calls
+    end
+
+    def build_steps_map(steps)
+      calls_map = {}
+      steps.each do |location, step|
+        sanitized_step = step.gsub(STEP_STYLES, "")
+        if(calls_map.keys.include?(sanitized_step))
+          calls_map[sanitized_step] << location
+        else
+          calls_map[sanitized_step] = [location]
+        end
+      end
+      calls_map
     end
 
   end
