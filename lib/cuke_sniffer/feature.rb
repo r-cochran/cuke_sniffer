@@ -56,7 +56,7 @@ module CukeSniffer
 
     def split_feature(file_name, feature_lines)
       index = 0
-      until feature_lines[index].match /Feature:\s*(?<name>.*)/
+      until index >= feature_lines.length or feature_lines[index].match /Feature:\s*(?<name>.*)/
         update_tag_list(feature_lines[index])
         index += 1
       end

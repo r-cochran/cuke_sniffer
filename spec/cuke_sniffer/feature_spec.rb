@@ -33,6 +33,12 @@ describe CukeSniffer::Feature do
     feature.name.should == "My features are in this"
   end
 
+  it "should terminate when no Feature line and the end of file is reached" do
+    build_file(["", "", ""], @file_name)
+    feature = CukeSniffer::Feature.new(@file_name)
+    feature.name.should == ""
+  end
+
   it "should capture a feature description that spans multiple lines" do
     feature_block = [
         "Feature: I am a feature description",
