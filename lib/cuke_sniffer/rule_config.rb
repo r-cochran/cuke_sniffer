@@ -50,33 +50,15 @@ module CukeSniffer
             :score => FATAL,
             :targets => ["Feature", "Scenario"],
             :reason =>
-                lambda { |object, rule, type| def legal?(tag_lines)
-  tokens = split_and_flatten tag_lines
+                lambda { |object, rule, type|
+                  tokens = object.tags.collect { |line| line.split }.flatten
 
-  tokens.each_with_index do |token, index|
-    return false if comment?(token) && any_tags_in_front?(tokens, index)
-  end
-  true
-end
-
-def split_and_flatten(lines)
-  lines.collect { |line| line.split }.flatten
-end
-
-def any_tags_in_front?(tokens, index)
-  tokens_in_front = tokens[0...index]
-  tokens_in_front.any? { |x| tag? x }
-end
-
-def tag?(text)
-  (text.match /\A@/) ? true : false
-end
-
-def comment?(text)
-  (text.match /\A#/) ? true : false
-end
-
-(legal? object.tags) ? false : true}
+                  tokens.each_with_index do |token, index|
+                    if object.is_comment?(token) && tokens[0...index].any? { |x| x =~ /\A@/ }
+                      return object.store_rule(object, rule)
+                    end
+                  end
+                }
         },
         :universal_nested_step => {
             :enabled => true,
@@ -458,7 +440,7 @@ end
             :phrase => "Date used.",
             :score => INFO,
             :targets => ["Scenario", "Background"],
-            :reason => lambda { |object, rule, type| object.steps.each {|step| object.store_rule(object, rule) if step =~ DATE_REGEX}}
+            :reason => lambda { |object, rule, type| object.steps.each {|step| object.store_rule(object, rule) if step =~ CukeSniffer::Constants::DATE_REGEX}}
         },
         :nested_step => {
             :enabled => true,
