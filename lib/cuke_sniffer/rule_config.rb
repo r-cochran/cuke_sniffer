@@ -35,7 +35,7 @@ module CukeSniffer
             :phrase => "Recursive nested step call.",
             :score => FATAL,
             :targets => ["StepDefinition"],
-            :reason => lambda { |object, rule, type| object.nested_steps.each_value {|nested_step| object.store_rule(object, rule) if nested_step =~ object.regex}}
+            :reason => lambda { |object, rule, type| object.nested_steps.each_value {|nested_step| object.store_rule( rule) if nested_step =~ object.regex}}
         },
         :background_with_tag => {
             :enabled => true,
@@ -55,7 +55,7 @@ module CukeSniffer
 
                   tokens.each_with_index do |token, index|
                     if object.is_comment?(token) && tokens[0...index].any? { |x| x =~ /\A@/ }
-                      return object.store_rule(object, rule)
+                      return object.store_rule( rule)
                     end
                   end
                 }
@@ -67,7 +67,7 @@ module CukeSniffer
             :targets => ["StepDefinition"],
             :reason => lambda { |object, rule, type| object.nested_steps.each_value do | step_value |
                           modified_step = step_value.gsub(/\#{[^}]*}/, '.*')
-                          object.store_rule(object, rule) if modified_step == '.*'
+                          object.store_rule( rule) if modified_step == '.*'
                         end}
         }
     }
@@ -93,7 +93,7 @@ module CukeSniffer
             :score => ERROR,
             :targets => ["Scenario", "Background"],
             :reason => lambda { |object, rule, type| object.steps.each do |step|
-                          object.store_rule(object, rule) if object.is_comment?(step)
+                          object.store_rule( rule) if object.is_comment?(step)
                         end}
         },
         :commented_example => {
@@ -102,7 +102,7 @@ module CukeSniffer
             :score => ERROR,
             :targets => ["Scenario"],
             :reason => lambda { |object, rule, type| if object.type == 'Scenario Outline'
-                          object.examples_table.each {|example| object.store_rule(object, rule) if object.is_comment?(example)}
+                          object.examples_table.each {|example| object.store_rule( rule) if object.is_comment?(example)}
                         end}
         },
         :no_steps => {
@@ -117,7 +117,7 @@ module CukeSniffer
             :phrase => "Step that is only one word long.",
             :score => ERROR,
             :targets => ["Scenario", "Background"],
-            :reason => lambda { |object, rule, type| object.steps.each {|step| object.store_rule(object, rule) if step.split.count == 2}}
+            :reason => lambda { |object, rule, type| object.steps.each {|step| object.store_rule( rule) if step.split.count == 2}}
         },
         :no_code => {
             :enabled => true,
@@ -223,7 +223,7 @@ module CukeSniffer
             :reason => lambda { |object, rule, type| step_order = object.get_step_order
                         ["But", "*", "And"].each { |type| step_order.delete(type) }
                         if(step_order != %w(Given When Then) and step_order != %w(When Then))
-                          object.store_rule(object, rule)
+                          object.store_rule( rule)
                         end}
 
         },
@@ -240,7 +240,7 @@ module CukeSniffer
             :score => WARNING,
             :targets => ["Scenario", "Background"],
             :reason => lambda { |object, rule, type| object.steps.each do | step |
-                          object.store_rule(object, rule) if( step =~ /^\s*[*].*$/)
+                          object.store_rule( rule) if( step =~ /^\s*[*].*$/)
                        end
             }
         },
@@ -267,7 +267,7 @@ module CukeSniffer
             :reason => lambda { |object, rule, type| 
                         step_order = object.get_step_order
                         phrase = rule.phrase.gsub('{class}', type)
-                        ['Given', 'When', 'Then'].each {|step_start| object.store_rule(object, rule, phrase) if step_order.count(step_start) > 1}}
+                        ['Given', 'When', 'Then'].each {|step_start| object.store_rule( rule, phrase) if step_order.count(step_start) > 1}}
         },
         :too_many_parameters => {
             :enabled => true,
@@ -283,7 +283,7 @@ module CukeSniffer
             :phrase => "Lazy Debugging through puts, p, or print",
             :score => WARNING,
             :targets => ["StepDefinition"],
-            :reason => lambda { |object, rule, type| object.code.each {|line| object.store_rule(object, rule) if line.strip =~ /^(p|puts)( |\()('|"|%(q|Q)?\{)/}}
+            :reason => lambda { |object, rule, type| object.code.each {|line| object.store_rule( rule) if line.strip =~ /^(p|puts)( |\()('|"|%(q|Q)?\{)/}}
         },
         :pending => {
             :enabled => true,
@@ -292,7 +292,7 @@ module CukeSniffer
             :targets => ["StepDefinition"],
             :reason => lambda { |object, rule, type| object.code.each {|line|
                           if line =~ /^\s*pending(\(.*\))?(\s*[#].*)?$/
-                            object.store_rule(object, rule)
+                            object.store_rule( rule)
                             break
                           end
                         }}
@@ -305,7 +305,7 @@ module CukeSniffer
             :reason => lambda { |object, rule, type| if(object.scenarios.count >= 2)
                           object.scenarios[1..-1].each do |scenario|
                             object.scenarios.first.tags.each do |tag|
-                              object.store_rule(object, rule) if scenario.tags.include?(tag)
+                              object.store_rule( rule) if scenario.tags.include?(tag)
                             end
                           end
                         end}
@@ -323,7 +323,7 @@ module CukeSniffer
                               base_tag_list.delete(tag) unless scenario.tags.include?(tag)
                             end
                           end
-                          base_tag_list.count.times { object.store_rule(object, rule) }
+                          base_tag_list.count.times { object.store_rule( rule) }
                         end}
         },
         :commas_in_description => {
@@ -339,7 +339,7 @@ module CukeSniffer
             :score => WARNING,
             :targets => ["Feature", "Scenario"],
             :reason => lambda { |object, rule, type| object.tags.each do | tag |
-                          object.store_rule(object, rule, rule.phrase.gsub("{class}", type)) if object.is_comment?(tag)
+                          object.store_rule( rule, rule.phrase.gsub("{class}", type)) if object.is_comment?(tag)
                         end}
         },
         :empty_hook => {
@@ -400,7 +400,7 @@ module CukeSniffer
                           next if object.is_comment?(step)
                           rule.conditions[:words].each do |word|
                             new_phrase = rule.phrase.gsub(/{.*}/, word)
-                            object.store_rule(object, rule, new_phrase) if step.include?(word)
+                            object.store_rule( rule, new_phrase) if step.include?(word)
                           end
                         end}
 
@@ -413,7 +413,7 @@ module CukeSniffer
             :reason => lambda { |object, rule, type| object.steps.each do |step|
                           matches = step.match(/(?<prefix>\w+)\sbutton/i)
                           if(!matches.nil? and matches[:prefix].downcase != 'radio')
-                            object.store_rule(object, rule)
+                            object.store_rule( rule)
                           end
                         end}
 
@@ -424,7 +424,7 @@ module CukeSniffer
             :score => INFO,
             :targets => ["Scenario"],
             :reason => lambda { |object, rule, type| object.steps.each do |step|
-                object.store_rule(object, rule) if (step.split.include?("tab"))
+                object.store_rule( rule) if (step.split.include?("tab"))
             end}
         },
         :too_many_scenarios => {
@@ -440,7 +440,7 @@ module CukeSniffer
             :phrase => "Date used.",
             :score => INFO,
             :targets => ["Scenario", "Background"],
-            :reason => lambda { |object, rule, type| object.steps.each {|step| object.store_rule(object, rule) if step =~ CukeSniffer::Constants::DATE_REGEX}}
+            :reason => lambda { |object, rule, type| object.steps.each {|step| object.store_rule( rule) if step =~ CukeSniffer::Constants::DATE_REGEX}}
         },
         :nested_step => {
             :enabled => true,
@@ -454,7 +454,7 @@ module CukeSniffer
             :phrase => "Commented code in Step Definition.",
             :score => INFO,
             :targets => ["StepDefinition"],
-            :reason => lambda { |object, rule, type| object.code.each {|line| object.store_rule(object, rule) if object.is_comment?(line)}}
+            :reason => lambda { |object, rule, type| object.code.each {|line| object.store_rule( rule) if object.is_comment?(line)}}
         },
         :small_sleep => {
             :enabled => true,
@@ -466,7 +466,7 @@ module CukeSniffer
                           match_data = line.match /^\s*sleep(\s|\()(?<sleep_time>.*)\)?/
                           if match_data
                             sleep_value = match_data[:sleep_time].to_f
-                            object.store_rule(object, rule) if sleep_value < rule.conditions[:max]
+                            object.store_rule(rule) if sleep_value < rule.conditions[:max]
                           end
                         end}
         },
@@ -480,7 +480,7 @@ module CukeSniffer
                           match_data = line.match /^\s*sleep(\s|\()(?<sleep_time>.*)\)?/
                           if match_data
                             sleep_value = match_data[:sleep_time].to_f
-                            object.store_rule(object, rule) if sleep_value > rule.conditions[:min]
+                            object.store_rule( rule) if sleep_value > rule.conditions[:min]
                           end
                         end}
         },
@@ -489,7 +489,7 @@ module CukeSniffer
             :phrase => "Todo found. Resolve it.",
             :score => INFO,
             :targets => ["StepDefinition"],
-            :reason => lambda { |object, rule, type| object.code.each {|line| object.store_rule(object, rule) if line =~ /#(TODO|todo)/}
+            :reason => lambda { |object, rule, type| object.code.each {|line| object.store_rule( rule) if line =~ /#(TODO|todo)/}
                         false}
         },
         :hook_not_in_hooks_file => {

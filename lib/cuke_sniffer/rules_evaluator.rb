@@ -45,7 +45,7 @@ module CukeSniffer
         next unless rule.targets.include? type and rule.enabled
         if rule.reason.(object, rule, type) == true
           phrase = rule.phrase.gsub("{class}", type)
-          object.store_rule(object, rule, phrase)
+          object.store_rule(rule, phrase)
         end
       end
     end

@@ -59,10 +59,10 @@ module CukeSniffer
       true if line =~ /^\#.*$/
     end
 
-    def store_rule(object, rule, phrase = rule.phrase)
-      object.score += rule.score
-      object.rules_hash[phrase] ||= 0
-      object.rules_hash[phrase] += 1
+    def store_rule(rule, phrase = rule.phrase)
+      @score += rule.score
+      @rules_hash[phrase] ||= 0
+      @rules_hash[phrase] += 1
     end
   end
 end
