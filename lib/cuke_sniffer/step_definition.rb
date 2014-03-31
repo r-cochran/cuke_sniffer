@@ -72,6 +72,16 @@ module CukeSniffer
       condensed_list
     end
 
+    def recursive_nested_steps
+      recursive_nested_steps_map = {}
+      @nested_steps.each{|location, nested_step|
+        if nested_step =~ @regex
+          recursive_nested_steps_map[location] = nested_step
+        end
+      }
+      recursive_nested_steps_map
+    end
+
     private
 
     SIMPLE_NESTED_STEP_REGEX = /steps?\s"#{STEP_STYLES}(?<step_string>.*)"$/ # :nodoc:

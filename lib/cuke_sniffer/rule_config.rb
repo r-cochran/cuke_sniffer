@@ -35,7 +35,11 @@ module CukeSniffer
             :phrase => "Recursive nested step call.",
             :score => FATAL,
             :targets => ["StepDefinition"],
-            :reason => lambda { |step_definition, rule| step_definition.nested_steps.each_value {|nested_step| step_definition.store_rule(rule) if nested_step =~ step_definition.regex}}
+            :reason => lambda { |step_definition, rule|
+              step_definition.recursive_nested_steps.size.times do
+                step_definition.store_rule(rule)
+              end
+            }
         },
         :background_with_tag => {
             :enabled => true,

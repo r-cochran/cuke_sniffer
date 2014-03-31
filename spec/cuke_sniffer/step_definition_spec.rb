@@ -317,6 +317,17 @@ describe CukeSniffer::StepDefinition do
     step_definition.nested_steps.should == {"location:2" => 'my nested step call says hello to "John"'}
     step_definition.nested_steps.values[0].should =~ /my nested step call says hello to ".*"/
   end
+
+  it "should return all recursive nested step definitions" do
+    step_definition_block = [
+        "Given /^recursive step$/ do",
+        "  steps %{And recursive step}",
+        "end"
+    ]
+    step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
+    step_definition.recursive_nested_steps.should == {"location:2" => "recursive step"}
+
+  end
 end
 
 describe "StepDefinitionRules" do
