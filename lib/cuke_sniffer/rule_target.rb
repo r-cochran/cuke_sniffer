@@ -50,8 +50,8 @@ module CukeSniffer
 
     def == (comparison_object) # :nodoc:
       comparison_object.location == location &&
-      comparison_object.score == score &&
-      comparison_object.rules_hash == rules_hash
+          comparison_object.score == score &&
+          comparison_object.rules_hash == rules_hash
     end
 
     #TODO Abstraction needed for this regex matcher (constants?)
@@ -63,6 +63,12 @@ module CukeSniffer
       @score += rule.score
       @rules_hash[phrase] ||= 0
       @rules_hash[phrase] += 1
+    end
+
+    def store_rule_many_times(rule, count, phrase = rule.phrase)
+      count.times do
+        store_rule(rule, phrase)
+      end
     end
   end
 end

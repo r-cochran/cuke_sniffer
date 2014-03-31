@@ -63,6 +63,12 @@ module CukeSniffer
       type === 'Scenario Outline'
     end
 
+    def commented_examples
+      commented_examples_list = []
+      @examples_table.each {|example| commented_examples_list << example if is_comment?(example)}
+      commented_examples_list
+    end
+
     private
 
     def split_scenario(scenario)

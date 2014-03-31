@@ -405,6 +405,48 @@ describe CukeSniffer::Scenario do
     end
   end
 
+  describe "#commented_examples" do
+    it "returns a commented example" do
+      scenario_block = [
+          "Scenario Outline: Test Scenario",
+          "Given I need a <animal>",
+          "Examples:",
+          "|animal|",
+          "|cat|",
+          "#|dog|",
+          "#|gerbil|"
+      ]
+      location = "path/path/path/my_feature.feature:1"
+      scenario = CukeSniffer::Scenario.new(location, scenario_block)
+      scenario.commented_examples.should == ["#|dog|", "#|gerbil|"]
+    end
+
+    it "returns an empty array when there are no commented examples" do
+      scenario_block = [
+          "Scenario Outline: Test Scenario",
+          "Given I need a <animal>",
+          "Examples:",
+          "|animal|",
+          "|cat|",
+          "|dog|",
+          "|gerbil|"
+      ]
+      location = "path/path/path/my_feature.feature:1"
+      scenario = CukeSniffer::Scenario.new(location, scenario_block)
+      scenario.commented_examples.should == []
+    end
+
+    it "returns empty list when there are no examples" do
+      scenario_block = [
+          "Scenario: Test Scenario",
+          "Given I need a animal",
+      ]
+      location = "path/path/path/my_feature.feature:1"
+      scenario = CukeSniffer::Scenario.new(location, scenario_block)
+      scenario.commented_examples.should == []
+    end
+  end
+
 
 end
 

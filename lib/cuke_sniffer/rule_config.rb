@@ -35,11 +35,7 @@ module CukeSniffer
             :phrase => "Recursive nested step call.",
             :score => FATAL,
             :targets => ["StepDefinition"],
-            :reason => lambda { |step_definition, rule|
-              step_definition.recursive_nested_steps.size.times do
-                step_definition.store_rule(rule)
-              end
-            }
+            :reason => lambda { |step_definition, rule| step_definition.store_rule_many_times(rule, step_definition.recursive_nested_steps.size)}
         },
         :background_with_tag => {
             :enabled => true,
@@ -105,9 +101,7 @@ module CukeSniffer
             :phrase => "Commented example.",
             :score => ERROR,
             :targets => ["Scenario"],
-            :reason =>  lambda { |scenario, rule| if scenario.outline?
-                          scenario.examples_table.each {|example| scenario.store_rule(rule) if scenario.is_comment?(example)}
-                        end}
+            :reason =>  lambda { |scenario, rule| scenario.store_rule_many_times(rule, scenario.commented_examples.size) }
         },
         :no_steps => {
             :enabled => true,
