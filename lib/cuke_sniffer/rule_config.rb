@@ -21,14 +21,14 @@ module CukeSniffer
             :phrase => "Scenario Outline with no examples.",
             :score => FATAL,
             :targets => ["Scenario"],
-            :reason => lambda { |scenario, rule, type| scenario.type == "Scenario Outline" and scenario.examples_table.size == 1}
+            :reason => lambda { |scenario, rule, type| scenario.outline? and scenario.examples_table.size == 1}
         },
         :no_examples_table => {
             :enabled => true,
             :phrase => "Scenario Outline with no examples table.",
             :score => FATAL,
             :targets => ["Scenario"],
-            :reason => lambda { |scenario, rule, type| scenario.type == "Scenario Outline" and scenario.examples_table.empty?}
+            :reason => lambda { |scenario, rule, type| scenario.outline? and scenario.examples_table.empty?}
         },
         :recursive_nested_step => {
             :enabled => true,
@@ -101,7 +101,7 @@ module CukeSniffer
             :phrase => "Commented example.",
             :score => ERROR,
             :targets => ["Scenario"],
-            :reason =>  lambda { |scenario, rule, type| if scenario.type == 'Scenario Outline'
+            :reason =>  lambda { |scenario, rule, type| if scenario.outline?
                           scenario.examples_table.each {|example| scenario.store_rule(rule) if scenario.is_comment?(example)}
                         end}
         },
@@ -249,7 +249,7 @@ module CukeSniffer
             :phrase => "Scenario Outline with only one example.",
             :score => WARNING,
             :targets => ["Scenario"],
-            :reason => lambda { |scenario, rule, type| scenario.type == 'Scenario Outline' and scenario.examples_table.size == 2 and !scenario.is_comment?(scenario.examples_table[1])}
+            :reason => lambda { |scenario, rule, type| scenario.outline? and scenario.examples_table.size == 2 and !scenario.is_comment?(scenario.examples_table[1])}
         },
         :too_many_examples => {
             :enabled => true,
@@ -257,7 +257,7 @@ module CukeSniffer
             :score => WARNING,
             :max => 10,
             :targets => ["Scenario"],
-            :reason => lambda { |scenario, rule, type| scenario.type == 'Scenario Outline' and (scenario.examples_table.size - 1) >= rule.conditions[:max]}
+            :reason => lambda { |scenario, rule, type| scenario.outline? and (scenario.examples_table.size - 1) >= rule.conditions[:max]}
         },
         :multiple_given_when_then => {
             :enabled => true,

@@ -59,6 +59,10 @@ module CukeSniffer
       order
     end
 
+    def outline?
+      type === 'Scenario Outline'
+    end
+
     private
 
     def split_scenario(scenario)

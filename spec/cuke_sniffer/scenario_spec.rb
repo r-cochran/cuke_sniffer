@@ -376,6 +376,36 @@ describe CukeSniffer::Scenario do
     ]
   end
 
+  describe "#outline?" do
+    it "returns true when type is 'Scenario Outline'" do
+      scenario_block = [
+          "Scenario Outline: Test Scenario",
+      ]
+      location = "path/path/path/my_feature.feature:1"
+      scenario = CukeSniffer::Scenario.new(location, scenario_block)
+      scenario.outline?.should be_true
+    end
+
+    it "returns false when the type is 'Scenario'" do
+      scenario_block = [
+          "Scenario: Test Scenario",
+      ]
+      location = "path/path/path/my_feature.feature:1"
+      scenario = CukeSniffer::Scenario.new(location, scenario_block)
+      scenario.outline?.should be_false
+    end
+
+    it "returns false when the type is 'Background'" do
+      scenario_block = [
+          "Background: Test Scenario",
+      ]
+      location = "path/path/path/my_feature.feature:1"
+      scenario = CukeSniffer::Scenario.new(location, scenario_block)
+      scenario.outline?.should be_false
+    end
+  end
+
+
 end
 
 describe "ScenarioRules" do
