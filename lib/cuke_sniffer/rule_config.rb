@@ -143,7 +143,7 @@ module CukeSniffer
             :phrase => "Hook without a begin/rescue. Reduced visibility when debugging.",
             :score => ERROR,
             :targets => ["Hook"],
-            :reason => lambda { |hook, rule| (hook.code.empty? != true and hook.code.join.match(/.*begin.*rescue.*/).nil?)}
+            :reason => lambda { |hook, rule| !hook.rescues?}
 
         },
         :hook_conflicting_tags => {

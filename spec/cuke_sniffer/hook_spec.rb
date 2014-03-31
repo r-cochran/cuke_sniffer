@@ -107,6 +107,40 @@ describe CukeSniffer::Hook do
     end
   end
 
+  describe "#rescues?" do
+    it "returns true when there is no code for the hook" do
+      hook_block = [
+          "Before do", "end"
+      ]
+      hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
+      hook.rescues?.should be_true
+    end
+
+    it "returns true when there is code and a begin/rescue block" do
+      hook_block = [
+          "Before do",
+          "begin",
+          "something that might throw an exception",
+          "rescue Exception => e",
+          "do something with the exception",
+          "end",
+          "end"
+      ]
+      hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
+      hook.rescues?.should be_true
+    end
+
+    it "returns false when there is code and no begin/rescue block" do
+      hook_block = [
+          "Before do",
+          "non rescue block code",
+          "end"
+      ]
+      hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
+      hook.rescues?.should be_false
+    end
+  end
+
 end
 
 describe "HookRules" do

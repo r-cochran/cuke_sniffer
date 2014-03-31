@@ -64,6 +64,10 @@ module CukeSniffer
       false
     end
 
+    def rescues?
+      @code.empty? or @code.join.to_s =~ /.*begin.*rescue.*/
+    end
+
     private
 
     def get_indepentent_tags
