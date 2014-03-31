@@ -151,19 +151,7 @@ module CukeSniffer
             :phrase => "Hook that both expects and ignores the same tag. This hook will not function as expected.",
             :score => ERROR,
             :targets => ["Hook"],
-            :reason => lambda { |hook, rule| all_tags = []
-                        hook.tags.each { |single_tag| all_tags << single_tag.split(',') }
-                        all_tags.flatten!
-                        flag = false
-                        all_tags.each do |single_tag|
-                          tag = single_tag.gsub("~", "")
-                          if all_tags.include?(tag) and all_tags.include?("~#{tag}")
-                            flag =  true
-                            break
-                          end
-                        end
-                        flag
-                        }
+            :reason => lambda { |hook, rule| hook.conflicting_tags? }
         },
     }
 

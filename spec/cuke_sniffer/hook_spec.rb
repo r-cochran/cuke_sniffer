@@ -81,6 +81,32 @@ describe CukeSniffer::Hook do
     end
   end
 
+  describe "#conflicting_tags?" do
+    it "returns true when there is a ~@tag1 and @tag appearing" do
+      hook_block = [
+          "Before('@tag1', '~@tag1') do", "end"
+      ]
+      hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
+      hook.conflicting_tags?.should be_true
+    end
+
+    it "returns false when there is a no tags" do
+      hook_block = [
+          "Before do", "end"
+      ]
+      hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
+      hook.conflicting_tags?.should be_false
+    end
+
+    it "returns false when all tags are unique" do
+      hook_block = [
+          "Before('@tag1', '~@tag2') do", "end"
+      ]
+      hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
+      hook.conflicting_tags?.should be_false
+    end
+  end
+
 end
 
 describe "HookRules" do

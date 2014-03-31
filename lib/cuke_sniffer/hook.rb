@@ -55,7 +55,23 @@ module CukeSniffer
       @code.join.to_s.include?("#{@parameters[1]}.call")
     end
 
+    def conflicting_tags?
+      all_tags = get_indepentent_tags
+      all_tags.each do |single_tag|
+        tag = single_tag.gsub("~", "")
+        return true if all_tags.include?(tag) and all_tags.include?("~#{tag}")
+      end
+      false
+    end
+
     private
+
+    def get_indepentent_tags
+      all_tags = []
+      @tags.each { |single_tag| all_tags << single_tag.split(',') }
+      all_tags.flatten!
+      all_tags
+    end
 
     def initialize_hook_signature(hook_block)
       @type = nil
