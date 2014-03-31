@@ -9,7 +9,7 @@ describe CukeSniffer::RulesEvaluator do
     rule.targets = []
     rule.enabled = true
     rule.score = 10
-    rule.reason = lambda { |object, rule, type| true}
+    rule.reason = lambda { |object, rule| true}
     rule
   end
 
@@ -194,7 +194,7 @@ describe CukeSniffer::RulesEvaluator do
   it "should allow the passing of custom phrases for storing rules" do
     rule = build_rule
     rule.targets = ["Background"]
-    rule.reason = lambda { |object, rule, type| object.store_rule(rule, "my_new_phrase")
+    rule.reason = lambda { |object, rule| object.store_rule(rule, "my_new_phrase")
                     false
                   }
     @file_name = "my_feature.feature"

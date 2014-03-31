@@ -34,6 +34,7 @@ module CukeSniffer
     # file_name must be in the format of "file_path\file_name.feature"
     def initialize(file_name)
       super(file_name)
+      @type = "Feature"
       @scenarios = []
       @scenarios_score = 0
       @total_score = 0
