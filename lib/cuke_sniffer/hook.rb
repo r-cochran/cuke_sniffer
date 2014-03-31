@@ -8,7 +8,6 @@ module CukeSniffer
   class Hook < RuleTarget
 
     xml_accessor :start_line
-    xml_accessor :type
     xml_accessor :tags, :as => [], :in => "tags"
     xml_accessor :parameters, :as => [], :in => "parameters"
     xml_accessor :code, :as => [], :in => "code"
@@ -46,6 +45,14 @@ module CukeSniffer
           comparison_object.tags == tags &&
           comparison_object.parameters == parameters &&
           comparison_object.code == code
+    end
+
+    def around?
+      type == 'Around'
+    end
+
+    def calls_block?
+      @code.join.to_s.include?("#{@parameters[1]}.call")
     end
 
     private

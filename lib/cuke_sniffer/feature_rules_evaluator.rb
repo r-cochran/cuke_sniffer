@@ -17,9 +17,6 @@ module CukeSniffer
     # string: Name of the Feature or Scenario
     attr_accessor :name
 
-    # string: Type of the object being evaluated
-    attr_accessor :type
-
     # Location must be in the format of "file_path\file_name.rb:line_number"
     def initialize(location)
       @name = ""

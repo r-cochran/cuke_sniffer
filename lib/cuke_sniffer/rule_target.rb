@@ -15,6 +15,7 @@ module CukeSniffer
 
     xml_accessor :score, :location
     xml_accessor :rules_hash, :as => {:key => "phrase", :value => "score"}, :in => "rules", :from => "rule"
+    xml_accessor :type
 
     # int: Sum of the rules fired
     attr_accessor :score
@@ -26,6 +27,9 @@ module CukeSniffer
     # * Key: string
     # * Value: int
     attr_accessor :rules_hash
+
+    # string: Type of the object being evaluated
+    attr_accessor :type
 
     # Location must be in the format of "file_path\file_name.rb:line_number"
     def initialize(location)

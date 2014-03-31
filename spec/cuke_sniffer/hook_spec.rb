@@ -41,7 +41,46 @@ describe CukeSniffer::Hook do
     hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
     hook.parameters.should == ["scenario", "block"]
   end
-  
+
+  describe "#around?" do
+    it "returns true when the hook is an Around" do
+      hook_block = [
+          "Around do |scenario, block|",
+          "end"
+      ]
+      hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
+      hook.around?.should be_true
+    end
+
+    it "returns false when the hook is not Around" do
+      hook_block = [
+          "Before do", "end"
+      ]
+      hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
+      hook.around?.should be_false
+    end
+  end
+
+  describe "#calls_block?" do
+    it "returns true when the block is called" do
+      hook_block = [
+          "Around do |scenario, block|",
+          "block.call",
+          "end"
+      ]
+      hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
+      hook.calls_block?.should be_true
+    end
+
+    it "returns false when the block is not called" do
+      hook_block = [
+          "Before do", "end"
+      ]
+      hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
+      hook.calls_block?.should be_false
+    end
+  end
+
 end
 
 describe "HookRules" do

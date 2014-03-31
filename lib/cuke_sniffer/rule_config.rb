@@ -129,23 +129,14 @@ module CukeSniffer
             :phrase => "Around hook without 2 parameters for Scenario and Block.",
             :score => ERROR,
             :targets => ["Hook"],
-            :reason => lambda { |hook, rule| hook.type == "Around" and hook.parameters.count != 2}
+            :reason => lambda { |hook, rule| hook.around? and hook.parameters.count != 2}
         },
         :around_hook_no_block_call => {
             :enabled => true,
             :phrase => "Around hook does not call its block.",
             :score => ERROR,
             :targets => ["Hook"],
-            :reason => lambda { |hook, rule| flag = true
-                        flag = false if hook.type != 'Around'
-                        block_call = "\#{hook.parameters[1]}.call"
-                            hook.code.each do |line|
-                            if line.include?(block_call)
-                              flag = false
-                              break
-                            end
-                          end
-                        flag}
+            :reason => lambda { |hook, rule| hook.around? and !hook.calls_block?}
         },
         :hook_no_debugging => {
             :enabled => true,
