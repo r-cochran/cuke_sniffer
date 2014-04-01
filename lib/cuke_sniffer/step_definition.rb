@@ -82,6 +82,10 @@ module CukeSniffer
       recursive_nested_steps_map
     end
 
+    def todo
+      @code.select {|line|line =~ /#(TODO|todo)/ }
+    end
+
     private
 
     SIMPLE_NESTED_STEP_REGEX = /steps?\s"#{STEP_STYLES}(?<step_string>.*)"$/ # :nodoc:

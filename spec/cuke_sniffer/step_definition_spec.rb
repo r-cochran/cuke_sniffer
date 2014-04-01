@@ -328,6 +328,18 @@ describe CukeSniffer::StepDefinition do
     step_definition.recursive_nested_steps.should == {"location:2" => "recursive step"}
 
   end
+
+  describe "#todo" do
+    it "returns all lines with todo and TODO found in the step definition" do
+      step_definition_block = [
+          "Given /^recursive step$/ do",
+          "#TODO I need to do something here",
+          "end"
+      ]
+      step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
+      step_definition.todo.should == ["#TODO I need to do something here"]
+    end
+  end
 end
 
 describe "StepDefinitionRules" do

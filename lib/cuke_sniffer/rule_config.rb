@@ -466,8 +466,7 @@ module CukeSniffer
             :phrase => "Todo found. Resolve it.",
             :score => INFO,
             :targets => ["StepDefinition"],
-            :reason => lambda { |step_definition, rule| step_definition.code.each {|line| step_definition.store_rule(rule) if line =~ /#(TODO|todo)/}
-                        false}
+            :reason => lambda { |step_definition, rule| step_definition.store_rule_many_times(rule, step_definition.todo.size)}
         },
         :hook_not_in_hooks_file => {
             :enabled => true,
