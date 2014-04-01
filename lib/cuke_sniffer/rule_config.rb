@@ -216,9 +216,7 @@ module CukeSniffer
             :phrase => "Step includes a * instead of Given/When/Then/And/But.",
             :score => WARNING,
             :targets => ["Scenario", "Background"],
-            :reason => lambda { |scenario, rule| scenario.steps.each do | step |
-                          scenario.store_rule(rule) if( step =~ /^\s*[*].*$/)
-                       end
+            :reason => lambda { |scenario, rule| scenario.store_rule_many_times(rule, scenario.get_steps("*").size)
             }
         },
         :one_example => {
@@ -226,7 +224,7 @@ module CukeSniffer
             :phrase => "Scenario Outline with only one example.",
             :score => WARNING,
             :targets => ["Scenario"],
-            :reason => lambda { |scenario, rule| scenario.outline? and scenario.examples_table.size == 2 and !scenario.is_comment?(scenario.examples_table[1])}
+            :reason => lambda { |scenario, rule| scenario.outline? and scenario.examples_table.size == 2}
         },
         :too_many_examples => {
             :enabled => true,
@@ -242,9 +240,10 @@ module CukeSniffer
             :score => WARNING,
             :targets => ["Scenario", "Background"],
             :reason => lambda { |scenario, rule|
-                        step_order = scenario.get_step_order
-                        phrase = rule.phrase.gsub('{class}', scenario.type)
-                        ['Given', 'When', 'Then'].each {|step_start| scenario.store_rule(rule, phrase) if step_order.count(step_start) > 1}}
+              phrase = rule.phrase.gsub('{class}', scenario.type)
+              ['Given', 'When', 'Then'].each do |step_start|
+                scenario.store_rule(rule, phrase) if scenario.get_steps(step_start).size > 1
+              end}
         },
         :too_many_parameters => {
             :enabled => true,

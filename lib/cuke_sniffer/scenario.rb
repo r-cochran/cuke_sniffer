@@ -64,9 +64,20 @@ module CukeSniffer
     end
 
     def commented_examples
-      commented_examples_list = []
-      @examples_table.each {|example| commented_examples_list << example if is_comment?(example)}
-      commented_examples_list
+      @examples_table.select do |example|
+        is_comment?(example)
+      end
+    end
+
+    def get_steps(step_start)
+      if step_start != "*"
+        regex = /^\s*#{step_start}/
+      else
+        regex = /^\s*[*]/
+      end
+      @steps.select do |step|
+          step =~ regex
+      end
     end
 
     private

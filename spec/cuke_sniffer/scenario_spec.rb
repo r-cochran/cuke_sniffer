@@ -447,6 +447,41 @@ describe CukeSniffer::Scenario do
     end
   end
 
+  describe "#get_steps" do
+    it "returns all steps associated with a step style" do
+      scenario_block = [
+          "Scenario: Multiple Givens",
+          "Given I am doing setup",
+          "Given I am doing more setup",
+      ]
+      location = "path/path/path/my_feature.feature:1"
+      scenario = CukeSniffer::Scenario.new(location, scenario_block)
+      scenario.get_steps("Given").size.should == 2
+    end
+
+    it "returns an empty list if there are no step styles associated" do
+      scenario_block = [
+          "Scenario: Multiple Givens",
+          "Given I am doing setup",
+          "Given I am doing more setup",
+      ]
+      location = "path/path/path/my_feature.feature:1"
+      scenario = CukeSniffer::Scenario.new(location, scenario_block)
+      scenario.get_steps("Then").size.should == 0
+    end
+
+    it "can handle the * step starter" do
+      scenario_block = [
+          "Scenario: Multiple Givens",
+          "Given I am doing setup",
+          "* I am doing more setup",
+      ]
+      location = "path/path/path/my_feature.feature:1"
+      scenario = CukeSniffer::Scenario.new(location, scenario_block)
+      scenario.get_steps("*").size.should == 1
+    end
+  end
+
 
 end
 
