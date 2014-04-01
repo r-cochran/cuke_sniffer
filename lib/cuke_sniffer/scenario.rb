@@ -83,41 +83,85 @@ module CukeSniffer
     private
 
     def split_scenario(scenario)
+      ranges = define_ranges(scenario)
+      split_tag_list(ranges[:tags])
+      split_name_and_type(ranges[:name].join(" "))
+      split_scenario_body(ranges[:body])
+      split_examples(ranges[:examples]) unless ranges[:examples].nil?
+    end
+
+    def define_ranges(scenario)
+      ranges = {}
       index = 0
-      until index >= scenario.length or scenario[index] =~ SCENARIO_TITLE_STYLES
-        update_tag_list(scenario[index])
-        index += 1
-      end
+      index += 1 until index >= scenario.length or scenario[index] =~ SCENARIO_TITLE_STYLES
+      ranges[:tags] = scenario[0...index]
 
-      until index >= scenario.length or scenario[index].match STEP_REGEX or scenario[index].include?("Examples:")
-        match = scenario[index].match(SCENARIO_TITLE_STYLES)
-        @type = match[:type] unless match.nil?
-        create_name(scenario[index], SCENARIO_TITLE_STYLES)
-        index += 1
-      end
+      start_index = index
+      index += 1 until index >= scenario.length or scenario[index].match STEP_REGEX or scenario[index].include?("Examples:")
+      ranges[:name] = scenario[start_index...index]
 
-      until index >= scenario.length or scenario[index].include?("Examples:")
-        if scenario[index] =~ /^\|.*\|/
-          step = scenario[index - 1]
-          @inline_tables[step] = []
-          until index >= scenario.length or scenario[index] =~ /(#{STEP_REGEX}|^\s*Examples:)/
-            @inline_tables[step] << scenario[index]
+      start_index = index
+      index += 1 until index >= scenario.length or scenario[index].include?("Examples:")
+      ranges[:body] = scenario[start_index...index]
+
+      ranges[:examples] = scenario[index + 1..scenario.size] if index < scenario.length and scenario[index].include?("Examples:")
+      ranges
+    end
+
+    def split_tag_list(list_of_tag_lines)
+      list_of_tag_lines.each do |line|
+        update_tag_list(line)
+      end
+    end
+
+    def split_name_and_type(name_section)
+      match = name_section.match(SCENARIO_TITLE_STYLES)
+      @type = match[:type] unless match.nil?
+      create_name(name_section, SCENARIO_TITLE_STYLES)
+    end
+
+    def split_scenario_body(scenario_body)
+      extract_steps(scenario_body)
+      extract_inline_tables(scenario_body)
+    end
+
+    def extract_steps(scenario_body)
+      scenario_body.each do |line|
+        next if line =~ /^\|.*\|/ or line.empty? or line.match(STEP_REGEX).nil?
+        @steps << line
+      end
+    end
+
+    def extract_inline_tables(scenario_body)
+      index = 0
+      while index < scenario_body.size
+        if scenario_body[index] =~ /^\|.*\|/
+          start_index = index
+          while index < scenario_body.size and scenario_body[index] =~ /^\|.*\|/
             index += 1
           end
-        else
-          @steps << scenario[index] if scenario[index] =~ STEP_REGEX
-          index += 1
+          @inline_tables[scenario_body[start_index-1]] = scenario_body[start_index..index]
         end
-      end
-
-      if index < scenario.length and scenario[index].include?("Examples:")
         index += 1
-        until index >= scenario.length
-          index += 2 if scenario[index].include?("Examples:")
-          @examples_table << scenario[index] if scenario[index] =~ /#{COMMENT_REGEX}\|.*\|/
-          index += 1
-        end
       end
+    end
+
+    def split_examples(examples_section)
+      remove_examples_declaration(examples_section).each do |line|
+        next if line.include?("Examples:")
+        @examples_table << line if line =~ /#{COMMENT_REGEX}\|.*\|/
+      end
+    end
+
+    def remove_examples_declaration(examples_section)
+      return_section = []
+      index = 0
+      while index < examples_section.size
+        index += 2 if(examples_section[index].include?("Examples:"))
+        return_section << examples_section[index]
+        index += 1
+      end
+      return_section
     end
   end
 end
