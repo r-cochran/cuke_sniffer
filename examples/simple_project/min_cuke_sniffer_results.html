@@ -476,11 +476,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.type == "Scenario Outline" and object.examples_table.size == 1
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -512,11 +507,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.type == "Scenario Outline" and object.examples_table.empty?
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -548,11 +538,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.nested_steps.each_value {|nested_step| store_rule(object, rule) if nested_step =~ object.regex}
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -584,11 +569,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.tags.size > 0
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -620,20 +600,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>flag = false
-                        unless object.tags.empty?
-                          object.tags[1..-1].each do | tags |
-                            if tags =~ /^\s*\#.*$/
-                              flag = true
-                              break
-                            end
-                          end
-                        end
-                        flag
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -665,14 +631,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.nested_steps.each_value do | step_value |
-                          modified_step = step_value.gsub(/\#{[^}]*}/, '.*')
-                          store_rule(object, rule) if modified_step == '.*'
-                        end
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -704,13 +662,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.steps.each do |step|
-                          store_rule(object, rule) if is_comment?(step)
-                        end
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -742,11 +693,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.scenarios.empty?
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -778,11 +724,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.name.empty?
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -814,13 +755,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>if object.type == 'Scenario Outline'
-                          object.examples_table.each {|example| store_rule(object, rule) if is_comment?(example)}
-                        end
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -852,11 +786,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.steps.empty?
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -888,11 +817,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.steps.each {|step| store_rule(object, rule) if step.split.count == 2}
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -924,11 +848,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.code.empty?
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -960,11 +879,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.type == "Around" and object.parameters.count != 2
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -996,20 +910,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>flag = true
-                        flag = false if object.type != 'Around'
-                        block_call = "#{object.parameters[1]}.call"
-                          object.code.each do |line|
-                            if line.include?(block_call)
-                              flag = false
-                              break
-                            end
-                          end
-                        flag
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1041,11 +941,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>(object.code.empty? != true and object.code.join.match(/.*begin.*rescue.*/).nil?)
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1077,23 +972,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>all_tags = []
-                        object.tags.each { |single_tag| all_tags << single_tag.split(',') }
-                        all_tags.flatten!
-                        flag = false
-                        all_tags.each do |single_tag|
-                          tag = single_tag.gsub("~", "")
-                          if all_tags.include?(tag) and all_tags.include?("~#{tag}")
-                            flag =  true
-                            break
-                          end
-                        end
-                        flag
-                        
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1125,11 +1003,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.type == 'Scenario Outline' and object.examples_table.size == 2 and !is_comment?(object.examples_table[1])
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1141,7 +1014,7 @@
         
 
             <td>
-              Same tag appears on Feature.
+              Tag appears on all scenarios.
             </td>
         </tr>
 
@@ -1161,17 +1034,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>if(object.scenarios.count >= 2)
-                          object.scenarios[1..-1].each do |scenario|
-                            object.scenarios.first.tags.each do |tag|
-                              store_rule(object, rule) if scenario.tags.include?(tag)
-                            end
-                          end
-                        end
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1183,7 +1045,7 @@
         
 
             <td>
-              Pending step definition. Implement or remove.
+              Same tag appears on Feature.
             </td>
         </tr>
 
@@ -1199,20 +1061,10 @@
             </tr>
             <tr>
               <td>
-                <b>Targets:</b> StepDefinition
+                <b>Targets:</b> Feature
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.code.each {|line|
-                          if line =~ /^\s*pending(\(.*\))?(\s*[#].*)?$/
-                            store_rule(object, rule)
-                            break
-                          end
-                        }
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1224,7 +1076,7 @@
         
 
             <td>
-              Lazy Debugging through puts, p, or print
+              Pending step definition. Implement or remove.
             </td>
         </tr>
 
@@ -1244,11 +1096,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.code.each {|line| store_rule(object, rule) if line.strip =~ /^(p|puts)( |\()('|\"|%(q|Q)?\{)/}
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1260,12 +1107,43 @@
         
 
             <td>
-              Too many parameters in Step Definition.
+              Lazy Debugging through puts, p, or print
             </td>
         </tr>
 
         
             <tr id="rule_detail_21" class="colored_subsection blue_row rule_detail" style="display:none;">
+        
+        <td style="padding-left:8px;">
+          <table border="0" cellspacing="0">
+            <tr>
+              <td>
+                <b>Score:</b> 10
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>Targets:</b> StepDefinition
+              </td>
+            </tr>
+            
+          </table>
+        </td>
+        </tr>
+
+        
+    
+        
+            <tr class="notes white_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_22'));updateDivScroll('rules', 'rules_table');">
+        
+
+            <td>
+              Too many parameters in Step Definition.
+            </td>
+        </tr>
+
+        
+            <tr id="rule_detail_22" class="colored_subsection white_row rule_detail" style="display:none;">
         
         <td style="padding-left:8px;">
           <table border="0" cellspacing="0">
@@ -1298,11 +1176,6 @@
                   </td>
                 </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.parameters.size > rule.conditions[:max]
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1310,7 +1183,7 @@
         
     
         
-            <tr class="notes white_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_22'));updateDivScroll('rules', 'rules_table');">
+            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_23'));updateDivScroll('rules', 'rules_table');">
         
 
             <td>
@@ -1319,7 +1192,7 @@
         </tr>
 
         
-            <tr id="rule_detail_22" class="colored_subsection white_row rule_detail" style="display:none;">
+            <tr id="rule_detail_23" class="colored_subsection blue_row rule_detail" style="display:none;">
         
         <td style="padding-left:8px;">
           <table border="0" cellspacing="0">
@@ -1334,14 +1207,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>
-                        step_order = object.get_step_order
-                        phrase = rule.phrase.gsub('{class}', type)
-                        ['Given', 'When', 'Then'].each {|step_start| store_rule(object, rule, phrase) if step_order.count(step_start) > 1}
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1349,7 +1214,7 @@
         
     
         
-            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_23'));updateDivScroll('rules', 'rules_table');">
+            <tr class="notes white_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_24'));updateDivScroll('rules', 'rules_table');">
         
 
             <td>
@@ -1358,7 +1223,7 @@
         </tr>
 
         
-            <tr id="rule_detail_23" class="colored_subsection blue_row rule_detail" style="display:none;">
+            <tr id="rule_detail_24" class="colored_subsection white_row rule_detail" style="display:none;">
         
         <td style="padding-left:8px;">
           <table border="0" cellspacing="0">
@@ -1391,55 +1256,6 @@
                   </td>
                 </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.type == 'Scenario Outline' and (object.examples_table.size - 1) >= rule.conditions[:max]
-              </td>
-            </tr>
-          </table>
-        </td>
-        </tr>
-
-        
-    
-        
-            <tr class="notes white_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_24'));updateDivScroll('rules', 'rules_table');">
-        
-
-            <td>
-              Tag appears on all scenarios.
-            </td>
-        </tr>
-
-        
-            <tr id="rule_detail_24" class="colored_subsection white_row rule_detail" style="display:none;">
-        
-        <td style="padding-left:8px;">
-          <table border="0" cellspacing="0">
-            <tr>
-              <td>
-                <b>Score:</b> 10
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <b>Targets:</b> Feature
-              </td>
-            </tr>
-            
-            <tr>
-              <td>
-                <b>Reason: </b>unless object.scenarios.empty?
-                          base_tag_list = object.scenarios.first.tags.clone
-                          object.scenarios.each do |scenario|
-                            base_tag_list.each do |tag|
-                              base_tag_list.delete(tag) unless scenario.tags.include?(tag)
-                            end
-                          end
-                          base_tag_list.count.times { store_rule(object, rule) }
-                        end
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1451,7 +1267,7 @@
         
 
             <td>
-              Step includes a * instead of Given/When/Then/And/But.
+              There are commas in the description, creating possible multirunning scenarios or features.
             </td>
         </tr>
 
@@ -1467,18 +1283,10 @@
             </tr>
             <tr>
               <td>
-                <b>Targets:</b> Scenario, Background
+                <b>Targets:</b> Feature, Scenario
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.steps.each do | step |
-                          store_rule(object, rule) if( step =~ /^\s*[*].*$/)
-                       end
-                       
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1490,7 +1298,7 @@
         
 
             <td>
-              Invalid first step. Began with And/But.
+              Step includes a * instead of Given/When/Then/And/But.
             </td>
         </tr>
 
@@ -1510,11 +1318,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>!(object.steps.first =~ /^\s*(And|But).*$/).nil?
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1526,7 +1329,7 @@
         
 
             <td>
-              Scenario steps out of Given/When/Then order.
+              Invalid first step. Began with And/But.
             </td>
         </tr>
 
@@ -1542,19 +1345,10 @@
             </tr>
             <tr>
               <td>
-                <b>Targets:</b> Scenario
+                <b>Targets:</b> Scenario, Background
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>step_order = object.get_step_order
-                        ["But", "*", "And"].each { |type| step_order.delete(type) }
-                        if(step_order != %w(Given When Then) and step_order != %w(When Then))
-                          store_rule(object, rule)
-                        end
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1566,12 +1360,43 @@
         
 
             <td>
-              {class} with too many steps.
+              Scenario steps out of Given/When/Then order.
             </td>
         </tr>
 
         
             <tr id="rule_detail_28" class="colored_subsection white_row rule_detail" style="display:none;">
+        
+        <td style="padding-left:8px;">
+          <table border="0" cellspacing="0">
+            <tr>
+              <td>
+                <b>Score:</b> 10
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>Targets:</b> Scenario
+              </td>
+            </tr>
+            
+          </table>
+        </td>
+        </tr>
+
+        
+    
+        
+            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_29'));updateDivScroll('rules', 'rules_table');">
+        
+
+            <td>
+              {class} with too many steps.
+            </td>
+        </tr>
+
+        
+            <tr id="rule_detail_29" class="colored_subsection blue_row rule_detail" style="display:none;">
         
         <td style="padding-left:8px;">
           <table border="0" cellspacing="0">
@@ -1604,47 +1429,6 @@
                   </td>
                 </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.steps.count > rule.conditions[:max]
-              </td>
-            </tr>
-          </table>
-        </td>
-        </tr>
-
-        
-    
-        
-            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_29'));updateDivScroll('rules', 'rules_table');">
-        
-
-            <td>
-              Feature has a background with one scenario.
-            </td>
-        </tr>
-
-        
-            <tr id="rule_detail_29" class="colored_subsection blue_row rule_detail" style="display:none;">
-        
-        <td style="padding-left:8px;">
-          <table border="0" cellspacing="0">
-            <tr>
-              <td>
-                <b>Score:</b> 10
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <b>Targets:</b> Feature
-              </td>
-            </tr>
-            
-            <tr>
-              <td>
-                <b>Reason: </b>object.scenarios.size == 1 and !object.background.nil?
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1656,7 +1440,7 @@
         
 
             <td>
-              Feature has a background with no scenarios.
+              Feature has a background with one scenario.
             </td>
         </tr>
 
@@ -1676,11 +1460,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.scenarios.empty? and !object.background.nil?
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1692,7 +1471,7 @@
         
 
             <td>
-              Feature file has no content.
+              Feature has a background with no scenarios.
             </td>
         </tr>
 
@@ -1712,11 +1491,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.feature_lines == []
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1728,7 +1502,7 @@
         
 
             <td>
-              {class} has numbers in the description.
+              Feature file has no content.
             </td>
         </tr>
 
@@ -1744,15 +1518,10 @@
             </tr>
             <tr>
               <td>
-                <b>Targets:</b> Feature, Scenario, Background
+                <b>Targets:</b> Feature
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>!(object.name =~ /\d+/).nil?
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1764,7 +1533,7 @@
         
 
             <td>
-              Hook has duplicate tags.
+              {class} has numbers in the description.
             </td>
         </tr>
 
@@ -1780,19 +1549,10 @@
             </tr>
             <tr>
               <td>
-                <b>Targets:</b> Hook
+                <b>Targets:</b> Feature, Scenario, Background
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>all_tags = []
-                        object.tags.each { |single_tag| all_tags << single_tag.split(',') }
-                        all_tags.flatten!
-                        unique_tags = all_tags.uniq
-                        true unless all_tags == unique_tags
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1804,7 +1564,7 @@
         
 
             <td>
-              {class} has a commented out tag
+              Hook has duplicate tags.
             </td>
         </tr>
 
@@ -1820,17 +1580,10 @@
             </tr>
             <tr>
               <td>
-                <b>Targets:</b> Feature, Scenario
+                <b>Targets:</b> Hook
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.tags.each do | tag |
-                          store_rule(object, rule, rule.phrase.gsub("{class}", type)) if is_comment?(tag)
-                        end
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1862,11 +1615,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.code == []
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1898,15 +1646,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>flag = true
-                        object.code.each do |line|
-                          flag = false if line.match(/^\s*\#.*$/).nil?
-                        end
-                        flag
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1918,7 +1657,7 @@
         
 
             <td>
-              There are commas in the description, creating possible multirunning scenarios or features.
+              {class} has a commented out tag
             </td>
         </tr>
 
@@ -1938,11 +1677,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.name.include?(",")
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -1992,11 +1726,6 @@
                   </td>
                 </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.tags.size >= rule.conditions[:max]
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -2046,11 +1775,6 @@
                   </td>
                 </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.name.length >= rule.conditions[:max]
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -2092,7 +1816,7 @@
                               words:
                             </td>
                             <td>
-                              ["page", "site", "url", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen", "tab", "database", "DB"]
+                              ["page", "site", "url", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen", "database", "DB"]
                             </td>
                           </tr>
                       
@@ -2100,17 +1824,6 @@
                   </td>
                 </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.steps.each do |step|
-                          next if is_comment?(step)
-                          rule.conditions[:words].each do |word|
-                            new_phrase = rule.phrase.gsub(/{.*}/, word)
-                            store_rule(object, rule, new_phrase) if step.include?(word)
-                          end
-                        end
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -2142,16 +1855,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.steps.each do |step|
-                          matches = step.match(/(?<prefix>\w+)\sbutton/i)
-                          if(!matches.nil? and matches[:prefix].downcase != 'radio')
-                            store_rule(object, rule)
-                          end
-                        end
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -2163,12 +1866,43 @@
         
 
             <td>
-              Feature with too many scenarios.
+              Implementation word used: tab.
             </td>
         </tr>
 
         
             <tr id="rule_detail_42" class="colored_subsection white_row rule_detail" style="display:none;">
+        
+        <td style="padding-left:8px;">
+          <table border="0" cellspacing="0">
+            <tr>
+              <td>
+                <b>Score:</b> 1
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>Targets:</b> Scenario
+              </td>
+            </tr>
+            
+          </table>
+        </td>
+        </tr>
+
+        
+    
+        
+            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_43'));updateDivScroll('rules', 'rules_table');">
+        
+
+            <td>
+              Feature with too many scenarios.
+            </td>
+        </tr>
+
+        
+            <tr id="rule_detail_43" class="colored_subsection blue_row rule_detail" style="display:none;">
         
         <td style="padding-left:8px;">
           <table border="0" cellspacing="0">
@@ -2201,47 +1935,6 @@
                   </td>
                 </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.scenarios.size >= rule.conditions[:max]
-              </td>
-            </tr>
-          </table>
-        </td>
-        </tr>
-
-        
-    
-        
-            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_43'));updateDivScroll('rules', 'rules_table');">
-        
-
-            <td>
-              Date used.
-            </td>
-        </tr>
-
-        
-            <tr id="rule_detail_43" class="colored_subsection blue_row rule_detail" style="display:none;">
-        
-        <td style="padding-left:8px;">
-          <table border="0" cellspacing="0">
-            <tr>
-              <td>
-                <b>Score:</b> 1
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <b>Targets:</b> Scenario, Background
-              </td>
-            </tr>
-            
-            <tr>
-              <td>
-                <b>Reason: </b>object.steps.each {|step| store_rule(object, rule) if step =~ DATE_REGEX}
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -2253,7 +1946,7 @@
         
 
             <td>
-              Nested step call.
+              Date used.
             </td>
         </tr>
 
@@ -2269,15 +1962,10 @@
             </tr>
             <tr>
               <td>
-                <b>Targets:</b> StepDefinition
+                <b>Targets:</b> Scenario, Background
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>!object.nested_steps.empty?
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -2289,7 +1977,7 @@
         
 
             <td>
-              Commented code in Step Definition.
+              Nested step call.
             </td>
         </tr>
 
@@ -2309,11 +1997,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.code.each {|line| store_rule(object, rule) if is_comment?(line)}
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -2325,12 +2008,43 @@
         
 
             <td>
-              Small sleeps used. Use a wait_until like method.
+              Commented code in Step Definition.
             </td>
         </tr>
 
         
             <tr id="rule_detail_46" class="colored_subsection white_row rule_detail" style="display:none;">
+        
+        <td style="padding-left:8px;">
+          <table border="0" cellspacing="0">
+            <tr>
+              <td>
+                <b>Score:</b> 1
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b>Targets:</b> StepDefinition
+              </td>
+            </tr>
+            
+          </table>
+        </td>
+        </tr>
+
+        
+    
+        
+            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_47'));updateDivScroll('rules', 'rules_table');">
+        
+
+            <td>
+              Small sleeps used. Use a wait_until like method.
+            </td>
+        </tr>
+
+        
+            <tr id="rule_detail_47" class="colored_subsection blue_row rule_detail" style="display:none;">
         
         <td style="padding-left:8px;">
           <table border="0" cellspacing="0">
@@ -2363,17 +2077,6 @@
                   </td>
                 </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.code.each do |line|
-                          match_data = line.match /^\s*sleep(\s|\()(?<sleep_time>.*)\)?/
-                          if match_data
-                            sleep_value = match_data[:sleep_time].to_f
-                            store_rule(object, rule) if sleep_value < rule.conditions[:max]
-                          end
-                        end
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -2381,7 +2084,7 @@
         
     
         
-            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_47'));updateDivScroll('rules', 'rules_table');">
+            <tr class="notes white_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_48'));updateDivScroll('rules', 'rules_table');">
         
 
             <td>
@@ -2390,7 +2093,7 @@
         </tr>
 
         
-            <tr id="rule_detail_47" class="colored_subsection blue_row rule_detail" style="display:none;">
+            <tr id="rule_detail_48" class="colored_subsection white_row rule_detail" style="display:none;">
         
         <td style="padding-left:8px;">
           <table border="0" cellspacing="0">
@@ -2423,17 +2126,6 @@
                   </td>
                 </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.code.each do |line|
-                          match_data = line.match /^\s*sleep(\s|\()(?<sleep_time>.*)\)?/
-                          if match_data
-                            sleep_value = match_data[:sleep_time].to_f
-                            store_rule(object, rule) if sleep_value > rule.conditions[:min]
-                          end
-                        end
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -2441,7 +2133,7 @@
         
     
         
-            <tr class="notes white_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_48'));updateDivScroll('rules', 'rules_table');">
+            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_49'));updateDivScroll('rules', 'rules_table');">
         
 
             <td>
@@ -2450,7 +2142,7 @@
         </tr>
 
         
-            <tr id="rule_detail_48" class="colored_subsection white_row rule_detail" style="display:none;">
+            <tr id="rule_detail_49" class="colored_subsection blue_row rule_detail" style="display:none;">
         
         <td style="padding-left:8px;">
           <table border="0" cellspacing="0">
@@ -2465,12 +2157,6 @@
               </td>
             </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.code.each {|line| store_rule(object, rule) if line =~ /\#(TODO|todo)/}
-                        false
-              </td>
-            </tr>
           </table>
         </td>
         </tr>
@@ -2478,7 +2164,7 @@
         
     
         
-            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_49'));updateDivScroll('rules', 'rules_table');">
+            <tr class="notes white_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_50'));updateDivScroll('rules', 'rules_table');">
         
 
             <td>
@@ -2487,7 +2173,7 @@
         </tr>
 
         
-            <tr id="rule_detail_49" class="colored_subsection blue_row rule_detail" style="display:none;">
+            <tr id="rule_detail_50" class="colored_subsection white_row rule_detail" style="display:none;">
         
         <td style="padding-left:8px;">
           <table border="0" cellspacing="0">
@@ -2520,11 +2206,6 @@
                   </td>
                 </tr>
             
-            <tr>
-              <td>
-                <b>Reason: </b>object.location.include?(rule.conditions[:file]) != true
-              </td>
-            </tr>
           </table>
         </td>
         </tr>

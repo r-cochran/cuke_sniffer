@@ -9,7 +9,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>object.type == "Scenario Outline" and object.examples_table.size == 1</reason>
+      <reason>#&lt;Proc:0x2f52888@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:24 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -19,7 +19,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>object.type == "Scenario Outline" and object.examples_table.empty?</reason>
+      <reason>#&lt;Proc:0x2f52810@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:31 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -29,7 +29,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>object.nested_steps.each_value {|nested_step| store_rule(object, rule) if nested_step =~ object.regex}</reason>
+      <reason>#&lt;Proc:0x2f52798@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:38 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -39,7 +39,7 @@
       <targets>
         <targets>["Background"]</targets>
       </targets>
-      <reason>object.tags.size &gt; 0</reason>
+      <reason>#&lt;Proc:0x2f52720@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:45 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -49,16 +49,7 @@
       <targets>
         <targets>["Feature", "Scenario"]</targets>
       </targets>
-      <reason>flag = false
-                        unless object.tags.empty?
-                          object.tags[1..-1].each do | tags |
-                            if tags =~ /^\s*\#.*$/
-                              flag = true
-                              break
-                            end
-                          end
-                        end
-                        flag</reason>
+      <reason>#&lt;Proc:0x2f52690@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:53 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -68,10 +59,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>object.nested_steps.each_value do | step_value |
-                          modified_step = step_value.gsub(/\#{[^}]*}/, '.*')
-                          store_rule(object, rule) if modified_step == '.*'
-                        end</reason>
+      <reason>#&lt;Proc:0x2f52618@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:68 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -81,7 +69,7 @@
       <targets>
         <targets>["Feature", "Scenario"]</targets>
       </targets>
-      <reason>object.name.empty?</reason>
+      <reason>#&lt;Proc:0x2f52570@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:81 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -91,7 +79,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>object.scenarios.empty?</reason>
+      <reason>#&lt;Proc:0x2f524f8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:88 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -101,9 +89,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>object.steps.each do |step|
-                          store_rule(object, rule) if is_comment?(step)
-                        end</reason>
+      <reason>#&lt;Proc:0x2f52468@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:95 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -113,9 +99,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>if object.type == 'Scenario Outline'
-                          object.examples_table.each {|example| store_rule(object, rule) if is_comment?(example)}
-                        end</reason>
+      <reason>#&lt;Proc:0x2f523f0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:104 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -125,7 +109,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>object.steps.empty?</reason>
+      <reason>#&lt;Proc:0x2f52360@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:111 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -135,7 +119,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>object.steps.each {|step| store_rule(object, rule) if step.split.count == 2}</reason>
+      <reason>#&lt;Proc:0x2f522d0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:118 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -145,7 +129,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>object.code.empty?</reason>
+      <reason>#&lt;Proc:0x2f52258@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:125 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -155,7 +139,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>object.type == "Around" and object.parameters.count != 2</reason>
+      <reason>#&lt;Proc:0x2f521e0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:132 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -165,16 +149,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>flag = true
-                        flag = false if object.type != 'Around'
-                        block_call = "#{object.parameters[1]}.call"
-                          object.code.each do |line|
-                            if line.include?(block_call)
-                              flag = false
-                              break
-                            end
-                          end
-                        flag</reason>
+      <reason>#&lt;Proc:0x2f52168@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:139 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -184,7 +159,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>(object.code.empty? != true and object.code.join.match(/.*begin.*rescue.*/).nil?)</reason>
+      <reason>#&lt;Proc:0x2f520f0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:146 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -194,19 +169,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>all_tags = []
-                        object.tags.each { |single_tag| all_tags &lt;&lt; single_tag.split(',') }
-                        all_tags.flatten!
-                        flag = false
-                        all_tags.each do |single_tag|
-                          tag = single_tag.gsub("~", "")
-                          if all_tags.include?(tag) and all_tags.include?("~#{tag}")
-                            flag =  true
-                            break
-                          end
-                        end
-                        flag
-                        </reason>
+      <reason>#&lt;Proc:0x2f52078@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:154 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -216,7 +179,7 @@
       <targets>
         <targets>["Feature", "Scenario", "Background"]</targets>
       </targets>
-      <reason>!(object.name =~ /\d+/).nil?</reason>
+      <reason>#&lt;Proc:0x2f51fb8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:164 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -226,7 +189,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>object.feature_lines == []</reason>
+      <reason>#&lt;Proc:0x2f51f40@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:171 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -236,7 +199,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>object.scenarios.empty? and !object.background.nil?</reason>
+      <reason>#&lt;Proc:0x2f51ec8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:178 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -246,7 +209,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>object.scenarios.size == 1 and !object.background.nil?</reason>
+      <reason>#&lt;Proc:0x2f51e50@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:185 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -261,7 +224,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>object.steps.count &gt; rule.conditions[:max]</reason>
+      <reason>#&lt;Proc:0x2f51dc0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:193 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -271,11 +234,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>step_order = object.get_step_order
-                        ["But", "*", "And"].each { |type| step_order.delete(type) }
-                        if(step_order != %w(Given When Then) and step_order != %w(When Then))
-                          store_rule(object, rule)
-                        end</reason>
+      <reason>#&lt;Proc:0x2f51d48@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:200 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -285,7 +244,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>!(object.steps.first =~ /^\s*(And|But).*$/).nil?</reason>
+      <reason>#&lt;Proc:0x2f51cb8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:212 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -295,10 +254,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>object.steps.each do | step |
-                          store_rule(object, rule) if( step =~ /^\s*[*].*$/)
-                       end
-                       </reason>
+      <reason>#&lt;Proc:0x2f51c28@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:219 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -308,7 +264,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>object.type == 'Scenario Outline' and object.examples_table.size == 2 and !is_comment?(object.examples_table[1])</reason>
+      <reason>#&lt;Proc:0x2f51bb0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:227 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -323,7 +279,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>object.type == 'Scenario Outline' and (object.examples_table.size - 1) &gt;= rule.conditions[:max]</reason>
+      <reason>#&lt;Proc:0x2f51b38@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:235 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -333,10 +289,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>
-                        step_order = object.get_step_order
-                        phrase = rule.phrase.gsub('{class}', type)
-                        ['Given', 'When', 'Then'].each {|step_start| store_rule(object, rule, phrase) if step_order.count(step_start) &gt; 1}</reason>
+      <reason>#&lt;Proc:0x2f51aa8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:242 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -351,7 +304,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>object.parameters.size &gt; rule.conditions[:max]</reason>
+      <reason>#&lt;Proc:0x2f51a30@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:254 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -361,7 +314,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>object.code.each {|line| store_rule(object, rule) if line.strip =~ /^(p|puts)( |\()('|\"|%(q|Q)?\{)/}</reason>
+      <reason>#&lt;Proc:0x2f519b8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:262 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -371,12 +324,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>object.code.each {|line|
-                          if line =~ /^\s*pending(\(.*\))?(\s*[#].*)?$/
-                            store_rule(object, rule)
-                            break
-                          end
-                        }</reason>
+      <reason>#&lt;Proc:0x2f51940@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:269 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -386,13 +334,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>if(object.scenarios.count &gt;= 2)
-                          object.scenarios[1..-1].each do |scenario|
-                            object.scenarios.first.tags.each do |tag|
-                              store_rule(object, rule) if scenario.tags.include?(tag)
-                            end
-                          end
-                        end</reason>
+      <reason>#&lt;Proc:0x2f518c8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:281 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -402,15 +344,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>unless object.scenarios.empty?
-                          base_tag_list = object.scenarios.first.tags.clone
-                          object.scenarios.each do |scenario|
-                            base_tag_list.each do |tag|
-                              base_tag_list.delete(tag) unless scenario.tags.include?(tag)
-                            end
-                          end
-                          base_tag_list.count.times { store_rule(object, rule) }
-                        end</reason>
+      <reason>#&lt;Proc:0x2f51850@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:295 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -420,7 +354,7 @@
       <targets>
         <targets>["Feature", "Scenario"]</targets>
       </targets>
-      <reason>object.name.include?(",")</reason>
+      <reason>#&lt;Proc:0x2f517c0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:310 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -430,9 +364,7 @@
       <targets>
         <targets>["Feature", "Scenario"]</targets>
       </targets>
-      <reason>object.tags.each do | tag |
-                          store_rule(object, rule, rule.phrase.gsub("{class}", type)) if is_comment?(tag)
-                        end</reason>
+      <reason>#&lt;Proc:0x2f51730@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:317 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -442,7 +374,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>object.code == []</reason>
+      <reason>#&lt;Proc:0x2f516b8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:326 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -452,11 +384,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>flag = true
-                        object.code.each do |line|
-                          flag = false if line.match(/^\s*\#.*$/).nil?
-                        end
-                        flag</reason>
+      <reason>#&lt;Proc:0x2f51640@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:333 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -466,11 +394,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>all_tags = []
-                        object.tags.each { |single_tag| all_tags &lt;&lt; single_tag.split(',') }
-                        all_tags.flatten!
-                        unique_tags = all_tags.uniq
-                        true unless all_tags == unique_tags</reason>
+      <reason>#&lt;Proc:0x2f515c8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:344 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -485,7 +409,7 @@
       <targets>
         <targets>["Feature", "Scenario"]</targets>
       </targets>
-      <reason>object.tags.size &gt;= rule.conditions[:max]</reason>
+      <reason>#&lt;Proc:0x2f51520@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:360 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -500,7 +424,7 @@
       <targets>
         <targets>["Feature", "Scenario", "Background"]</targets>
       </targets>
-      <reason>object.name.length &gt;= rule.conditions[:max]</reason>
+      <reason>#&lt;Proc:0x2f51478@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:368 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -509,19 +433,13 @@
       <conditions>
         <condition>
           <name>words</name>
-          <value>["page", "site", "url", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen", "tab", "database", "DB"]</value>
+          <value>["page", "site", "url", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen", "database", "DB"]</value>
         </condition>
       </conditions>
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>object.steps.each do |step|
-                          next if is_comment?(step)
-                          rule.conditions[:words].each do |word|
-                            new_phrase = rule.phrase.gsub(/{.*}/, word)
-                            store_rule(object, rule, new_phrase) if step.include?(word)
-                          end
-                        end</reason>
+      <reason>#&lt;Proc:0x2f51238@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:376 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -531,12 +449,17 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>object.steps.each do |step|
-                          matches = step.match(/(?&lt;prefix&gt;\w+)\sbutton/i)
-                          if(!matches.nil? and matches[:prefix].downcase != 'radio')
-                            store_rule(object, rule)
-                          end
-                        end</reason>
+      <reason>#&lt;Proc:0x2f511c0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:390 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Implementation word used: tab.</phrase>
+      <score>1</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x2f51148@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:403 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -551,7 +474,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>object.scenarios.size &gt;= rule.conditions[:max]</reason>
+      <reason>#&lt;Proc:0x2f510d0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:413 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -561,7 +484,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>object.steps.each {|step| store_rule(object, rule) if step =~ DATE_REGEX}</reason>
+      <reason>#&lt;Proc:0x2f51040@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:420 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -571,7 +494,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>!object.nested_steps.empty?</reason>
+      <reason>#&lt;Proc:0x2f50fc8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:427 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -581,7 +504,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>object.code.each {|line| store_rule(object, rule) if is_comment?(line)}</reason>
+      <reason>#&lt;Proc:0x2f50f50@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:434 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -596,13 +519,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>object.code.each do |line|
-                          match_data = line.match /^\s*sleep(\s|\()(?&lt;sleep_time&gt;.*)\)?/
-                          if match_data
-                            sleep_value = match_data[:sleep_time].to_f
-                            store_rule(object, rule) if sleep_value &lt; rule.conditions[:max]
-                          end
-                        end</reason>
+      <reason>#&lt;Proc:0x2f50ed8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:442 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -617,13 +534,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>object.code.each do |line|
-                          match_data = line.match /^\s*sleep(\s|\()(?&lt;sleep_time&gt;.*)\)?/
-                          if match_data
-                            sleep_value = match_data[:sleep_time].to_f
-                            store_rule(object, rule) if sleep_value &gt; rule.conditions[:min]
-                          end
-                        end</reason>
+      <reason>#&lt;Proc:0x2f50e60@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:456 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -633,8 +544,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>object.code.each {|line| store_rule(object, rule) if line =~ /\#(TODO|todo)/}
-                        false</reason>
+      <reason>#&lt;Proc:0x2f50de8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:469 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -649,7 +559,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>object.location.include?(rule.conditions[:file]) != true</reason>
+      <reason>#&lt;Proc:0x2f50d58@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:477 (lambda)&gt;</reason>
     </rule>
   </rules>
   <improvement_list>
@@ -666,10 +576,6 @@
       <total>15</total>
     </improvement>
     <improvement>
-      <rule>Implementation word used: text box.</rule>
-      <total>6</total>
-    </improvement>
-    <improvement>
       <rule>Same tag appears on Feature.</rule>
       <total>6</total>
     </improvement>
@@ -678,20 +584,28 @@
       <total>6</total>
     </improvement>
     <improvement>
+      <rule>Implementation word used: text box.</rule>
+      <total>6</total>
+    </improvement>
+    <improvement>
       <rule>Implementation word used: screen.</rule>
       <total>5</total>
     </improvement>
     <improvement>
+      <rule>Implementation word used: click.</rule>
+      <total>4</total>
+    </improvement>
+    <improvement>
       <rule>Given/When/Then used multiple times in the same Scenario.</rule>
-      <total>5</total>
+      <total>4</total>
     </improvement>
     <improvement>
       <rule>Lazy Debugging through puts, p, or print</rule>
       <total>4</total>
     </improvement>
     <improvement>
-      <rule>Implementation word used: click.</rule>
-      <total>4</total>
+      <rule>Feature has numbers in the description.</rule>
+      <total>3</total>
     </improvement>
     <improvement>
       <rule>Implementation word used: page.</rule>
@@ -702,11 +616,7 @@
       <total>3</total>
     </improvement>
     <improvement>
-      <rule>Feature has numbers in the description.</rule>
-      <total>3</total>
-    </improvement>
-    <improvement>
-      <rule>There are commas in the description, creating possible multirunning scenarios or features.</rule>
+      <rule>Small sleeps used. Use a wait_until like method.</rule>
       <total>2</total>
     </improvement>
     <improvement>
@@ -714,12 +624,8 @@
       <total>2</total>
     </improvement>
     <improvement>
-      <rule>Small sleeps used. Use a wait_until like method.</rule>
+      <rule>There are commas in the description, creating possible multirunning scenarios or features.</rule>
       <total>2</total>
-    </improvement>
-    <improvement>
-      <rule>Hook found outside of the designated hooks file</rule>
-      <total>1</total>
     </improvement>
     <improvement>
       <rule>Implementation word used: pop up.</rule>
@@ -730,15 +636,23 @@
       <total>1</total>
     </improvement>
     <improvement>
-      <rule>Tag appears on all scenarios.</rule>
-      <total>1</total>
-    </improvement>
-    <improvement>
       <rule>Scenario Outline with only one example.</rule>
       <total>1</total>
     </improvement>
     <improvement>
+      <rule>Given/When/Then used multiple times in the same Scenario Outline.</rule>
+      <total>1</total>
+    </improvement>
+    <improvement>
+      <rule>Tag appears on all scenarios.</rule>
+      <total>1</total>
+    </improvement>
+    <improvement>
       <rule>Large sleeps used. Use a wait_until like method.</rule>
+      <total>1</total>
+    </improvement>
+    <improvement>
+      <rule>Hook found outside of the designated hooks file</rule>
       <total>1</total>
     </improvement>
     <improvement>
@@ -773,6 +687,7 @@
           <score>1</score>
         </rule>
       </rules>
+      <type>Feature</type>
     </feature>
     <feature>
       <scenarios>
@@ -809,6 +724,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
         <scenario>
           <start_line>14</start_line>
@@ -848,6 +764,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
         <scenario>
           <start_line>24</start_line>
@@ -884,6 +801,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
         <scenario>
           <start_line>35</start_line>
@@ -920,6 +838,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
         <scenario>
           <start_line>44</start_line>
@@ -948,7 +867,7 @@
               <score>1</score>
             </rule>
             <rule>
-              <phrase>Given/When/Then used multiple times in the same Scenario.</phrase>
+              <phrase>Given/When/Then used multiple times in the same Scenario Outline.</phrase>
               <score>1</score>
             </rule>
             <rule>
@@ -956,6 +875,7 @@
               <score>2</score>
             </rule>
           </rules>
+          <type>Scenario Outline</type>
         </scenario>
       </scenarios>
       <score>80</score>
@@ -974,6 +894,7 @@
           <score>1</score>
         </rule>
       </rules>
+      <type>Feature</type>
     </feature>
     <feature>
       <scenarios>
@@ -1499,6 +1420,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario Outline</type>
         </scenario>
         <scenario>
           <start_line>514</start_line>
@@ -1514,6 +1436,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
         <scenario>
           <start_line>518</start_line>
@@ -1529,6 +1452,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
         <scenario>
           <start_line>522</start_line>
@@ -1544,6 +1468,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
         <scenario>
           <start_line>526</start_line>
@@ -1559,6 +1484,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
         <scenario>
           <start_line>530</start_line>
@@ -1574,6 +1500,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
         <scenario>
           <start_line>534</start_line>
@@ -1605,6 +1532,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
       </scenarios>
       <score>20</score>
@@ -1619,6 +1547,7 @@
           <score>1</score>
         </rule>
       </rules>
+      <type>Feature</type>
     </feature>
     <feature>
       <scenarios>
@@ -2144,6 +2073,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario Outline</type>
         </scenario>
         <scenario>
           <start_line>515</start_line>
@@ -2159,6 +2089,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
         <scenario>
           <start_line>519</start_line>
@@ -2174,6 +2105,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
         <scenario>
           <start_line>523</start_line>
@@ -2189,6 +2121,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
         <scenario>
           <start_line>527</start_line>
@@ -2204,6 +2137,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
         <scenario>
           <start_line>531</start_line>
@@ -2219,6 +2153,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
         <scenario>
           <start_line>535</start_line>
@@ -2250,6 +2185,7 @@
               <score>1</score>
             </rule>
           </rules>
+          <type>Scenario</type>
         </scenario>
       </scenarios>
       <score>20</score>
@@ -2264,6 +2200,7 @@
           <score>1</score>
         </rule>
       </rules>
+      <type>Feature</type>
     </feature>
   </features>
   <step_definitions>
@@ -2460,7 +2397,6 @@
   <hooks>
     <hook>
       <start_line>1</start_line>
-      <type>AfterConfiguration</type>
       <tags/>
       <parameters/>
       <code>
@@ -2479,10 +2415,10 @@
           <score>1</score>
         </rule>
       </rules>
+      <type>AfterConfiguration</type>
     </hook>
     <hook>
       <start_line>1</start_line>
-      <type>Before</type>
       <tags>
         <tag>@OH</tag>
       </tags>
@@ -2499,10 +2435,10 @@
           <score>1</score>
         </rule>
       </rules>
+      <type>Before</type>
     </hook>
     <hook>
       <start_line>6</start_line>
-      <type>After</type>
       <tags>
         <tag>@OH</tag>
       </tags>
@@ -2518,10 +2454,10 @@
           <score>1</score>
         </rule>
       </rules>
+      <type>After</type>
     </hook>
     <hook>
       <start_line>10</start_line>
-      <type>Before</type>
       <tags>
         <tag>@KY</tag>
       </tags>
@@ -2535,10 +2471,10 @@
       <score>0</score>
       <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/support/hooks.rb:10</location>
       <rules/>
+      <type>Before</type>
     </hook>
     <hook>
       <start_line>17</start_line>
-      <type>Before</type>
       <tags>
         <tag>@NY</tag>
       </tags>
@@ -2552,6 +2488,7 @@
       <score>0</score>
       <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/support/hooks.rb:17</location>
       <rules/>
+      <type>Before</type>
     </hook>
   </hooks>
   <cataloged>true</cataloged>
