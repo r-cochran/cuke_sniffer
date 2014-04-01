@@ -4,7 +4,7 @@ require 'cuke_sniffer/rule_config'
 module CukeSniffer
 
   # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
-  # Copyright:: Copyright (C) 2013 Robert Cochran
+  # Copyright:: Copyright (C) 2014 Robert Cochran
   # License::   Distributes under the MIT License
   # Parent class for all objects that have rules executed against it
   # Mixins: CukeSniffer::Constants, CukeSniffer::RuleConfig, ROXML

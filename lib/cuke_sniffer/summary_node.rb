@@ -1,7 +1,7 @@
 module CukeSniffer
 
   # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
-  # Copyright:: Copyright (C) 2013 Robert Cochran
+  # Copyright:: Copyright (C) 2014 Robert Cochran
   # License::   Distributes under the MIT License
   # Single Summary Node object used for passing around results data and serializing out to xml
   # Mixins: ROXML

@@ -1,7 +1,7 @@
 module CukeSniffer
 
   # Author::    Robert Cochran  (mailto:cochrarj@miamioh.edu)
-  # Copyright:: Copyright (C) 2013 Robert Cochran
+  # Copyright:: Copyright (C) 2014 Robert Cochran
   # License::   Distributes under the MIT License
   # This class is a representation of the cucumber objects
   # Background, Scenario, Scenario Outline
@@ -45,8 +45,8 @@ module CukeSniffer
 
     def ==(comparison_object) # :nodoc:
       super(comparison_object) &&
-      comparison_object.steps == steps &&
-      comparison_object.examples_table == examples_table
+          comparison_object.steps == steps &&
+          comparison_object.examples_table == examples_table
     end
 
     def get_step_order
@@ -76,7 +76,7 @@ module CukeSniffer
         regex = /^\s*[*]/
       end
       @steps.select do |step|
-          step =~ regex
+        step =~ regex
       end
     end
 
