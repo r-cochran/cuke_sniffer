@@ -641,42 +641,42 @@ describe CukeSniffer do
     it "should assign a project location when one is provided" do
       project_location = "my_project"
 
-      @cli = CukeSniffer::CLI.new({:project_location => project_location})
+      cuke_sniffer = CukeSniffer::CLI.new({:project_location => project_location})
 
-      @cli.features_location.should == project_location
-      @cli.step_definitions_location.should == project_location
-      @cli.hooks_location.should == project_location
+      cuke_sniffer.features_location.should == project_location
+      cuke_sniffer.step_definitions_location.should == project_location
+      cuke_sniffer.hooks_location.should == project_location
     end
 
     it "should override the features location when project location and feature location are provided" do
       project_location = "my_project"
       features_location = "my_project/features"
-      @cli = CukeSniffer::CLI.new({:project_location => project_location,
+      cuke_sniffer = CukeSniffer::CLI.new({:project_location => project_location,
                                    :features_location => features_location})
 
-      @cli.features_location.should == features_location
-      @cli.step_definitions_location.should == project_location
-      @cli.hooks_location.should == project_location
+      cuke_sniffer.features_location.should == features_location
+      cuke_sniffer.step_definitions_location.should == project_location
+      cuke_sniffer.hooks_location.should == project_location
     end
     it "should override the step definition location when the project location and the step definition location are provided" do
       project_location = "my_project"
       step_definitions_location = "my_project/steps"
-      @cli = CukeSniffer::CLI.new({:project_location => project_location,
+      cuke_sniffer = CukeSniffer::CLI.new({:project_location => project_location,
                                    :step_definitions_location => step_definitions_location})
 
-      @cli.features_location.should == project_location
-      @cli.step_definitions_location.should == step_definitions_location
-      @cli.hooks_location.should == project_location
+      cuke_sniffer.features_location.should == project_location
+      cuke_sniffer.step_definitions_location.should == step_definitions_location
+      cuke_sniffer.hooks_location.should == project_location
     end
     it "should override the hooks location when the project location and the hooks location are provided" do
       project_location = "my_project"
       hooks_location = "my_project/hooks"
-      @cli = CukeSniffer::CLI.new({:project_location => project_location,
+      cuke_sniffer = CukeSniffer::CLI.new({:project_location => project_location,
                                    :hooks_location => hooks_location})
 
-      @cli.features_location.should == project_location
-      @cli.step_definitions_location.should == project_location
-      @cli.hooks_location.should == hooks_location
+      cuke_sniffer.features_location.should == project_location
+      cuke_sniffer.step_definitions_location.should == project_location
+      cuke_sniffer.hooks_location.should == hooks_location
     end
   end
 end
