@@ -205,9 +205,15 @@ module CukeSniffer
     end
 
     def initialize_locations(parameters)
-      @features_location = parameters[:features_location] ? parameters[:features_location] : Dir.getwd
-      @step_definitions_location = parameters[:step_definitions_location] ? parameters[:step_definitions_location] : Dir.getwd
-      @hooks_location = parameters[:hooks_location] ? parameters[:hooks_location] : Dir.getwd
+      default_location = parameters[:project_location] || Dir.getwd
+
+      @features_location = parameters[:features_location] || default_location
+      @step_definitions_location = parameters[:step_definitions_location] || default_location
+      @hooks_location = parameters[:hooks_location] || default_location
+
+      puts @features_location
+      puts @step_definitions_location
+      puts @hooks_location
     end
 
     def initialize_feature_objects

@@ -52,12 +52,12 @@ describe CukeSniffer do
 
     it "should not catalog step definitions when the flag is sent to skip that step is true and keep track that nothing was cataloged" do
       feature_block = [
-        "Feature: My feature that will not be cataloged",
-        "",
-        "Scenario: A scenario that will not be cataloged",
-        "Give my step",
-        "When my step",
-        "Then my step"
+          "Feature: My feature that will not be cataloged",
+          "",
+          "Scenario: A scenario that will not be cataloged",
+          "Give my step",
+          "When my step",
+          "Then my step"
       ]
       feature_file_name = "my_feature.feature"
       build_file(feature_block, feature_file_name)
@@ -638,10 +638,48 @@ describe CukeSniffer do
       rule.conditions[:max].should == max
       rule.conditions[:min].should == min
     end
+    it "should assign a project location when one is provided" do
+      project_location = "my_project"
 
+      @cli = CukeSniffer::CLI.new({:project_location => project_location})
+
+      @cli.features_location.should == project_location
+      @cli.step_definitions_location.should == project_location
+      @cli.hooks_location.should == project_location
+    end
+
+    it "should override the features location when project location and feature location are provided" do
+      project_location = "my_project"
+      features_location = "my_project/features"
+      @cli = CukeSniffer::CLI.new({:project_location => project_location,
+                                   :features_location => features_location})
+
+      @cli.features_location.should == features_location
+      @cli.step_definitions_location.should == project_location
+      @cli.hooks_location.should == project_location
+    end
+    it "should override the step definition location when the project location and the step definition location are provided" do
+      project_location = "my_project"
+      step_definitions_location = "my_project/steps"
+      @cli = CukeSniffer::CLI.new({:project_location => project_location,
+                                   :step_definitions_location => step_definitions_location})
+
+      @cli.features_location.should == project_location
+      @cli.step_definitions_location.should == step_definitions_location
+      @cli.hooks_location.should == project_location
+    end
+    it "should override the hooks location when the project location and the hooks location are provided" do
+      project_location = "my_project"
+      hooks_location = "my_project/hooks"
+      @cli = CukeSniffer::CLI.new({:project_location => project_location,
+                                   :hooks_location => hooks_location})
+
+      @cli.features_location.should == project_location
+      @cli.step_definitions_location.should == project_location
+      @cli.hooks_location.should == hooks_location
+    end
   end
-
- end
+end
 
 
 
