@@ -6,6 +6,7 @@
    summary = build_page(cuke_sniffer, "summary.html.erb")
    rules = rules_template(cuke_sniffer)
    improvement_list = build_page(cuke_sniffer, "improvement_list.html.erb")
+   dead_steps = build_page(cuke_sniffer, "dead_steps_min.html.erb")
 %>
 
 <%= styles %>
@@ -14,3 +15,4 @@
 <%= summary %>
 <%= improvement_list %>
 <%= rules %>
+<%= dead_steps %>
