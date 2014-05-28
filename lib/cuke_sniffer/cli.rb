@@ -205,11 +205,11 @@ module CukeSniffer
     end
 
     def initialize_locations(parameters)
-      default_location = parameters[:project_location] || Dir.getwd
+      default_location = parameters[:project_location] ? parameters[:project_location].gsub(/[\\]/, '/') : Dir.getwd
 
-      @features_location = parameters[:features_location] || default_location
-      @step_definitions_location = parameters[:step_definitions_location] || default_location
-      @hooks_location = parameters[:hooks_location] || default_location
+      @features_location = parameters[:features_location] ? parameters[:features_location].gsub(/[\\]/, '/') : default_location
+      @step_definitions_location = parameters[:step_definitions_location] ? parameters[:step_definitions_location].gsub(/[\\]/, '/') : default_location
+      @hooks_location = parameters[:hooks_location] ? parameters[:hooks_location].gsub(/[\\]/, '/') : default_location
     end
 
     def initialize_feature_objects
