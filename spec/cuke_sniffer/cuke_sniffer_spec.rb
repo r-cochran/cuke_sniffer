@@ -508,6 +508,39 @@ describe CukeSniffer do
       cuke_sniffer.get_dead_steps.should == {:total => 0}
       File.delete(feature_file_name)
     end
+
+    it "should consider both paths of a (x|y) regex for a step definition when cataloging" do
+      feature_file_name = "my_feature.feature"
+      feature_block = [
+          "Feature: Temp",
+          "",
+          "Scenario: Testing both paths of a step definition",
+          "And I click on Login button",
+          "And I click on Logout button"
+      ]
+      build_file(feature_block, feature_file_name)
+      feature = CukeSniffer::Feature.new(feature_file_name)
+
+
+      step_definitions = []
+
+
+      step_definition_block = [
+          "Then /^I click on (Login|Logout) button$/ do |button_name|",
+          "page.send(button_name.downcase).click",
+          "end"
+        ]
+      dual_step_definition = CukeSniffer::StepDefinition.new(@file_name + ":1", step_definition_block)
+      step_definitions << dual_step_definition
+      cuke_sniffer = CukeSniffer::CLI.new()
+      cuke_sniffer.features = [feature]
+      cuke_sniffer.step_definitions = step_definitions
+
+      cuke_sniffer.catalog_step_calls
+      cuke_sniffer.get_dead_steps.should == {:total => 0}
+      dual_step_definition.calls.size.should == 2
+      File.delete(feature_file_name)
+    end
   end
 
   describe "Handling Hooks" do
