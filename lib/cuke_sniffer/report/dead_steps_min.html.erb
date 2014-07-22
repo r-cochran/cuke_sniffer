@@ -1,0 +1,20 @@
+<div class="title" onclick="toggleById('dead_steps_data', this); updateDisplayStatus(document.getElementById('dead_steps_function_bar'));updateDivScroll('dead_steps_data', 'dead_steps_table');">
+  Dead Steps +
+</div>
+<div class="new_sub_section" id="dead_steps_data">
+  <% dead_steps = cuke_sniffer.get_dead_steps %>
+  <% dead_steps.delete(:total) %>
+  <% dead_step_count = dead_steps.values.flatten.count %>
+  <% if !cuke_sniffer.cataloged? %>
+      <div class="notes">Steps were not cataloged.</div>
+  <% elsif dead_step_count == 0 %>
+      <div class="notes">No dead steps found!</div>
+  <% elsif dead_step_count == 1 %>
+      <div class="notes"><%= dead_step_count %> Dead Step found.</div>
+  <% else %>
+      <div class="notes"><%= dead_step_count %> Dead Steps found.</div>
+  <% end %>
+  <% unless dead_steps.empty? or !cuke_sniffer.cataloged? %>
+  <% end %>
+</div>
+<br style="clear:both">

@@ -7,6 +7,7 @@ Gem::Specification.new do |s|
   s.authors = ["Robert Cochran", "Chris Vaughn", "Robert Anderson"]
   s.email = "cochrarj@miamioh.edu"
   s.files = ["lib/cuke_sniffer/report/dead_steps.html.erb",
+             "lib/cuke_sniffer/report/dead_steps_min.html.erb",
              "lib/cuke_sniffer/report/js.html.erb",
              "lib/cuke_sniffer/report/css.html.erb",
              "lib/cuke_sniffer/report/title.html.erb",
