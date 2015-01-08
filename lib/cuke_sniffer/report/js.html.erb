@@ -62,26 +62,32 @@
     }
 
     function setToggleIds() {
-      var collapsibleToggleRows = document.getElementsByClassName('toggleable');
-      var onclickString = "updateDisplayStatus(getElementById('%elementId%'));updateDivScroll('%divId%', '%tableId%');"
+        var collapsibleToggleRows = document.getElementsByClassName('toggleable');
+        var onclickString = "updateDisplayStatus(getElementById('%elementId%'));updateDivScroll('%divId%', '%tableId%');"
 
-      for (var i = 0; i < collapsibleToggleRows.length; i++) {
-        toggleRow = collapsibleToggleRows[i];
+        for (var i = 0; i < collapsibleToggleRows.length; i++) {
+            toggleRow = collapsibleToggleRows[i];
 
-        var table = toggleRow.parentNode;
-        console.log(toggleRow);
-        console.log(table);
-        var detailRowId = table.rows[ toggleRow.rowIndex + 1 ].id,
-        tableId = table.id,
-        divId = table.parentNode.id;
+            var table = toggleRow.parentNode;
 
-        var onclickEvent = onclickString.replace('%elementId%', detailRowId).
-        replace('%tableId%', tableId).
-        replace('%divId%', divId);
+            var detailRowId = table.rows[ toggleRow.rowIndex + 1 ].id,
+                tableId = table.id,
+                divId = table.parentNode.id;
 
-        toggleRow.setAttribute('onclick', onclickEvent);
+            var onclickEvent = onclickString.replace('%elementId%', detailRowId).
+                               replace('%tableId%', tableId).
+                               replace('%divId%', divId);
+
+            toggleRow.setAttribute('onclick', onclickEvent);
       }
     }
     setToggleIds();
+
+    function preventPropagation(event) {
+        if (!event) event = window.event;
+
+        event.cancelBubble = true; // IE method
+        if (event.stopPropagation) event.stopPropagation(); // Rest of the world method
+    }
 
 </script>
