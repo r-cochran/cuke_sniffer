@@ -1,6 +1,5 @@
 <%
    styles = build_page(cuke_sniffer, "css.html.erb")
-   scripts = build_page(cuke_sniffer, "js.html.erb")
    title = build_page(cuke_sniffer, "title.html.erb")
    legend = build_page(cuke_sniffer, "legend.html.erb")
    summary = build_page(cuke_sniffer, "summary.html.erb")
@@ -10,10 +9,10 @@
    features = build_page(cuke_sniffer, "features.html.erb")
    step_definitions = build_page(cuke_sniffer, "step_definitions.html.erb")
    hooks = build_page(cuke_sniffer, "hooks.html.erb")
+   scripts = build_page(cuke_sniffer, "js.html.erb")
 %>
 
 <%= styles %>
-<%= scripts %>
 <%= title %>
 <%= summary %>
 <%= improvement_list %>
@@ -22,3 +21,4 @@
 <%= features %>
 <%= step_definitions %>
 <%= hooks %>
+<%= scripts %>

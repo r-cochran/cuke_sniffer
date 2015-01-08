@@ -18,9 +18,9 @@
     <% cuke_sniffer.step_definitions.each do |step_definition| %>
         <% next if step_definition.score <= 0 %>
         <% if index.odd? %>
-            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('step_definition_detail_<%=index%>')); updateDivScroll('step_definitions_data', 'step_definitions_table');">
+            <tr class="notes blue_title_row toggleable">
         <% else %>
-            <tr class="notes white_title_row" onclick="updateDisplayStatus(document.getElementById('step_definition_detail_<%=index%>')); updateDivScroll('step_definitions_data', 'step_definitions_table');">
+            <tr class="notes white_title_row toggleable">
         <% end %>
           <td id="step_definition_score_<%= index %>" valign="top" style="width:1%; color: red">
             <%= step_definition.score %>

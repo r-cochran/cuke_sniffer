@@ -12,11 +12,11 @@
     <% index = 0 %>
     <% cuke_sniffer.rules.each do |rule| %>
         <% if !rule.enabled %>
-            <tr class="notes disabled_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_<%=index%>'));updateDivScroll('rules', 'rules_table');">
+            <tr class="notes disabled_title_row toggleable">
         <% elsif index.odd? %>
-            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_<%=index%>'));updateDivScroll('rules', 'rules_table');">
+            <tr class="notes blue_title_row toggleable">
         <% else %>
-            <tr class="notes white_title_row" onclick="updateDisplayStatus(document.getElementById('rule_detail_<%=index%>'));updateDivScroll('rules', 'rules_table');">
+            <tr class="notes white_title_row toggleable">
         <% end %>
 
             <td>
