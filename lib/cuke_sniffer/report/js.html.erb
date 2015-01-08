@@ -61,5 +61,39 @@
         link.innerHTML = link.innerHTML.replace(/(\+|\-)/, char_result)
     }
 
+    function sortDeadStepsTable(tableId) {
+        var table = document.getElementById(tableId);
+
+        var groupedTable = [],
+                currentGroup = 0;
+
+        for (var i=0; i<table.rows.length; i++) {
+            if (table.rows[i].classList.contains('toggleable')) {
+                // It is a parent row
+                groupedTable.push({});
+                currentGroup = groupedTable.length - 1;
+
+                groupedTable[currentGroup].parent = table.rows[i];
+                groupedTable[currentGroup].children = [];
+            } else {
+                // It belongs to the previous parent
+                groupedTable[currentGroup].children.push(table.rows[i])
+            }
+        }
+
+        groupedTable = groupedTable.sort(function(a, b) {
+            return  parseInt(b.parent.firstElementChild.innerText) -
+                    parseInt(a.parent.firstElementChild.innerText);
+        });
+
+
+        table.innerHTML = "";
+        groupedTable.forEach(function(group) {
+            table.appendChild(group.parent);
+            group.children.forEach(function(child) {
+                table.appendChild(child);
+            })
+        })
+    }git
 
 </script>
