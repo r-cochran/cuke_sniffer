@@ -19,9 +19,9 @@
     <% cuke_sniffer.features.each do |feature| %>
         <% next if feature.total_score == 0 %>
         <% if index.odd? %>
-            <tr class="notes blue_title_row" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('feature_detail_<%=index%>'));updateDivScroll('features_data', 'features_table');">
+            <tr class="notes blue_title_row toggleable" style="cursor: hand;">
         <% else %>
-            <tr class="notes white_title_row" style="cursor: hand;" onclick="updateDisplayStatus(document.getElementById('feature_detail_<%=index%>'));updateDivScroll('features_data', 'features_table');">
+            <tr class="notes white_title_row toggleable" style="cursor: hand;">
         <% end %>
           <td valign="top" class="red_number" style="width:1%">
             <%= feature.total_score %>

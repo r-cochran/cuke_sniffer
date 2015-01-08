@@ -23,9 +23,9 @@
         <% index = 0 %>
         <% dead_steps.each_key do |file_name| %>
             <% if index.odd? %>
-                <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('dead_step_file_detail_<%=index%>')); updateDivScroll('dead_steps_data', 'dead_steps_table');">
+                <tr class="notes blue_title_row toggleable">
             <% else %>
-                <tr class="notes white_title_row" onclick="updateDisplayStatus(document.getElementById('dead_step_file_detail_<%=index%>')); updateDivScroll('dead_steps_data', 'dead_steps_table');">
+                <tr class="notes white_title_row toggleable">
             <% end %>
               <td class="red_number" style="width: 1%"><%= dead_steps[file_name].size %></td>
               <td id="dead_step_file_<%= index %>">

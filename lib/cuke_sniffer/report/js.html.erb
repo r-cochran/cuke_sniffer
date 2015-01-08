@@ -61,5 +61,27 @@
         link.innerHTML = link.innerHTML.replace(/(\+|\-)/, char_result)
     }
 
+    function setToggleIds() {
+      var collapsibleToggleRows = document.getElementsByClassName('toggleable');
+      var onclickString = "updateDisplayStatus(getElementById('%elementId%'));updateDivScroll('%divId%', '%tableId%');"
+
+      for (var i = 0; i < collapsibleToggleRows.length; i++) {
+        toggleRow = collapsibleToggleRows[i];
+
+        var table = toggleRow.parentNode;
+        console.log(toggleRow);
+        console.log(table);
+        var detailRowId = table.rows[ toggleRow.rowIndex + 1 ].id,
+        tableId = table.id,
+        divId = table.parentNode.id;
+
+        var onclickEvent = onclickString.replace('%elementId%', detailRowId).
+        replace('%tableId%', tableId).
+        replace('%divId%', divId);
+
+        toggleRow.setAttribute('onclick', onclickEvent);
+      }
+    }
+    setToggleIds();
 
 </script>
