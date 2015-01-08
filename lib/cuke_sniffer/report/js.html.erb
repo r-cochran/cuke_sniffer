@@ -1,94 +1,130 @@
 <script type="text/javascript">
 
-    function collapseAll(css_class) {
-        updateAll(css_class, "none");
-    }
+function collapseAll(css_class) {
+  updateAll(css_class, "none");
+}
 
-    function expandAll(css_class) {
-        updateAll(css_class, "inline-block");
-    }
+function expandAll(css_class) {
+  updateAll(css_class, "inline-block");
+}
 
-    function expandAllShiftingRows(css_class) {
-        var elements = document.getElementsByClassName(css_class);
-        for (var i = 0; i < elements.length; i++) {
-            existing_style = elements.item(i).getAttribute('style');
-            elements.item(i).setAttribute('style', existing_style.replace(/display:\s*none/, "display: block-inline"));
-        }
-    }
+function expandAllShiftingRows(css_class) {
+  var elements = document.getElementsByClassName(css_class);
+  for (var i = 0; i < elements.length; i++) {
+    existing_style = elements.item(i).getAttribute('style');
+    elements.item(i).setAttribute('style', existing_style.replace(/display:\s*none/, "display: block-inline"));
+  }
+}
 
-    function updateAll(css_class, display_type){
-        var elements = document.getElementsByClassName(css_class);
-        for (var i = 0; i < elements.length; i++) {
-            elements.item(i).style.display = display_type;
-        }
-    }
+function updateAll(css_class, display_type){
+  var elements = document.getElementsByClassName(css_class);
+  for (var i = 0; i < elements.length; i++) {
+    elements.item(i).style.display = display_type;
+  }
+}
 
-    function toggleById(item, link) {
-        updateDisplayStatus(document.getElementById(item));
-        toggleText(link)
-    }
-    function updateDisplayStatus(object) {
-        if (object.tagName == "TR") {
-            updateDisplayStatusForTR(object);
-        } else {
-            object.style.display = (object.style.display == "block") ? 'none' : "block";
-        }
-    }
+function toggleById(item, link) {
+  updateDisplayStatus(document.getElementById(item));
+  toggleText(link)
+}
+function updateDisplayStatus(object) {
+  if (object.tagName == "TR") {
+    updateDisplayStatusForTR(object);
+  } else {
+    object.style.display = (object.style.display == "block") ? 'none' : "block";
+  }
+}
 
-    function updateDivScroll(divId, tableId) {
-        div = document.getElementById(divId);
-        table = document.getElementById(tableId);
-        if (table.offsetHeight >= 500) {
-            div.style.height = "75%";
-            div.style.overflow = "auto";
-        } else {
-            div.style.height = "";
-            div.style.overflow = "none";
-        }
+function updateDivScroll(divId, tableId) {
+  div = document.getElementById(divId);
+  table = document.getElementById(tableId);
+  if (table.offsetHeight >= 500) {
+    div.style.height = "75%";
+    div.style.overflow = "auto";
+  } else {
+    div.style.height = "";
+    div.style.overflow = "none";
+  }
 
-    }
+}
 
-    function updateDisplayStatusForTR(object) {
-        existing_style = object.getAttribute('style');
-        if (object.style.display === "none") {
-            object.style.display = ''; //have to clear out default setting of 'default: none;'
-            object.style.display = 'block-inline';
-        } else {
-            object.style.display = 'none';
-        }
-    }
-    function toggleText(link) {
-        var char_result = link.innerHTML.indexOf("+") > -1 ? "-" : "+";
-        link.innerHTML = link.innerHTML.replace(/(\+|\-)/, char_result)
-    }
+function updateDisplayStatusForTR(object) {
+  existing_style = object.getAttribute('style');
+  if (object.style.display === "none") {
+    object.style.display = ''; //have to clear out default setting of 'default: none;'
+    object.style.display = 'block-inline';
+  } else {
+    object.style.display = 'none';
+  }
+}
 
-    function setToggleIds() {
-        var collapsibleToggleRows = document.getElementsByClassName('toggleable');
-        var onclickString = "updateDisplayStatus(getElementById('%elementId%'));updateDivScroll('%divId%', '%tableId%');"
+function toggleText(link) {
+  var char_result = link.innerHTML.indexOf("+") > -1 ? "-" : "+";
+  link.innerHTML = link.innerHTML.replace(/(\+|\-)/, char_result)
+}
 
-        for (var i = 0; i < collapsibleToggleRows.length; i++) {
-            toggleRow = collapsibleToggleRows[i];
+function setToggleIds() {
+  var collapsibleToggleRows = document.getElementsByClassName('toggleable');
+  var onclickString = "updateDisplayStatus(getElementById('%elementId%'));updateDivScroll('%divId%', '%tableId%');"
 
-            var table = toggleRow.parentNode.parentNode;
+  for (var i = 0; i < collapsibleToggleRows.length; i++) {
+    toggleRow = collapsibleToggleRows[i];
 
-            var detailRowId = table.rows[ toggleRow.rowIndex + 1 ].id,
-                tableId = table.id,
-                divId = table.parentNode.id;
+    var table = toggleRow.parentNode.parentNode;
 
-            var onclickEvent = onclickString.replace('%elementId%', detailRowId).
-                               replace('%tableId%', tableId).
-                               replace('%divId%', divId);
+    var detailRowId = table.rows[ toggleRow.rowIndex + 1 ].id,
+    tableId = table.id,
+    divId = table.parentNode.id;
 
-            toggleRow.setAttribute('onclick', onclickEvent);
+    var onclickEvent = onclickString.replace('%elementId%', detailRowId).
+    replace('%tableId%', tableId).
+    replace('%divId%', divId);
+
+    toggleRow.setAttribute('onclick', onclickEvent);
+  }
+}
+setToggleIds();
+
+function preventPropagation(event) {
+  if (!event) event = window.event;
+
+  event.cancelBubble = true; // IE method
+  if (event.stopPropagation) event.stopPropagation(); // Rest of the world method
+  }
+
+  function sortDeadStepsTable(tableId) {
+    var table = document.getElementById(tableId);
+
+    var groupedTable = [],
+    currentGroup = 0;
+
+    for (var i=0; i<table.rows.length; i++) {
+      if (table.rows[i].classList.contains('toggleable')) {
+        // It is a parent row
+        groupedTable.push({});
+        currentGroup = groupedTable.length - 1;
+
+        groupedTable[currentGroup].parent = table.rows[i];
+        groupedTable[currentGroup].children = [];
+      } else {
+        // It belongs to the previous parent
+        groupedTable[currentGroup].children.push(table.rows[i])
       }
     }
-    setToggleIds();
 
-    function preventPropagation(event) {
-        if (!event) event = window.event;
+    groupedTable = groupedTable.sort(function(a, b) {
+      return  parseInt(b.parent.firstElementChild.innerText) -
+      parseInt(a.parent.firstElementChild.innerText);
+    });
 
-        event.cancelBubble = true; // IE method
-        if (event.stopPropagation) event.stopPropagation(); // Rest of the world method
-    }
 
-</script>
+    table.innerHTML = "";
+    groupedTable.forEach(function(group) {
+      table.appendChild(group.parent);
+      group.children.forEach(function(child) {
+        table.appendChild(child);
+      })
+    })
+  }
+
+  </script>
