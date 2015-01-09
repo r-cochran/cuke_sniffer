@@ -92,7 +92,7 @@ function preventPropagation(event) {
   if (event.stopPropagation) event.stopPropagation(); // Rest of the world method
   }
 
-  function sortDeadStepsTable(tableId) {
+function sortTable(tableId, sortColIndex) {
     var table = document.getElementById(tableId);
 
     var groupedTable = [],
@@ -113,8 +113,8 @@ function preventPropagation(event) {
     }
 
     groupedTable = groupedTable.sort(function(a, b) {
-      return  parseInt(b.parent.firstElementChild.innerText) -
-      parseInt(a.parent.firstElementChild.innerText);
+      return  parseInt(b.parent.getElementsByTagName('td')[sortColIndex].innerText) -
+      parseInt(a.parent.getElementsByTagName('td')[sortColIndex].innerText);
     });
 
 
