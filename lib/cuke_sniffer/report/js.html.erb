@@ -57,7 +57,7 @@
         object.style.display = 'none';
       }
     }
-    
+
     function toggleText(link) {
       var char_result = link.innerHTML.indexOf("+") > -1 ? "-" : "+";
       link.innerHTML = link.innerHTML.replace(/(\+|\-)/, char_result)
@@ -125,6 +125,8 @@
           table.appendChild(child);
         })
       })
+
+      document.getElementById('dead_steps_sort_arrow').className = 'arrow-down';
     }
 
 </script>
