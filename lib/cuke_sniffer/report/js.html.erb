@@ -90,41 +90,43 @@ function preventPropagation(event) {
 
   event.cancelBubble = true; // IE method
   if (event.stopPropagation) event.stopPropagation(); // Rest of the world method
-  }
+}
 
 function sortTable(tableId, sortColIndex) {
-    var table = document.getElementById(tableId);
+  var table = document.getElementById(tableId);
 
-    var groupedTable = [],
-    currentGroup = 0;
+  var groupedTable = [],
+  currentGroup = 0;
 
-    for (var i=0; i<table.rows.length; i++) {
-      if (table.rows[i].classList.contains('toggleable')) {
-        // It is a parent row
-        groupedTable.push({});
-        currentGroup = groupedTable.length - 1;
+  for (var i=0; i<table.rows.length; i++) {
+    if (table.rows[i].classList.contains('toggleable')) {
+      // It is a parent row
+      groupedTable.push({});
+      currentGroup = groupedTable.length - 1;
 
-        groupedTable[currentGroup].parent = table.rows[i];
-        groupedTable[currentGroup].children = [];
-      } else {
-        // It belongs to the previous parent
-        groupedTable[currentGroup].children.push(table.rows[i])
-      }
+      groupedTable[currentGroup].parent = table.rows[i];
+      groupedTable[currentGroup].children = [];
+    } else {
+      // It belongs to the previous parent
+      groupedTable[currentGroup].children.push(table.rows[i])
     }
-
-    groupedTable = groupedTable.sort(function(a, b) {
-      return  parseInt(b.parent.getElementsByTagName('td')[sortColIndex].innerText) -
-      parseInt(a.parent.getElementsByTagName('td')[sortColIndex].innerText);
-    });
-
-
-    table.innerHTML = "";
-    groupedTable.forEach(function(group) {
-      table.appendChild(group.parent);
-      group.children.forEach(function(child) {
-        table.appendChild(child);
-      })
-    })
   }
 
-  </script>
+  groupedTable = groupedTable.sort(function(a, b) {
+    return  parseInt(b.parent.getElementsByTagName('td')[sortColIndex].innerText) -
+    parseInt(a.parent.getElementsByTagName('td')[sortColIndex].innerText);
+  });
+
+
+  table.innerHTML = "";
+  groupedTable.forEach(function(group) {
+    table.appendChild(group.parent);
+    group.children.forEach(function(child) {
+      table.appendChild(child);
+    })
+  })
+
+  document.getElementById('dead_steps_sort_arrow').className = 'arrow-down';
+}
+
+</script>
