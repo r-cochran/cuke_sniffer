@@ -18,9 +18,9 @@
     <% cuke_sniffer.hooks.each do |hook| %>
         <% next if hook.score <= 0 %>
         <% if index.odd? %>
-            <tr class="notes blue_title_row" onclick="updateDisplayStatus(document.getElementById('hook_detail_<%=index%>'));updateDivScroll('hooks_data', 'hooks_table');">
+            <tr class="notes blue_title_row toggleable">
         <% else %>
-            <tr class="notes white_title_row" onclick="updateDisplayStatus(document.getElementById('hook_detail_<%=index%>'));updateDivScroll('hooks_data', 'hooks_table');">
+            <tr class="notes white_title_row toggleable">
         <% end %>
           <td id="hook_score_<%= index %>" valign="top" style="width:1%; color: red">
             <%= hook.score %>
@@ -43,7 +43,6 @@
             <% name += " do " %>
             <% name += parameters unless parameters == "|  |" %>
             <%= name %>
-          </td>
           </td>
         </tr>
 
