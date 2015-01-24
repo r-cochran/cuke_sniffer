@@ -120,24 +120,33 @@
     };
 
     var sortOrder = 'descending';
-    // Ternary logic included to support multiple browsers
+
     function sortTableGroups(groupedTable, sortColIndex) {
       if (sortOrder === 'descending') {
         groupedTable = groupedTable.sort(function(a, b) {
-          return  parseInt(b.parent.getElementsByTagName('td')[sortColIndex][document.textContent === null ? 'textContent' : 'innerText']) -
-          parseInt(a.parent.getElementsByTagName('td')[sortColIndex][document.textContent === null ? 'textContent' : 'innerText']);
+          aSortCol = a.parent.getElementsByTagName('td')[sortColIndex];
+          bSortCol = b.parent.getElementsByTagName('td')[sortColIndex];
+          return  parseInt(getNumberFromTD(bSortCol)) -
+          parseInt(getNumberFromTD(aSortCol));
         });
         document.getElementById('dead_steps_sort_arrow').className = 'arrow-down';
         sortOrder = 'ascending';
       } else if (sortOrder === 'ascending') {
         groupedTable = groupedTable.sort(function(a, b) {
-          return  parseInt(a.parent.getElementsByTagName('td')[sortColIndex][document.textContent === null ? 'textContent' : 'innerText']) -
-          parseInt(b.parent.getElementsByTagName('td')[sortColIndex][document.textContent === null ? 'textContent' : 'innerText']);
+          aSortCol = a.parent.getElementsByTagName('td')[sortColIndex];
+          bSortCol = b.parent.getElementsByTagName('td')[sortColIndex];
+          return  parseInt(getNumberFromTD(aSortCol)) -
+          parseInt(getNumberFromTD(bSortCol));
         });
         document.getElementById('dead_steps_sort_arrow').className = 'arrow-up';
         sortOrder = 'descending';
       } else {} // Nothing to do without a proper sortOrder
       return groupedTable;
+    };
+
+    function getNumberFromTD(td) {
+      // Ternary logic included to support multiple browsers
+      return td[document.textContent === null ? 'textContent' : 'innerText'].replace(/\D/g,'');
     };
 
     function drawGroupedTable(table, groupedTable) {
