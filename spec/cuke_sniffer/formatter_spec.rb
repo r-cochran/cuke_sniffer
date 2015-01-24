@@ -7,7 +7,7 @@ describe CukeSniffer::Formatter do
   end
 
   after(:each) do
-    #delete_temp_files
+    delete_temp_files
   end
 
   describe "sorting cucumber objects by score" do

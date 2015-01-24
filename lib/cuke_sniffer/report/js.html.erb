@@ -93,10 +93,10 @@
       if (event.stopPropagation) event.stopPropagation(); // Rest of the world method
     }
 
-    function sortTable(tableId, sortColIndex) {
-      var table = document.getElementById(tableId);
+    function sortTable(tableIdPrefix, sortColIndex) {
+      var table = document.getElementById(tableIdPrefix + '_table');
 
-      var groupedTable = sortTableGroups(groupTable(table), sortColIndex);
+      var groupedTable = sortTableGroups(groupTable(table), tableIdPrefix, sortColIndex);
 
       drawGroupedTable(table, groupedTable);
     };
@@ -121,7 +121,7 @@
 
     var sortOrder = 'descending';
 
-    function sortTableGroups(groupedTable, sortColIndex) {
+    function sortTableGroups(groupedTable, tableIdPrefix, sortColIndex) {
       if (sortOrder === 'descending') {
         groupedTable = groupedTable.sort(function(a, b) {
           aSortCol = a.parent.getElementsByTagName('td')[sortColIndex];
@@ -129,7 +129,7 @@
           return  parseInt(getNumberFromTD(bSortCol)) -
           parseInt(getNumberFromTD(aSortCol));
         });
-        document.getElementById('dead_steps_sort_arrow').className = 'arrow-down';
+        document.getElementById(tableIdPrefix + '_sort_arrow').className = 'arrow-down';
         sortOrder = 'ascending';
       } else if (sortOrder === 'ascending') {
         groupedTable = groupedTable.sort(function(a, b) {
@@ -138,7 +138,7 @@
           return  parseInt(getNumberFromTD(aSortCol)) -
           parseInt(getNumberFromTD(bSortCol));
         });
-        document.getElementById('dead_steps_sort_arrow').className = 'arrow-up';
+        document.getElementById(tableIdPrefix + '_sort_arrow').className = 'arrow-up';
         sortOrder = 'descending';
       } else {} // Nothing to do without a proper sortOrder
       return groupedTable;

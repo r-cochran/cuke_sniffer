@@ -4,7 +4,7 @@
 <div id="dead_steps_function_bar" class="function_bar">
   <input type="button" class="function_button" value="Collapse All" onclick="collapseAll('dead_step_detail')" />
   <input type="button" class="function_button" value="Expand All" onclick="expandAllShiftingRows('dead_step_detail')" />
-  <button type="button" class="function_button" onclick="sortTable('dead_steps_table', 0)">Sort by Dead Steps <span id='dead_steps_sort_arrow'></span></button>
+  <button type="button" class="function_button" onclick="sortTable('dead_steps', 0)">Sort by Dead Steps <span id='dead_steps_sort_arrow'></span></button>
 </div>
 <div class="new_sub_section" id="dead_steps_data">
   <% dead_steps = cuke_sniffer.get_dead_steps %>
