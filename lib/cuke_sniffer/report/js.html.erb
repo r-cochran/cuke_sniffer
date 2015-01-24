@@ -93,14 +93,17 @@
       if (event.stopPropagation) event.stopPropagation(); // Rest of the world method
     }
 
-    var sortOrder = 'descending';
     function sortTable(tableId, sortColIndex) {
       var table = document.getElementById(tableId);
 
-      var groupedTable = [],
-      currentGroup = 0;
+      var groupedTable = sortTableGroups(groupTable(table), sortColIndex);
 
-      for (var i=0; i<table.rows.length; i++) {
+      drawGroupedTable(table, groupedTable);
+    };
+
+    function groupTable(table) {
+      var groupedTable = [], currentGroup = 0;
+      for (var i = 0; i < table.rows.length; i++) {
         if (table.rows[i].classList.contains('toggleable')) {
           // It is a parent row
           groupedTable.push({});
@@ -113,23 +116,31 @@
           groupedTable[currentGroup].children.push(table.rows[i])
         }
       }
+      return groupedTable;
+    };
 
+    var sortOrder = 'descending';
+    // Ternary logic included to support multiple browsers
+    function sortTableGroups(groupedTable, sortColIndex) {
       if (sortOrder === 'descending') {
         groupedTable = groupedTable.sort(function(a, b) {
-          return  parseInt(b.parent.getElementsByTagName('td')[sortColIndex].innerText) -
-          parseInt(a.parent.getElementsByTagName('td')[sortColIndex].innerText);
+          return  parseInt(b.parent.getElementsByTagName('td')[sortColIndex][document.textContent === null ? 'textContent' : 'innerText']) -
+          parseInt(a.parent.getElementsByTagName('td')[sortColIndex][document.textContent === null ? 'textContent' : 'innerText']);
         });
         document.getElementById('dead_steps_sort_arrow').className = 'arrow-down';
         sortOrder = 'ascending';
       } else if (sortOrder === 'ascending') {
         groupedTable = groupedTable.sort(function(a, b) {
-          return  parseInt(a.parent.getElementsByTagName('td')[sortColIndex].innerText) -
-          parseInt(b.parent.getElementsByTagName('td')[sortColIndex].innerText);
+          return  parseInt(a.parent.getElementsByTagName('td')[sortColIndex][document.textContent === null ? 'textContent' : 'innerText']) -
+          parseInt(b.parent.getElementsByTagName('td')[sortColIndex][document.textContent === null ? 'textContent' : 'innerText']);
         });
         document.getElementById('dead_steps_sort_arrow').className = 'arrow-up';
         sortOrder = 'descending';
       } else {} // Nothing to do without a proper sortOrder
+      return groupedTable;
+    };
 
+    function drawGroupedTable(table, groupedTable) {
       table.innerHTML = "";
       groupedTable.forEach(function(group) {
         table.appendChild(group.parent);
@@ -137,8 +148,6 @@
           table.appendChild(child);
         });
       });
-
-
-    }
+    };
 
 </script>
