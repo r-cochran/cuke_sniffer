@@ -127,7 +127,44 @@
         list-style-type: none;
         display: block;
         padding-left: 1%
+    }
 
+    button.function_button {
+      position: relative;
+      top: 0;
+      left: 0;
+      width: 140px;
+    }
+
+    .arrow-up {
+      position: absolute;
+      right: 4px;
+      top: 40%;
+
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+
+      border-bottom: 4px solid black;
+    }
+
+    .arrow-down {
+      position: absolute;
+      right: 4px;
+      top: 40%;
+
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+
+      border-top: 4px solid black;
+    }
+
+    /* Move table sort arrow to the right in Firefox */
+    span:-moz-only-whitespace {
+      right: -5px;
     }
 
 </style>
