@@ -129,7 +129,7 @@
           return  parseInt(getNumberFromTD(bSortCol)) -
           parseInt(getNumberFromTD(aSortCol));
         });
-        document.getElementById(tableIdPrefix + '_sort_arrow').className = 'arrow-down';
+        document.getElementById(tableIdPrefix + '_sort_arrow_' + sortColIndex).className = 'arrow-down';
         sortOrder = 'ascending';
       } else if (sortOrder === 'ascending') {
         groupedTable = groupedTable.sort(function(a, b) {
@@ -138,7 +138,7 @@
           return  parseInt(getNumberFromTD(aSortCol)) -
           parseInt(getNumberFromTD(bSortCol));
         });
-        document.getElementById(tableIdPrefix + '_sort_arrow').className = 'arrow-up';
+        document.getElementById(tableIdPrefix + '_sort_arrow_' + sortColIndex).className = 'arrow-up';
         sortOrder = 'descending';
       } else {} // Nothing to do without a proper sortOrder
       return groupedTable;
