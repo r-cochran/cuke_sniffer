@@ -115,7 +115,7 @@ module CukeSniffer
     def self.extract_markup(template_name = "markup.html.erb", markup_source = MARKUP_SOURCE)
       markup_location = "#{markup_source}/#{template_name}"
       markup = ""
-      File.open(markup_location).lines.each do |line|
+      File.open(markup_location).each_line do |line|
         markup << line
       end
       markup
