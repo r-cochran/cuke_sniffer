@@ -260,7 +260,7 @@ module CukeSniffer
         if File.file?(pattern_location)
           [pattern_location]
         else
-          Dir["#{pattern_location}/**/*.#{extension}"]
+          Dir["#{pattern_location}/**/*.#{extension}"].select { |f| File.file? f }
         end
       end
     end
