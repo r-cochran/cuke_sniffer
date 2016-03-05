@@ -149,6 +149,15 @@ module CukeSniffer
       CukeSniffer::Formatter.output_xml(self, file_name)
     end
 
+    # Creates a xml file with the collected project details
+    # file_name defaults to "cuke_sniffer.xml" unless specified
+    #  cuke_sniffer.output_xml
+    # Or
+    #  cuke_sniffer.output_xml("cuke_sniffer01-01-0001.xml")
+    def output_junit_xml(file_name = DEFAULT_OUTPUT_FILE_NAME + ".xml")
+      CukeSniffer::Formatter.output_junit_xml(self, file_name)
+    end
+
     # Gathers all StepDefinitions that have no calls
     # Returns a hash that has two different types of records
     # 1: String of the file with a dead step with an array of the line and regex of each dead step

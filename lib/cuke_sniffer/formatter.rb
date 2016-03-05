@@ -88,7 +88,7 @@ module CukeSniffer
     end
 
     # Creates a xml file with the collected project details
-    # file_name defaults to "cuke_sniffer.xml" unless specified
+    # file_name defaults to "cuke_sniffer_result.xml" unless specified
     #  cuke_sniffer.output_xml
     # Or
     #  cuke_sniffer.output_xml("cuke_sniffer01-01-0001.xml")
@@ -100,6 +100,44 @@ module CukeSniffer
       open(file_name, "w") do |file|
         file << doc.serialize
       end
+    end
+
+    # Creates an xml file in the junit with issues organized by file.
+    # file_name defaults to "cuke_sniffer_result.xml" unless specified
+    #  cuke_sniffer.output_xml
+    # Or
+    #  cuke_sniffer.output_xml("cuke_sniffer01-01-0001.xml")
+    def self.output_junit_xml(cuke_sniffer, file_name = DEFAULT_OUTPUT_FILE_NAME)
+      file_name = file_name + ".xml" unless file_name =~ /\.xml$/
+      results = {}
+      failures = 0
+      current = cuke_sniffer.features
+      current.concat cuke_sniffer.scenarios
+      current.concat cuke_sniffer.step_definitions
+      current.concat cuke_sniffer.hooks
+      current.each do |test|
+        location = test.location.gsub("#{Dir.pwd}/", '')
+        location_no_line = location.gsub(/:[0-9]*/,'')
+        line_num = location.gsub!(/.*:(.*)/, "- Line: \\1 ")
+        errors = test.rules_hash.keys.map {|f| "Severity: #{test.rules_hash[f]} #{line_num}- Error: #{f}"}
+        results[location_no_line] = results[location_no_line].nil? ? errors : results[location_no_line].concat(errors)
+        failures += test.rules_hash.size
+      end
+      builder = Nokogiri::XML::Builder.new do |xml|
+        xml.testsuites(:tests => results.size, :failures => failures) do
+          results.each do |location, failures|
+            xml.testcase(:classname => location) do
+              failures.each do |failure|
+                xml.failure(:message => failure)
+              end
+            end
+          end
+        end
+      end
+      output = builder.to_xml
+      File.open(file_name, 'w') do |f| f.write(output) end
+      # Return here to aid testing.
+      output
     end
 
     # Sorts all of the lists on a cuke_sniffer object to be in descending order for each objects score.

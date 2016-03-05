@@ -6,7 +6,7 @@ require 'cuke_sniffer'
 help_cmd_txt = "Welcome to CukeSniffer!
 Calling CukeSniffer with no arguments will run it against the current directory.
 Other Options for Running include:
-  -o, --out <type> (name)                   : Where <type> is 'html', 'min_html' or 'xml'.
+  -o, --out <type> (name)                   : Where <type> is 'html', 'min_html', 'junit_xml' or 'xml'.
                                               Runs CukeSniffer then outputs an
                                               html/xml file in the current
                                               directory (with optional name).
@@ -50,6 +50,7 @@ def handle_output(argv)
         :html => "html",
         :min_html => "min_html",
         :xml => "xml",
+        :junit_xml => "junit_xml",
     }
     output_type_hash.each_value do |value|
       index_of_key = argv.index(value)
@@ -72,6 +73,8 @@ def call_output(file_type, file_name)
       file_name.nil? ? @cuke_sniffer.output_html : @cuke_sniffer.output_html(file_name)
     when "min_html"
       file_name.nil? ? @cuke_sniffer.output_min_html : @cuke_sniffer.output_min_html(file_name)
+    when "junit_xml"
+      file_name.nil? ? @cuke_sniffer.output_junit_xml : @cuke_sniffer.output_junit_xml(file_name)
     else
       puts "#{file_type} is not a supported version of cuke_sniffer output."
   end

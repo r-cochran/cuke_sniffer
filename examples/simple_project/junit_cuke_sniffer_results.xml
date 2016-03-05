@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<testsuites tests="8" failures="12">
+  <testcase classname="features/scenarios/complex_calculator.feature"/>
+  <testcase classname="features/scenarios/nested_directory/nested_feature.feature">
+    <failure message="Severity: 1 - Line: 3 - Error: Scenario steps out of Given/When/Then order."/>
+  </testcase>
+  <testcase classname="features/scenarios/simple_calculator.feature"/>
+  <testcase classname="features/step_definitions/complex_calculator_steps.rb"/>
+  <testcase classname="features/step_definitions/nested_steps/nested_steps.rb">
+    <failure message="Severity: 1 - Line: 1 - Error: Lazy Debugging through puts, p, or print"/>
+  </testcase>
+  <testcase classname="features/step_definitions/simple_calculator_steps.rb">
+    <failure message="Severity: 1 - Line: 1 - Error: Nested step call."/>
+  </testcase>
+  <testcase classname="features/support/env.rb">
+    <failure message="Severity: 1 - Line: 1 - Error: Hook with no content."/>
+    <failure message="Severity: 1 - Line: 1 - Error: Hook is only comments."/>
+    <failure message="Severity: 1 - Line: 1 - Error: Hook found outside of the designated hooks file"/>
+  </testcase>
+  <testcase classname="features/support/hooks.rb">
+    <failure message="Severity: 1 - Line: 1 - Error: Hook without a begin/rescue. Reduced visibility when debugging."/>
+    <failure message="Severity: 1 - Line: 5 - Error: Hook without a begin/rescue. Reduced visibility when debugging."/>
+    <failure message="Severity: 1 - Line: 9 - Error: Hook without a begin/rescue. Reduced visibility when debugging."/>
+    <failure message="Severity: 1 - Line: 13 - Error: Hook without a begin/rescue. Reduced visibility when debugging."/>
+    <failure message="Severity: 1 - Line: 17 - Error: Hook without a begin/rescue. Reduced visibility when debugging."/>
+    <failure message="Severity: 1 - Line: 21 - Error: Hook without a begin/rescue. Reduced visibility when debugging."/>
+  </testcase>
+</testsuites>
