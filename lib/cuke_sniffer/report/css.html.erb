@@ -11,7 +11,8 @@
         color: white;
     }
 
-    .table-striped>tbody>tr:nth-of-type(odd) {
+    .table-striped>tbody>tr:nth-of-type(odd),
+    .panel-body>div:nth-of-type(odd) div {
         background-color: #ccffff;
     }
 
@@ -21,6 +22,20 @@
 
     .small {
         display: none;
+    }
+
+    .panel-body {
+        padding:0px;
+    }
+
+    .panel-body>div>div {
+        padding: 8px;
+        font-size: 16px;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    .red {
+        color: rgba(208, 33, 33, 0.73);
     }
 
     @media screen and (max-width: 480px){
