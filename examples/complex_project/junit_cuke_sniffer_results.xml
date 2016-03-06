@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<testsuites tests="9" failures="73">
+  <testcase classname="features/features/scenarios/empty_feature.feature">
+    <failure message="Severity: 1 - Error: Feature has no description."/>
+    <failure message="Severity: 1 - Error: Feature with no scenarios."/>
+    <failure message="Severity: 1 - Error: Feature file has no content."/>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature">
+    <failure message="Severity: 1 - Error: Feature has numbers in the description."/>
+    <failure message="Severity: 6 - Error: Same tag appears on Feature."/>
+    <failure message="Severity: 1 - Error: Tag appears on all scenarios."/>
+    <failure message="Severity: 1 - Line: 6 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 1 - Line: 6 - Error: Given/When/Then used multiple times in the same Scenario."/>
+    <failure message="Severity: 2 - Line: 6 - Error: Implementation word used: text box."/>
+    <failure message="Severity: 1 - Line: 6 - Error: Implementation word used: page."/>
+    <failure message="Severity: 1 - Line: 6 - Error: Implementation word used: button."/>
+    <failure message="Severity: 1 - Line: 14 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 1 - Line: 14 - Error: Given/When/Then used multiple times in the same Scenario."/>
+    <failure message="Severity: 2 - Line: 14 - Error: Implementation word used: text box."/>
+    <failure message="Severity: 1 - Line: 14 - Error: Implementation word used: screen."/>
+    <failure message="Severity: 1 - Line: 14 - Error: Implementation word used: pop up."/>
+    <failure message="Severity: 1 - Line: 14 - Error: Implementation word used: button."/>
+    <failure message="Severity: 1 - Line: 24 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 1 - Line: 24 - Error: Given/When/Then used multiple times in the same Scenario."/>
+    <failure message="Severity: 1 - Line: 24 - Error: Implementation word used: page."/>
+    <failure message="Severity: 1 - Line: 24 - Error: Implementation word used: click."/>
+    <failure message="Severity: 1 - Line: 24 - Error: Implementation word used: button."/>
+    <failure message="Severity: 1 - Line: 35 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 1 - Line: 35 - Error: Given/When/Then used multiple times in the same Scenario."/>
+    <failure message="Severity: 1 - Line: 35 - Error: Implementation word used: page."/>
+    <failure message="Severity: 1 - Line: 35 - Error: Implementation word used: click."/>
+    <failure message="Severity: 1 - Line: 35 - Error: Implementation word used: button."/>
+    <failure message="Severity: 1 - Line: 44 - Error: Scenario has no description."/>
+    <failure message="Severity: 1 - Line: 44 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 1 - Line: 44 - Error: Scenario Outline with only one example."/>
+    <failure message="Severity: 1 - Line: 44 - Error: Given/When/Then used multiple times in the same Scenario Outline."/>
+    <failure message="Severity: 2 - Line: 44 - Error: Implementation word used: text box."/>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/KY/rate.feature">
+    <failure message="Severity: 1 - Error: Feature has numbers in the description."/>
+    <failure message="Severity: 1 - Error: There are commas in the description, creating possible multirunning scenarios or features."/>
+    <failure message="Severity: 223 - Line: 5 - Error: Commented example."/>
+    <failure message="Severity: 1 - Line: 5 - Error: Scenario Outline with too many examples."/>
+    <failure message="Severity: 1 - Line: 514 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 1 - Line: 518 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 1 - Line: 522 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 1 - Line: 526 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 1 - Line: 530 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 1 - Line: 534 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 2 - Line: 534 - Error: Implementation word used: screen."/>
+    <failure message="Severity: 1 - Line: 534 - Error: Implementation word used: click."/>
+    <failure message="Severity: 1 - Line: 534 - Error: Implementation word used: button."/>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature">
+    <failure message="Severity: 1 - Error: Feature has numbers in the description."/>
+    <failure message="Severity: 1 - Error: There are commas in the description, creating possible multirunning scenarios or features."/>
+    <failure message="Severity: 223 - Line: 5 - Error: Commented example."/>
+    <failure message="Severity: 1 - Line: 5 - Error: Scenario Outline with too many examples."/>
+    <failure message="Severity: 1 - Line: 515 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 1 - Line: 519 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 1 - Line: 523 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 1 - Line: 527 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 1 - Line: 531 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 1 - Line: 535 - Error: Scenario steps out of Given/When/Then order."/>
+    <failure message="Severity: 2 - Line: 535 - Error: Implementation word used: screen."/>
+    <failure message="Severity: 1 - Line: 535 - Error: Implementation word used: click."/>
+    <failure message="Severity: 1 - Line: 535 - Error: Implementation word used: button."/>
+  </testcase>
+  <testcase classname="features/features/step_definitions/my_steps.rb">
+    <failure message="Severity: 1 - Line: 1 - Error: Lazy Debugging through puts, p, or print"/>
+  </testcase>
+  <testcase classname="features/features/step_definitions/old_steps/older_steps.rb">
+    <failure message="Severity: 2 - Line: 1 - Error: Lazy Debugging through puts, p, or print"/>
+    <failure message="Severity: 1 - Line: 1 - Error: Small sleeps used. Use a wait_until like method."/>
+    <failure message="Severity: 1 - Line: 7 - Error: Lazy Debugging through puts, p, or print"/>
+    <failure message="Severity: 1 - Line: 7 - Error: Small sleeps used. Use a wait_until like method."/>
+    <failure message="Severity: 1 - Line: 7 - Error: Large sleeps used. Use a wait_until like method."/>
+  </testcase>
+  <testcase classname="features/features/step_definitions/old_steps/other_team_steps.rb">
+    <failure message="Severity: 3 - Line: 1 - Error: Commented code in Step Definition."/>
+    <failure message="Severity: 3 - Line: 7 - Error: Commented code in Step Definition."/>
+    <failure message="Severity: 3 - Line: 13 - Error: Commented code in Step Definition."/>
+    <failure message="Severity: 3 - Line: 19 - Error: Commented code in Step Definition."/>
+    <failure message="Severity: 3 - Line: 25 - Error: Commented code in Step Definition."/>
+  </testcase>
+  <testcase classname="features/features/support/env.rb">
+    <failure message="Severity: 1 - Line: 1 - Error: Hook without a begin/rescue. Reduced visibility when debugging."/>
+    <failure message="Severity: 1 - Line: 1 - Error: Hook found outside of the designated hooks file"/>
+  </testcase>
+  <testcase classname="features/features/support/hooks.rb">
+    <failure message="Severity: 1 - Line: 1 - Error: Hook without a begin/rescue. Reduced visibility when debugging."/>
+    <failure message="Severity: 1 - Line: 6 - Error: Hook without a begin/rescue. Reduced visibility when debugging."/>
+  </testcase>
+</testsuites>
