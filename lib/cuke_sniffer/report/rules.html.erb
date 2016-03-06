@@ -1,71 +1,89 @@
-<div id="rulesTab" class="title" onclick="toggleById('rules', this);updateDisplayStatus(document.getElementById('rules_function_bar'));updateDivScroll('rules', 'rules_table');">
-  Rules +
-</div>
+<div class="row">
+  <div class="panel panel-default">
+    <div id="rulesTab" class="panel-heading panel-title" data-toggle="collapse" data-target="#rules_data">
+      Rules <span class="glyphicon glyphicon-menu-down"></span>
+    </div>
 
-<div id="rules_function_bar" class="function_bar">
-  <input type="button" class="function_button" value="Collapse All" onclick="collapseAll('rule_detail')" />
-  <input type="button" class="function_button" value="Expand All" onclick="expandAll('rule_detail')" />
-</div>
-
-<div class="shrink_section" id="rules">
-  <table id="rules_table" style="width: 100%" border="0" cellspacing="0">
-    <% index = 0 %>
-    <% cuke_sniffer.rules.each do |rule| %>
-        <% if !rule.enabled %>
-            <tr class="notes disabled_title_row toggleable">
-        <% elsif index.odd? %>
-            <tr class="notes blue_title_row toggleable">
-        <% else %>
-            <tr class="notes white_title_row toggleable">
-        <% end %>
-
-            <td>
-              <%= rule.phrase %>
-            </td>
-        </tr>
-
-        <% if index.odd? %>
-            <tr id="rule_detail_<%= index %>" class="colored_subsection blue_row rule_detail" style="display: none;">
-        <% else %>
-            <tr id="rule_detail_<%= index %>" class="colored_subsection white_row rule_detail" style="display: none;">
-        <% end %>
-        <td style="padding-left:8px;">
-          <table border="0" cellspacing="0">
-            <tr>
-              <td>
-                <b>Score:</b> <%= rule.score %>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <b>Targets:</b> <%= rule.targets.to_s.gsub(/[\]\[\"]/, "") %>
-              </td>
-            </tr>
-            <% unless rule.conditions.empty? %>
-                <tr>
-                  <td>
-                    <b>Conditions:</b>
-                    <table style="padding-left: 4px;">
-                      <% rule.conditions.each do |condition_symbol, value| %>
-                          <tr>
-                            <td>
-                              <%= condition_symbol %>:
-                            </td>
-                            <td>
-                              <%= value %>
-                            </td>
-                          </tr>
-                      <% end %>
-                    </table>
-                  </td>
-                </tr>
+    <div id="rules_data" class="panel-body collapse">
+      <span class="button-bar">
+        <div id="collapseRules" class="btn btn-default">
+          Collapse All
+        </div>
+        <div id="expandRules" class="btn btn-default">
+          Expand All
+        </div>
+        <div id="ruleFilters" class="btn-group" data-toggle="buttons">
+          <div class="btn btn-default active">
+            <input type="checkbox" checked data-rule-type="feature"/>Feature
+          </div>
+          <div class="btn btn-default active">
+            <input type="checkbox" checked data-rule-type="background"/> Background
+          </div>
+          <div class="btn btn-default active">
+            <input type="checkbox" checked data-rule-type="scenario"/> Scenario
+          </div>
+          <div class="btn btn-default active">
+            <input type="checkbox" checked data-rule-type="stepdefinition"/> Step Definition
+          </div>
+          <div class="btn btn-default active">
+            <input type="checkbox" checked data-rule-type="hook"/> Hook
+          </div>
+        </div>
+      </span>
+      <% cuke_sniffer.rules.each do |rule| %>
+        <div class="rule"
+            <% rule.targets.each do |target| %>
+                rule-<%=target%>
             <% end %>
-          </table>
-        </td>
-        </tr>
-
-        <% index += 1 %>
-    <% end %>
-  </table>
+        >
+          <div>
+            <input type="checkbox"
+                <% if rule.enabled%>
+                    checked="checked"
+                <% end %>
+            /> <%=rule.phrase %>
+          </div>
+          <div class="details">
+            <div class="well">
+              <div class="row">
+                <div class="col-md-3">
+                  <b>Score:</b>
+                </div>
+                <div class="col-md-9">
+                  <%= rule.score %>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <b>Targets:</b>
+                </div>
+                <div class="col-md-9">
+                  <%= rule.targets.to_s.gsub(/[\]\[\"]/, "") %>
+                </div>
+              </div>
+              <% unless rule.conditions.empty? %>
+                <div class="row conditions">
+                  <div class="col-md-3">
+                    <b>Conditions:</b>
+                  </div>
+                  <div class="col-md-9">
+                    <% rule.conditions.each do |condition_symbol, value| %>
+                      <div class="row well">
+                        <div class="col-md-2">
+                            <%= condition_symbol %>:
+                        </div>
+                        <div class="col-md-10">
+                            <%= value %>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
-<br style="clear:both">

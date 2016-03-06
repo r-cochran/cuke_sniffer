@@ -8,26 +8,75 @@
 
     var CukeSniffer = {
         init: function(){
-            CukeSniffer.view.bind();
+            CukeSniffer.actions.bind();
+            CukeSniffer.view._startTooltips();
+            CukeSniffer.view.hideRuleDetails();
         },
         view: {
+            hideRuleDetails: function(){
+                $(".rule .details").hide();
+            },
+            _startTooltips: function(){
+                $(".glyphicon-question-sign, .small").tooltip();
+            },
+            _updateRuleRowColors: function(){
+                $(".rule:visible:even").addClass("blueRow");
+            }
+        },
+        actions: {
             bind: function(){
-                CukeSniffer.view._startTooltips();
-                CukeSniffer.view._togglePanelHeaderIcons();
+                CukeSniffer.actions._togglePanelHeaderIcons();
+                CukeSniffer.actions._viewRules();
+                CukeSniffer.actions._clickRule();
+                CukeSniffer.actions._ruleFilters();
+                CukeSniffer.actions.collapseRules();
+                CukeSniffer.actions.expandRules();
             },
             _togglePanelHeaderIcons: function(){
                 $(document).on("click", ".panel-title", function(){
-                   var $icon = $(this).find(".glyphicon");
+                    var $icon = $(this).find(".glyphicon");
                     $icon.toggleClass("glyphicon-menu-down");
                     $icon.toggleClass("glyphicon-menu-up");
                 });
             },
-            _startTooltips: function(){
-                $(".glyphicon-question-sign, .small").tooltip();
+            _viewRules: function(){
+                $(document).on("click", "#rulesTab", CukeSniffer.view._updateRuleRowColors);
+            },
+            _clickRule: function(){
+                $(document).on("click", ".rule", function(){
+                    var $details = $(this).find(".details");
+                    $details.toggle();
+                });
+                $(document).on("click", ".rule :checkbox", function(event){
+                    event.stopPropagation();
+                });
+            },
+            _ruleFilters: function(){
+                $(document).on("click", "#ruleFilters .btn", function(){
+                    var $clickedCheckbox = $(this).find(":checkbox");
+                    $(".rule").hide().removeClass("blueRow");
+                    $("#ruleFilters .btn").each(function(index, button){
+                        var $checkbox = $(button).find(":checkbox"),
+                            filterName = $checkbox.data("rule-type"),
+                                        //hate this hack.
+                            checked = ($clickedCheckbox[0] == $checkbox[0]) ? !$checkbox.is(":checked") : $checkbox.is(":checked");
+                        if(checked){
+                            $("[rule-" + filterName + "]").show();
+                        }
+                    });
+                    CukeSniffer.view._updateRuleRowColors();
+                });
+            },
+            collapseRules: function(){
+                $(document).on("click", "#collapseRules", function(){
+                    $(".rule .details").hide();
+                });
+            },
+            expandRules: function(){
+                $(document).on("click", "#expandRules", function(){
+                    $(".rule .details").show();
+                });
             }
-        },
-        actions: {
-
         }
     };
 </script>
