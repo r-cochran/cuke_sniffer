@@ -273,7 +273,7 @@ describe CukeSniffer::Formatter do
       expect(xml).to match(/<testsuites/)
       expect(xml).to match(/tests="17"/)
       expect(xml).to match(/\.feature/)
-      expect(xml).to match(/<failure message=/)
+      expect(xml).to match(/<failure type="failure" message=/)
       expect(xml).to match(/<testcase classname=/)
       expect(xml).to match(/<\/testsuites>/)
       expect(xml).to match(/<\/testcase>/)
