@@ -118,7 +118,7 @@ module CukeSniffer
       current.each do |test|
         location = test.location.gsub("#{Dir.pwd}/", '')
         location_no_line = location.gsub(/:[0-9]*/,'')
-        line_num = location.gsub!(/.*:(.*)/, "\\1")
+        line_num = location.include?(":") ? location.gsub(/.*:(.*)/, "\\1") : "full_file"
         errors = test.rules_hash.keys.map {|f| {:line => line_num,
                                                 :severity => test.rules_hash,
                                                 :error => f,
@@ -130,7 +130,7 @@ module CukeSniffer
         xml.testsuites(:tests => results.size, :failures => failures) do
           results.each do |location, failures|
             failures.each do |failure|
-              xml.testcase(:classname => location, :name => failure[:line].nil? ? "full_file" : failure[:line], :time => 0) do
+              xml.testcase(:classname => location, :name => failure[:line], :time => 0) do
                 xml.failure(failure[:formatted], :type => 'failure', :message => failure[:error])
               end
             end
