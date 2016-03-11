@@ -319,6 +319,18 @@ describe "FeatureRules" do
     test_feature_rule(feature_block, :too_many_scenarios)
   end
 
+  it "should punish Features if all of the feature and any scenario have a common tag." do
+    feature_block = [
+      "@tag",
+      "Feature: I'm a feature with scenarios with identical tags!",
+      "",
+      "Scenario: I have the same tag1",
+      "@tag",
+      "Scenario: I have the same tag2"
+    ]
+    test_feature_rule(feature_block, :feature_same_tag)
+  end
+
   it "should punish Features if all of the scenarios have a common tag. Simple." do
     feature_block = [
         "Feature: I'm a feature with scenarios with identical tags!",
@@ -328,7 +340,7 @@ describe "FeatureRules" do
         "@tag",
         "Scenario: I have the same tag2"
     ]
-    test_feature_rule(feature_block, :feature_same_tag)
+    test_feature_rule(feature_block, :scenario_same_tag)
   end
 
   it "should punish Features if all of the scenarios have a common tag. Complex" do
