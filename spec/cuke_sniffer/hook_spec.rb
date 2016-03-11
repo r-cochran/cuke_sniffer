@@ -182,11 +182,20 @@ describe "HookRules" do
 
   it "should punish hooks that exist outside of the hooks.rb file" do
     hook_block = [
-        "Before do",
-        "end"
+      "Before do",
+      "end"
     ]
     @file_name = "env.rb"
     test_hook_rule(hook_block, :hook_not_in_hooks_file)
+  end
+
+  it "should not punish hooks that exist in a hooks directory" do
+    hook_block = [
+      "Before do",
+      "end"
+    ]
+    @file_name = "hooks/env.rb"
+    test_no_hook_rule(hook_block, :hook_not_in_hooks_file)
   end
 
   it "should punish Around hooks that do not have 2 parameters. 0 parameters." do

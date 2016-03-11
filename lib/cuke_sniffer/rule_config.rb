@@ -472,7 +472,7 @@ module CukeSniffer
             :enabled => true,
             :phrase => "Hook found outside of the designated hooks file",
             :score => INFO,
-            :file => "hooks.rb",
+            :file => "hooks",
             :targets => ["Hook"],
             :reason => lambda { |hook, rule| hook.location.include?(rule.conditions[:file]) != true}
         },
