@@ -840,11 +840,20 @@ describe "ScenarioRules" do
 
   it "should punish Scenarios that have commented tags" do
     scenario_block = [
-        '#@tag',
-        "Scenario: Commented tag",
-        "Given I am a step"
+      '#@tag',
+      "Scenario: Commented tag",
+      "Given I am a step"
     ]
     test_scenario_rule(scenario_block, :commented_tag)
+  end
+
+  it "comments should not be punished as commented tags" do
+    scenario_block = [
+      '#blah',
+      "Scenario: Commented tag",
+      "Given I am a step"
+    ]
+    test_no_scenario_rule(scenario_block, :commented_tag)
   end
 
   it "should not punish Scenarios that have a comment before any tags occur" do
