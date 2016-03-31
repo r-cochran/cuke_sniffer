@@ -73,7 +73,13 @@
                 data-toggle="tooltip" data-placement="right"></span>
         </td>
         <% data_symbols.each do |symbol| %>
-            <td><%= cuke_sniffer.summary[symbol][:average] %></td>
+            <td>
+              <% if cuke_sniffer.summary[symbol][:average].nan?%>
+                  0
+              <% else %>
+                  <%= cuke_sniffer.summary[symbol][:average] %>
+              <% end %>
+            </td>
         <% end %>
       </tr>
       <tr>
@@ -93,7 +99,12 @@
                 class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right"></span>
         </td>
         <% data_symbols.each do |symbol| %>
-            <td><%= ((cuke_sniffer.summary[symbol][:good].to_f/cuke_sniffer.summary[symbol][:total].to_f) * 100).round(2) %>
+            <td>
+              <% if cuke_sniffer.summary[symbol][:good] == 0 %>
+                0
+              <% else %>
+                <%= ((cuke_sniffer.summary[symbol][:good].to_f/cuke_sniffer.summary[symbol][:total].to_f) * 100).round(2) %>
+              <% end %>
               %
             </td>
         <% end %>
@@ -105,7 +116,12 @@
                 class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right"></span>
         </td>
         <% data_symbols.each do |symbol| %>
-            <td><%= ((cuke_sniffer.summary[symbol][:bad].to_f/cuke_sniffer.summary[symbol][:total].to_f) * 100).round(2) %>
+            <td>
+              <% if cuke_sniffer.summary[symbol][:bad] == 0 %>
+                  0
+              <% else %>
+                  <%= ((cuke_sniffer.summary[symbol][:bad].to_f/cuke_sniffer.summary[symbol][:total].to_f) * 100).round(2) %>
+              <% end %>
               %
             </td>
         <% end %>
