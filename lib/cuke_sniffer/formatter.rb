@@ -118,17 +118,20 @@ module CukeSniffer
       current.each do |test|
         location = test.location.gsub("#{Dir.pwd}/", '')
         location_no_line = location.gsub(/:[0-9]*/,'')
-        line_num = location.gsub!(/.*:(.*)/, "- Line: \\1 ")
-        errors = test.rules_hash.keys.map {|f| "Severity: #{test.rules_hash[f]} #{line_num}- Error: #{f}"}
+        line_num = location.include?(":") ? location.gsub(/.*:(.*)/, "\\1") : "full_file"
+        errors = test.rules_hash.keys.map {|f| {:line => line_num,
+                                                :severity => test.rules_hash,
+                                                :error => f,
+                                                :formatted => "Severity: #{test.rules_hash[f]}\nLocation: #{location}\nError: #{f}"}}
         results[location_no_line] = results[location_no_line].nil? ? errors : results[location_no_line].concat(errors)
         failures += test.rules_hash.size
       end
       builder = Nokogiri::XML::Builder.new do |xml|
         xml.testsuites(:tests => results.size, :failures => failures) do
           results.each do |location, failures|
-            xml.testcase(:classname => location) do
-              failures.each do |failure|
-                xml.failure(:message => failure)
+            failures.each do |failure|
+              xml.testcase(:classname => location, :name => failure[:line], :time => 0) do
+                xml.failure(failure[:formatted], :type => 'failure', :message => failure[:error])
               end
             end
           end

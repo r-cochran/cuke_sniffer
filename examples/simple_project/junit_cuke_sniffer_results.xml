@@ -1,28 +1,63 @@
 <?xml version="1.0"?>
 <testsuites tests="8" failures="12">
-  <testcase classname="features/scenarios/complex_calculator.feature"/>
-  <testcase classname="features/scenarios/nested_directory/nested_feature.feature">
-    <failure message="Severity: 1 - Line: 3 - Error: Scenario steps out of Given/When/Then order."/>
+  <testcase classname="features/scenarios/nested_directory/nested_feature.feature" name="3" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/scenarios/nested_directory/nested_feature.feature:3
+Error: Scenario steps out of Given/When/Then order.</failure>
   </testcase>
-  <testcase classname="features/scenarios/simple_calculator.feature"/>
-  <testcase classname="features/step_definitions/complex_calculator_steps.rb"/>
-  <testcase classname="features/step_definitions/nested_steps/nested_steps.rb">
-    <failure message="Severity: 1 - Line: 1 - Error: Lazy Debugging through puts, p, or print"/>
+  <testcase classname="features/step_definitions/nested_steps/nested_steps.rb" name="1" time="0">
+    <failure type="failure" message="Lazy Debugging through puts, p, or print">Severity: 1
+Location: features/step_definitions/nested_steps/nested_steps.rb:1
+Error: Lazy Debugging through puts, p, or print</failure>
   </testcase>
-  <testcase classname="features/step_definitions/simple_calculator_steps.rb">
-    <failure message="Severity: 1 - Line: 1 - Error: Nested step call."/>
+  <testcase classname="features/step_definitions/simple_calculator_steps.rb" name="1" time="0">
+    <failure type="failure" message="Nested step call.">Severity: 1
+Location: features/step_definitions/simple_calculator_steps.rb:1
+Error: Nested step call.</failure>
   </testcase>
-  <testcase classname="features/support/env.rb">
-    <failure message="Severity: 1 - Line: 1 - Error: Hook with no content."/>
-    <failure message="Severity: 1 - Line: 1 - Error: Hook is only comments."/>
-    <failure message="Severity: 1 - Line: 1 - Error: Hook found outside of the designated hooks file"/>
+  <testcase classname="features/support/env.rb" name="1" time="0">
+    <failure type="failure" message="Hook with no content.">Severity: 1
+Location: features/support/env.rb:1
+Error: Hook with no content.</failure>
   </testcase>
-  <testcase classname="features/support/hooks.rb">
-    <failure message="Severity: 1 - Line: 1 - Error: Hook without a begin/rescue. Reduced visibility when debugging."/>
-    <failure message="Severity: 1 - Line: 5 - Error: Hook without a begin/rescue. Reduced visibility when debugging."/>
-    <failure message="Severity: 1 - Line: 9 - Error: Hook without a begin/rescue. Reduced visibility when debugging."/>
-    <failure message="Severity: 1 - Line: 13 - Error: Hook without a begin/rescue. Reduced visibility when debugging."/>
-    <failure message="Severity: 1 - Line: 17 - Error: Hook without a begin/rescue. Reduced visibility when debugging."/>
-    <failure message="Severity: 1 - Line: 21 - Error: Hook without a begin/rescue. Reduced visibility when debugging."/>
+  <testcase classname="features/support/env.rb" name="1" time="0">
+    <failure type="failure" message="Hook is only comments.">Severity: 1
+Location: features/support/env.rb:1
+Error: Hook is only comments.</failure>
+  </testcase>
+  <testcase classname="features/support/env.rb" name="1" time="0">
+    <failure type="failure" message="Hook found outside of the designated hooks file">Severity: 1
+Location: features/support/env.rb:1
+Error: Hook found outside of the designated hooks file</failure>
+  </testcase>
+  <testcase classname="features/support/hooks.rb" name="1" time="0">
+    <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging.">Severity: 1
+Location: features/support/hooks.rb:1
+Error: Hook without a begin/rescue. Reduced visibility when debugging.</failure>
+  </testcase>
+  <testcase classname="features/support/hooks.rb" name="5" time="0">
+    <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging.">Severity: 1
+Location: features/support/hooks.rb:5
+Error: Hook without a begin/rescue. Reduced visibility when debugging.</failure>
+  </testcase>
+  <testcase classname="features/support/hooks.rb" name="9" time="0">
+    <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging.">Severity: 1
+Location: features/support/hooks.rb:9
+Error: Hook without a begin/rescue. Reduced visibility when debugging.</failure>
+  </testcase>
+  <testcase classname="features/support/hooks.rb" name="13" time="0">
+    <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging.">Severity: 1
+Location: features/support/hooks.rb:13
+Error: Hook without a begin/rescue. Reduced visibility when debugging.</failure>
+  </testcase>
+  <testcase classname="features/support/hooks.rb" name="17" time="0">
+    <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging.">Severity: 1
+Location: features/support/hooks.rb:17
+Error: Hook without a begin/rescue. Reduced visibility when debugging.</failure>
+  </testcase>
+  <testcase classname="features/support/hooks.rb" name="21" time="0">
+    <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging.">Severity: 1
+Location: features/support/hooks.rb:21
+Error: Hook without a begin/rescue. Reduced visibility when debugging.</failure>
   </testcase>
 </testsuites>
