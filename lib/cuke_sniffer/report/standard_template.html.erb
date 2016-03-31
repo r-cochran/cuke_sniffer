@@ -1,7 +1,7 @@
 <%
    styles = build_page(cuke_sniffer, "css.html.erb")
    title = build_page(cuke_sniffer, "title.html.erb")
-   legend = build_page(cuke_sniffer, "legend.html.erb")
+   information = build_page(cuke_sniffer, "information.html.erb")
    summary = build_page(cuke_sniffer, "summary.html.erb")
    rules = rules_template(cuke_sniffer)
    improvement_list = build_page(cuke_sniffer, "improvement_list.html.erb")
@@ -14,6 +14,7 @@
 <div class="container">
    <%= styles %>
    <%= title %>
+   <%= information %>
    <%= summary %>
    <%= improvement_list %>
    <%= rules %>

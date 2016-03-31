@@ -10,27 +10,57 @@
         init: function(){
             CukeSniffer.actions.bind();
             CukeSniffer.view._startTooltips();
-            CukeSniffer.view.hideRuleDetails();
+            CukeSniffer.view._updateRowColors();
         },
         view: {
+            _hideDetails: function($section){
+                $section.find(".details").hide();
+            },
             hideRuleDetails: function(){
-                $(".rule .details").hide();
+                CukeSniffer.view._hideDetails($(".rule"));
+            },
+            hideDeadStepDetails: function(){
+                CukeSniffer.view._hideDetails($(".deadStep"));
+            },
+            hideFeatures: function(){
+                CukeSniffer.view._hideDetails($(".feature > .row"));
+            },
+            hideStepDefinitions: function(){
+                CukeSniffer.view._hideDetails($(".stepDefinition > .row"));
+            },
+            hideHooks: function(){
+                CukeSniffer.view._hideDetails($(".hook > .row"));
+            },
+            toggleDetails: function(){
+                $(this).closest(".deadStep, .feature, .stepDefinition, .hook").find(".row > .details").slideToggle();
             },
             _startTooltips: function(){
-                $(".glyphicon-question-sign, .small").tooltip();
+                $("[title]").tooltip();
             },
             _updateRuleRowColors: function(){
                 $(".rule:visible:even").addClass("blueRow");
+            },
+            _updateRowColors: function(){
+                $(" .deadStep:even, .feature:even, .stepDefinition:even, .hook:even").addClass("blueRow");
             }
         },
         actions: {
             bind: function(){
                 CukeSniffer.actions._togglePanelHeaderIcons();
                 CukeSniffer.actions._viewRules();
-                CukeSniffer.actions._clickRule();
+                CukeSniffer.actions._clickRow();
                 CukeSniffer.actions._ruleFilters();
                 CukeSniffer.actions.collapseRules();
                 CukeSniffer.actions.expandRules();
+                CukeSniffer.actions.collapseDeadSteps();
+                CukeSniffer.actions.expandDeadSteps();
+                CukeSniffer.actions.toggleDetails();
+                CukeSniffer.actions.collapseFeatureDetails();
+                CukeSniffer.actions.expandFeatureDetails();
+                CukeSniffer.actions.collapseStepDefinitionDetails();
+                CukeSniffer.actions.expandStepDefinitionDetails();
+                CukeSniffer.actions.collapseHooks();
+                CukeSniffer.actions.expandHooks();
             },
             _togglePanelHeaderIcons: function(){
                 $(document).on("click", ".panel-title", function(){
@@ -42,7 +72,7 @@
             _viewRules: function(){
                 $(document).on("click", "#rulesTab", CukeSniffer.view._updateRuleRowColors);
             },
-            _clickRule: function(){
+            _clickRow: function(){
                 $(document).on("click", ".rule", function(){
                     var $details = $(this).find(".details");
                     $details.toggle();
@@ -68,13 +98,46 @@
                 });
             },
             collapseRules: function(){
-                $(document).on("click", "#collapseRules", function(){
-                    $(".rule .details").hide();
-                });
+                $(document).on("click", "#collapseRules", CukeSniffer.view.hideRuleDetails);
             },
             expandRules: function(){
                 $(document).on("click", "#expandRules", function(){
                     $(".rule .details").show();
+                });
+            },
+            collapseDeadSteps: function(){
+                $(document).on("click", "#collapseDeadSteps", CukeSniffer.view.hideDeadStepDetails);
+            },
+            expandDeadSteps: function(){
+                $(document).on("click", "#expandDeadSteps", function(){
+                    $(".deadStep .details").show();
+                });
+            },
+            toggleDetails: function(){
+                $(document).on("click", ".deadStep > .row > .title, .feature > .row > .title, .stepDefinition > .row > .title, .hook .title", CukeSniffer.view.toggleDetails);
+            },
+            collapseFeatureDetails: function(){
+                $(document).on("click", "#collapseFeatures", CukeSniffer.view.hideFeatures);
+            },
+            expandFeatureDetails: function(){
+                $(document).on("click", "#expandFeatures", function(){
+                    $(".feature > .row > .details").show();
+                });
+            },
+            collapseStepDefinitionDetails: function(){
+                $(document).on("click", "#collapseStepDefinitions", CukeSniffer.view.hideStepDefinitions);
+            },
+            expandStepDefinitionDetails: function(){
+                $(document).on("click", "#expandStepDefinitions", function(){
+                    $(".stepDefinition > .row > .details").show();
+                });
+            },
+            collapseHooks: function(){
+                $(document).on("click", "#collapseHooks", CukeSniffer.view.hideHooks);
+            },
+            expandHooks: function(){
+                $(document).on("click", "#expandHooks", function(){
+                    $(".hook > .row > .details").show();
                 });
             }
         }

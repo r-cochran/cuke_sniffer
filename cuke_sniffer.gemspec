@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
              "lib/cuke_sniffer/report/rules.html.erb",
              "lib/cuke_sniffer/report/step_definitions.html.erb",
              "lib/cuke_sniffer/report/summary.html.erb",
-             "lib/cuke_sniffer/report/legend.html.erb",
+             "lib/cuke_sniffer/report/information.html.erb",
              "lib/cuke_sniffer.rb",
              "lib/cuke_sniffer/constants.rb",
              "lib/cuke_sniffer/feature.rb",

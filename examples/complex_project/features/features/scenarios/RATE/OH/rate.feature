@@ -1,6 +1,11 @@
 @OH @RATE @18281 @wip
 Feature: Stories 188234, 288111, 82811
 
+  Background:
+    And the account exists
+    Then I can edit the account
+    Given I looking at the account
+
   @OH
   Scenario Outline: Rate
     Given I am looking at an account <account number>

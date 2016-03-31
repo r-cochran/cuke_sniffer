@@ -11,16 +11,22 @@
           No Improvements to make!
         </div>
       <% end %>
-      <% improvement_list.each do |improvement, count| %>
-        <div>
-          <div class="col-md-1 red">
-            <%= count %>
+      <div>
+        <% improvement_list.each do |improvement, count| %>
+          <div class="improvement">
+            <div class="row">
+              <div class="col-md-12 title">
+                <div class="col-md-1 red">
+                  <%= count %>
+                </div>
+                <div class="col-md-11">
+                  <%= improvement %>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-md-11">
-            <%= improvement %>
-          </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
