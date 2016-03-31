@@ -255,4 +255,35 @@ describe CukeSniffer::Formatter do
 
   end
 
+  describe "creating_junit_xml_output" do
+    before(:each) do
+      @file_name = "my_xml.xml"
+    end
+
+    it "should generate a junit xml file with failures by file" do
+      cuke_sniffer = CukeSniffer::CLI.new()
+      CukeSniffer::Formatter.output_junit_xml(cuke_sniffer, @file_name)
+      File.exists?(@file_name).should == true
+    end
+
+    it "should generate results that look like junit xml" do
+      cuke_sniffer = CukeSniffer::CLI.new()
+      xml = CukeSniffer::Formatter.output_junit_xml(cuke_sniffer, @file_name)
+
+      expect(xml).to match(/<testsuites/)
+      expect(xml).to match(/tests="17"/)
+      expect(xml).to match(/\.feature/)
+      expect(xml).to match(/<failure type="failure" message=/)
+      expect(xml).to match(/<testcase classname=/)
+      expect(xml).to match(/<\/testsuites>/)
+      expect(xml).to match(/<\/testcase>/)
+    end
+
+    it "should append .xml to the end of passed file name if it does have an extension already" do
+      cuke_sniffer = CukeSniffer::CLI.new()
+      CukeSniffer::Formatter.output_junit_xml(cuke_sniffer, "my_xml")
+      File.exists?("my_xml.xml").should be_true
+    end
+  end
+
 end

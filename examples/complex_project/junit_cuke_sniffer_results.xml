@@ -1,0 +1,368 @@
+<?xml version="1.0"?>
+<testsuites tests="9" failures="73">
+  <testcase classname="features/features/scenarios/empty_feature.feature" name="full_file" time="0">
+    <failure type="failure" message="Feature has no description.">Severity: 1
+Location: features/features/scenarios/empty_feature.feature
+Error: Feature has no description.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/empty_feature.feature" name="full_file" time="0">
+    <failure type="failure" message="Feature with no scenarios.">Severity: 1
+Location: features/features/scenarios/empty_feature.feature
+Error: Feature with no scenarios.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/empty_feature.feature" name="full_file" time="0">
+    <failure type="failure" message="Feature file has no content.">Severity: 1
+Location: features/features/scenarios/empty_feature.feature
+Error: Feature file has no content.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="full_file" time="0">
+    <failure type="failure" message="Feature has numbers in the description.">Severity: 1
+Location: features/features/scenarios/login.feature
+Error: Feature has numbers in the description.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="full_file" time="0">
+    <failure type="failure" message="Same tag appears on Feature.">Severity: 6
+Location: features/features/scenarios/login.feature
+Error: Same tag appears on Feature.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="full_file" time="0">
+    <failure type="failure" message="Tag appears on all scenarios.">Severity: 1
+Location: features/features/scenarios/login.feature
+Error: Tag appears on all scenarios.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="6" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/login.feature:6
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="6" time="0">
+    <failure type="failure" message="Given/When/Then used multiple times in the same Scenario.">Severity: 1
+Location: features/features/scenarios/login.feature:6
+Error: Given/When/Then used multiple times in the same Scenario.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="6" time="0">
+    <failure type="failure" message="Implementation word used: text box.">Severity: 2
+Location: features/features/scenarios/login.feature:6
+Error: Implementation word used: text box.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="6" time="0">
+    <failure type="failure" message="Implementation word used: page.">Severity: 1
+Location: features/features/scenarios/login.feature:6
+Error: Implementation word used: page.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="6" time="0">
+    <failure type="failure" message="Implementation word used: button.">Severity: 1
+Location: features/features/scenarios/login.feature:6
+Error: Implementation word used: button.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="14" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/login.feature:14
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="14" time="0">
+    <failure type="failure" message="Given/When/Then used multiple times in the same Scenario.">Severity: 1
+Location: features/features/scenarios/login.feature:14
+Error: Given/When/Then used multiple times in the same Scenario.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="14" time="0">
+    <failure type="failure" message="Implementation word used: text box.">Severity: 2
+Location: features/features/scenarios/login.feature:14
+Error: Implementation word used: text box.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="14" time="0">
+    <failure type="failure" message="Implementation word used: screen.">Severity: 1
+Location: features/features/scenarios/login.feature:14
+Error: Implementation word used: screen.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="14" time="0">
+    <failure type="failure" message="Implementation word used: pop up.">Severity: 1
+Location: features/features/scenarios/login.feature:14
+Error: Implementation word used: pop up.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="14" time="0">
+    <failure type="failure" message="Implementation word used: button.">Severity: 1
+Location: features/features/scenarios/login.feature:14
+Error: Implementation word used: button.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="24" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/login.feature:24
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="24" time="0">
+    <failure type="failure" message="Given/When/Then used multiple times in the same Scenario.">Severity: 1
+Location: features/features/scenarios/login.feature:24
+Error: Given/When/Then used multiple times in the same Scenario.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="24" time="0">
+    <failure type="failure" message="Implementation word used: page.">Severity: 1
+Location: features/features/scenarios/login.feature:24
+Error: Implementation word used: page.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="24" time="0">
+    <failure type="failure" message="Implementation word used: click.">Severity: 1
+Location: features/features/scenarios/login.feature:24
+Error: Implementation word used: click.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="24" time="0">
+    <failure type="failure" message="Implementation word used: button.">Severity: 1
+Location: features/features/scenarios/login.feature:24
+Error: Implementation word used: button.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="35" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/login.feature:35
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="35" time="0">
+    <failure type="failure" message="Given/When/Then used multiple times in the same Scenario.">Severity: 1
+Location: features/features/scenarios/login.feature:35
+Error: Given/When/Then used multiple times in the same Scenario.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="35" time="0">
+    <failure type="failure" message="Implementation word used: page.">Severity: 1
+Location: features/features/scenarios/login.feature:35
+Error: Implementation word used: page.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="35" time="0">
+    <failure type="failure" message="Implementation word used: click.">Severity: 1
+Location: features/features/scenarios/login.feature:35
+Error: Implementation word used: click.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="35" time="0">
+    <failure type="failure" message="Implementation word used: button.">Severity: 1
+Location: features/features/scenarios/login.feature:35
+Error: Implementation word used: button.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="44" time="0">
+    <failure type="failure" message="Scenario has no description.">Severity: 1
+Location: features/features/scenarios/login.feature:44
+Error: Scenario has no description.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="44" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/login.feature:44
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="44" time="0">
+    <failure type="failure" message="Scenario Outline with only one example.">Severity: 1
+Location: features/features/scenarios/login.feature:44
+Error: Scenario Outline with only one example.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="44" time="0">
+    <failure type="failure" message="Given/When/Then used multiple times in the same Scenario Outline.">Severity: 1
+Location: features/features/scenarios/login.feature:44
+Error: Given/When/Then used multiple times in the same Scenario Outline.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/login.feature" name="44" time="0">
+    <failure type="failure" message="Implementation word used: text box.">Severity: 2
+Location: features/features/scenarios/login.feature:44
+Error: Implementation word used: text box.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/KY/rate.feature" name="full_file" time="0">
+    <failure type="failure" message="Feature has numbers in the description.">Severity: 1
+Location: features/features/scenarios/RATE/KY/rate.feature
+Error: Feature has numbers in the description.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/KY/rate.feature" name="full_file" time="0">
+    <failure type="failure" message="There are commas in the description, creating possible multirunning scenarios or features.">Severity: 1
+Location: features/features/scenarios/RATE/KY/rate.feature
+Error: There are commas in the description, creating possible multirunning scenarios or features.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/KY/rate.feature" name="5" time="0">
+    <failure type="failure" message="Commented example.">Severity: 223
+Location: features/features/scenarios/RATE/KY/rate.feature:5
+Error: Commented example.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/KY/rate.feature" name="5" time="0">
+    <failure type="failure" message="Scenario Outline with too many examples.">Severity: 1
+Location: features/features/scenarios/RATE/KY/rate.feature:5
+Error: Scenario Outline with too many examples.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/KY/rate.feature" name="514" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/RATE/KY/rate.feature:514
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/KY/rate.feature" name="518" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/RATE/KY/rate.feature:518
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/KY/rate.feature" name="522" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/RATE/KY/rate.feature:522
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/KY/rate.feature" name="526" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/RATE/KY/rate.feature:526
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/KY/rate.feature" name="530" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/RATE/KY/rate.feature:530
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/KY/rate.feature" name="534" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/RATE/KY/rate.feature:534
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/KY/rate.feature" name="534" time="0">
+    <failure type="failure" message="Implementation word used: screen.">Severity: 2
+Location: features/features/scenarios/RATE/KY/rate.feature:534
+Error: Implementation word used: screen.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/KY/rate.feature" name="534" time="0">
+    <failure type="failure" message="Implementation word used: click.">Severity: 1
+Location: features/features/scenarios/RATE/KY/rate.feature:534
+Error: Implementation word used: click.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/KY/rate.feature" name="534" time="0">
+    <failure type="failure" message="Implementation word used: button.">Severity: 1
+Location: features/features/scenarios/RATE/KY/rate.feature:534
+Error: Implementation word used: button.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="full_file" time="0">
+    <failure type="failure" message="Feature has numbers in the description.">Severity: 1
+Location: features/features/scenarios/RATE/OH/rate.feature
+Error: Feature has numbers in the description.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="full_file" time="0">
+    <failure type="failure" message="There are commas in the description, creating possible multirunning scenarios or features.">Severity: 1
+Location: features/features/scenarios/RATE/OH/rate.feature
+Error: There are commas in the description, creating possible multirunning scenarios or features.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="5" time="0">
+    <failure type="failure" message="Commented example.">Severity: 223
+Location: features/features/scenarios/RATE/OH/rate.feature:5
+Error: Commented example.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="5" time="0">
+    <failure type="failure" message="Scenario Outline with too many examples.">Severity: 1
+Location: features/features/scenarios/RATE/OH/rate.feature:5
+Error: Scenario Outline with too many examples.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="515" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/RATE/OH/rate.feature:515
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="519" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/RATE/OH/rate.feature:519
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="523" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/RATE/OH/rate.feature:523
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="527" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/RATE/OH/rate.feature:527
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="531" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/RATE/OH/rate.feature:531
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="535" time="0">
+    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
+Location: features/features/scenarios/RATE/OH/rate.feature:535
+Error: Scenario steps out of Given/When/Then order.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="535" time="0">
+    <failure type="failure" message="Implementation word used: screen.">Severity: 2
+Location: features/features/scenarios/RATE/OH/rate.feature:535
+Error: Implementation word used: screen.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="535" time="0">
+    <failure type="failure" message="Implementation word used: click.">Severity: 1
+Location: features/features/scenarios/RATE/OH/rate.feature:535
+Error: Implementation word used: click.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="535" time="0">
+    <failure type="failure" message="Implementation word used: button.">Severity: 1
+Location: features/features/scenarios/RATE/OH/rate.feature:535
+Error: Implementation word used: button.</failure>
+  </testcase>
+  <testcase classname="features/features/step_definitions/my_steps.rb" name="1" time="0">
+    <failure type="failure" message="Lazy Debugging through puts, p, or print">Severity: 1
+Location: features/features/step_definitions/my_steps.rb:1
+Error: Lazy Debugging through puts, p, or print</failure>
+  </testcase>
+  <testcase classname="features/features/step_definitions/old_steps/older_steps.rb" name="1" time="0">
+    <failure type="failure" message="Lazy Debugging through puts, p, or print">Severity: 2
+Location: features/features/step_definitions/old_steps/older_steps.rb:1
+Error: Lazy Debugging through puts, p, or print</failure>
+  </testcase>
+  <testcase classname="features/features/step_definitions/old_steps/older_steps.rb" name="1" time="0">
+    <failure type="failure" message="Small sleeps used. Use a wait_until like method.">Severity: 1
+Location: features/features/step_definitions/old_steps/older_steps.rb:1
+Error: Small sleeps used. Use a wait_until like method.</failure>
+  </testcase>
+  <testcase classname="features/features/step_definitions/old_steps/older_steps.rb" name="7" time="0">
+    <failure type="failure" message="Lazy Debugging through puts, p, or print">Severity: 1
+Location: features/features/step_definitions/old_steps/older_steps.rb:7
+Error: Lazy Debugging through puts, p, or print</failure>
+  </testcase>
+  <testcase classname="features/features/step_definitions/old_steps/older_steps.rb" name="7" time="0">
+    <failure type="failure" message="Small sleeps used. Use a wait_until like method.">Severity: 1
+Location: features/features/step_definitions/old_steps/older_steps.rb:7
+Error: Small sleeps used. Use a wait_until like method.</failure>
+  </testcase>
+  <testcase classname="features/features/step_definitions/old_steps/older_steps.rb" name="7" time="0">
+    <failure type="failure" message="Large sleeps used. Use a wait_until like method.">Severity: 1
+Location: features/features/step_definitions/old_steps/older_steps.rb:7
+Error: Large sleeps used. Use a wait_until like method.</failure>
+  </testcase>
+  <testcase classname="features/features/step_definitions/old_steps/other_team_steps.rb" name="1" time="0">
+    <failure type="failure" message="Commented code in Step Definition.">Severity: 3
+Location: features/features/step_definitions/old_steps/other_team_steps.rb:1
+Error: Commented code in Step Definition.</failure>
+  </testcase>
+  <testcase classname="features/features/step_definitions/old_steps/other_team_steps.rb" name="7" time="0">
+    <failure type="failure" message="Commented code in Step Definition.">Severity: 3
+Location: features/features/step_definitions/old_steps/other_team_steps.rb:7
+Error: Commented code in Step Definition.</failure>
+  </testcase>
+  <testcase classname="features/features/step_definitions/old_steps/other_team_steps.rb" name="13" time="0">
+    <failure type="failure" message="Commented code in Step Definition.">Severity: 3
+Location: features/features/step_definitions/old_steps/other_team_steps.rb:13
+Error: Commented code in Step Definition.</failure>
+  </testcase>
+  <testcase classname="features/features/step_definitions/old_steps/other_team_steps.rb" name="19" time="0">
+    <failure type="failure" message="Commented code in Step Definition.">Severity: 3
+Location: features/features/step_definitions/old_steps/other_team_steps.rb:19
+Error: Commented code in Step Definition.</failure>
+  </testcase>
+  <testcase classname="features/features/step_definitions/old_steps/other_team_steps.rb" name="25" time="0">
+    <failure type="failure" message="Commented code in Step Definition.">Severity: 3
+Location: features/features/step_definitions/old_steps/other_team_steps.rb:25
+Error: Commented code in Step Definition.</failure>
+  </testcase>
+  <testcase classname="features/features/support/env.rb" name="1" time="0">
+    <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging.">Severity: 1
+Location: features/features/support/env.rb:1
+Error: Hook without a begin/rescue. Reduced visibility when debugging.</failure>
+  </testcase>
+  <testcase classname="features/features/support/env.rb" name="1" time="0">
+    <failure type="failure" message="Hook found outside of the designated hooks file">Severity: 1
+Location: features/features/support/env.rb:1
+Error: Hook found outside of the designated hooks file</failure>
+  </testcase>
+  <testcase classname="features/features/support/hooks.rb" name="1" time="0">
+    <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging.">Severity: 1
+Location: features/features/support/hooks.rb:1
+Error: Hook without a begin/rescue. Reduced visibility when debugging.</failure>
+  </testcase>
+  <testcase classname="features/features/support/hooks.rb" name="6" time="0">
+    <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging.">Severity: 1
+Location: features/features/support/hooks.rb:6
+Error: Hook without a begin/rescue. Reduced visibility when debugging.</failure>
+  </testcase>
+</testsuites>

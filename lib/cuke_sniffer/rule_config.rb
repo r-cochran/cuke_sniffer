@@ -275,12 +275,12 @@ module CukeSniffer
         },
         :feature_same_tag => {
             :enabled => true,
-            :phrase => "Same tag appears on Feature.",
+            :phrase => "Same tag appears on both Feature and Scenario",
             :score => WARNING,
             :targets => ["Feature"],
             :reason => lambda { |feature, rule| if(feature.scenarios.count >= 2)
                           feature.scenarios[1..-1].each do |scenario|
-                            feature.scenarios.first.tags.each do |tag|
+                            feature.tags.each do |tag|
                               feature.store_rule(rule) if scenario.tags.include?(tag)
                             end
                           end
