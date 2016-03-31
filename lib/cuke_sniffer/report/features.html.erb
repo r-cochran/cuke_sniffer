@@ -12,8 +12,17 @@
           Expand All
         </div>
       </span>
-
+      <% if cuke_sniffer.features.count == 0 %>
+          <div>
+            <div>There were no Features to sniff in '<%= cuke_sniffer.features_location %>'!</div>
+          </div>
+      <% elsif cuke_sniffer.features.count >= 1 && cuke_sniffer.scenarios.count >=1 && cuke_sniffer.summary[:features][:total_score] ==0 && cuke_sniffer.summary[:scenarios][:total_score] ==0 %>
+          <div>
+            <div>Excellent! No smells found for Features and Scenarios!</div>
+          </div>
+      <% end %>
       <% cuke_sniffer.features.each do |feature| %>
+          <% next if feature.total_score == 0 %>
           <div class="feature">
             <div class="row">
               <div class="col-md-12 title">
@@ -90,6 +99,7 @@
                     </div>
                     <div class="col-md-12 scenarios">
                       <% feature.scenarios.each do |scenario| %>
+                        <% next if scenario.score == 0 %>
                         <div class="col-md-12 scenario">
                           <div class="col-md-12 title">
                             <div class="btn btn-xs btn-default" style="display:none;"> <!--TODO enable this feature -->

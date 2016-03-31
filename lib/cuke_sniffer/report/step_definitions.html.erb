@@ -1,10 +1,10 @@
 <div class="row">
   <div class="panel panel-default">
-    <div id="stepDefinitionTab" class="panel-heading panel-title" data-toggle="collapse" data-target="#step_definition_data">
+    <div id="stepDefinitionTab" class="panel-heading panel-title" data-toggle="collapse" data-target="#step_definitions">
       Step Definitions <span class="glyphicon glyphicon-menu-down"></span>
     </div>
 
-    <div id="step_definition_data" class="panel-body collapse">
+    <div id="step_definitions" class="panel-body collapse">
       <span class="button-bar">
         <div id="collapseStepDefinitions" class="btn btn-default">
           Collapse All
@@ -14,11 +14,16 @@
         </div>
       </span>
       <% if cuke_sniffer.step_definitions.count == 0 %>
-          <div class="stepDefinition">There were no Step Definitions to sniff in '<%= cuke_sniffer.step_definitions_location %>'!</div>
+          <div>
+            <div>There were no Step Definitions to sniff in '<%= cuke_sniffer.step_definitions_location %>'!</div>
+          </div>
       <% elsif cuke_sniffer.step_definitions.count >= 1 && cuke_sniffer.summary[:step_definitions][:total_score] ==0 %>
-          <div class="stepDefinition">Excellent! No smells found for Step Definitions!</div>
+          <div>
+            <div>Excellent! No smells found for Step Definitions!</div>
+          </div>
       <% else %>
           <% cuke_sniffer.step_definitions.each do |step_definition| %>
+              <% next if step_definition.score == 0 %>
               <div class="stepDefinition">
                 <div class="row">
                   <div class="col-md-12 title">
