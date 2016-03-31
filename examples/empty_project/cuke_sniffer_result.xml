@@ -1,0 +1,570 @@
+<?xml version="1.0"?>
+<cuke_sniffer>
+  <rules>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Scenario Outline with no examples.</phrase>
+      <score>100</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b7028@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:24 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Scenario Outline with no examples table.</phrase>
+      <score>100</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b6f60@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:31 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Recursive nested step call.</phrase>
+      <score>100</score>
+      <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b6e70@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:38 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>There is a background with a tag. This feature file cannot run!</phrase>
+      <score>100</score>
+      <conditions/>
+      <targets>
+        <targets>["Background"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b6da8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:45 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Comment comes between tag and properly executing line. This feature file cannot run!</phrase>
+      <score>100</score>
+      <conditions/>
+      <targets>
+        <targets>["Feature", "Scenario"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b6cb8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:53 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>A nested step should not universally match all step definitions.  Dead steps cannot be correctly cataloged.</phrase>
+      <score>100</score>
+      <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b6bf0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:68 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>{class} has no description.</phrase>
+      <score>25</score>
+      <conditions/>
+      <targets>
+        <targets>["Feature", "Scenario"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b6ad8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:81 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Feature with no scenarios.</phrase>
+      <score>25</score>
+      <conditions/>
+      <targets>
+        <targets>["Feature"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b69e8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:88 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Commented step.</phrase>
+      <score>25</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b68f8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:95 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Commented example.</phrase>
+      <score>25</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b6830@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:104 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>No steps in Scenario.</phrase>
+      <score>25</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b6740@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:111 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Step that is only one word long.</phrase>
+      <score>25</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b6650@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:118 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>No code in Step Definition.</phrase>
+      <score>25</score>
+      <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b6588@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:125 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Around hook without 2 parameters for Scenario and Block.</phrase>
+      <score>25</score>
+      <conditions/>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b64c0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:132 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Around hook does not call its block.</phrase>
+      <score>25</score>
+      <conditions/>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b63d0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:139 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
+      <score>25</score>
+      <conditions/>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b6308@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:146 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Hook that both expects and ignores the same tag. This hook will not function as expected.</phrase>
+      <score>25</score>
+      <conditions/>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b6240@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:154 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>{class} has numbers in the description.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Feature", "Scenario", "Background"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b6100@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:164 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Feature file has no content.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Feature"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b6038@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:171 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Feature has a background with no scenarios.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Feature"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b5f48@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:178 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Feature has a background with one scenario.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Feature"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b5e80@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:185 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>{class} with too many steps.</phrase>
+      <score>10</score>
+      <conditions>
+        <condition>
+          <name>max</name>
+          <value>7</value>
+        </condition>
+      </conditions>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b5d90@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:193 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Scenario steps out of Given/When/Then order.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b5cc8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:200 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Invalid first step. Began with And/But.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b5bd8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:212 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Step includes a * instead of Given/When/Then/And/But.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b5ae8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:219 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Scenario Outline with only one example.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b5a20@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:227 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Scenario Outline with too many examples.</phrase>
+      <score>10</score>
+      <conditions>
+        <condition>
+          <name>max</name>
+          <value>10</value>
+        </condition>
+      </conditions>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b5958@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:235 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Given/When/Then used multiple times in the same {class}.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b5840@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:242 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Too many parameters in Step Definition.</phrase>
+      <score>10</score>
+      <conditions>
+        <condition>
+          <name>max</name>
+          <value>4</value>
+        </condition>
+      </conditions>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b5778@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:254 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Lazy Debugging through puts, p, or print</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b56b0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:262 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Pending step definition. Implement or remove.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b55e8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:269 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Same tag appears on Feature.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Feature"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b5520@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:281 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Tag appears on all scenarios.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Feature"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b5458@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:295 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>There are commas in the description, creating possible multirunning scenarios or features.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Feature", "Scenario"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b5368@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:310 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>{class} has a commented out tag</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Feature", "Scenario"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b5278@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:317 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Hook with no content.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b51b0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:326 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Hook is only comments.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b50e8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:333 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Hook has duplicate tags.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b5020@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:344 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>{class} has too many tags.</phrase>
+      <score>1</score>
+      <conditions>
+        <condition>
+          <name>max</name>
+          <value>8</value>
+        </condition>
+      </conditions>
+      <targets>
+        <targets>["Feature", "Scenario"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b4f08@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:360 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>{class} has a long description.</phrase>
+      <score>1</score>
+      <conditions>
+        <condition>
+          <name>max</name>
+          <value>180</value>
+        </condition>
+      </conditions>
+      <targets>
+        <targets>["Feature", "Scenario", "Background"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b4df0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:368 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Implementation word used: {word}.</phrase>
+      <score>1</score>
+      <conditions>
+        <condition>
+          <name>words</name>
+          <value>["page", "site", "url", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen", "database", "DB"]</value>
+        </condition>
+      </conditions>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b4a30@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:376 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Implementation word used: button.</phrase>
+      <score>1</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b4968@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:390 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Implementation word used: tab.</phrase>
+      <score>1</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b48a0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:403 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Feature with too many scenarios.</phrase>
+      <score>1</score>
+      <conditions>
+        <condition>
+          <name>max</name>
+          <value>10</value>
+        </condition>
+      </conditions>
+      <targets>
+        <targets>["Feature"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b47d8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:413 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Date used.</phrase>
+      <score>1</score>
+      <conditions/>
+      <targets>
+        <targets>["Scenario", "Background"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b46e8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:420 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Nested step call.</phrase>
+      <score>1</score>
+      <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b4620@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:427 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Commented code in Step Definition.</phrase>
+      <score>1</score>
+      <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b4558@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:434 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Small sleeps used. Use a wait_until like method.</phrase>
+      <score>1</score>
+      <conditions>
+        <condition>
+          <name>max</name>
+          <value>2</value>
+        </condition>
+      </conditions>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b4490@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:442 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Large sleeps used. Use a wait_until like method.</phrase>
+      <score>1</score>
+      <conditions>
+        <condition>
+          <name>min</name>
+          <value>2</value>
+        </condition>
+      </conditions>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b43c8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:456 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Todo found. Resolve it.</phrase>
+      <score>1</score>
+      <conditions/>
+      <targets>
+        <targets>["StepDefinition"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b4300@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:469 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <enabled>true</enabled>
+      <phrase>Hook found outside of the designated hooks file</phrase>
+      <score>1</score>
+      <conditions>
+        <condition>
+          <name>file</name>
+          <value>hooks.rb</value>
+        </condition>
+      </conditions>
+      <targets>
+        <targets>["Hook"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fc11b0b4210@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:477 (lambda)&gt;</reason>
+    </rule>
+  </rules>
+  <improvement_list/>
+  <features/>
+  <step_definitions/>
+  <hooks/>
+  <cataloged>true</cataloged>
+</cuke_sniffer>
