@@ -2,7 +2,9 @@
   <div class="page-header">
     <h1>
       Cuke Sniffer <a class="black" href="https://github.com/r-cochran/cuke_sniffer"><span class="fa fa-github"></span></a>
-      <small><%= Gem.loaded_specs["cuke_sniffer"].version %></small>
+      <% if Gem.loaded_specs["cuke_sniffer"] %>
+        <small><%= Gem.loaded_specs["cuke_sniffer"].version %></small>
+      <% end %>
     </h1>
     <div>Score:
       <span class="score"><%= cuke_sniffer.summary[:total_score] %></span>
