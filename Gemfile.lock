@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cuke_sniffer (0.0.8)
+    cuke_sniffer (0.0.9)
       roxml
 
 GEM
@@ -62,3 +62,6 @@ DEPENDENCIES
   rake
   roxml
   rspec
+
+BUNDLED WITH
+   1.11.2
