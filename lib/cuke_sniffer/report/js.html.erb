@@ -61,6 +61,8 @@
                 CukeSniffer.actions.expandStepDefinitionDetails();
                 CukeSniffer.actions.collapseHooks();
                 CukeSniffer.actions.expandHooks();
+                CukeSniffer.actions.enableAllRules();
+                CukeSniffer.actions.disableAllRules();
                 CukeSniffer.actions.changeRuleStatus();
             },
             _togglePanelHeaderIcons: function(){
@@ -139,6 +141,16 @@
             expandHooks: function(){
                 $(document).on("click", "#expandHooks", function(){
                     $(".hook > .row > .details").show();
+                });
+            },
+            enableAllRules: function(){
+                $(document).on("click", "#enableAllRules", function(){
+                   $(".rule input[type='checkbox']:not(:checked)").click();
+                });
+            },
+            disableAllRules: function(){
+                $(document).on("click", "#disableAllRules", function(){
+                    $(".rule input[type='checkbox']:checked").click();
                 });
             },
             changeRuleStatus: function(){

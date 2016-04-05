@@ -769,11 +769,21 @@
 
     <div id="rules_data" class="panel-body collapse">
       <span class="button-bar">
-        <div id="collapseRules" class="btn btn-default">
-          Collapse All
+        <div class="btn-group">
+          <div id="collapseRules" class="btn btn-default">
+            Collapse All
+          </div>
+          <div id="expandRules" class="btn btn-default">
+            Expand All
+          </div>
         </div>
-        <div id="expandRules" class="btn btn-default">
-          Expand All
+        <div class="btn-group">
+          <div id="enableAllRules" class="btn btn-default">
+            Enable All
+          </div>
+          <div id="disableAllRules" class="btn btn-default">
+            Disable All
+          </div>
         </div>
         <div id="ruleFilters" class="btn-group" data-toggle="buttons">
           <div class="btn btn-default active">
@@ -2857,11 +2867,13 @@
         </div>
         <div id="deadSteps" class="panel-body collapse">
           <span class="button-bar">
-            <div id="collapseDeadSteps" class="btn btn-default">
-              Collapse All
-            </div>
-            <div id="expandDeadSteps" class="btn btn-default">
-              Expand All
+            <div class="btn-group">
+                <div id="collapseDeadSteps" class="btn btn-default">
+                  Collapse All
+                </div>
+                <div id="expandDeadSteps" class="btn btn-default">
+                  Expand All
+                </div>
             </div>
           </span>
           <div>
@@ -2981,11 +2993,13 @@
     </div>
     <div id="features" class="panel-body collapse">
       <span class="button-bar">
-        <div id="collapseFeatures" class="btn btn-default">
-          Collapse All
-        </div>
-        <div id="expandFeatures" class="btn btn-default">
-          Expand All
+        <div class="btn-group">
+          <div id="collapseFeatures" class="btn btn-default">
+            Collapse All
+          </div>
+          <div id="expandFeatures" class="btn btn-default">
+            Expand All
+          </div>
         </div>
       </span>
       
@@ -4027,11 +4041,13 @@
 
     <div id="step_definitions" class="panel-body collapse">
       <span class="button-bar">
-        <div id="collapseStepDefinitions" class="btn btn-default">
-          Collapse All
-        </div>
-        <div id="expandStepDefinitions" class="btn btn-default">
-          Expand All
+        <div class="btn-group">
+            <div id="collapseStepDefinitions" class="btn btn-default">
+              Collapse All
+            </div>
+            <div id="expandStepDefinitions" class="btn btn-default">
+              Expand All
+            </div>
         </div>
       </span>
       
@@ -4411,11 +4427,13 @@
     </div>
     <div id="hooks" class="panel-body collapse">
       <span class="button-bar">
-        <div id="collapseHooks" class="btn btn-default">
-          Collapse All
-        </div>
-        <div id="expandHooks" class="btn btn-default">
-          Expand All
+        <div class="btn-group">
+            <div id="collapseHooks" class="btn btn-default">
+              Collapse All
+            </div>
+            <div id="expandHooks" class="btn btn-default">
+              Expand All
+            </div>
         </div>
       </span>
       
@@ -4654,6 +4672,8 @@
                 CukeSniffer.actions.expandStepDefinitionDetails();
                 CukeSniffer.actions.collapseHooks();
                 CukeSniffer.actions.expandHooks();
+                CukeSniffer.actions.enableAllRules();
+                CukeSniffer.actions.disableAllRules();
                 CukeSniffer.actions.changeRuleStatus();
             },
             _togglePanelHeaderIcons: function(){
@@ -4732,6 +4752,16 @@
             expandHooks: function(){
                 $(document).on("click", "#expandHooks", function(){
                     $(".hook > .row > .details").show();
+                });
+            },
+            enableAllRules: function(){
+                $(document).on("click", "#enableAllRules", function(){
+                   $(".rule input[type='checkbox']:not(:checked)").click();
+                });
+            },
+            disableAllRules: function(){
+                $(document).on("click", "#disableAllRules", function(){
+                    $(".rule input[type='checkbox']:checked").click();
                 });
             },
             changeRuleStatus: function(){
