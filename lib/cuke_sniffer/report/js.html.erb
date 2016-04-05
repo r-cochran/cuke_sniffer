@@ -42,6 +42,31 @@
             },
             _updateRowColors: function(){
                 $(" .deadStep:even, .feature:even, .stepDefinition:even, .hook:even").addClass("blueRow");
+            },
+            _updateVisibleItems: function(){
+                $(".feature, .backgroundProblems, .scenarios, .scenarios, .stepDefinition, .hook").hide();
+                CukeSniffer.view._updateVisibleFeatureIssues();
+                CukeSniffer.view._updateVisibleStepDefinitionIssues();
+                CukeSniffer.view._updateVisibleHookIssues();
+            },
+            _updateVisibleFeatureIssues: function(){
+                var $visibleFeatures = $(".feature:has([show])"),
+                    $visibleBackground = $(".backgroundProblems:has([show])"),
+                    $visibleScenarioBlocks = $(".scenarios:has([show])"),
+                    $visibleScenarios = $(".scenario:has(.details [data-improvement-row][show])");
+
+                $visibleFeatures.show();
+                $visibleBackground.show();
+                $visibleScenarioBlocks.show();
+                $visibleScenarios.show();
+            },
+            _updateVisibleStepDefinitionIssues: function(){
+                var $visibleStepDefinition = $(".stepDefinition:has([show])")
+                $visibleStepDefinition.show();
+            },
+            _updateVisibleHookIssues: function(){
+                var $visibleHooks = $(".hook:has([show])")
+                $visibleHooks.show();
             }
         },
         actions: {
@@ -181,13 +206,17 @@
                 $.each(improvementPhraseList, function(n, phrase){
                     var $all = $("[data-improvement-row]:has([data-improvement='" + phrase +"'])");
                     $all.show();
+                    $all.attr("show", true);
                 });
+                CukeSniffer.view._updateVisibleItems();
             },
             _disableRule: function(improvementPhraseList){
                 $.each(improvementPhraseList, function(n, phrase){
                     var $all = $("[data-improvement-row]:has([data-improvement='" + phrase +"'])");
                     $all.hide();
+                    $all.removeAttr("show");
                 });
+                CukeSniffer.view._updateVisibleItems();
             }
         }
     };

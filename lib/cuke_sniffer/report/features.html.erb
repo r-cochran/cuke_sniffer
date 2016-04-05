@@ -83,7 +83,7 @@
                           </h4>
                         </div>
                         <% SummaryHelper::sort_improvement_list(feature.background.rules_hash).each do |phrase, count| %>
-                            <div class="row" data-improvement-row>
+                            <div data-improvement-row>
                               <div class="col-md-1 red" data-score>
                                 <%= count %>
                               </div>
