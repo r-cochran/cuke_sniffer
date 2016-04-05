@@ -61,6 +61,7 @@
                 CukeSniffer.actions.expandStepDefinitionDetails();
                 CukeSniffer.actions.collapseHooks();
                 CukeSniffer.actions.expandHooks();
+                CukeSniffer.actions.changeRuleStatus();
             },
             _togglePanelHeaderIcons: function(){
                 $(document).on("click", ".panel-title", function(){
@@ -138,6 +139,42 @@
             expandHooks: function(){
                 $(document).on("click", "#expandHooks", function(){
                     $(".hook > .row > .details").show();
+                });
+            },
+            changeRuleStatus: function(){
+                $(document).on("click", ".rule input[type='checkbox']", function(){
+                    var enabled = $(this).is(":checked"),
+                        phrase = $(this).closest(".rule").find("[data-phrase]").html(),
+                            improvementPhraseList = [];
+                    if(phrase.indexOf("{class}") != -1) {
+                        var targets = $(this).closest(".rule").find("[data-targets]").html().trim().split(", ");
+                        if(targets.indexOf("Scenario") != -1){
+                            targets.push("Scenario Outline");
+                        }
+                        $.each(targets, function (n, target) {
+                            improvementPhraseList.push(phrase.replace("{class}", target))
+                        });
+                    } else if(phrase.indexOf("{word}") != -1){
+                        var targets = $(this).closest(".rule").find("[data-conditions]").html().trim().replace("[", "").replace("]", "").replace(/\"/g, "").split(", ");
+                        $.each(targets, function (n, target) {
+                            improvementPhraseList.push(phrase.replace("{word}", target))
+                        });
+                    } else {
+                        improvementPhraseList.push(phrase)
+                    }
+                    (enabled) ? CukeSniffer.actions._enableRule(improvementPhraseList) : CukeSniffer.actions._disableRule(improvementPhraseList);
+                });
+            },
+            _enableRule: function(improvementPhraseList){
+                $.each(improvementPhraseList, function(n, phrase){
+                    var $all = $("[data-improvement-row]:has([data-improvement='" + phrase +"'])");
+                    $all.show();
+                });
+            },
+            _disableRule: function(improvementPhraseList){
+                $.each(improvementPhraseList, function(n, phrase){
+                    var $all = $("[data-improvement-row]:has([data-improvement='" + phrase +"'])");
+                    $all.hide();
                 });
             }
         }

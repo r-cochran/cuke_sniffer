@@ -41,7 +41,8 @@
                 <% if rule.enabled%>
                     checked="checked"
                 <% end %>
-            /> <%=rule.phrase %>
+            />
+            <span data-phrase><%=rule.phrase %></span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -57,7 +58,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   <%= rule.targets.to_s.gsub(/[\]\[\"]/, "") %>
                 </div>
               </div>
@@ -72,7 +73,7 @@
                         <div class="col-md-2">
                             <%= condition_symbol %>:
                         </div>
-                        <div class="col-md-10">
+                        <div class="col-md-10" data-conditions>
                             <%= value %>
                         </div>
                       </div>

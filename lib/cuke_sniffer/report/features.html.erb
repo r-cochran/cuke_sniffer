@@ -58,11 +58,13 @@
                       </h4>
                     </div>
                     <% SummaryHelper::sort_improvement_list(feature.rules_hash).each do |phrase, count| %>
-                        <div class="col-md-1 red">
-                          <%= count %>
-                        </div>
-                        <div class="col-md-11">
-                          <%= phrase %>
+                        <div data-improvement-row>
+                          <div class="col-md-1 red" data-score>
+                            <%= count %>
+                          </div>
+                          <div class="col-md-11" data-improvement="<%=phrase %>">
+                            <%= phrase %>
+                          </div>
                         </div>
                     <% end %>
                   </div>
@@ -79,11 +81,13 @@
                           </h4>
                         </div>
                         <% SummaryHelper::sort_improvement_list(feature.background.rules_hash).each do |phrase, count| %>
-                            <div class="col-md-1 red">
-                              <%= count %>
-                            </div>
-                            <div class="col-md-11">
-                              <%= phrase %>
+                            <div class="row" data-improvement-row>
+                              <div class="col-md-1 red" data-score>
+                                <%= count %>
+                              </div>
+                              <div class="col-md-11" data-improvement="<%=phrase %>">
+                                <%= phrase %>
+                              </div>
                             </div>
                         <% end %>
                     <% end %>
@@ -109,11 +113,13 @@
                           </div>
                           <div class="col-md-12 details well">
                             <% SummaryHelper::sort_improvement_list(scenario.rules_hash).each do |phrase, count| %>
-                              <div class="col-md-1 red">
-                                <%= count %>
-                              </div>
-                              <div class="col-md-11">
-                                <%= phrase %>
+                              <div class="row" data-improvement-row>
+                                <div class="col-md-1 red" data-score>
+                                  <%= count %>
+                                </div>
+                                <div class="col-md-11" data-improvement="<%=phrase %>">
+                                  <%= phrase %>
+                                </div>
                               </div>
                             <% end %>
                           </div>

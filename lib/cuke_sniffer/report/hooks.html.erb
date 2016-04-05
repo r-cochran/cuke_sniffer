@@ -62,11 +62,13 @@
                         </div>
                         <div class="well col-md-12">
                           <% SummaryHelper::sort_improvement_list(hook.rules_hash).each do |phrase, count| %>
-                              <div class="col-md-1 red">
-                                <%= count %>
-                              </div>
-                              <div class="col-md-11">
-                                <%= phrase %>
+                              <div class="row" data-improvement-row>
+                                  <div class="col-md-1 red" data-score>
+                                    <%= count %>
+                                  </div>
+                                  <div class="col-md-11" data-improvement="<%=phrase %>">
+                                    <%= phrase %>
+                                  </div>
                               </div>
                           <% end %>
                         </div>
