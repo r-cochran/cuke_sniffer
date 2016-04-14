@@ -6,6 +6,7 @@ group :development do
   gem 'cucumber'
   gem 'nokogiri'
   gem 'roxml'
+  gem 'jasmine'
 end
 
 gemspec

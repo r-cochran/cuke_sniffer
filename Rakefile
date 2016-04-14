@@ -1,6 +1,9 @@
 require 'rubygems'
 require 'bundler'
 require 'rspec/core/rake_task'
+require 'jasmine'
+
+load 'jasmine/tasks/jasmine.rake'
 
 Bundler::GemHelper.install_tasks
 
@@ -14,6 +17,14 @@ task :spec
 
 task :lib do
   $LOAD_PATH.unshift(File.expand_path("lib", File.dirname(__FILE__)))
+end
+
+task :travis do
+  ["rspec spec", "rake jasmine:ci"].each do |cmd|
+    puts "Starting to run #{cmd}..."
+    system("export DISPLAY=:99.0 && bundle exec #{cmd}")
+    raise "#{cmd} failed!" unless $?.exitstatus == 0
+  end
 end
 
 task :default => :spec
