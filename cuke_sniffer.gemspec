@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
              "lib/cuke_sniffer/report/dead_steps_min.html.erb",
              "lib/cuke_sniffer/report/js.html.erb",
              "lib/cuke_sniffer/report/css.html.erb",
+             "lib/cuke_sniffer/report/expand_and_collapse_buttons.html.erb",
              "lib/cuke_sniffer/report/title.html.erb",
              "lib/cuke_sniffer/report/features.html.erb",
              "lib/cuke_sniffer/report/hooks.html.erb",

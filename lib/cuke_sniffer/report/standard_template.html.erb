@@ -1,5 +1,6 @@
 <%
    styles = build_page(cuke_sniffer, "css.html.erb")
+   scripts = build_page(cuke_sniffer, "js.html.erb")
    title = build_page(cuke_sniffer, "title.html.erb")
    information = build_page(cuke_sniffer, "information.html.erb")
    summary = build_page(cuke_sniffer, "summary.html.erb")
@@ -9,7 +10,6 @@
    features = build_page(cuke_sniffer, "features.html.erb")
    step_definitions = build_page(cuke_sniffer, "step_definitions.html.erb")
    hooks = build_page(cuke_sniffer, "hooks.html.erb")
-   scripts = build_page(cuke_sniffer, "js.html.erb")
 %>
 <div class="container">
    <%= styles %>

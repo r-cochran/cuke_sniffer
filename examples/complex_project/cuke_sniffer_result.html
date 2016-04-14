@@ -770,13 +770,13 @@
     <div id="rules_data" class="panel-body collapse">
       <span class="button-bar">
         <div class="btn-group">
-          <div id="collapseRules" class="btn btn-default">
-            Collapse All
-          </div>
-          <div id="expandRules" class="btn btn-default">
-            Expand All
-          </div>
-        </div>
+  <div class="btn btn-default" collapse>
+    Collapse All
+  </div>
+  <div class="btn btn-default" expand>
+    Expand All
+  </div>
+</div>
         <div class="btn-group">
           <div id="enableAllRules" class="btn btn-default">
             Enable All
@@ -2868,13 +2868,13 @@
         <div id="deadSteps" class="panel-body collapse">
           <span class="button-bar">
             <div class="btn-group">
-                <div id="collapseDeadSteps" class="btn btn-default">
-                  Collapse All
-                </div>
-                <div id="expandDeadSteps" class="btn btn-default">
-                  Expand All
-                </div>
-            </div>
+  <div class="btn btn-default" collapse>
+    Collapse All
+  </div>
+  <div class="btn btn-default" expand>
+    Expand All
+  </div>
+</div>
           </span>
           <div>
             
@@ -2994,13 +2994,13 @@
     <div id="features" class="panel-body collapse">
       <span class="button-bar">
         <div class="btn-group">
-          <div id="collapseFeatures" class="btn btn-default">
-            Collapse All
-          </div>
-          <div id="expandFeatures" class="btn btn-default">
-            Expand All
-          </div>
-        </div>
+  <div class="btn btn-default" collapse>
+    Collapse All
+  </div>
+  <div class="btn btn-default" expand>
+    Expand All
+  </div>
+</div>
       </span>
       
       
@@ -4042,13 +4042,13 @@
     <div id="step_definitions" class="panel-body collapse">
       <span class="button-bar">
         <div class="btn-group">
-            <div id="collapseStepDefinitions" class="btn btn-default">
-              Collapse All
-            </div>
-            <div id="expandStepDefinitions" class="btn btn-default">
-              Expand All
-            </div>
-        </div>
+  <div class="btn btn-default" collapse>
+    Collapse All
+  </div>
+  <div class="btn btn-default" expand>
+    Expand All
+  </div>
+</div>
       </span>
       
           
@@ -4428,13 +4428,13 @@
     <div id="hooks" class="panel-body collapse">
       <span class="button-bar">
         <div class="btn-group">
-            <div id="collapseHooks" class="btn btn-default">
-              Collapse All
-            </div>
-            <div id="expandHooks" class="btn btn-default">
-              Expand All
-            </div>
-        </div>
+  <div class="btn btn-default" collapse>
+    Collapse All
+  </div>
+  <div class="btn btn-default" expand>
+    Expand All
+  </div>
+</div>
       </span>
       
           
@@ -4624,35 +4624,14 @@
             CukeSniffer.view._updateRowColors();
         },
         view: {
-            _hideDetails: function($section){
-                $section.find(".details").hide();
-            },
-            hideRuleDetails: function(){
-                CukeSniffer.view._hideDetails($(".rule"));
-            },
-            hideDeadStepDetails: function(){
-                CukeSniffer.view._hideDetails($(".deadStep"));
-            },
-            hideFeatures: function(){
-                CukeSniffer.view._hideDetails($(".feature > .row"));
-            },
-            hideStepDefinitions: function(){
-                CukeSniffer.view._hideDetails($(".stepDefinition > .row"));
-            },
-            hideHooks: function(){
-                CukeSniffer.view._hideDetails($(".hook > .row"));
-            },
             toggleDetails: function(){
                 $(this).closest(".deadStep, .feature, .stepDefinition, .hook").find(".row > .details").slideToggle();
             },
             _startTooltips: function(){
                 $("[title]").tooltip();
             },
-            _updateRuleRowColors: function(){
-                $(".rule:visible:even").addClass("blueRow");
-            },
             _updateRowColors: function(){
-                $(" .deadStep:even, .feature:even, .stepDefinition:even, .hook:even").addClass("blueRow");
+                $(".rule:visible:even, .deadStep:even, .feature:even, .stepDefinition:even, .hook:even").addClass("blueRow");
             },
             _updateVisibleItems: function(){
                 $(".feature, .backgroundProblems, .scenario, .scenarios, .stepDefinition, .hook").hide();
@@ -4683,24 +4662,26 @@
         },
         actions: {
             bind: function(){
+                CukeSniffer.actions._bindExpandAll();
+                CukeSniffer.actions._bindCollapseAll();
                 CukeSniffer.actions._togglePanelHeaderIcons();
                 CukeSniffer.actions._viewRules();
                 CukeSniffer.actions._clickRow();
                 CukeSniffer.actions._ruleFilters();
-                CukeSniffer.actions.collapseRules();
-                CukeSniffer.actions.expandRules();
-                CukeSniffer.actions.collapseDeadSteps();
-                CukeSniffer.actions.expandDeadSteps();
                 CukeSniffer.actions.toggleDetails();
-                CukeSniffer.actions.collapseFeatureDetails();
-                CukeSniffer.actions.expandFeatureDetails();
-                CukeSniffer.actions.collapseStepDefinitionDetails();
-                CukeSniffer.actions.expandStepDefinitionDetails();
-                CukeSniffer.actions.collapseHooks();
-                CukeSniffer.actions.expandHooks();
                 CukeSniffer.actions.enableAllRules();
                 CukeSniffer.actions.disableAllRules();
                 CukeSniffer.actions.changeRuleStatus();
+            },
+            _bindExpandAll: function(){
+                $(document).on("click", "[expand]", function(){
+                    $(this).closest(".panel-body").find(".details").show();
+                });
+            },
+            _bindCollapseAll: function(){
+                $(document).on("click", "[collapse]", function(){
+                    $(this).closest(".panel-body").find(".details").hide();
+                });
             },
             _togglePanelHeaderIcons: function(){
                 $(document).on("click", ".panel-title", function(){
@@ -4710,7 +4691,7 @@
                 });
             },
             _viewRules: function(){
-                $(document).on("click", "#rulesTab", CukeSniffer.view._updateRuleRowColors);
+                $(document).on("click", "#rulesTab", CukeSniffer.view._updateRowColors);
             },
             _clickRow: function(){
                 $(document).on("click", ".rule", function(){
@@ -4734,51 +4715,14 @@
                             $("[rule-" + filterName + "]").show();
                         }
                     });
-                    CukeSniffer.view._updateRuleRowColors();
-                });
-            },
-            collapseRules: function(){
-                $(document).on("click", "#collapseRules", CukeSniffer.view.hideRuleDetails);
-            },
-            expandRules: function(){
-                $(document).on("click", "#expandRules", function(){
-                    $(".rule .details").show();
-                });
-            },
-            collapseDeadSteps: function(){
-                $(document).on("click", "#collapseDeadSteps", CukeSniffer.view.hideDeadStepDetails);
-            },
-            expandDeadSteps: function(){
-                $(document).on("click", "#expandDeadSteps", function(){
-                    $(".deadStep .details").show();
+                    CukeSniffer.view._updateRowColors();
                 });
             },
             toggleDetails: function(){
-                $(document).on("click", ".deadStep > .row > .title, .feature > .row > .title, .stepDefinition > .row > .title, .hook .title", CukeSniffer.view.toggleDetails);
-            },
-            collapseFeatureDetails: function(){
-                $(document).on("click", "#collapseFeatures", CukeSniffer.view.hideFeatures);
-            },
-            expandFeatureDetails: function(){
-                $(document).on("click", "#expandFeatures", function(){
-                    $(".feature > .row > .details").show();
-                });
-            },
-            collapseStepDefinitionDetails: function(){
-                $(document).on("click", "#collapseStepDefinitions", CukeSniffer.view.hideStepDefinitions);
-            },
-            expandStepDefinitionDetails: function(){
-                $(document).on("click", "#expandStepDefinitions", function(){
-                    $(".stepDefinition > .row > .details").show();
-                });
-            },
-            collapseHooks: function(){
-                $(document).on("click", "#collapseHooks", CukeSniffer.view.hideHooks);
-            },
-            expandHooks: function(){
-                $(document).on("click", "#expandHooks", function(){
-                    $(".hook > .row > .details").show();
-                });
+                $(document).on("click", ".deadStep > .row > .title," +
+                        " .feature > .row > .title, " +
+                        ".stepDefinition > .row > .title, " +
+                        ".hook .title", CukeSniffer.view.toggleDetails);
             },
             enableAllRules: function(){
                 $(document).on("click", "#enableAllRules", function(){
