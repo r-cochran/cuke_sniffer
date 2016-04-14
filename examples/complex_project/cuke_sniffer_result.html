@@ -4655,7 +4655,7 @@
                 $(" .deadStep:even, .feature:even, .stepDefinition:even, .hook:even").addClass("blueRow");
             },
             _updateVisibleItems: function(){
-                $(".feature, .backgroundProblems, .scenarios, .scenarios, .stepDefinition, .hook").hide();
+                $(".feature, .backgroundProblems, .scenario, .scenarios, .stepDefinition, .hook").hide();
                 CukeSniffer.view._updateVisibleFeatureIssues();
                 CukeSniffer.view._updateVisibleStepDefinitionIssues();
                 CukeSniffer.view._updateVisibleHookIssues();
@@ -4670,6 +4670,7 @@
                 $visibleBackground.show();
                 $visibleScenarioBlocks.show();
                 $visibleScenarios.show();
+                $visibleScenarios.find(".details").show();
             },
             _updateVisibleStepDefinitionIssues: function(){
                 var $visibleStepDefinition = $(".stepDefinition:has([show])")
