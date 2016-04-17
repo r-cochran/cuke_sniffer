@@ -19,6 +19,14 @@ task :lib do
   $LOAD_PATH.unshift(File.expand_path("lib", File.dirname(__FILE__)))
 end
 
+task :reload_gem do
+  gem_name = "cuke_sniffer"
+  version = "0.0.9"
+  system "gem uninstall #{gem_name}"
+  system "gem build #{gem_name}.gemspec"
+  system "gem install #{gem_name}-#{version}.gem"
+end
+
 task :travis do
   ["rspec spec", "rake jasmine:ci"].each do |cmd|
     puts "Starting to run #{cmd}..."

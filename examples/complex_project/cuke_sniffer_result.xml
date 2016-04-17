@@ -9,7 +9,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f52888@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:24 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df9338@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:24 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -19,7 +19,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f52810@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:31 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df9270@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:31 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -29,7 +29,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f52798@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:38 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df91a8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:38 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -39,7 +39,7 @@
       <targets>
         <targets>["Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f52720@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:45 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df90e0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:45 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -49,7 +49,7 @@
       <targets>
         <targets>["Feature", "Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f52690@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:53 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df8ff0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:53 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -59,7 +59,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f52618@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:68 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df8f28@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:68 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -69,7 +69,7 @@
       <targets>
         <targets>["Feature", "Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f52570@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:81 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df8e10@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:81 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -79,7 +79,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f524f8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:88 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df8d48@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:88 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -89,7 +89,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f52468@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:95 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df8c58@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:95 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -99,7 +99,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f523f0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:104 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df8b90@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:104 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -109,7 +109,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f52360@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:111 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df8aa0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:111 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -119,7 +119,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f522d0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:118 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df89b0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:118 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -129,7 +129,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f52258@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:125 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df88e8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:125 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -139,7 +139,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f521e0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:132 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df8820@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:132 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -149,7 +149,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f52168@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:139 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df8758@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:139 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -159,7 +159,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f520f0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:146 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df8690@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:146 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -169,7 +169,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f52078@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:154 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df85c8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:154 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -179,7 +179,7 @@
       <targets>
         <targets>["Feature", "Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51fb8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:164 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df8488@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:164 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -189,7 +189,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51f40@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:171 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df83c0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:171 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -199,7 +199,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51ec8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:178 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df82f8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:178 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -209,7 +209,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51e50@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:185 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df8230@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:185 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -224,7 +224,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51dc0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:193 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df8140@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:193 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -234,7 +234,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51d48@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:200 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9df8078@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:200 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -244,7 +244,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51cb8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:212 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9907d98@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:212 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -254,7 +254,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51c28@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:219 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf99077f8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:219 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -264,7 +264,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51bb0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:227 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9907690@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:227 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -279,7 +279,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51b38@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:235 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf99075c8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:235 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -289,7 +289,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51aa8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:242 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf99073c0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:242 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -304,7 +304,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51a30@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:254 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9906f88@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:254 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -314,7 +314,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f519b8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:262 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9906a38@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:262 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -324,17 +324,17 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51940@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:269 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf99063f8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:269 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
-      <phrase>Same tag appears on Feature.</phrase>
+      <phrase>Same tag appears on both Feature and Scenario</phrase>
       <score>10</score>
       <conditions/>
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f518c8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:281 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf99061a0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:281 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -344,7 +344,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51850@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:295 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9905598@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:295 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -354,7 +354,7 @@
       <targets>
         <targets>["Feature", "Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f517c0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:310 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9905160@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:310 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -364,7 +364,7 @@
       <targets>
         <targets>["Feature", "Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51730@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:317 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9904a80@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:317 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -374,7 +374,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f516b8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:326 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9904738@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:326 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -384,7 +384,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51640@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:333 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9904378@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:333 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -394,7 +394,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f515c8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:344 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9e03f90@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:344 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -409,7 +409,7 @@
       <targets>
         <targets>["Feature", "Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51520@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:360 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9e03e78@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:360 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -424,7 +424,7 @@
       <targets>
         <targets>["Feature", "Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51478@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:368 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9e03d60@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:368 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -439,7 +439,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51238@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:376 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9e039a0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:376 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -449,7 +449,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f511c0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:390 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9e038d8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:390 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -459,7 +459,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51148@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:403 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9e03810@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:403 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -474,7 +474,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f510d0@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:413 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9e03748@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:413 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -484,7 +484,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f51040@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:420 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9e03658@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:420 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -494,7 +494,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f50fc8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:427 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9e03590@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:427 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -504,7 +504,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f50f50@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:434 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9e034c8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:434 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -519,7 +519,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f50ed8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:442 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9e03400@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:442 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -534,7 +534,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f50e60@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:456 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9e03338@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:456 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -544,7 +544,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f50de8@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:469 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9e03270@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:469 (lambda)&gt;</reason>
     </rule>
     <rule>
       <enabled>true</enabled>
@@ -559,7 +559,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x2f50d58@C:/Ruby193/lib/ruby/gems/1.9.1/gems/cuke_sniffer-0.0.8/lib/cuke_sniffer/rule_config.rb:477 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fadf9e03180@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-0.0.9/lib/cuke_sniffer/rule_config.rb:477 (lambda)&gt;</reason>
     </rule>
   </rules>
   <improvement_list>
@@ -576,8 +576,8 @@
       <total>15</total>
     </improvement>
     <improvement>
-      <rule>Same tag appears on Feature.</rule>
-      <total>6</total>
+      <rule>Same tag appears on both Feature and Scenario</rule>
+      <total>12</total>
     </improvement>
     <improvement>
       <rule>Implementation word used: button.</rule>
@@ -592,6 +592,10 @@
       <total>5</total>
     </improvement>
     <improvement>
+      <rule>Lazy Debugging through puts, p, or print</rule>
+      <total>4</total>
+    </improvement>
+    <improvement>
       <rule>Implementation word used: click.</rule>
       <total>4</total>
     </improvement>
@@ -600,15 +604,7 @@
       <total>4</total>
     </improvement>
     <improvement>
-      <rule>Lazy Debugging through puts, p, or print</rule>
-      <total>4</total>
-    </improvement>
-    <improvement>
       <rule>Feature has numbers in the description.</rule>
-      <total>3</total>
-    </improvement>
-    <improvement>
-      <rule>Implementation word used: page.</rule>
       <total>3</total>
     </improvement>
     <improvement>
@@ -616,8 +612,8 @@
       <total>3</total>
     </improvement>
     <improvement>
-      <rule>Small sleeps used. Use a wait_until like method.</rule>
-      <total>2</total>
+      <rule>Implementation word used: page.</rule>
+      <total>3</total>
     </improvement>
     <improvement>
       <rule>Scenario Outline with too many examples.</rule>
@@ -628,23 +624,11 @@
       <total>2</total>
     </improvement>
     <improvement>
-      <rule>Implementation word used: pop up.</rule>
-      <total>1</total>
+      <rule>Small sleeps used. Use a wait_until like method.</rule>
+      <total>2</total>
     </improvement>
     <improvement>
-      <rule>Scenario has no description.</rule>
-      <total>1</total>
-    </improvement>
-    <improvement>
-      <rule>Scenario Outline with only one example.</rule>
-      <total>1</total>
-    </improvement>
-    <improvement>
-      <rule>Given/When/Then used multiple times in the same Scenario Outline.</rule>
-      <total>1</total>
-    </improvement>
-    <improvement>
-      <rule>Tag appears on all scenarios.</rule>
+      <rule>Feature has no description.</rule>
       <total>1</total>
     </improvement>
     <improvement>
@@ -652,7 +636,27 @@
       <total>1</total>
     </improvement>
     <improvement>
-      <rule>Hook found outside of the designated hooks file</rule>
+      <rule>Invalid first step. Began with And/But.</rule>
+      <total>1</total>
+    </improvement>
+    <improvement>
+      <rule>Given/When/Then used multiple times in the same Scenario Outline.</rule>
+      <total>1</total>
+    </improvement>
+    <improvement>
+      <rule>Scenario Outline with only one example.</rule>
+      <total>1</total>
+    </improvement>
+    <improvement>
+      <rule>Scenario has no description.</rule>
+      <total>1</total>
+    </improvement>
+    <improvement>
+      <rule>Implementation word used: pop up.</rule>
+      <total>1</total>
+    </improvement>
+    <improvement>
+      <rule>Tag appears on all scenarios.</rule>
       <total>1</total>
     </improvement>
     <improvement>
@@ -664,7 +668,7 @@
       <total>1</total>
     </improvement>
     <improvement>
-      <rule>Feature has no description.</rule>
+      <rule>Hook found outside of the designated hooks file</rule>
       <total>1</total>
     </improvement>
   </improvement_list>
@@ -672,7 +676,7 @@
     <feature>
       <scenarios/>
       <score>60</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/empty_feature.feature</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/empty_feature.feature</location>
       <rules>
         <rule>
           <phrase>Feature has no description.</phrase>
@@ -701,7 +705,7 @@
           </steps>
           <examples/>
           <score>24</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:6</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:6</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -737,7 +741,7 @@
           </steps>
           <examples/>
           <score>25</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:14</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:14</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -778,7 +782,7 @@
           </steps>
           <examples/>
           <score>23</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:24</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:24</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -815,7 +819,7 @@
           </steps>
           <examples/>
           <score>23</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:35</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:35</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -852,7 +856,7 @@
             <examples_table>| Bob  | Bobert   | not logged |</examples_table>
           </examples>
           <score>57</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:44</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:44</location>
           <rules>
             <rule>
               <phrase>Scenario has no description.</phrase>
@@ -879,14 +883,14 @@
         </scenario>
       </scenarios>
       <score>80</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature</location>
       <rules>
         <rule>
           <phrase>Feature has numbers in the description.</phrase>
           <score>1</score>
         </rule>
         <rule>
-          <phrase>Same tag appears on Feature.</phrase>
+          <phrase>Same tag appears on both Feature and Scenario</phrase>
           <score>6</score>
         </rule>
         <rule>
@@ -1409,7 +1413,7 @@
             <examples_table>| 6b40dc141f6e9d8b4a458031b70425e4 | $3.11         |</examples_table>
           </examples>
           <score>5585</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature:5</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature:5</location>
           <rules>
             <rule>
               <phrase>Commented example.</phrase>
@@ -1429,7 +1433,7 @@
           </steps>
           <examples/>
           <score>10</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature:514</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature:514</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -1445,7 +1449,7 @@
           </steps>
           <examples/>
           <score>10</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature:518</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature:518</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -1461,7 +1465,7 @@
           </steps>
           <examples/>
           <score>10</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature:522</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature:522</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -1477,7 +1481,7 @@
           </steps>
           <examples/>
           <score>10</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature:526</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature:526</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -1493,7 +1497,7 @@
           </steps>
           <examples/>
           <score>10</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature:530</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature:530</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -1513,7 +1517,7 @@
           </steps>
           <examples/>
           <score>14</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature:534</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature:534</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -1535,12 +1539,16 @@
           <type>Scenario</type>
         </scenario>
       </scenarios>
-      <score>20</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature</location>
+      <score>80</score>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature</location>
       <rules>
         <rule>
           <phrase>Feature has numbers in the description.</phrase>
           <score>1</score>
+        </rule>
+        <rule>
+          <phrase>Same tag appears on both Feature and Scenario</phrase>
+          <score>6</score>
         </rule>
         <rule>
           <phrase>There are commas in the description, creating possible multirunning scenarios or features.</phrase>
@@ -1552,7 +1560,7 @@
     <feature>
       <scenarios>
         <scenario>
-          <start_line>5</start_line>
+          <start_line>10</start_line>
           <steps>
             <step>Given I am looking at an account &lt;account number&gt;</step>
             <step>When I add an item to that account</step>
@@ -2062,7 +2070,7 @@
             <examples_table>| 6b40dc141f6e9d8b4a458031b70425e4 | $3.11          |</examples_table>
           </examples>
           <score>5585</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature:5</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature:10</location>
           <rules>
             <rule>
               <phrase>Commented example.</phrase>
@@ -2076,13 +2084,13 @@
           <type>Scenario Outline</type>
         </scenario>
         <scenario>
-          <start_line>515</start_line>
+          <start_line>520</start_line>
           <steps>
             <step>When I can rate a new account in KY for "Bob Bobert"</step>
           </steps>
           <examples/>
           <score>10</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature:515</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature:520</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -2092,13 +2100,13 @@
           <type>Scenario</type>
         </scenario>
         <scenario>
-          <start_line>519</start_line>
+          <start_line>524</start_line>
           <steps>
             <step>When I can rate a new account in KY for "Bob Bobert2"</step>
           </steps>
           <examples/>
           <score>10</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature:519</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature:524</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -2108,13 +2116,13 @@
           <type>Scenario</type>
         </scenario>
         <scenario>
-          <start_line>523</start_line>
+          <start_line>528</start_line>
           <steps>
             <step>When I can rate a new account in KY for "Bob Bobert3"</step>
           </steps>
           <examples/>
           <score>10</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature:523</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature:528</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -2124,13 +2132,13 @@
           <type>Scenario</type>
         </scenario>
         <scenario>
-          <start_line>527</start_line>
+          <start_line>532</start_line>
           <steps>
             <step>When I can rate a new account in KY for "Bob Bobert4"</step>
           </steps>
           <examples/>
           <score>10</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature:527</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature:532</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -2140,13 +2148,13 @@
           <type>Scenario</type>
         </scenario>
         <scenario>
-          <start_line>531</start_line>
+          <start_line>536</start_line>
           <steps>
             <step>When I can rate a new account in KY for "Bob Bobert5"</step>
           </steps>
           <examples/>
           <score>10</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature:531</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature:536</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -2156,7 +2164,7 @@
           <type>Scenario</type>
         </scenario>
         <scenario>
-          <start_line>535</start_line>
+          <start_line>540</start_line>
           <steps>
             <step>Given I rated something for my customer on the rate screen</step>
             <step>Then I can click the cancel button</step>
@@ -2166,7 +2174,7 @@
           </steps>
           <examples/>
           <score>14</score>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature:535</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature:540</location>
           <rules>
             <rule>
               <phrase>Scenario steps out of Given/When/Then order.</phrase>
@@ -2189,7 +2197,7 @@
         </scenario>
       </scenarios>
       <score>20</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature</location>
       <rules>
         <rule>
           <phrase>Feature has numbers in the description.</phrase>
@@ -2211,11 +2219,11 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:25</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:25</location>
           <call>I am logged in</call>
         </call>
         <call>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:36</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:36</location>
           <call>I am logged in</call>
         </call>
       </calls>
@@ -2224,7 +2232,7 @@
         <code>slee 10</code>
       </code>
       <score>10</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/step_definitions/my_steps.rb:1</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/my_steps.rb:1</location>
       <rules>
         <rule>
           <phrase>Lazy Debugging through puts, p, or print</phrase>
@@ -2244,7 +2252,7 @@
         <code>puts 'there be dragons'</code>
       </code>
       <score>21</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/older_steps.rb:1</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/older_steps.rb:1</location>
       <rules>
         <rule>
           <phrase>Lazy Debugging through puts, p, or print</phrase>
@@ -2263,11 +2271,11 @@
       <nested_steps/>
       <calls>
         <call>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:30</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:30</location>
           <call>I can click a logout button</call>
         </call>
         <call>
-          <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:41</location>
+          <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature:41</location>
           <call>I can click a logout button</call>
         </call>
       </calls>
@@ -2277,7 +2285,7 @@
         <code>sleep 10</code>
       </code>
       <score>12</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/older_steps.rb:7</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/older_steps.rb:7</location>
       <rules>
         <rule>
           <phrase>Lazy Debugging through puts, p, or print</phrase>
@@ -2305,7 +2313,7 @@
         <code># that I care about testing</code>
       </code>
       <score>3</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb:1</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb:1</location>
       <rules>
         <rule>
           <phrase>Commented code in Step Definition.</phrase>
@@ -2325,7 +2333,7 @@
         <code># that I care about testing</code>
       </code>
       <score>3</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb:7</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb:7</location>
       <rules>
         <rule>
           <phrase>Commented code in Step Definition.</phrase>
@@ -2345,7 +2353,7 @@
         <code># that I care about testing</code>
       </code>
       <score>3</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb:13</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb:13</location>
       <rules>
         <rule>
           <phrase>Commented code in Step Definition.</phrase>
@@ -2365,7 +2373,7 @@
         <code># that I care about testing</code>
       </code>
       <score>3</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb:19</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb:19</location>
       <rules>
         <rule>
           <phrase>Commented code in Step Definition.</phrase>
@@ -2385,7 +2393,7 @@
         <code># that I care about testing</code>
       </code>
       <score>3</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb:25</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb:25</location>
       <rules>
         <rule>
           <phrase>Commented code in Step Definition.</phrase>
@@ -2404,7 +2412,7 @@
         <code>@@target_url = ENV['target_url']</code>
       </code>
       <score>26</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/support/env.rb:1</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/support/env.rb:1</location>
       <rules>
         <rule>
           <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
@@ -2428,7 +2436,7 @@
         <code>@@state = "OH"</code>
       </code>
       <score>25</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/support/hooks.rb:1</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/support/hooks.rb:1</location>
       <rules>
         <rule>
           <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
@@ -2447,7 +2455,7 @@
         <code>puts "I finished doing an OH account"</code>
       </code>
       <score>25</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/support/hooks.rb:6</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/support/hooks.rb:6</location>
       <rules>
         <rule>
           <phrase>Hook without a begin/rescue. Reduced visibility when debugging.</phrase>
@@ -2469,7 +2477,7 @@
         <code>end</code>
       </code>
       <score>0</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/support/hooks.rb:10</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/support/hooks.rb:10</location>
       <rules/>
       <type>Before</type>
     </hook>
@@ -2486,7 +2494,7 @@
         <code>end</code>
       </code>
       <score>0</score>
-      <location>C:/development/ruby_projects/cuke_sniffer/examples/complex_project/features/features/support/hooks.rb:17</location>
+      <location>/Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/support/hooks.rb:17</location>
       <rules/>
       <type>Before</type>
     </hook>

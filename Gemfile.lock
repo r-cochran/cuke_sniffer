@@ -2,7 +2,6 @@ PATH
   remote: .
   specs:
     cuke_sniffer (0.0.9)
-      roxml
 
 GEM
   remote: https://rubygems.org/
