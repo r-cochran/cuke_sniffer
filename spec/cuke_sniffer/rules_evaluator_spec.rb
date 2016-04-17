@@ -146,6 +146,10 @@ describe CukeSniffer::RulesEvaluator do
     build_file(feature_block, @file_name)
     @cli.features = [CukeSniffer::Feature.new(@file_name)]
     CukeSniffer::RulesEvaluator.new(@cli, [rule])
+    puts @cli.features.first.rules_hash
+    @cli.features.first.scenarios.each do |scenario|
+      puts scenario.rules_hash
+    end
     @cli.features.first.total_score.should == rule.score * 2
   end
 
