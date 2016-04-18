@@ -29,8 +29,7 @@ module CukeSniffer
       judge_object(feature, "Feature")
       judge_object(feature.background, "Background") unless feature.background.nil?
       judge_objects(feature.scenarios, "Scenario")
-      feature.total_score += feature.update_score
-
+      feature.update_score
     end
 
     def judge_objects(objects, type)

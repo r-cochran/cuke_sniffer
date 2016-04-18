@@ -48,11 +48,8 @@ module CukeSniffer
     end
 
     def update_score
-      puts "before: \n\tscore: "+ @score.to_s + "\n\ttotal score: " + @total_score.to_s + "\n\tscenario score: " + @scenarios_score.to_s
       @scenarios_score += @background.score unless @background.nil?
-      puts "after background: \n\tscore: "+ @score.to_s + "\n\ttotal score: " + @total_score.to_s + "\n\tscenario score: " + @scenarios_score.to_s
       @scenarios.each { |scenario| @scenarios_score += scenario.score }
-      puts "after all scenarios: \n\tscore: "+ @score.to_s + "\n\ttotal score: " + @total_score.to_s + "\n\tscenario score: " + @scenarios_score.to_s
       @total_score = @scenarios_score + @score
     end
 
