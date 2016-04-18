@@ -1,0 +1,1652 @@
+<div class="panel panel-default">
+  <div id="rulesTab" class="panel-heading panel-title" data-toggle="collapse" data-target="#rules_data" aria-expanded="true">
+    Rules <span class="glyphicon glyphicon-menu-up"></span>
+  </div>
+
+  <div id="rules_data" class="panel-body collapse in" aria-expanded="true">
+      <span class="button-bar">
+        <div class="btn-group">
+          <div class="btn btn-default" collapse="">
+            Collapse All
+          </div>
+          <div class="btn btn-default" expand="">
+            Expand All
+          </div>
+        </div>
+        <div class="btn-group">
+          <div id="enableAllRules" class="btn btn-default">
+            Enable All
+          </div>
+          <div id="disableAllRules" class="btn btn-default">
+            Disable All
+          </div>
+        </div>
+        <div id="ruleFilters" class="btn-group" data-toggle="buttons">
+          <div class="btn btn-default active">
+            <input type="checkbox" checked="" data-rule-type="feature">Feature
+          </div>
+          <div class="btn btn-default active">
+            <input type="checkbox" checked="" data-rule-type="background"> Background
+          </div>
+          <div class="btn btn-default active">
+            <input type="checkbox" checked="" data-rule-type="scenario"> Scenario
+          </div>
+          <div class="btn btn-default active">
+            <input type="checkbox" checked="" data-rule-type="stepdefinition"> Step Definition
+          </div>
+          <div class="btn btn-default active">
+            <input type="checkbox" checked="" data-rule-type="hook"> Hook
+          </div>
+        </div>
+      </span>
+
+    <div class="rule blueRow" rule-stepdefinition="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Recursive nested step call.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              100
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              StepDefinition
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-background="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">There is a background with a tag. This feature file cannot run!</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              100
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Background
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-feature="" rule-scenario="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Comment comes between tag and properly executing line. This feature file cannot run!</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              100
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Feature, Scenario
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-stepdefinition="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">A nested step should not universally match all step definitions.  Dead steps cannot be correctly cataloged.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              100
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              StepDefinition
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-scenario="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Scenario Outline with no examples table.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              100
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-scenario="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Scenario Outline with no examples.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              100
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-hook="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Around hook without 2 parameters for Scenario and Block.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              25
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Hook
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-feature="" rule-scenario="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">{class} has no description.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              25
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Feature, Scenario
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-feature="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Feature with no scenarios.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              25
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Feature
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-scenario="" rule-background="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Commented step.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              25
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario, Background
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-scenario="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Commented example.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              25
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-scenario="" rule-background="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">No steps in Scenario.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              25
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario, Background
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-scenario="" rule-background="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Step that is only one word long.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              25
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario, Background
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-stepdefinition="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">No code in Step Definition.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              25
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              StepDefinition
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-hook="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Hook that both expects and ignores the same tag. This hook will not function as expected.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              25
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Hook
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-hook="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Hook without a begin/rescue. Reduced visibility when debugging.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              25
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Hook
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-hook="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Around hook does not call its block.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              25
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Hook
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-feature="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Feature has a background with no scenarios.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Feature
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-feature="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Feature file has no content.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Feature
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-feature="" rule-scenario="" rule-background="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">{class} has numbers in the description.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Feature, Scenario, Background
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-hook="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Hook has duplicate tags.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Hook
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-hook="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Hook is only comments.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Hook
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-hook="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Hook with no content.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Hook
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-feature="" rule-scenario="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">{class} has a commented out tag</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Feature, Scenario
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-feature="" rule-scenario="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">There are commas in the description, creating possible multirunning scenarios or features.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Feature, Scenario
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-feature="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Tag appears on all scenarios.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Feature
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-stepdefinition="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Pending step definition. Implement or remove.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              StepDefinition
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-stepdefinition="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Lazy Debugging through puts, p, or print</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              StepDefinition
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-stepdefinition="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Too many parameters in Step Definition.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              StepDefinition
+            </div>
+          </div>
+
+          <div class="row conditions">
+            <div class="col-md-3">
+              <b>Conditions:</b>
+            </div>
+            <div class="col-md-9">
+
+              <div class="row well">
+                <div class="col-md-2">
+                  max:
+                </div>
+                <div class="col-md-10" data-conditions="">
+                  4
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-scenario="" rule-background="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Given/When/Then used multiple times in the same {class}.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario, Background
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-scenario="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Scenario Outline with too many examples.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario
+            </div>
+          </div>
+
+          <div class="row conditions">
+            <div class="col-md-3">
+              <b>Conditions:</b>
+            </div>
+            <div class="col-md-9">
+
+              <div class="row well">
+                <div class="col-md-2">
+                  max:
+                </div>
+                <div class="col-md-10" data-conditions="">
+                  10
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-scenario="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Scenario Outline with only one example.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-scenario="" rule-background="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Step includes a * instead of Given/When/Then/And/But.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario, Background
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-scenario="" rule-background="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Invalid first step. Began with And/But.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario, Background
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-scenario="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Scenario steps out of Given/When/Then order.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-scenario="" rule-background="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">{class} with too many steps.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario, Background
+            </div>
+          </div>
+
+          <div class="row conditions">
+            <div class="col-md-3">
+              <b>Conditions:</b>
+            </div>
+            <div class="col-md-9">
+
+              <div class="row well">
+                <div class="col-md-2">
+                  max:
+                </div>
+                <div class="col-md-10" data-conditions="">
+                  7
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-feature="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Feature has a background with one scenario.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Feature
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-feature="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Same tag appears on both Feature and Scenario</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              10
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Feature
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-feature="" rule-scenario="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">{class} has too many tags.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              1
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Feature, Scenario
+            </div>
+          </div>
+
+          <div class="row conditions">
+            <div class="col-md-3">
+              <b>Conditions:</b>
+            </div>
+            <div class="col-md-9">
+
+              <div class="row well">
+                <div class="col-md-2">
+                  max:
+                </div>
+                <div class="col-md-10" data-conditions="">
+                  8
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-scenario="" rule-background="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Implementation word used: {word}.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              1
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario, Background
+            </div>
+          </div>
+
+          <div class="row conditions">
+            <div class="col-md-3">
+              <b>Conditions:</b>
+            </div>
+            <div class="col-md-9">
+
+              <div class="row well">
+                <div class="col-md-2">
+                  words:
+                </div>
+                <div class="col-md-10" data-conditions="">
+                  ["page", "site", "url", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen", "database", "DB"]
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-scenario="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Implementation word used: button.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              1
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-scenario="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Implementation word used: tab.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              1
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-feature="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Feature with too many scenarios.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              1
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Feature
+            </div>
+          </div>
+
+          <div class="row conditions">
+            <div class="col-md-3">
+              <b>Conditions:</b>
+            </div>
+            <div class="col-md-9">
+
+              <div class="row well">
+                <div class="col-md-2">
+                  max:
+                </div>
+                <div class="col-md-10" data-conditions="">
+                  10
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-scenario="" rule-background="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Date used.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              1
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Scenario, Background
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-stepdefinition="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Nested step call.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              1
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              StepDefinition
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-stepdefinition="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Commented code in Step Definition.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              1
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              StepDefinition
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-stepdefinition="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Small sleeps used. Use a wait_until like method.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              1
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              StepDefinition
+            </div>
+          </div>
+
+          <div class="row conditions">
+            <div class="col-md-3">
+              <b>Conditions:</b>
+            </div>
+            <div class="col-md-9">
+
+              <div class="row well">
+                <div class="col-md-2">
+                  max:
+                </div>
+                <div class="col-md-10" data-conditions="">
+                  2
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-stepdefinition="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Large sleeps used. Use a wait_until like method.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              1
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              StepDefinition
+            </div>
+          </div>
+
+          <div class="row conditions">
+            <div class="col-md-3">
+              <b>Conditions:</b>
+            </div>
+            <div class="col-md-9">
+
+              <div class="row well">
+                <div class="col-md-2">
+                  min:
+                </div>
+                <div class="col-md-10" data-conditions="">
+                  2
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-stepdefinition="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Todo found. Resolve it.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              1
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              StepDefinition
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule" rule-hook="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">Hook found outside of the designated hooks file</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              1
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Hook
+            </div>
+          </div>
+
+          <div class="row conditions">
+            <div class="col-md-3">
+              <b>Conditions:</b>
+            </div>
+            <div class="col-md-9">
+
+              <div class="row well">
+                <div class="col-md-2">
+                  file:
+                </div>
+                <div class="col-md-10" data-conditions="">
+                  hooks.rb
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="rule blueRow" rule-feature="" rule-scenario="" rule-background="">
+      <div>
+        <input type="checkbox" checked="checked">
+        <span data-phrase="">{class} has a long description.</span>
+      </div>
+      <div class="details" style="display:none;">
+        <div class="well">
+          <div class="row">
+            <div class="col-md-3">
+              <b>Score:</b>
+            </div>
+            <div class="col-md-9">
+              1
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <b>Targets:</b>
+            </div>
+            <div class="col-md-9" data-targets="">
+              Feature, Scenario, Background
+            </div>
+          </div>
+
+          <div class="row conditions">
+            <div class="col-md-3">
+              <b>Conditions:</b>
+            </div>
+            <div class="col-md-9">
+
+              <div class="row well">
+                <div class="col-md-2">
+                  max:
+                </div>
+                <div class="col-md-10" data-conditions="">
+                  180
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
