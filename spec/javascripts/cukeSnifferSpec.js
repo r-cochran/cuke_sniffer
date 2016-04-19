@@ -52,81 +52,221 @@ describe("CukeSniffer", function(){
         });
 
         describe("filtering the rules", function(){
-            describe("feature filter", function(){
-                it("hides all feature only rules when unchecked", function(){
-                    var $featureFilter = $(".btn:has([data-rule-type='feature'])")
-                    $featureFilter.click();
-                    expect($("[rule-feature]:not([rule-scenario], [rule-background])")).toBeHidden();
-                    expect($("[rule-feature][rule-scenario]")).toBeVisible();
-                    expect($("[rule-feature][rule-background]")).toBeVisible();
+            describe("by type", function(){
+                describe("feature filter", function(){
+                    it("hides all feature only rules when unchecked", function(){
+                        var $featureFilter = $(".btn:has([data-rule-type='feature'])")
+                        $featureFilter.click();
+                        expect($("[rule-feature]:not([rule-scenario], [rule-background])")).toBeHidden();
+                        expect($("[rule-feature][rule-scenario]")).toBeVisible();
+                        expect($("[rule-feature][rule-background]")).toBeVisible();
+                    });
+                    it("shows all feature rules when checked", function(){
+                        var $featureFilter = $(".btn:has([data-rule-type='feature'])")
+                        $featureFilter.click();
+                        expect($("[rule-feature]:not([rule-scenario], [rule-background])")).toBeHidden();
+                        $featureFilter.click();
+                        expect($("[rule-feature]:not([rule-scenario], [rule-background])")).toBeVisible();
+                    });
                 });
-                it("shows all feature rules when checked", function(){
-                    var $featureFilter = $(".btn:has([data-rule-type='feature'])")
-                    $featureFilter.click();
-                    expect($("[rule-feature]:not([rule-scenario], [rule-background])")).toBeHidden();
-                    $featureFilter.click();
-                    expect($("[rule-feature]:not([rule-scenario], [rule-background])")).toBeVisible();
+                describe("background filter", function(){
+                    it("hides all background only rules when unchecked", function(){
+                        var $backgroundFilter = $(".btn:has([data-rule-type='background'])")
+                        $backgroundFilter.click();
+                        expect($("[rule-background]:not([rule-scenario], [rule-feature])")).toBeHidden();
+                        expect($("[rule-background][rule-scenario]")).toBeVisible();
+                        expect($("[rule-background][rule-feature]")).toBeVisible();
+                    });
+                    it("shows all background rules when checked", function(){
+                        var $backgroundFilter = $(".btn:has([data-rule-type='background'])")
+                        $backgroundFilter.click();
+                        expect($("[rule-background]:not([rule-scenario], [rule-feature])")).toBeHidden();
+                        $backgroundFilter.click();
+                        expect($("[rule-background]:not([rule-scenario], [rule-feature])")).toBeVisible();
+                    });
+                });
+                describe("scenario filter", function(){
+                    it("hides all scenario only rules when unchecked", function(){
+                        var $scenarioFilter = $(".btn:has([data-rule-type='scenario'])")
+                        $scenarioFilter.click();
+                        expect($("[rule-scenario]:not([rule-background], [rule-feature])")).toBeHidden();
+                        expect($("[rule-scenario][rule-background]")).toBeVisible();
+                        expect($("[rule-scenario][rule-feature]")).toBeVisible();
+                    });
+                    it("shows all scenario rules when checked", function(){
+                        var $scenarioFilter = $(".btn:has([data-rule-type='scenario'])")
+                        $scenarioFilter.click();
+                        expect($("[rule-scenario]:not([rule-background], [rule-feature])")).toBeHidden();
+                        $scenarioFilter.click();
+                        expect($("[rule-scenario]:not([rule-background], [rule-feature])")).toBeVisible();
+                    });
+                });
+                describe("step definition filter", function(){
+                    it("hides all step definition only rules when unchecked", function(){
+                        var $stepDefinitionFilter = $(".btn:has([data-rule-type='stepdefinition'])")
+                        $stepDefinitionFilter.click();
+                        expect($("[rule-stepdefinition]")).toBeHidden();
+                    });
+                    it("shows all step definition rules when checked", function(){
+                        var $stepDefinitionFilter = $(".btn:has([data-rule-type='stepdefinition'])")
+                        $stepDefinitionFilter.click();
+                        expect($("[rule-stepdefinition]")).toBeHidden();
+                        $stepDefinitionFilter.click();
+                        expect($("[rule-stepdefinition]")).toBeVisible();
+                    });
+                });
+                describe("hook filter", function(){
+                    it("hides all hook only rules when unchecked", function(){
+                        var $hookFilter = $(".btn:has([data-rule-type='hook'])")
+                        $hookFilter.click();
+                        expect($("[rule-hook]")).toBeHidden();
+                    });
+                    it("shows all hook rules when checked", function(){
+                        var $hookFilter = $(".btn:has([data-rule-type='hook'])")
+                        $hookFilter.click();
+                        expect($("[rule-hook]")).toBeHidden();
+                        $hookFilter.click();
+                        expect($("[rule-hook]")).toBeVisible();
+                    });
+                });
+                it("remembers the type filter status as a cookie", function(){
+
                 });
             });
-            describe("background filter", function(){
-                it("hides all background only rules when unchecked", function(){
-                    var $backgroundFilter = $(".btn:has([data-rule-type='background'])")
-                    $backgroundFilter.click();
-                    expect($("[rule-background]:not([rule-scenario], [rule-feature])")).toBeHidden();
-                    expect($("[rule-background][rule-scenario]")).toBeVisible();
-                    expect($("[rule-background][rule-feature]")).toBeVisible();
+            describe("by severity", function(){
+                describe("info filter", function(){
+                    it("hides all info level rules when unchecked", function(){
+
+                    });
+                    it("shows all info level rules when checked", function(){
+
+                    });
                 });
-                it("shows all background rules when checked", function(){
-                    var $backgroundFilter = $(".btn:has([data-rule-type='background'])")
-                    $backgroundFilter.click();
-                    expect($("[rule-background]:not([rule-scenario], [rule-feature])")).toBeHidden();
-                    $backgroundFilter.click();
-                    expect($("[rule-background]:not([rule-scenario], [rule-feature])")).toBeVisible();
+                describe("warning filter", function(){
+                    it("hides all warning level rules when unchecked", function(){
+
+                    });
+                    it("shows all warning level rules when checked", function(){
+
+                    });
                 });
-            });
-            describe("scenario filter", function(){
-                it("hides all scenario only rules when unchecked", function(){
-                    var $scenarioFilter = $(".btn:has([data-rule-type='scenario'])")
-                    $scenarioFilter.click();
-                    expect($("[rule-scenario]:not([rule-background], [rule-feature])")).toBeHidden();
-                    expect($("[rule-scenario][rule-background]")).toBeVisible();
-                    expect($("[rule-scenario][rule-feature]")).toBeVisible();
+                describe("error filter", function(){
+                    it("hides all error level rules when unchecked", function(){
+
+                    });
+                    it("shows all error level rules when checked", function(){
+
+                    });
                 });
-                it("shows all scenario rules when checked", function(){
-                    var $scenarioFilter = $(".btn:has([data-rule-type='scenario'])")
-                    $scenarioFilter.click();
-                    expect($("[rule-scenario]:not([rule-background], [rule-feature])")).toBeHidden();
-                    $scenarioFilter.click();
-                    expect($("[rule-scenario]:not([rule-background], [rule-feature])")).toBeVisible();
+                describe("fatal filter", function(){
+                    it("hides all fatal level rules when unchecked", function(){
+
+                    });
+                    it("shows all fatal level rules when checked", function(){
+
+                    });
                 });
-            });
-            describe("step definition filter", function(){
-                it("hides all step definition only rules when unchecked", function(){
-                    var $stepDefinitionFilter = $(".btn:has([data-rule-type='stepdefinition'])")
-                    $stepDefinitionFilter.click();
-                    expect($("[rule-stepdefinition]")).toBeHidden();
-                });
-                it("shows all step definition rules when checked", function(){
-                    var $stepDefinitionFilter = $(".btn:has([data-rule-type='stepdefinition'])")
-                    $stepDefinitionFilter.click();
-                    expect($("[rule-stepdefinition]")).toBeHidden();
-                    $stepDefinitionFilter.click();
-                    expect($("[rule-stepdefinition]")).toBeVisible();
+                it("remembers the severity filter status as a cookie", function(){
+
                 });
             });
-            describe("hook filter", function(){
-                it("hides all hook only rules when unchecked", function(){
-                    var $hookFilter = $(".btn:has([data-rule-type='hook'])")
-                    $hookFilter.click();
-                    expect($("[rule-hook]")).toBeHidden();
+            describe("by text", function(){
+                it("will filter the rules description on a keypress", function(){
+
                 });
-                it("shows all hook rules when checked", function(){
-                    var $hookFilter = $(".btn:has([data-rule-type='hook'])")
-                    $hookFilter.click();
-                    expect($("[rule-hook]")).toBeHidden();
-                    $hookFilter.click();
-                    expect($("[rule-hook]")).toBeVisible();
+                it("will filter the rules details on a keypress", function(){
+
                 });
+                it("will clear the search when the input is cleared", function(){
+
+                });
+            });
+        });
+
+        describe("toggling rules", function(){
+            describe("features section", function(){
+                describe("disabling", function(){
+                    it("will hide feature rules when uncheck unchecked", function(){
+
+                    });
+
+                    it("will hide background rules when unchecked", function(){
+
+                    });
+
+                    it("will hide the background section when its last rule is disabled", function() {
+
+                    });
+
+                    it("will hide scenario rules when unchecked", function(){
+
+                    });
+
+                    it("will hide the scenario section when its last rule is disabled", function() {
+
+                    });
+
+                    it("will hide the scenarios section when the last scenario is hidden due to disabled rules", function(){
+
+                    });
+
+                    it("will hide the feature row when there are no active rules being shown for the feature, background, or scenarios", function(){
+
+                    });
+                });
+                describe("enabling", function(){
+                    it("does nothing when a rule checkbox is disabled due to report generation configuration", function(){
+
+                    });
+                    it("shows a feature row when a feature rule is enabled and no other rules apply", function(){
+
+                    });
+                    it("shows a feature row when a background rule is enabled and no other rules apply", function(){
+
+                    });
+                    it("shows a feature row when a scenario rule is enabled and no other rules apply", function(){
+
+                    });
+                });
+            });
+            describe("step definitions section", function(){
+                describe("disabling", function(){
+                    it("hides a step definition rule when its rule is disabled", function(){
+
+                    });
+                    it("hides the step definition row when its last rule is disabled", function(){
+
+                    });
+                });
+                describe("enabling", function(){
+                    it("shows a step definition rule when its rule is enabled", function(){
+
+                    });
+                    it("shows the step definition row when its first rule is enabled", function(){
+
+                    });
+                });
+            });
+            describe("hooks section", function(){
+                describe("disabling", function(){
+                    it("hides a hook rule when its rule is disabled", function(){
+
+                    });
+                    it("hides the hook row when its last rule is disabled", function(){
+
+                    });
+                });
+                describe("enabling", function(){
+                    it("shows a hook rule when its rule is enabled", function(){
+
+                    });
+                    it("shows the hook row when its first rule is enabled", function(){
+
+                    });
+                });
+            });
+            it("remembers the disabled rules as a cookie", function(){
+
             });
         })
     });
