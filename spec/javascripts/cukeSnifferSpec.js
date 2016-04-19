@@ -2,6 +2,7 @@ describe("CukeSniffer", function(){
     beforeEach(function(){
         CukeSniffer.init();
         $.fx.off = true;
+        loadFixtures("complex_report.html.erb");
     });
     afterEach(function(){
         $(document).off("click", "[expand]");
@@ -20,10 +21,6 @@ describe("CukeSniffer", function(){
         $(document).off("click", ".rule input[type='checkbox']");
     });
     describe("Rules", function(){
-        beforeEach(function(){
-            loadFixtures("rules.html.erb");
-        });
-
         describe("collapsing/expanding", function(){
             it("clicking expand all shows all rules", function(){
                 $("[expand]").click()
@@ -134,9 +131,6 @@ describe("CukeSniffer", function(){
         })
     });
     describe("Dead Step Definitions", function(){
-        beforeEach(function(){
-            loadFixtures("dead_steps.html.erb");
-        });
         describe("collapsing/expanding", function(){
             it("clicking expand all shows all dead step", function(){
                 $("[expand]").click()
@@ -163,10 +157,6 @@ describe("CukeSniffer", function(){
         });
     });
     describe("Features", function(){
-        beforeEach(function(){
-            loadFixtures("features.html.erb");
-        });
-
         describe("collapsing/expanding", function(){
             it("clicking expand all shows all features", function(){
                 $("[expand]").click()
@@ -193,9 +183,6 @@ describe("CukeSniffer", function(){
         });
     });
     describe("Step Definitions", function(){
-        beforeEach(function(){
-            loadFixtures("step_definitions.html.erb");
-        });
         describe("collapsing/expanding", function(){
             it("clicking expand all shows all step definitions", function(){
                 $("[expand]").click()
@@ -222,10 +209,6 @@ describe("CukeSniffer", function(){
         });
     });
     describe("Hooks", function(){
-        beforeEach(function(){
-            loadFixtures("hooks.html.erb");
-        });
-
         describe("collapsing/expanding", function(){
             it("clicking expand all shows all hooks", function(){
                 $("[expand]").click()
