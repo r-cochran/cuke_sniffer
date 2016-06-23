@@ -185,83 +185,154 @@ describe("CukeSniffer", function(){
 
         describe("toggling rules", function(){
             describe("features section", function(){
+                beforeEach(function(){
+                    $("#feature").show();
+                    $(".feature .title").click();
+                });
                 describe("disabling", function(){
                     it("will hide feature rules when uncheck unchecked", function(){
-
+                        expect($("[data-improvement='Feature has no description.']")).toBeVisible();
+                        $("#classNoDescription").click();
+                        expect($("[data-improvement='Feature has no description.']")).toBeHidden();
                     });
 
                     it("will hide background rules when unchecked", function(){
-
+                        expect($("[data-improvement='Invalid first step. Began with And/But.']")).toBeVisible();
+                        $("#invalidFirstStep").click();
+                        expect($("[data-improvement='Invalid first step. Began with And/But.']")).toBeHidden();
                     });
 
                     it("will hide the background section when its last rule is disabled", function() {
-
+                        expect($("[data-improvement='Invalid first step. Began with And/But.']").closest(".backgroundProblems")).not.toBeHidden();
+                        $("#invalidFirstStep").click();
+                        expect($("[data-improvement='Invalid first step. Began with And/But.']").closest(".backgroundProblems")).toBeHidden();
                     });
 
                     it("will hide scenario rules when unchecked", function(){
-
+                        expect($("[data-improvement='Commented example.']")).toBeVisible();
+                        $("#commentedExample").click();
+                        expect($("[data-improvement='Commented example.']")).toBeHidden();
                     });
 
                     it("will hide the scenario section when its last rule is disabled", function() {
-
+                        $("[rule-features] input, [rule-background] input, [rule-scenario] input").click();
+                        $("#classNoDescription").click();
+                        expect($("[data-improvement='Feature has no description.']")).toBeVisible();
+                        $("#classNoDescription").click();
+                        expect($("[data-improvement='Feature has no description.']")).toBeHidden();
+                        expect($("[data-improvement='Feature has no description.']").closest(".feature")).toBeHidden();
                     });
 
                     it("will hide the scenarios section when the last scenario is hidden due to disabled rules", function(){
-
+                        $("[rule-features] input, [rule-background] input, [rule-scenario] input").click();
+                        $("#invalidFirstStep").click();
+                        expect($("[data-improvement='Invalid first step. Began with And/But.']")).toBeVisible();
+                        $("#invalidFirstStep").click();
+                        expect($("[data-improvement='Invalid first step. Began with And/But.']")).toBeHidden();
+                        expect($("[data-improvement='Invalid first step. Began with And/But.']").closest(".feature")).toBeHidden();
                     });
 
                     it("will hide the feature row when there are no active rules being shown for the feature, background, or scenarios", function(){
-
+                        $("[rule-features] input, [rule-background] input, [rule-scenario] input").click();
+                        $("#commentedExample").click();
+                        expect($("[data-improvement='Commented example.']")).toBeVisible();
+                        $("#commentedExample").click();
+                        expect($("[data-improvement='Commented example.']").closest(".feature")).toBeHidden();
                     });
                 });
                 describe("enabling", function(){
+                    beforeEach(function(){
+                        $("[rule-features] input, [rule-background] input, [rule-scenario] input").click();
+                    });
                     it("does nothing when a rule checkbox is disabled due to report generation configuration", function(){
-
+                        expect($("[data-improvement='Feature has no description.']")).toBeHidden();
+                        $("#classNoDescription").attr("disabled", true);
+                        $("#classNoDescription").click();
+                        expect($("[data-improvement='Feature has no description.']")).toBeHidden();
                     });
                     it("shows a feature row when a feature rule is enabled and no other rules apply", function(){
-
+                        expect($("[data-improvement='Feature has no description.']")).toBeHidden();
+                        $("#classNoDescription").click();
+                        expect($("[data-improvement='Feature has no description.']")).toBeVisible();
+                        expect($("[data-improvement='Feature has no description.']").closest(".feature")).toBeVisible();
                     });
                     it("shows a feature row when a background rule is enabled and no other rules apply", function(){
-
+                        expect($("[data-improvement='Invalid first step. Began with And/But.']")).toBeHidden();
+                        $("#invalidFirstStep").click();
+                        expect($("[data-improvement='Invalid first step. Began with And/But.']")).toBeVisible();
+                        expect($("[data-improvement='Invalid first step. Began with And/But.']").closest(".feature")).toBeVisible();
                     });
                     it("shows a feature row when a scenario rule is enabled and no other rules apply", function(){
-
+                        expect($("[data-improvement='Commented example.']")).toBeHidden();
+                        $("#commentedExample").click();
+                        expect($("[data-improvement='Commented example.']")).toBeVisible();
                     });
                 });
             });
             describe("step definitions section", function(){
+                beforeEach(function(){
+                    $("#step_definitions").show();
+                    $(".stepDefinition .title").click();
+                });
                 describe("disabling", function(){
                     it("hides a step definition rule when its rule is disabled", function(){
-
+                        expect($("[data-improvement='Lazy Debugging through puts, p, or print']")).toBeVisible();
+                        $("#lazyDebugging").click();
+                        expect($("[data-improvement='Lazy Debugging through puts, p, or print']")).toBeHidden();
                     });
                     it("hides the step definition row when its last rule is disabled", function(){
-
+                        expect($("[data-improvement='Lazy Debugging through puts, p, or print']")).toBeVisible();
+                        $("#lazyDebugging").click();
+                        expect($("[data-improvement='Lazy Debugging through puts, p, or print']").closest(".stepDefinition")).toBeHidden();
                     });
                 });
                 describe("enabling", function(){
+                    beforeEach(function(){
+                        $("[rule-stepdefinition] input").click();
+                    });
                     it("shows a step definition rule when its rule is enabled", function(){
-
+                        expect($("[data-improvement='Lazy Debugging through puts, p, or print']")).toBeHidden();
+                        $("#lazyDebugging").click();
+                        expect($("[data-improvement='Lazy Debugging through puts, p, or print']")).toBeVisible();
                     });
                     it("shows the step definition row when its first rule is enabled", function(){
-
+                        expect($("[data-improvement='Lazy Debugging through puts, p, or print']")).toBeHidden();
+                        $("#lazyDebugging").click();
+                        expect($("[data-improvement='Lazy Debugging through puts, p, or print']")).toBeVisible();
+                        expect($("[data-improvement='Lazy Debugging through puts, p, or print']").closest(".stepDefinition")).toBeVisible();
                     });
                 });
             });
             describe("hooks section", function(){
+                beforeEach(function(){
+                    $("#hooks").show();
+                    $(".hook .title").click();
+                });
                 describe("disabling", function(){
                     it("hides a hook rule when its rule is disabled", function(){
-
+                        expect($("[data-improvement='Hook without a begin/rescue. Reduced visibility when debugging.']")).toBeVisible();
+                        $("#hookWithoutRescue").click();
+                        expect($("[data-improvement='Hook without a begin/rescue. Reduced visibility when debugging.']")).toBeHidden();
                     });
                     it("hides the hook row when its last rule is disabled", function(){
-
+                        expect($("[data-improvement='Hook without a begin/rescue. Reduced visibility when debugging.']")).toBeVisible();
+                        $("#hookWithoutRescue").click();
+                        expect($("[data-improvement='Hook without a begin/rescue. Reduced visibility when debugging.']").closest(".hook")).toBeHidden();
                     });
                 });
                 describe("enabling", function(){
+                    beforeEach(function(){
+                        $("[rule-hook] input").click();
+                    })
                     it("shows a hook rule when its rule is enabled", function(){
-
+                        expect($("[data-improvement='Hook without a begin/rescue. Reduced visibility when debugging.']")).toBeHidden();
+                        $("#hookWithoutRescue").click();
+                        expect($("[data-improvement='Hook without a begin/rescue. Reduced visibility when debugging.']")).toBeVisible();
                     });
                     it("shows the hook row when its first rule is enabled", function(){
-
+                        expect($("[data-improvement='Hook without a begin/rescue. Reduced visibility when debugging.']")).toBeHidden();
+                        $("#hookWithoutRescue").click();
+                        expect($("[data-improvement='Hook without a begin/rescue. Reduced visibility when debugging.']").closest(".hook")).toBeVisible();
                     });
                 });
             });
