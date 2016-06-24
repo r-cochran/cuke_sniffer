@@ -11,7 +11,8 @@
    step_definitions = build_page(cuke_sniffer, "step_definitions.html.erb")
    hooks = build_page(cuke_sniffer, "hooks.html.erb")
 %>
-<div class="container">
+<body class="container">
+   <div class="container">
    <%= styles %>
    <%= title %>
    <%= information %>
@@ -23,4 +24,5 @@
    <%= step_definitions %>
    <%= hooks %>
    <%= scripts %>
-</div>
+   </div>
+</body>

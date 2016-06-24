@@ -16,6 +16,7 @@
         color: white;
     }
 
+
     .table-striped>tbody>tr:nth-of-type(odd),
     .improvement:nth-of-type(odd),
     .blueRow {
@@ -75,12 +76,48 @@
         margin-top: 15px;
     }
 
+    .well .well {
+        background-color: white;
+    }
+
+    .table.collapse.in {
+        display: inline-table;
+    }
+
+    .panel-heading {
+        cursor: pointer;
+    }
+
+    .filename {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .small-page {
+        display: none;
+    }
+
+    @media screen and (max-width: 993px){
+        #ruleFilters {
+            padding-left: 10px;
+        }
+    }
+
     @media screen and (max-width: 480px){
-        .full {
+        .full-page {
             display: none;
         }
-        .small {
+        .small-page {
             display: inline;
+        }
+
+        #rules_data .enable-bar {
+            padding-left: 10px;
+        }
+
+        .ruleFilters .small-page {
+            font-size: 20px;
         }
     }
 </style>

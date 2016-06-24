@@ -7,7 +7,7 @@
     <div id="rules_data" class="panel-body collapse">
       <span class="button-bar">
         <%= build_page(cuke_sniffer, "expand_and_collapse_buttons.html.erb") %>
-        <div class="btn-group">
+        <div class="btn-group enable-bar">
           <div id="enableAllRules" class="btn btn-default">
             Enable All
           </div>
@@ -17,19 +17,29 @@
         </div>
         <div id="ruleFilters" class="btn-group" data-toggle="buttons">
           <div class="btn btn-default active">
-            <input type="checkbox" checked data-rule-type="feature"/>Feature
+            <input type="checkbox" checked data-rule-type="feature"/>
+              <span class="full-page" title="Feature">Feature</span>
+              <span class="small-page" title="Feature">F.</span>
           </div>
           <div class="btn btn-default active">
-            <input type="checkbox" checked data-rule-type="background"/> Background
+            <input type="checkbox" checked data-rule-type="background"/>
+              <span class="full-page" title="Background">Background</span>
+              <span class="small-page" title="Background">B.</span>
           </div>
           <div class="btn btn-default active">
-            <input type="checkbox" checked data-rule-type="scenario"/> Scenario
+            <input type="checkbox" checked data-rule-type="scenario"/>
+              <span class="full-page" title="Scenario">Scenario</span>
+              <span class="small-page" title="Scenario">S.</span>
           </div>
           <div class="btn btn-default active">
-            <input type="checkbox" checked data-rule-type="stepdefinition"/> Step Definition
+            <input type="checkbox" checked data-rule-type="stepdefinition"/>
+              <span class="full-page" title="Step Definition">Step Definition</span>
+              <span class="small-page" title="Step Definition">S. D.</span>
           </div>
           <div class="btn btn-default active">
-            <input type="checkbox" checked data-rule-type="hook"/> Hook
+            <input type="checkbox" checked data-rule-type="hook"/>
+              <span class="full-page" title="Hook">Hook</span>
+              <span class="small-page" title="Hook">H</span>
           </div>
         </div>
       </span>

@@ -1,5 +1,6 @@
 
-<div class="container">
+<body class="container">
+   <div class="container">
    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
 
@@ -17,6 +18,7 @@
         border-color: #3a753a;
         color: white;
     }
+
 
     .table-striped>tbody>tr:nth-of-type(odd),
     .improvement:nth-of-type(odd),
@@ -77,19 +79,55 @@
         margin-top: 15px;
     }
 
+    .well .well {
+        background-color: white;
+    }
+
+    .table.collapse.in {
+        display: inline-table;
+    }
+
+    .panel-heading {
+        cursor: pointer;
+    }
+
+    .filename {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .small-page {
+        display: none;
+    }
+
+    @media screen and (max-width: 993px){
+        #ruleFilters {
+            padding-left: 10px;
+        }
+    }
+
     @media screen and (max-width: 480px){
-        .full {
+        .full-page {
             display: none;
         }
-        .small {
+        .small-page {
             display: inline;
+        }
+
+        #rules_data .enable-bar {
+            padding-left: 10px;
+        }
+
+        .ruleFilters .small-page {
+            font-size: 20px;
         }
     }
 </style>
    <div class="row">
   <div class="page-header">
     <h1>
-      Cuke Sniffer <a class="black" href="https://github.com/r-cochran/cuke_sniffer"><span class="fa fa-github"></span></a>
+      Cuke Sniffer <a class="black" target="_blank" href="https://github.com/r-cochran/cuke_sniffer"><span class="fa fa-github"></span></a>
       
         <small>0.0.9</small>
       
@@ -116,7 +154,7 @@
           identification of these issues. The list of improvements has been constructed on opinions from the authors
           and feedback from community members. Not everyone will share these opinions and for that reason all
           improvements can be turned off when generating this report. See the
-          <a href="https://github.com/r-cochran/cuke_sniffer/wiki">wiki</a> for instructions on how.
+          <a target="_blank" href="https://github.com/r-cochran/cuke_sniffer/wiki">wiki</a> for instructions on how.
         </div>
       </div>
       <div class="col-md-12">
@@ -127,7 +165,7 @@
           Scoring is based on the number of 'smells' in a cucumber project, where smells are potential misuses or
           errors. Cuke Sniffer follows a 'golf score' type system where the lower the number, the better. 'Min' refers
           to the overall best score for a particular object and the 'Max' is the overall worst object score. The score
-          is <u>relative</u> to each project and should <u>not</u> be used to compare with others.
+          is <u>relative</u> to each project and should be used to compare the project and teams growth.
         </div>
       </div>
       <div class="col-md-12">
@@ -136,13 +174,13 @@
         </div>
         <div class="col-md-11">
           <div>
-            Robert Cochran <a target="_blank" href="https://twitter.com/cochrarj"><i class="fa fa-twitter"></i> @cochrarj</a>
+            Robert Cochran <a target="_blank" href="https://twitter.com/cochrarj"><i class="fa fa-twitter"></i></a>
           </div>
           <div>
-            Robert Anderson <a target="_blank" href="https://twitter.com/bobthesatyr1337"><i class="fa fa-twitter"></i> @bobthesatyr1337</a>
+            Robert Anderson <a target="_blank" href="https://twitter.com/bobthesatyr1337"><i class="fa fa-twitter"></i></a>
           </div>
           <div>
-            Christopher Vaughn <a target="_blank" href="https://twitter.com/mistercvaughn"><i class="fa fa-twitter"></i> @mistercvaughn</a>
+            Christopher Vaughn <a target="_blank" href="https://twitter.com/mistercvaughn"><i class="fa fa-twitter"></i></a>
           </div>
         </div>
       </div>
@@ -152,6 +190,12 @@
         </div>
         <div class="col-md-11">
           <div>
+            <div>
+              <a target="_blank" href="https://github.com/r-cochran/cuke_sniffer/issues">
+                <span class="fa fa-bug"></span> Report Issues
+              </a>
+
+            </div>
             <div>
               <a target="_blank" href="https://github.com/r-cochran/cuke_sniffer/wiki/Patch-notes">
                 <span class="fa fa-list"></span> Patch Notes
@@ -184,20 +228,20 @@
       <tr>
         <td></td>
         <td>
-          <span class="full">Features</span>
-          <span class="small" title="Features">F</span>
+          <span class="full-page">Features</span>
+          <span class="small-page" title="Features">F</span>
         </td>
         <td>
-          <span class="full">Scenarios</span>
-          <span class="small" title="Scenarios">S</span>
+          <span class="full-page">Scenarios</span>
+          <span class="small-page" title="Scenarios">S</span>
         </td>
         <td>
-          <span class="full">Step Definitions</span>
-          <span class="small" title="Step Definitions">S.D.</span>
+          <span class="full-page">Step Definitions</span>
+          <span class="small-page" title="Step Definitions">S.D.</span>
         </td>
         <td>
-          <span class="full">Hooks</span>
-          <span class="small" title="Hooks">H</span>
+          <span class="full-page">Hooks</span>
+          <span class="small-page" title="Hooks">H</span>
         </td>
       </tr>
       <tr>
@@ -777,7 +821,7 @@
     Expand All
   </div>
 </div>
-        <div class="btn-group">
+        <div class="btn-group enable-bar">
           <div id="enableAllRules" class="btn btn-default">
             Enable All
           </div>
@@ -787,19 +831,29 @@
         </div>
         <div id="ruleFilters" class="btn-group" data-toggle="buttons">
           <div class="btn btn-default active">
-            <input type="checkbox" checked data-rule-type="feature"/>Feature
+            <input type="checkbox" checked data-rule-type="feature"/>
+              <span class="full-page" title="Feature">Feature</span>
+              <span class="small-page" title="Feature">F.</span>
           </div>
           <div class="btn btn-default active">
-            <input type="checkbox" checked data-rule-type="background"/> Background
+            <input type="checkbox" checked data-rule-type="background"/>
+              <span class="full-page" title="Background">Background</span>
+              <span class="small-page" title="Background">B.</span>
           </div>
           <div class="btn btn-default active">
-            <input type="checkbox" checked data-rule-type="scenario"/> Scenario
+            <input type="checkbox" checked data-rule-type="scenario"/>
+              <span class="full-page" title="Scenario">Scenario</span>
+              <span class="small-page" title="Scenario">S.</span>
           </div>
           <div class="btn btn-default active">
-            <input type="checkbox" checked data-rule-type="stepdefinition"/> Step Definition
+            <input type="checkbox" checked data-rule-type="stepdefinition"/>
+              <span class="full-page" title="Step Definition">Step Definition</span>
+              <span class="small-page" title="Step Definition">S. D.</span>
           </div>
           <div class="btn btn-default active">
-            <input type="checkbox" checked data-rule-type="hook"/> Hook
+            <input type="checkbox" checked data-rule-type="hook"/>
+              <span class="full-page" title="Hook">Hook</span>
+              <span class="small-page" title="Hook">H</span>
           </div>
         </div>
       </span>
@@ -2894,14 +2948,14 @@
                             1
                           </span>
                         </div>
-                        <div class="col-md-11">
+                        <div class="col-md-11 filename">
                           /features/features/step_definitions/old_steps/older_steps.rb
                         </div>
                     </div>
                     <div class="details col-md-12" style="display:none;">
                       <div class="well">
                         <div class="row">
-                          <div class="col-md-12">
+                          <div class="col-md-12 filename">
                             File: <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/older_steps.rb" title="Note: Links to file on system this report was generated.">
                             /features/features/step_definitions/old_steps/older_steps.rb
                           </a>
@@ -2928,14 +2982,14 @@
                             5
                           </span>
                         </div>
-                        <div class="col-md-11">
+                        <div class="col-md-11 filename">
                           /features/features/step_definitions/old_steps/other_team_steps.rb
                         </div>
                     </div>
                     <div class="details col-md-12" style="display:none;">
                       <div class="well">
                         <div class="row">
-                          <div class="col-md-12">
+                          <div class="col-md-12 filename">
                             File: <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb" title="Note: Links to file on system this report was generated.">
                             /features/features/step_definitions/old_steps/other_team_steps.rb
                           </a>
@@ -3020,7 +3074,7 @@
               <div class="details col-md-12" style="display:none;">
                 <div class="well">
                   <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 filename">
                       File: <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/KY/rate.feature" title="Note: Links to file on system this report was generated.">
                         /features/features/scenarios/RATE/KY/rate.feature
                       </a>
@@ -3294,7 +3348,7 @@
               <div class="details col-md-12" style="display:none;">
                 <div class="well">
                   <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 filename">
                       File: <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/RATE/OH/rate.feature" title="Note: Links to file on system this report was generated.">
                         /features/features/scenarios/RATE/OH/rate.feature
                       </a>
@@ -3579,7 +3633,7 @@
               <div class="details col-md-12" style="display:none;">
                 <div class="well">
                   <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 filename">
                       File: <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/login.feature" title="Note: Links to file on system this report was generated.">
                         /features/features/scenarios/login.feature
                       </a>
@@ -3962,7 +4016,7 @@
               <div class="details col-md-12" style="display:none;">
                 <div class="well">
                   <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 filename">
                       File: <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/scenarios/empty_feature.feature" title="Note: Links to file on system this report was generated.">
                         /features/features/scenarios/empty_feature.feature
                       </a>
@@ -4066,7 +4120,7 @@
                   <div class="details col-md-12" style="display: none;">
                     <div class="well">
                       <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 filename">
                           File: <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/older_steps.rb" title="Note: Links to file on system this report was generated.">
                               /features/features/step_definitions/old_steps/older_steps.rb:1
                             </a>
@@ -4117,7 +4171,7 @@
                   <div class="details col-md-12" style="display: none;">
                     <div class="well">
                       <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 filename">
                           File: <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/older_steps.rb" title="Note: Links to file on system this report was generated.">
                               /features/features/step_definitions/old_steps/older_steps.rb:7
                             </a>
@@ -4177,7 +4231,7 @@
                   <div class="details col-md-12" style="display: none;">
                     <div class="well">
                       <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 filename">
                           File: <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/my_steps.rb" title="Note: Links to file on system this report was generated.">
                               /features/features/step_definitions/my_steps.rb:1
                             </a>
@@ -4219,7 +4273,7 @@
                   <div class="details col-md-12" style="display: none;">
                     <div class="well">
                       <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 filename">
                           File: <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb" title="Note: Links to file on system this report was generated.">
                               /features/features/step_definitions/old_steps/other_team_steps.rb:1
                             </a>
@@ -4261,7 +4315,7 @@
                   <div class="details col-md-12" style="display: none;">
                     <div class="well">
                       <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 filename">
                           File: <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb" title="Note: Links to file on system this report was generated.">
                               /features/features/step_definitions/old_steps/other_team_steps.rb:19
                             </a>
@@ -4303,7 +4357,7 @@
                   <div class="details col-md-12" style="display: none;">
                     <div class="well">
                       <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 filename">
                           File: <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb" title="Note: Links to file on system this report was generated.">
                               /features/features/step_definitions/old_steps/other_team_steps.rb:13
                             </a>
@@ -4345,7 +4399,7 @@
                   <div class="details col-md-12" style="display: none;">
                     <div class="well">
                       <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 filename">
                           File: <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb" title="Note: Links to file on system this report was generated.">
                               /features/features/step_definitions/old_steps/other_team_steps.rb:7
                             </a>
@@ -4387,7 +4441,7 @@
                   <div class="details col-md-12" style="display: none;">
                     <div class="well">
                       <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 filename">
                           File: <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/step_definitions/old_steps/other_team_steps.rb" title="Note: Links to file on system this report was generated.">
                               /features/features/step_definitions/old_steps/other_team_steps.rb:25
                             </a>
@@ -4464,7 +4518,7 @@
                   <div class="details col-md-12" style="display:none;">
                     <div class="well">
                       <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 filename">
                           File:
                           <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/support/env.rb" title="Note: Links to file on system this report was generated.">
                             /features/features/support/env.rb:1
@@ -4526,7 +4580,7 @@
                   <div class="details col-md-12" style="display:none;">
                     <div class="well">
                       <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 filename">
                           File:
                           <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/support/hooks.rb" title="Note: Links to file on system this report was generated.">
                             /features/features/support/hooks.rb:6
@@ -4579,7 +4633,7 @@
                   <div class="details col-md-12" style="display:none;">
                     <div class="well">
                       <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 filename">
                           File:
                           <a target="_blank" href="file:////Users/robertcochran/workspaces/personal/cuke_sniffer/examples/complex_project/features/features/support/hooks.rb" title="Note: Links to file on system this report was generated.">
                             /features/features/support/hooks.rb:1
@@ -4777,4 +4831,5 @@
     });
 </script>
 
-</div>
+   </div>
+</body>

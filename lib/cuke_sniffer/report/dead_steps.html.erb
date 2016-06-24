@@ -31,14 +31,14 @@
                             <%= dead_steps[file_name].size %>
                           </span>
                         </div>
-                        <div class="col-md-11">
+                        <div class="col-md-11 filename">
                           <%= file_name.gsub(cuke_sniffer.step_definitions_location, "").gsub(cuke_sniffer.step_definitions_location, "") %>.rb
                         </div>
                     </div>
                     <div class="details col-md-12" style="display:none;">
                       <div class="well">
                         <div class="row">
-                          <div class="col-md-12">
+                          <div class="col-md-12 filename">
                             File: <a target="_blank" href="file:///<%= file_name %>.rb" title="Note: Links to file on system this report was generated.">
                             <%= file_name.gsub(cuke_sniffer.step_definitions_location, "").gsub(cuke_sniffer.step_definitions_location, "") %>.rb
                           </a>
