@@ -4103,11 +4103,16 @@
     Expand All
   </div>
 </div>
+        <div class="btn-group" data-toggle="buttons">
+          <div id="showDeadSteps" class="btn btn-default">
+            <input type="checkbox"/>Show Dead Steps
+          </div>
+        </div>
       </span>
       
           
               
-              <div class="stepDefinition">
+              <div class="stepDefinition deadStep">
                 <div class="row">
                   <div class="col-md-12 title">
                     <div class="col-md-1 red" title="Total Score from this Step Definition file.">
@@ -4158,7 +4163,7 @@
               </div>
           
               
-              <div class="stepDefinition">
+              <div class="stepDefinition ">
                 <div class="row">
                   <div class="col-md-12 title">
                     <div class="col-md-1 red" title="Total Score from this Step Definition file.">
@@ -4218,7 +4223,7 @@
               </div>
           
               
-              <div class="stepDefinition">
+              <div class="stepDefinition ">
                 <div class="row">
                   <div class="col-md-12 title">
                     <div class="col-md-1 red" title="Total Score from this Step Definition file.">
@@ -4260,7 +4265,7 @@
               </div>
           
               
-              <div class="stepDefinition">
+              <div class="stepDefinition deadStep">
                 <div class="row">
                   <div class="col-md-12 title">
                     <div class="col-md-1 red" title="Total Score from this Step Definition file.">
@@ -4302,7 +4307,7 @@
               </div>
           
               
-              <div class="stepDefinition">
+              <div class="stepDefinition deadStep">
                 <div class="row">
                   <div class="col-md-12 title">
                     <div class="col-md-1 red" title="Total Score from this Step Definition file.">
@@ -4344,7 +4349,7 @@
               </div>
           
               
-              <div class="stepDefinition">
+              <div class="stepDefinition deadStep">
                 <div class="row">
                   <div class="col-md-12 title">
                     <div class="col-md-1 red" title="Total Score from this Step Definition file.">
@@ -4386,7 +4391,7 @@
               </div>
           
               
-              <div class="stepDefinition">
+              <div class="stepDefinition deadStep">
                 <div class="row">
                   <div class="col-md-12 title">
                     <div class="col-md-1 red" title="Total Score from this Step Definition file.">
@@ -4428,7 +4433,7 @@
               </div>
           
               
-              <div class="stepDefinition">
+              <div class="stepDefinition deadStep">
                 <div class="row">
                   <div class="col-md-12 title">
                     <div class="col-md-1 red" title="Total Score from this Step Definition file.">
@@ -4714,6 +4719,7 @@
         bind: function(){
             CukeSniffer.actions._bindExpandAll();
             CukeSniffer.actions._bindCollapseAll();
+            CukeSniffer.actions._bindShowDeadSteps()
             CukeSniffer.actions._togglePanelHeaderIcons();
             CukeSniffer.actions._viewRules();
             CukeSniffer.actions._clickRow();
@@ -4726,6 +4732,12 @@
         _bindExpandAll: function(){
             $(document).on("click", "[expand]", function(){
                 $(this).closest(".panel-body").find(".details").show();
+            });
+        },
+        _bindShowDeadSteps: function(){
+            $(".deadStep").hide();
+            $(document).on("click", "#showDeadSteps", function(){
+                $(".deadStep").toggle()
             });
         },
         _bindCollapseAll: function(){

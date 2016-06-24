@@ -19,6 +19,7 @@ describe("CukeSniffer", function(){
         $(document).off("click", "#enableAllRules");
         $(document).off("click", "#disableAllRules");
         $(document).off("click", ".rule input[type='checkbox']");
+        $(document).off("click", "#showDeadSteps")
     });
     describe("Rules", function(){
         describe("collapsing/expanding", function(){
@@ -416,6 +417,13 @@ describe("CukeSniffer", function(){
                 expect($stepDefinition.find(".details")).toBeVisible();
                 $stepDefinition.find("> .row > .title").click();
                 expect($stepDefinition.find(".details")).not.toBeVisible();
+            });
+        });
+        describe("dead step definitions", function(){
+            it("hides dead steps", function(){
+                $(".stepDefinition:eq(0)").addClass("deadStep");
+                $("#showDeadSteps").click();
+                expect($(".deadStep")).toBeHidden();
             });
         });
     });

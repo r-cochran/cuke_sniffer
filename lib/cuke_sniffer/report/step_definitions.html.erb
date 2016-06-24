@@ -7,6 +7,11 @@
     <div id="step_definitions" class="panel-body collapse">
       <span class="button-bar">
         <%= build_page(cuke_sniffer, "expand_and_collapse_buttons.html.erb") %>
+        <div class="btn-group" data-toggle="buttons">
+          <div id="showDeadSteps" class="btn btn-default">
+            <input type="checkbox"/>Show Dead Steps
+          </div>
+        </div>
       </span>
       <% if cuke_sniffer.step_definitions.count == 0 %>
           <div>
@@ -19,7 +24,7 @@
       <% else %>
           <% cuke_sniffer.step_definitions.each do |step_definition| %>
               <% next if step_definition.score == 0 %>
-              <div class="stepDefinition">
+              <div class="stepDefinition <%if step_definition.calls.size == 0%>deadStep<% end %>">
                 <div class="row">
                   <div class="col-md-12 title">
                     <div class="col-md-1 red" title="Total Score from this Step Definition file.">
