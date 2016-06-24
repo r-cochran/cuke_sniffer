@@ -4677,10 +4677,10 @@
         CukeSniffer.actions.bind();
         CukeSniffer.view._startTooltips();
         CukeSniffer.view._updateRowColors();
-        CukeSniffer.view._disableRulesFromCookies();
+        CukeSniffer.view._disableRulesFromLocalStorage();
     },
     view: {
-        _disableRulesFromCookies: function(){
+        _disableRulesFromLocalStorage: function(){
             $.each($("[data-rule-symbol]"), function(index, rule){
                 var $rule = $(rule),
                     symbol = $rule.data("rule-symbol"),
