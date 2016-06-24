@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cuke_sniffer (0.0.9)
+    cuke_sniffer (1.0.0)
 
 GEM
   remote: https://rubygems.org/

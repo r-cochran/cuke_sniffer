@@ -21,7 +21,7 @@ end
 
 task :reload_gem do
   gem_name = "cuke_sniffer"
-  version = "0.0.9"
+  version = "1.0.0"
   system "gem uninstall #{gem_name}"
   system "gem build #{gem_name}.gemspec"
   system "gem install #{gem_name}-#{version}.gem"
