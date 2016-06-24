@@ -229,14 +229,14 @@ describe "FeatureRules" do
   end
 
   def test_feature_rule(feature_block, symbol, count = 1)
-    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[symbol])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(symbol, RULES[symbol])
     run_rule_against_feature(feature_block, rule)
     rule.phrase.gsub!("{class}", "Feature")
     verify_rule(@cli.features.first, rule, count)
   end
 
   def test_no_feature_rule(feature_block, symbol)
-    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[symbol])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(symbol, RULES[symbol])
     run_rule_against_feature(feature_block, rule)
     rule.phrase.gsub!("{class}", "Feature")
     verify_no_rule(@cli.features.first, rule)

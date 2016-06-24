@@ -44,7 +44,7 @@
         </div>
       </span>
       <% cuke_sniffer.rules.each do |rule| %>
-        <div class="rule"
+        <div class="rule" data-rule-symbol="<%=rule.symbol%>"
             <% rule.targets.each do |target| %>
                 rule-<%=target%>
             <% end %>

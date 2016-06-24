@@ -498,14 +498,14 @@ describe "ScenarioRules" do
   end
 
   def test_scenario_rule(scenario_block, symbol, count = 1)
-    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[symbol])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(symbol, RULES[symbol])
     run_rule_against_scenario(scenario_block, rule)
     rule.phrase.gsub!("{class}", "Scenario")
     verify_rule(@cli.features.first.scenarios.first, rule, count)
   end
 
   def test_no_scenario_rule(scenario_block, symbol)
-    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[symbol])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(symbol, RULES[symbol])
     run_rule_against_scenario(scenario_block, rule)
     rule.phrase.gsub!("{class}", "Scenario")
     verify_no_rule(@cli.features.first.scenarios.first, rule)
@@ -736,7 +736,7 @@ describe "ScenarioRules" do
         "When I log in to the site",
         "Then I am on the home page",
     ]
-    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[:implementation_word])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(:implementation_word, RULES[:implementation_word])
     run_rule_against_scenario(scenario_block, rule)
     scenario = @cli.features[0].scenarios[0]
 
@@ -753,7 +753,7 @@ describe "ScenarioRules" do
         "When check the table for fruit",
         "Then I find an apple",
     ]
-    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[:implementation_word])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(:implementation_word, RULES[:implementation_word])
     run_rule_against_scenario(scenario_block, rule)
     scenario = @cli.features[0].scenarios[0]
 
@@ -862,7 +862,7 @@ describe "ScenarioRules" do
         "When I am the first step",
         "Then I am the second step with a radio button"
     ]
-    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[:implementation_word])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(:implementation_word, RULES[:implementation_word])
     run_rule_against_scenario(scenario_block, rule)
     @cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: radio button.").should be_true
     @cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: button.").should be_false
@@ -874,7 +874,7 @@ describe "ScenarioRules" do
         "When I am the first step",
         "Then I am the second step with a radio button"
     ]
-    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[:implementation_word_button])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(:implementation_word, RULES[:implementation_word_button])
     run_rule_against_scenario(scenario_block, rule)
     @cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: button.").should be_false
   end
@@ -885,7 +885,7 @@ describe "ScenarioRules" do
         "When I am the first step",
         "Then I am the second step with a button"
     ]
-    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[:implementation_word_button])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(:implementation_word, RULES[:implementation_word_button])
     run_rule_against_scenario(scenario_block, rule)
     @cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: button.").should be_true
   end
@@ -915,13 +915,13 @@ describe "BackgroundRules" do
   end
 
   def test_background_rule(background_block, symbol, count = 1)
-    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[symbol])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(symbol, RULES[symbol])
     run_rule_against_background(background_block, rule)
     verify_rule(@cli.features.first.background, rule, count)
   end
 
   def test_no_background_rule(background_block, symbol)
-    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[symbol])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(symbol, RULES[symbol])
     run_rule_against_background(background_block, rule)
     verify_no_rule(@cli.features.first.background, rule)
   end
@@ -1000,7 +1000,7 @@ describe "BackgroundRules" do
         "And is ignored",
         "When comes third"
     ]
-    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[:out_of_order_steps])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(:out_of_order_steps, RULES[:out_of_order_steps])
     run_rule_against_background(background_block, rule)
     @cli.features.first.background.rules_hash.include?(rule.phrase).should be_false
   end
@@ -1076,7 +1076,7 @@ describe "BackgroundRules" do
         "When I log in to the site",
         "Then I am on the home page",
     ]
-    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[:implementation_word])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(:implementation_word, RULES[:implementation_word])
     run_rule_against_background(background_block, rule)
     background= @cli.features.first.background
 

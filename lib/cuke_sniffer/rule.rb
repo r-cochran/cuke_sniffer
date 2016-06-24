@@ -7,6 +7,7 @@ module CukeSniffer
   # Mixins: ROXML
   class Rule
     include ROXML
+    xml_accessor :symbol
     xml_accessor :enabled
     xml_accessor :phrase
     xml_accessor :score

@@ -86,14 +86,15 @@ module CukeSniffer
     # Builds a list of rule objects out of a hash. See CukeSniffer::RulesConfig for hash example.
     def self.build_rules(rules)
       return [] if rules.nil?
-      rules.collect do |key, value|
-        CukeSniffer::CukeSnifferHelper.build_rule(value)
+      rules.collect do |symbol, value|
+        CukeSniffer::CukeSnifferHelper.build_rule(symbol, value)
       end
     end
 
     # Builds rule object out of a hash. See CukeSniffer::RulesConfig for hash example.
-    def self.build_rule(rule_hash)
+    def self.build_rule(symbol, rule_hash)
       rule = CukeSniffer::Rule.new
+      rule.symbol = symbol
       rule.phrase = rule_hash[:phrase]
       rule.score = rule_hash[:score]
       rule.enabled = rule_hash[:enabled]

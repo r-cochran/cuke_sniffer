@@ -614,13 +614,18 @@ describe CukeSniffer do
       rules.should == []
     end
 
+    it "should store the symbol" do
+      rule = CukeSniffer::CukeSnifferHelper.build_rule(:symbol, {})
+      rule.symbol.should == :symbol
+    end
+
     it "should not build rules with conditions when the rule has no conditions" do
       rule_hash = {
           :enabled => true,
           :phrase => "Rule phrase.",
           :score => 0
       }
-      rule = CukeSniffer::CukeSnifferHelper.build_rule(rule_hash)
+      rule = CukeSniffer::CukeSnifferHelper.build_rule(:symbol, rule_hash)
       rule.conditions.should == {}
     end
 
@@ -634,7 +639,7 @@ describe CukeSniffer do
           :max => max,
           :min => min
       }
-      rule = CukeSniffer::CukeSnifferHelper.build_rule(rule_hash)
+      rule = CukeSniffer::CukeSnifferHelper.build_rule(:symbol, rule_hash)
       rule.conditions[:max].should == max
       rule.conditions[:min].should == min
     end

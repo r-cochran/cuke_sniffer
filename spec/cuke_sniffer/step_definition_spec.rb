@@ -349,13 +349,13 @@ describe "StepDefinitionRules" do
   end
 
   def test_step_definition_rule(step_definition_block, symbol, count = 1)
-    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[symbol])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(symbol, RULES[symbol])
     run_rule_against_step_definition(step_definition_block, rule)
     verify_rule(@cli.step_definitions.first, rule, count)
   end
 
   def test_no_step_definition_rule(step_definition_block, symbol)
-    rule = CukeSniffer::CukeSnifferHelper.build_rule(RULES[symbol])
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(symbol, RULES[symbol])
     run_rule_against_step_definition(step_definition_block, rule)
     verify_no_rule(@cli.step_definitions.first, rule)
   end

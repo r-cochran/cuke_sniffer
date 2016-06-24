@@ -337,8 +337,23 @@ describe("CukeSniffer", function(){
                     });
                 });
             });
-            it("remembers the disabled rules as a cookie", function(){
+            describe("remembering rules", function(){
+                beforeEach(function(){
+                    spyOn(localStorage, "setItem");
+                    spyOn(localStorage, "removeItem");
+                    $("#classNoDescription").closest(".rule").data("rule-symbol", "do-it");
+                });
+                it("remembers the disabled rules in local storage", function(){
+                    $("#classNoDescription").click();
+                    expect(localStorage.setItem).toHaveBeenCalledWith("do-it", true);
+                });
+                it("removes enabled rules from local storage", function(){
+                    $("#classNoDescription").click(); //store it
 
+                    $("#classNoDescription").click(); //remove it
+
+                    expect(localStorage.removeItem).toHaveBeenCalledWith("do-it");
+                });
             });
         })
     });
