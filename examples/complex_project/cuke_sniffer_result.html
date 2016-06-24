@@ -4746,9 +4746,9 @@
             });
         },
         _bindShowDeadSteps: function(){
-            $(".deadStep").hide();
+            $("#step_definitions .deadStep").hide();
             $(document).on("click", "#showDeadSteps", function(){
-                $(".deadStep").toggle()
+                $("#step_definitions .deadStep").toggle()
             });
         },
         _bindCollapseAll: function(){
