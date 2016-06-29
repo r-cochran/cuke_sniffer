@@ -1,0 +1,30 @@
+
+Features:
+
+Step Definitions: 
+
+Hooks:
+
+Cataloging Step Calls: 
+
+Assessing Score: 
+Suite Summary  Total Score: 0
+  Features
+    Min: 
+    Max: 
+    Average: NaN
+  Scenarios
+    Min: 
+    Max: 
+    Average: NaN
+  Step definitions
+    Min: 
+    Max: 
+    Average: NaN
+  Hooks
+    Min: 
+    Max: 
+    Average: NaN
+  Improvements to make:
+
+Completed Sniffing.

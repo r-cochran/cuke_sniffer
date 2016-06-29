@@ -36,3 +36,26 @@ task :travis do
 end
 
 task :default => :spec
+
+task :rebuild_complex_examples do
+  rebuildExamples "examples/complex_project/"
+end
+
+task :rebuild_simple_examples do
+  rebuildExamples "examples/simple_project/"
+end
+
+task :rebuild_empty_examples do
+  rebuildExamples "examples/empty_project/"
+end
+
+task :rebuild_all_examples => [:rebuild_complex_examples, :rebuild_simple_examples, :rebuild_empty_examples]
+
+def rebuildExamples(folder_name)
+  target_folder = folder_name + "features"
+  system "cuke_sniffer -p " + target_folder + " > " + folder_name + "console_output.txt"
+  system "cuke_sniffer -o html " + folder_name + "/cuke_sniffer_results.html -p " + target_folder
+  system "cuke_sniffer -o min_html " + folder_name + "/min_cuke_sniffer_results.html -p " + target_folder
+  system "cuke_sniffer -o xml " + folder_name + "/cuke_sniffer_results.xml -p " + target_folder
+  system "cuke_sniffer -o junit_xml " + folder_name + "/junit_cuke_sniffer_results.xml -p " + target_folder
+end
