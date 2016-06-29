@@ -19,6 +19,7 @@
         color: white;
     }
 
+
     .table-striped>tbody>tr:nth-of-type(odd),
     .improvement:nth-of-type(odd),
     .blueRow {
@@ -78,166 +79,251 @@
         margin-top: 15px;
     }
 
+    .well .well {
+        background-color: white;
+    }
+
+    .table.collapse.in {
+        display: inline-table;
+    }
+
+    .panel-heading {
+        cursor: pointer;
+    }
+
+    .filename {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .small-page {
+        display: none;
+    }
+
+    @media screen and (max-width: 993px){
+        #ruleFilters {
+            padding-left: 10px;
+        }
+    }
+
     @media screen and (max-width: 480px){
-        .full {
+        .full-page {
             display: none;
         }
-        .small {
+        .small-page {
             display: inline;
+        }
+
+        #rules_data .enable-bar {
+            padding-left: 10px;
+        }
+
+        .ruleFilters .small-page {
+            font-size: 20px;
         }
     }
 </style>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
-    $(document).ready(function(){
-       CukeSniffer.init();
-    });
-
     var CukeSniffer = {
-        init: function(){
-            CukeSniffer.actions.bind();
-            CukeSniffer.view._startTooltips();
-            CukeSniffer.view._updateRowColors();
+    init: function(){
+        CukeSniffer.actions.bind();
+        CukeSniffer.view._startTooltips();
+        CukeSniffer.view._updateRowColors();
+        CukeSniffer.view._disableRulesFromLocalStorage();
+    },
+    view: {
+        _disableRulesFromLocalStorage: function(){
+            $.each($("[data-rule-symbol]"), function(index, rule){
+                var $rule = $(rule),
+                    symbol = $rule.data("rule-symbol"),
+                    hasCookie = localStorage.getItem(symbol) != undefined;
+                if(hasCookie){
+                    $rule.find("input").click();
+                }
+            });
         },
-        view: {
-            _hideDetails: function($section){
-                $section.find(".details").hide();
-            },
-            hideRuleDetails: function(){
-                CukeSniffer.view._hideDetails($(".rule"));
-            },
-            hideDeadStepDetails: function(){
-                CukeSniffer.view._hideDetails($(".deadStep"));
-            },
-            hideFeatures: function(){
-                CukeSniffer.view._hideDetails($(".feature > .row"));
-            },
-            hideStepDefinitions: function(){
-                CukeSniffer.view._hideDetails($(".stepDefinition > .row"));
-            },
-            hideHooks: function(){
-                CukeSniffer.view._hideDetails($(".hook > .row"));
-            },
-            toggleDetails: function(){
-                $(this).closest(".deadStep, .feature, .stepDefinition, .hook").find(".row > .details").slideToggle();
-            },
-            _startTooltips: function(){
-                $("[title]").tooltip();
-            },
-            _updateRuleRowColors: function(){
-                $(".rule:visible:even").addClass("blueRow");
-            },
-            _updateRowColors: function(){
-                $(" .deadStep:even, .feature:even, .stepDefinition:even, .hook:even").addClass("blueRow");
-            }
+        toggleDetails: function(){
+            $(this).closest(".deadStep, .feature, .stepDefinition, .hook").find(".row > .details").slideToggle();
         },
-        actions: {
-            bind: function(){
-                CukeSniffer.actions._togglePanelHeaderIcons();
-                CukeSniffer.actions._viewRules();
-                CukeSniffer.actions._clickRow();
-                CukeSniffer.actions._ruleFilters();
-                CukeSniffer.actions.collapseRules();
-                CukeSniffer.actions.expandRules();
-                CukeSniffer.actions.collapseDeadSteps();
-                CukeSniffer.actions.expandDeadSteps();
-                CukeSniffer.actions.toggleDetails();
-                CukeSniffer.actions.collapseFeatureDetails();
-                CukeSniffer.actions.expandFeatureDetails();
-                CukeSniffer.actions.collapseStepDefinitionDetails();
-                CukeSniffer.actions.expandStepDefinitionDetails();
-                CukeSniffer.actions.collapseHooks();
-                CukeSniffer.actions.expandHooks();
-            },
-            _togglePanelHeaderIcons: function(){
-                $(document).on("click", ".panel-title", function(){
-                    var $icon = $(this).find(".glyphicon");
-                    $icon.toggleClass("glyphicon-menu-down");
-                    $icon.toggleClass("glyphicon-menu-up");
-                });
-            },
-            _viewRules: function(){
-                $(document).on("click", "#rulesTab", CukeSniffer.view._updateRuleRowColors);
-            },
-            _clickRow: function(){
-                $(document).on("click", ".rule", function(){
-                    var $details = $(this).find(".details");
-                    $details.toggle();
-                });
-                $(document).on("click", ".rule :checkbox", function(event){
-                    event.stopPropagation();
-                });
-            },
-            _ruleFilters: function(){
-                $(document).on("click", "#ruleFilters .btn", function(){
-                    var $clickedCheckbox = $(this).find(":checkbox");
-                    $(".rule").hide().removeClass("blueRow");
-                    $("#ruleFilters .btn").each(function(index, button){
-                        var $checkbox = $(button).find(":checkbox"),
-                            filterName = $checkbox.data("rule-type"),
-                                        //hate this hack.
-                            checked = ($clickedCheckbox[0] == $checkbox[0]) ? !$checkbox.is(":checked") : $checkbox.is(":checked");
-                        if(checked){
-                            $("[rule-" + filterName + "]").show();
-                        }
-                    });
-                    CukeSniffer.view._updateRuleRowColors();
-                });
-            },
-            collapseRules: function(){
-                $(document).on("click", "#collapseRules", CukeSniffer.view.hideRuleDetails);
-            },
-            expandRules: function(){
-                $(document).on("click", "#expandRules", function(){
-                    $(".rule .details").show();
-                });
-            },
-            collapseDeadSteps: function(){
-                $(document).on("click", "#collapseDeadSteps", CukeSniffer.view.hideDeadStepDetails);
-            },
-            expandDeadSteps: function(){
-                $(document).on("click", "#expandDeadSteps", function(){
-                    $(".deadStep .details").show();
-                });
-            },
-            toggleDetails: function(){
-                $(document).on("click", ".deadStep > .row > .title, .feature > .row > .title, .stepDefinition > .row > .title, .hook .title", CukeSniffer.view.toggleDetails);
-            },
-            collapseFeatureDetails: function(){
-                $(document).on("click", "#collapseFeatures", CukeSniffer.view.hideFeatures);
-            },
-            expandFeatureDetails: function(){
-                $(document).on("click", "#expandFeatures", function(){
-                    $(".feature > .row > .details").show();
-                });
-            },
-            collapseStepDefinitionDetails: function(){
-                $(document).on("click", "#collapseStepDefinitions", CukeSniffer.view.hideStepDefinitions);
-            },
-            expandStepDefinitionDetails: function(){
-                $(document).on("click", "#expandStepDefinitions", function(){
-                    $(".stepDefinition > .row > .details").show();
-                });
-            },
-            collapseHooks: function(){
-                $(document).on("click", "#collapseHooks", CukeSniffer.view.hideHooks);
-            },
-            expandHooks: function(){
-                $(document).on("click", "#expandHooks", function(){
-                    $(".hook > .row > .details").show();
-                });
-            }
+        _startTooltips: function(){
+            $("[title]").tooltip();
+        },
+        _updateRowColors: function(){
+            $(".rule:visible:even, .deadStep:even, .feature:even, .stepDefinition:even, .hook:even").addClass("blueRow");
+        },
+        _updateVisibleItems: function(){
+            $(".feature, .backgroundProblems, .scenario, .scenarios, .stepDefinition, .hook").hide();
+            CukeSniffer.view._updateVisibleFeatureIssues();
+            CukeSniffer.view._updateVisibleStepDefinitionIssues();
+            CukeSniffer.view._updateVisibleHookIssues();
+        },
+        _updateVisibleFeatureIssues: function(){
+            var $visibleFeatures = $(".feature:has([show])"),
+                $visibleBackground = $(".backgroundProblems:has([show])"),
+                $visibleScenarioBlocks = $(".scenarios:has([show])"),
+                $visibleScenarios = $(".scenario:has(.details [data-improvement-row][show])");
+
+            $visibleFeatures.show();
+            $visibleBackground.show();
+            $visibleScenarioBlocks.show();
+            $visibleScenarios.show();
+            $visibleScenarios.find(".details").show();
+        },
+        _updateVisibleStepDefinitionIssues: function(){
+            var $visibleStepDefinition = $(".stepDefinition:has([show])")
+            $visibleStepDefinition.show();
+        },
+        _updateVisibleHookIssues: function(){
+            var $visibleHooks = $(".hook:has([show])")
+            $visibleHooks.show();
         }
-    };
+    },
+    actions: {
+        bind: function(){
+            CukeSniffer.actions._bindExpandAll();
+            CukeSniffer.actions._bindCollapseAll();
+            CukeSniffer.actions._bindShowDeadSteps()
+            CukeSniffer.actions._togglePanelHeaderIcons();
+            CukeSniffer.actions._viewRules();
+            CukeSniffer.actions._clickRow();
+            CukeSniffer.actions._ruleFilters();
+            CukeSniffer.actions.toggleDetails();
+            CukeSniffer.actions.enableAllRules();
+            CukeSniffer.actions.disableAllRules();
+            CukeSniffer.actions.changeRuleStatus();
+        },
+        _bindExpandAll: function(){
+            $(document).on("click", "[expand]", function(){
+                $(this).closest(".panel-body").find(".details").show();
+            });
+        },
+        _bindShowDeadSteps: function(){
+            $("#step_definitions .deadStep").hide();
+            $(document).on("click", "#showDeadSteps", function(){
+                $("#step_definitions .deadStep").toggle()
+            });
+        },
+        _bindCollapseAll: function(){
+            $(document).on("click", "[collapse]", function(){
+                $(this).closest(".panel-body").find(".details").hide();
+            });
+        },
+        _togglePanelHeaderIcons: function(){
+            $(document).on("click", ".panel-title", function(){
+                var $icon = $(this).find(".glyphicon");
+                $icon.toggleClass("glyphicon-menu-down");
+                $icon.toggleClass("glyphicon-menu-up");
+            });
+        },
+        _viewRules: function(){
+            $(document).on("click", "#rulesTab", CukeSniffer.view._updateRowColors);
+        },
+        _clickRow: function(){
+            $(document).on("click", ".rule", function(){
+                var $details = $(this).find(".details");
+                $details.toggle();
+            });
+            $(document).on("click", ".rule :checkbox", function(event){
+                event.stopPropagation();
+            });
+        },
+        _ruleFilters: function(){
+            $(document).on("click", "#ruleFilters .btn", function(){
+                var $clickedCheckbox = $(this).find(":checkbox");
+                $(".rule").hide().removeClass("blueRow");
+                $("#ruleFilters .btn").each(function(index, button){
+                    var $checkbox = $(button).find(":checkbox"),
+                        filterName = $checkbox.data("rule-type"),
+                    //hate this hack.
+                        checked = ($clickedCheckbox[0] == $checkbox[0]) ? !$checkbox.is(":checked") : $checkbox.is(":checked");
+                    if(checked){
+                        $("[rule-" + filterName + "]").show();
+                    }
+                });
+                CukeSniffer.view._updateRowColors();
+            });
+        },
+        toggleDetails: function(){
+            $(document).on("click", ".deadStep > .row > .title," +
+                " .feature > .row > .title, " +
+                ".stepDefinition > .row > .title, " +
+                ".hook .title", CukeSniffer.view.toggleDetails);
+        },
+        enableAllRules: function(){
+            $(document).on("click", "#enableAllRules", function(){
+                $(".rule input[type='checkbox']:not(:checked)").click();
+            });
+        },
+        disableAllRules: function(){
+            $(document).on("click", "#disableAllRules", function(){
+                $(".rule input[type='checkbox']:checked").click();
+            });
+        },
+        changeRuleStatus: function(){
+            $(document).on("click", ".rule input[type='checkbox']", function(){
+                var enabled = $(this).is(":checked"),
+                    $rule = $(this).closest(".rule"),
+                    phrase = $rule.find("[data-phrase]").html(),
+                    symbol = $rule.data("rule-symbol"),
+                    improvementPhraseList = [];
+                if(enabled){
+                    localStorage.removeItem(symbol);
+                } else {
+                    localStorage.setItem(symbol, true);
+                }
+                if(phrase.indexOf("{class}") != -1) {
+                    var targets = $(this).closest(".rule").find("[data-targets]").html().trim().split(", ");
+                    if(targets.indexOf("Scenario") != -1){
+                        targets.push("Scenario Outline");
+                    }
+                    $.each(targets, function (n, target) {
+                        improvementPhraseList.push(phrase.replace("{class}", target))
+                    });
+                } else if(phrase.indexOf("{word}") != -1){
+                    var targets = $(this).closest(".rule").find("[data-conditions]").html().trim().replace("[", "").replace("]", "").replace(/\"/g, "").split(", ");
+                    $.each(targets, function (n, target) {
+                        improvementPhraseList.push(phrase.replace("{word}", target))
+                    });
+                } else {
+                    improvementPhraseList.push(phrase)
+                }
+                (enabled) ? CukeSniffer.actions._enableRule(improvementPhraseList) : CukeSniffer.actions._disableRule(improvementPhraseList);
+            });
+        },
+        _enableRule: function(improvementPhraseList){
+            $.each(improvementPhraseList, function(n, phrase){
+                var $all = $("[data-improvement-row]:has([data-improvement='" + phrase +"'])");
+                $all.show();
+                $all.attr("show", true);
+            });
+            CukeSniffer.view._updateVisibleItems();
+        },
+        _disableRule: function(improvementPhraseList){
+            $.each(improvementPhraseList, function(n, phrase){
+                var $all = $("[data-improvement-row]:has([data-improvement='" + phrase +"'])");
+                $all.hide();
+                $all.removeAttr("show");
+            });
+            CukeSniffer.view._updateVisibleItems();
+        }
+    }
+};
+    $(document).ready(function(){
+        CukeSniffer.init();
+    });
 </script>
 
    <div class="row">
   <div class="page-header">
     <h1>
-      Cuke Sniffer <a class="black" href="https://github.com/r-cochran/cuke_sniffer"><span class="fa fa-github"></span></a>
-      <small>0.0.9</small>
+      Cuke Sniffer <a class="black" target="_blank" href="https://github.com/r-cochran/cuke_sniffer"><span class="fa fa-github"></span></a>
+      
+        <small>1.0.0</small>
+      
     </h1>
     <div>Score:
       <span class="score">192</span>
@@ -261,7 +347,7 @@
           identification of these issues. The list of improvements has been constructed on opinions from the authors
           and feedback from community members. Not everyone will share these opinions and for that reason all
           improvements can be turned off when generating this report. See the
-          <a href="https://github.com/r-cochran/cuke_sniffer/wiki">wiki</a> for instructions on how.
+          <a target="_blank" href="https://github.com/r-cochran/cuke_sniffer/wiki">wiki</a> for instructions on how.
         </div>
       </div>
       <div class="col-md-12">
@@ -272,7 +358,7 @@
           Scoring is based on the number of 'smells' in a cucumber project, where smells are potential misuses or
           errors. Cuke Sniffer follows a 'golf score' type system where the lower the number, the better. 'Min' refers
           to the overall best score for a particular object and the 'Max' is the overall worst object score. The score
-          is <u>relative</u> to each project and should <u>not</u> be used to compare with others.
+          is <u>relative</u> to each project and should be used to compare the project and teams growth.
         </div>
       </div>
       <div class="col-md-12">
@@ -281,13 +367,13 @@
         </div>
         <div class="col-md-11">
           <div>
-            Robert Cochran <a target="_blank" href="https://twitter.com/cochrarj"><i class="fa fa-twitter"></i> @cochrarj</a>
+            Robert Cochran <a target="_blank" href="https://twitter.com/cochrarj"><i class="fa fa-twitter"></i></a>
           </div>
           <div>
-            Robert Anderson <a target="_blank" href="https://twitter.com/bobthesatyr1337"><i class="fa fa-twitter"></i> @bobthesatyr1337</a>
+            Robert Anderson <a target="_blank" href="https://twitter.com/bobthesatyr1337"><i class="fa fa-twitter"></i></a>
           </div>
           <div>
-            Christopher Vaughn <a target="_blank" href="https://twitter.com/mistercvaughn"><i class="fa fa-twitter"></i> @mistercvaughn</a>
+            Christopher Vaughn <a target="_blank" href="https://twitter.com/mistercvaughn"><i class="fa fa-twitter"></i></a>
           </div>
         </div>
       </div>
@@ -297,6 +383,12 @@
         </div>
         <div class="col-md-11">
           <div>
+            <div>
+              <a target="_blank" href="https://github.com/r-cochran/cuke_sniffer/issues">
+                <span class="fa fa-bug"></span> Report Issues
+              </a>
+
+            </div>
             <div>
               <a target="_blank" href="https://github.com/r-cochran/cuke_sniffer/wiki/Patch-notes">
                 <span class="fa fa-list"></span> Patch Notes
@@ -329,20 +421,20 @@
       <tr>
         <td></td>
         <td>
-          <span class="full">Features</span>
-          <span class="small" title="Features">F</span>
+          <span class="full-page">Features</span>
+          <span class="small-page" title="Features">F</span>
         </td>
         <td>
-          <span class="full">Scenarios</span>
-          <span class="small" title="Scenarios">S</span>
+          <span class="full-page">Scenarios</span>
+          <span class="small-page" title="Scenarios">S</span>
         </td>
         <td>
-          <span class="full">Step Definitions</span>
-          <span class="small" title="Step Definitions">S.D.</span>
+          <span class="full-page">Step Definitions</span>
+          <span class="small-page" title="Step Definitions">S.D.</span>
         </td>
         <td>
-          <span class="full">Hooks</span>
-          <span class="small" title="Hooks">H</span>
+          <span class="full-page">Hooks</span>
+          <span class="small-page" title="Hooks">H</span>
         </td>
       </tr>
       <tr>
@@ -551,7 +643,7 @@
       
       <div>
         
-          <div class="improvement">
+          <div class="improvement" data-improvement="Hook without a begin/rescue. Reduced visibility when debugging.">
             <div class="row">
               <div class="col-md-12 title">
                 <div class="col-md-1 red">
@@ -564,7 +656,7 @@
             </div>
           </div>
         
-          <div class="improvement">
+          <div class="improvement" data-improvement="Hook found outside of the designated hooks file">
             <div class="row">
               <div class="col-md-12 title">
                 <div class="col-md-1 red">
@@ -577,7 +669,7 @@
             </div>
           </div>
         
-          <div class="improvement">
+          <div class="improvement" data-improvement="Hook is only comments.">
             <div class="row">
               <div class="col-md-12 title">
                 <div class="col-md-1 red">
@@ -590,7 +682,7 @@
             </div>
           </div>
         
-          <div class="improvement">
+          <div class="improvement" data-improvement="Scenario steps out of Given/When/Then order.">
             <div class="row">
               <div class="col-md-12 title">
                 <div class="col-md-1 red">
@@ -603,7 +695,7 @@
             </div>
           </div>
         
-          <div class="improvement">
+          <div class="improvement" data-improvement="Nested step call.">
             <div class="row">
               <div class="col-md-12 title">
                 <div class="col-md-1 red">
@@ -616,7 +708,7 @@
             </div>
           </div>
         
-          <div class="improvement">
+          <div class="improvement" data-improvement="Lazy Debugging through puts, p, or print">
             <div class="row">
               <div class="col-md-12 title">
                 <div class="col-md-1 red">
@@ -629,7 +721,7 @@
             </div>
           </div>
         
-          <div class="improvement">
+          <div class="improvement" data-improvement="Hook with no content.">
             <div class="row">
               <div class="col-md-12 title">
                 <div class="col-md-1 red">
@@ -654,32 +746,52 @@
 
     <div id="rules_data" class="panel-body collapse">
       <span class="button-bar">
-        <div id="collapseRules" class="btn btn-default">
-          Collapse All
-        </div>
-        <div id="expandRules" class="btn btn-default">
-          Expand All
+        <div class="btn-group">
+  <div class="btn btn-default" collapse>
+    Collapse All
+  </div>
+  <div class="btn btn-default" expand>
+    Expand All
+  </div>
+</div>
+        <div class="btn-group enable-bar">
+          <div id="enableAllRules" class="btn btn-default">
+            Enable All
+          </div>
+          <div id="disableAllRules" class="btn btn-default">
+            Disable All
+          </div>
         </div>
         <div id="ruleFilters" class="btn-group" data-toggle="buttons">
           <div class="btn btn-default active">
-            <input type="checkbox" checked data-rule-type="feature"/>Feature
+            <input type="checkbox" checked data-rule-type="feature"/>
+              <span class="full-page" title="Feature">Feature</span>
+              <span class="small-page" title="Feature">F.</span>
           </div>
           <div class="btn btn-default active">
-            <input type="checkbox" checked data-rule-type="background"/> Background
+            <input type="checkbox" checked data-rule-type="background"/>
+              <span class="full-page" title="Background">Background</span>
+              <span class="small-page" title="Background">B.</span>
           </div>
           <div class="btn btn-default active">
-            <input type="checkbox" checked data-rule-type="scenario"/> Scenario
+            <input type="checkbox" checked data-rule-type="scenario"/>
+              <span class="full-page" title="Scenario">Scenario</span>
+              <span class="small-page" title="Scenario">S.</span>
           </div>
           <div class="btn btn-default active">
-            <input type="checkbox" checked data-rule-type="stepdefinition"/> Step Definition
+            <input type="checkbox" checked data-rule-type="stepdefinition"/>
+              <span class="full-page" title="Step Definition">Step Definition</span>
+              <span class="small-page" title="Step Definition">S. D.</span>
           </div>
           <div class="btn btn-default active">
-            <input type="checkbox" checked data-rule-type="hook"/> Hook
+            <input type="checkbox" checked data-rule-type="hook"/>
+              <span class="full-page" title="Hook">Hook</span>
+              <span class="small-page" title="Hook">H</span>
           </div>
         </div>
       </span>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="recursive_nested_step"
             
                 rule-StepDefinition
             
@@ -689,7 +801,8 @@
                 
                     checked="checked"
                 
-            /> Recursive nested step call.
+            />
+            <span data-phrase>Recursive nested step call.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -705,7 +818,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   StepDefinition
                 </div>
               </div>
@@ -714,7 +827,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="background_with_tag"
             
                 rule-Background
             
@@ -724,7 +837,8 @@
                 
                     checked="checked"
                 
-            /> There is a background with a tag. This feature file cannot run!
+            />
+            <span data-phrase>There is a background with a tag. This feature file cannot run!</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -740,7 +854,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Background
                 </div>
               </div>
@@ -749,7 +863,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="comment_after_tag"
             
                 rule-Feature
             
@@ -761,7 +875,8 @@
                 
                     checked="checked"
                 
-            /> Comment comes between tag and properly executing line. This feature file cannot run!
+            />
+            <span data-phrase>Comment comes between tag and properly executing line. This feature file cannot run!</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -777,7 +892,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Feature, Scenario
                 </div>
               </div>
@@ -786,7 +901,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="universal_nested_step"
             
                 rule-StepDefinition
             
@@ -796,7 +911,8 @@
                 
                     checked="checked"
                 
-            /> A nested step should not universally match all step definitions.  Dead steps cannot be correctly cataloged.
+            />
+            <span data-phrase>A nested step should not universally match all step definitions.  Dead steps cannot be correctly cataloged.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -812,7 +928,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   StepDefinition
                 </div>
               </div>
@@ -821,7 +937,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="no_examples_table"
             
                 rule-Scenario
             
@@ -831,7 +947,8 @@
                 
                     checked="checked"
                 
-            /> Scenario Outline with no examples table.
+            />
+            <span data-phrase>Scenario Outline with no examples table.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -847,7 +964,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario
                 </div>
               </div>
@@ -856,7 +973,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="no_examples"
             
                 rule-Scenario
             
@@ -866,7 +983,8 @@
                 
                     checked="checked"
                 
-            /> Scenario Outline with no examples.
+            />
+            <span data-phrase>Scenario Outline with no examples.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -882,7 +1000,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario
                 </div>
               </div>
@@ -891,7 +1009,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="around_hook_without_2_parameters"
             
                 rule-Hook
             
@@ -901,7 +1019,8 @@
                 
                     checked="checked"
                 
-            /> Around hook without 2 parameters for Scenario and Block.
+            />
+            <span data-phrase>Around hook without 2 parameters for Scenario and Block.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -917,7 +1036,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Hook
                 </div>
               </div>
@@ -926,7 +1045,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="no_description"
             
                 rule-Feature
             
@@ -938,7 +1057,8 @@
                 
                     checked="checked"
                 
-            /> {class} has no description.
+            />
+            <span data-phrase>{class} has no description.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -954,7 +1074,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Feature, Scenario
                 </div>
               </div>
@@ -963,7 +1083,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="no_scenarios"
             
                 rule-Feature
             
@@ -973,7 +1093,8 @@
                 
                     checked="checked"
                 
-            /> Feature with no scenarios.
+            />
+            <span data-phrase>Feature with no scenarios.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -989,7 +1110,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Feature
                 </div>
               </div>
@@ -998,7 +1119,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="commented_step"
             
                 rule-Scenario
             
@@ -1010,7 +1131,8 @@
                 
                     checked="checked"
                 
-            /> Commented step.
+            />
+            <span data-phrase>Commented step.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1026,7 +1148,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario, Background
                 </div>
               </div>
@@ -1035,7 +1157,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="commented_example"
             
                 rule-Scenario
             
@@ -1045,7 +1167,8 @@
                 
                     checked="checked"
                 
-            /> Commented example.
+            />
+            <span data-phrase>Commented example.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1061,7 +1184,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario
                 </div>
               </div>
@@ -1070,7 +1193,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="no_steps"
             
                 rule-Scenario
             
@@ -1082,7 +1205,8 @@
                 
                     checked="checked"
                 
-            /> No steps in Scenario.
+            />
+            <span data-phrase>No steps in Scenario.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1098,7 +1222,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario, Background
                 </div>
               </div>
@@ -1107,7 +1231,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="one_word_step"
             
                 rule-Scenario
             
@@ -1119,7 +1243,8 @@
                 
                     checked="checked"
                 
-            /> Step that is only one word long.
+            />
+            <span data-phrase>Step that is only one word long.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1135,7 +1260,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario, Background
                 </div>
               </div>
@@ -1144,7 +1269,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="no_code"
             
                 rule-StepDefinition
             
@@ -1154,7 +1279,8 @@
                 
                     checked="checked"
                 
-            /> No code in Step Definition.
+            />
+            <span data-phrase>No code in Step Definition.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1170,7 +1296,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   StepDefinition
                 </div>
               </div>
@@ -1179,7 +1305,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="hook_conflicting_tags"
             
                 rule-Hook
             
@@ -1189,7 +1315,8 @@
                 
                     checked="checked"
                 
-            /> Hook that both expects and ignores the same tag. This hook will not function as expected.
+            />
+            <span data-phrase>Hook that both expects and ignores the same tag. This hook will not function as expected.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1205,7 +1332,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Hook
                 </div>
               </div>
@@ -1214,7 +1341,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="hook_no_debugging"
             
                 rule-Hook
             
@@ -1224,7 +1351,8 @@
                 
                     checked="checked"
                 
-            /> Hook without a begin/rescue. Reduced visibility when debugging.
+            />
+            <span data-phrase>Hook without a begin/rescue. Reduced visibility when debugging.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1240,7 +1368,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Hook
                 </div>
               </div>
@@ -1249,7 +1377,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="around_hook_no_block_call"
             
                 rule-Hook
             
@@ -1259,7 +1387,8 @@
                 
                     checked="checked"
                 
-            /> Around hook does not call its block.
+            />
+            <span data-phrase>Around hook does not call its block.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1275,7 +1404,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Hook
                 </div>
               </div>
@@ -1284,7 +1413,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="background_with_no_scenarios"
             
                 rule-Feature
             
@@ -1294,7 +1423,8 @@
                 
                     checked="checked"
                 
-            /> Feature has a background with no scenarios.
+            />
+            <span data-phrase>Feature has a background with no scenarios.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1310,7 +1440,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Feature
                 </div>
               </div>
@@ -1319,7 +1449,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="empty_feature"
             
                 rule-Feature
             
@@ -1329,7 +1459,8 @@
                 
                     checked="checked"
                 
-            /> Feature file has no content.
+            />
+            <span data-phrase>Feature file has no content.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1345,7 +1476,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Feature
                 </div>
               </div>
@@ -1354,7 +1485,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="numbers_in_description"
             
                 rule-Feature
             
@@ -1368,7 +1499,8 @@
                 
                     checked="checked"
                 
-            /> {class} has numbers in the description.
+            />
+            <span data-phrase>{class} has numbers in the description.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1384,7 +1516,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Feature, Scenario, Background
                 </div>
               </div>
@@ -1393,7 +1525,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="hook_duplicate_tags"
             
                 rule-Hook
             
@@ -1403,7 +1535,8 @@
                 
                     checked="checked"
                 
-            /> Hook has duplicate tags.
+            />
+            <span data-phrase>Hook has duplicate tags.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1419,7 +1552,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Hook
                 </div>
               </div>
@@ -1428,7 +1561,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="hook_all_comments"
             
                 rule-Hook
             
@@ -1438,7 +1571,8 @@
                 
                     checked="checked"
                 
-            /> Hook is only comments.
+            />
+            <span data-phrase>Hook is only comments.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1454,7 +1588,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Hook
                 </div>
               </div>
@@ -1463,7 +1597,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="empty_hook"
             
                 rule-Hook
             
@@ -1473,7 +1607,8 @@
                 
                     checked="checked"
                 
-            /> Hook with no content.
+            />
+            <span data-phrase>Hook with no content.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1489,7 +1624,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Hook
                 </div>
               </div>
@@ -1498,7 +1633,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="commented_tag"
             
                 rule-Feature
             
@@ -1510,7 +1645,8 @@
                 
                     checked="checked"
                 
-            /> {class} has a commented out tag
+            />
+            <span data-phrase>{class} has a commented out tag</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1526,7 +1662,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Feature, Scenario
                 </div>
               </div>
@@ -1535,7 +1671,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="commas_in_description"
             
                 rule-Feature
             
@@ -1547,7 +1683,8 @@
                 
                     checked="checked"
                 
-            /> There are commas in the description, creating possible multirunning scenarios or features.
+            />
+            <span data-phrase>There are commas in the description, creating possible multirunning scenarios or features.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1563,7 +1700,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Feature, Scenario
                 </div>
               </div>
@@ -1572,7 +1709,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="scenario_same_tag"
             
                 rule-Feature
             
@@ -1582,7 +1719,8 @@
                 
                     checked="checked"
                 
-            /> Tag appears on all scenarios.
+            />
+            <span data-phrase>Tag appears on all scenarios.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1598,7 +1736,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Feature
                 </div>
               </div>
@@ -1607,7 +1745,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="pending"
             
                 rule-StepDefinition
             
@@ -1617,7 +1755,8 @@
                 
                     checked="checked"
                 
-            /> Pending step definition. Implement or remove.
+            />
+            <span data-phrase>Pending step definition. Implement or remove.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1633,7 +1772,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   StepDefinition
                 </div>
               </div>
@@ -1642,7 +1781,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="lazy_debugging"
             
                 rule-StepDefinition
             
@@ -1652,7 +1791,8 @@
                 
                     checked="checked"
                 
-            /> Lazy Debugging through puts, p, or print
+            />
+            <span data-phrase>Lazy Debugging through puts, p, or print</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1668,7 +1808,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   StepDefinition
                 </div>
               </div>
@@ -1677,7 +1817,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="too_many_parameters"
             
                 rule-StepDefinition
             
@@ -1687,7 +1827,8 @@
                 
                     checked="checked"
                 
-            /> Too many parameters in Step Definition.
+            />
+            <span data-phrase>Too many parameters in Step Definition.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1703,7 +1844,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   StepDefinition
                 </div>
               </div>
@@ -1718,7 +1859,7 @@
                         <div class="col-md-2">
                             max:
                         </div>
-                        <div class="col-md-10">
+                        <div class="col-md-10" data-conditions>
                             4
                         </div>
                       </div>
@@ -1730,7 +1871,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="multiple_given_when_then"
             
                 rule-Scenario
             
@@ -1742,7 +1883,8 @@
                 
                     checked="checked"
                 
-            /> Given/When/Then used multiple times in the same {class}.
+            />
+            <span data-phrase>Given/When/Then used multiple times in the same {class}.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1758,7 +1900,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario, Background
                 </div>
               </div>
@@ -1767,7 +1909,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="too_many_examples"
             
                 rule-Scenario
             
@@ -1777,7 +1919,8 @@
                 
                     checked="checked"
                 
-            /> Scenario Outline with too many examples.
+            />
+            <span data-phrase>Scenario Outline with too many examples.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1793,7 +1936,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario
                 </div>
               </div>
@@ -1808,7 +1951,7 @@
                         <div class="col-md-2">
                             max:
                         </div>
-                        <div class="col-md-10">
+                        <div class="col-md-10" data-conditions>
                             10
                         </div>
                       </div>
@@ -1820,7 +1963,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="one_example"
             
                 rule-Scenario
             
@@ -1830,7 +1973,8 @@
                 
                     checked="checked"
                 
-            /> Scenario Outline with only one example.
+            />
+            <span data-phrase>Scenario Outline with only one example.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1846,7 +1990,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario
                 </div>
               </div>
@@ -1855,7 +1999,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="asterisk_step"
             
                 rule-Scenario
             
@@ -1867,7 +2011,8 @@
                 
                     checked="checked"
                 
-            /> Step includes a * instead of Given/When/Then/And/But.
+            />
+            <span data-phrase>Step includes a * instead of Given/When/Then/And/But.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1883,7 +2028,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario, Background
                 </div>
               </div>
@@ -1892,7 +2037,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="invalid_first_step"
             
                 rule-Scenario
             
@@ -1904,7 +2049,8 @@
                 
                     checked="checked"
                 
-            /> Invalid first step. Began with And/But.
+            />
+            <span data-phrase>Invalid first step. Began with And/But.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1920,7 +2066,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario, Background
                 </div>
               </div>
@@ -1929,7 +2075,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="out_of_order_steps"
             
                 rule-Scenario
             
@@ -1939,7 +2085,8 @@
                 
                     checked="checked"
                 
-            /> Scenario steps out of Given/When/Then order.
+            />
+            <span data-phrase>Scenario steps out of Given/When/Then order.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1955,7 +2102,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario
                 </div>
               </div>
@@ -1964,7 +2111,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="too_many_steps"
             
                 rule-Scenario
             
@@ -1976,7 +2123,8 @@
                 
                     checked="checked"
                 
-            /> {class} with too many steps.
+            />
+            <span data-phrase>{class} with too many steps.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -1992,7 +2140,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario, Background
                 </div>
               </div>
@@ -2007,7 +2155,7 @@
                         <div class="col-md-2">
                             max:
                         </div>
-                        <div class="col-md-10">
+                        <div class="col-md-10" data-conditions>
                             7
                         </div>
                       </div>
@@ -2019,7 +2167,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="background_with_one_scenario"
             
                 rule-Feature
             
@@ -2029,7 +2177,8 @@
                 
                     checked="checked"
                 
-            /> Feature has a background with one scenario.
+            />
+            <span data-phrase>Feature has a background with one scenario.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2045,7 +2194,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Feature
                 </div>
               </div>
@@ -2054,7 +2203,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="feature_same_tag"
             
                 rule-Feature
             
@@ -2064,7 +2213,8 @@
                 
                     checked="checked"
                 
-            /> Same tag appears on Feature.
+            />
+            <span data-phrase>Same tag appears on both Feature and Scenario</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2080,7 +2230,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Feature
                 </div>
               </div>
@@ -2089,7 +2239,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="too_many_tags"
             
                 rule-Feature
             
@@ -2101,7 +2251,8 @@
                 
                     checked="checked"
                 
-            /> {class} has too many tags.
+            />
+            <span data-phrase>{class} has too many tags.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2117,7 +2268,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Feature, Scenario
                 </div>
               </div>
@@ -2132,7 +2283,7 @@
                         <div class="col-md-2">
                             max:
                         </div>
-                        <div class="col-md-10">
+                        <div class="col-md-10" data-conditions>
                             8
                         </div>
                       </div>
@@ -2144,7 +2295,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="implementation_word"
             
                 rule-Scenario
             
@@ -2156,7 +2307,8 @@
                 
                     checked="checked"
                 
-            /> Implementation word used: {word}.
+            />
+            <span data-phrase>Implementation word used: {word}.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2172,7 +2324,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario, Background
                 </div>
               </div>
@@ -2187,7 +2339,7 @@
                         <div class="col-md-2">
                             words:
                         </div>
-                        <div class="col-md-10">
+                        <div class="col-md-10" data-conditions>
                             ["page", "site", "url", "drop down", "dropdown", "select list", "click", "text box", "radio button", "check box", "xml", "window", "pop up", "pop-up", "screen", "database", "DB"]
                         </div>
                       </div>
@@ -2199,7 +2351,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="implementation_word_button"
             
                 rule-Scenario
             
@@ -2209,7 +2361,8 @@
                 
                     checked="checked"
                 
-            /> Implementation word used: button.
+            />
+            <span data-phrase>Implementation word used: button.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2225,7 +2378,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario
                 </div>
               </div>
@@ -2234,7 +2387,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="implementation_word_tab"
             
                 rule-Scenario
             
@@ -2244,7 +2397,8 @@
                 
                     checked="checked"
                 
-            /> Implementation word used: tab.
+            />
+            <span data-phrase>Implementation word used: tab.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2260,7 +2414,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario
                 </div>
               </div>
@@ -2269,7 +2423,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="too_many_scenarios"
             
                 rule-Feature
             
@@ -2279,7 +2433,8 @@
                 
                     checked="checked"
                 
-            /> Feature with too many scenarios.
+            />
+            <span data-phrase>Feature with too many scenarios.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2295,7 +2450,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Feature
                 </div>
               </div>
@@ -2310,7 +2465,7 @@
                         <div class="col-md-2">
                             max:
                         </div>
-                        <div class="col-md-10">
+                        <div class="col-md-10" data-conditions>
                             10
                         </div>
                       </div>
@@ -2322,7 +2477,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="date_used"
             
                 rule-Scenario
             
@@ -2334,7 +2489,8 @@
                 
                     checked="checked"
                 
-            /> Date used.
+            />
+            <span data-phrase>Date used.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2350,7 +2506,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Scenario, Background
                 </div>
               </div>
@@ -2359,7 +2515,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="nested_step"
             
                 rule-StepDefinition
             
@@ -2369,7 +2525,8 @@
                 
                     checked="checked"
                 
-            /> Nested step call.
+            />
+            <span data-phrase>Nested step call.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2385,7 +2542,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   StepDefinition
                 </div>
               </div>
@@ -2394,7 +2551,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="commented_code"
             
                 rule-StepDefinition
             
@@ -2404,7 +2561,8 @@
                 
                     checked="checked"
                 
-            /> Commented code in Step Definition.
+            />
+            <span data-phrase>Commented code in Step Definition.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2420,7 +2578,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   StepDefinition
                 </div>
               </div>
@@ -2429,7 +2587,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="small_sleep"
             
                 rule-StepDefinition
             
@@ -2439,7 +2597,8 @@
                 
                     checked="checked"
                 
-            /> Small sleeps used. Use a wait_until like method.
+            />
+            <span data-phrase>Small sleeps used. Use a wait_until like method.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2455,7 +2614,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   StepDefinition
                 </div>
               </div>
@@ -2470,7 +2629,7 @@
                         <div class="col-md-2">
                             max:
                         </div>
-                        <div class="col-md-10">
+                        <div class="col-md-10" data-conditions>
                             2
                         </div>
                       </div>
@@ -2482,7 +2641,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="large_sleep"
             
                 rule-StepDefinition
             
@@ -2492,7 +2651,8 @@
                 
                     checked="checked"
                 
-            /> Large sleeps used. Use a wait_until like method.
+            />
+            <span data-phrase>Large sleeps used. Use a wait_until like method.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2508,7 +2668,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   StepDefinition
                 </div>
               </div>
@@ -2523,7 +2683,7 @@
                         <div class="col-md-2">
                             min:
                         </div>
-                        <div class="col-md-10">
+                        <div class="col-md-10" data-conditions>
                             2
                         </div>
                       </div>
@@ -2535,7 +2695,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="todo"
             
                 rule-StepDefinition
             
@@ -2545,7 +2705,8 @@
                 
                     checked="checked"
                 
-            /> Todo found. Resolve it.
+            />
+            <span data-phrase>Todo found. Resolve it.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2561,7 +2722,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   StepDefinition
                 </div>
               </div>
@@ -2570,7 +2731,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="hook_not_in_hooks_file"
             
                 rule-Hook
             
@@ -2580,7 +2741,8 @@
                 
                     checked="checked"
                 
-            /> Hook found outside of the designated hooks file
+            />
+            <span data-phrase>Hook found outside of the designated hooks file</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2596,7 +2758,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Hook
                 </div>
               </div>
@@ -2611,7 +2773,7 @@
                         <div class="col-md-2">
                             file:
                         </div>
-                        <div class="col-md-10">
+                        <div class="col-md-10" data-conditions>
                             hooks.rb
                         </div>
                       </div>
@@ -2623,7 +2785,7 @@
           </div>
         </div>
       
-        <div class="rule"
+        <div class="rule" data-rule-symbol="long_name"
             
                 rule-Feature
             
@@ -2637,7 +2799,8 @@
                 
                     checked="checked"
                 
-            /> {class} has a long description.
+            />
+            <span data-phrase>{class} has a long description.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2653,7 +2816,7 @@
                 <div class="col-md-3">
                   <b>Targets:</b>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9" data-targets>
                   Feature, Scenario, Background
                 </div>
               </div>
@@ -2668,7 +2831,7 @@
                         <div class="col-md-2">
                             max:
                         </div>
-                        <div class="col-md-10">
+                        <div class="col-md-10" data-conditions>
                             180
                         </div>
                       </div>
@@ -2690,14 +2853,6 @@
       Dead Steps <span class="glyphicon glyphicon-menu-down"></span>
     </div>
     <div id="deadSteps" class="panel-body collapse">
-          <span class="button-bar">
-            <div id="collapseDeadSteps" class="btn btn-default">
-              Collapse All
-            </div>
-            <div id="expandDeadSteps" class="btn btn-default">
-              Expand All
-            </div>
-          </span>
       <div>
         
         

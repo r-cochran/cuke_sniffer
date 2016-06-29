@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<testsuites tests="9" failures="73">
+<testsuites tests="9" failures="75">
   <testcase classname="features/features/scenarios/empty_feature.feature" name="full_file" time="0">
     <failure type="failure" message="Feature has no description.">Severity: 1
 Location: features/features/scenarios/empty_feature.feature
@@ -21,9 +21,9 @@ Location: features/features/scenarios/login.feature
 Error: Feature has numbers in the description.</failure>
   </testcase>
   <testcase classname="features/features/scenarios/login.feature" name="full_file" time="0">
-    <failure type="failure" message="Same tag appears on Feature.">Severity: 6
+    <failure type="failure" message="Same tag appears on both Feature and Scenario">Severity: 6
 Location: features/features/scenarios/login.feature
-Error: Same tag appears on Feature.</failure>
+Error: Same tag appears on both Feature and Scenario</failure>
   </testcase>
   <testcase classname="features/features/scenarios/login.feature" name="full_file" time="0">
     <failure type="failure" message="Tag appears on all scenarios.">Severity: 1
@@ -166,6 +166,11 @@ Location: features/features/scenarios/RATE/KY/rate.feature
 Error: Feature has numbers in the description.</failure>
   </testcase>
   <testcase classname="features/features/scenarios/RATE/KY/rate.feature" name="full_file" time="0">
+    <failure type="failure" message="Same tag appears on both Feature and Scenario">Severity: 6
+Location: features/features/scenarios/RATE/KY/rate.feature
+Error: Same tag appears on both Feature and Scenario</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/KY/rate.feature" name="full_file" time="0">
     <failure type="failure" message="There are commas in the description, creating possible multirunning scenarios or features.">Severity: 1
 Location: features/features/scenarios/RATE/KY/rate.feature
 Error: There are commas in the description, creating possible multirunning scenarios or features.</failure>
@@ -235,59 +240,64 @@ Error: Feature has numbers in the description.</failure>
 Location: features/features/scenarios/RATE/OH/rate.feature
 Error: There are commas in the description, creating possible multirunning scenarios or features.</failure>
   </testcase>
-  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="5" time="0">
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="4" time="0">
+    <failure type="failure" message="Invalid first step. Began with And/But.">Severity: 1
+Location: features/features/scenarios/RATE/OH/rate.feature:4
+Error: Invalid first step. Began with And/But.</failure>
+  </testcase>
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="10" time="0">
     <failure type="failure" message="Commented example.">Severity: 223
-Location: features/features/scenarios/RATE/OH/rate.feature:5
+Location: features/features/scenarios/RATE/OH/rate.feature:10
 Error: Commented example.</failure>
   </testcase>
-  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="5" time="0">
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="10" time="0">
     <failure type="failure" message="Scenario Outline with too many examples.">Severity: 1
-Location: features/features/scenarios/RATE/OH/rate.feature:5
+Location: features/features/scenarios/RATE/OH/rate.feature:10
 Error: Scenario Outline with too many examples.</failure>
   </testcase>
-  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="515" time="0">
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="520" time="0">
     <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
-Location: features/features/scenarios/RATE/OH/rate.feature:515
+Location: features/features/scenarios/RATE/OH/rate.feature:520
 Error: Scenario steps out of Given/When/Then order.</failure>
   </testcase>
-  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="519" time="0">
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="524" time="0">
     <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
-Location: features/features/scenarios/RATE/OH/rate.feature:519
+Location: features/features/scenarios/RATE/OH/rate.feature:524
 Error: Scenario steps out of Given/When/Then order.</failure>
   </testcase>
-  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="523" time="0">
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="528" time="0">
     <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
-Location: features/features/scenarios/RATE/OH/rate.feature:523
+Location: features/features/scenarios/RATE/OH/rate.feature:528
 Error: Scenario steps out of Given/When/Then order.</failure>
   </testcase>
-  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="527" time="0">
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="532" time="0">
     <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
-Location: features/features/scenarios/RATE/OH/rate.feature:527
+Location: features/features/scenarios/RATE/OH/rate.feature:532
 Error: Scenario steps out of Given/When/Then order.</failure>
   </testcase>
-  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="531" time="0">
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="536" time="0">
     <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
-Location: features/features/scenarios/RATE/OH/rate.feature:531
+Location: features/features/scenarios/RATE/OH/rate.feature:536
 Error: Scenario steps out of Given/When/Then order.</failure>
   </testcase>
-  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="535" time="0">
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="540" time="0">
     <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
-Location: features/features/scenarios/RATE/OH/rate.feature:535
+Location: features/features/scenarios/RATE/OH/rate.feature:540
 Error: Scenario steps out of Given/When/Then order.</failure>
   </testcase>
-  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="535" time="0">
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="540" time="0">
     <failure type="failure" message="Implementation word used: screen.">Severity: 2
-Location: features/features/scenarios/RATE/OH/rate.feature:535
+Location: features/features/scenarios/RATE/OH/rate.feature:540
 Error: Implementation word used: screen.</failure>
   </testcase>
-  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="535" time="0">
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="540" time="0">
     <failure type="failure" message="Implementation word used: click.">Severity: 1
-Location: features/features/scenarios/RATE/OH/rate.feature:535
+Location: features/features/scenarios/RATE/OH/rate.feature:540
 Error: Implementation word used: click.</failure>
   </testcase>
-  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="535" time="0">
+  <testcase classname="features/features/scenarios/RATE/OH/rate.feature" name="540" time="0">
     <failure type="failure" message="Implementation word used: button.">Severity: 1
-Location: features/features/scenarios/RATE/OH/rate.feature:535
+Location: features/features/scenarios/RATE/OH/rate.feature:540
 Error: Implementation word used: button.</failure>
   </testcase>
   <testcase classname="features/features/step_definitions/my_steps.rb" name="1" time="0">
