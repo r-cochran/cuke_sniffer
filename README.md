@@ -4,6 +4,7 @@ cuke_sniffer
 [![Build Status](https://travis-ci.org/r-cochran/cuke_sniffer.png?branch=master)](https://travis-ci.org/r-cochran/cuke_sniffer)
 [![Dependency Status](https://gemnasium.com/r-cochran/cuke_sniffer.png)](https://gemnasium.com/r-cochran/cuke_sniffer)
 [![Code Climate](https://codeclimate.com/github/r-cochran/cuke_sniffer.png)](https://codeclimate.com/github/r-cochran/cuke_sniffer)
+![](http://ruby-gem-downloads-badge.herokuapp.com/cuke_sniffer?type=total)
 
 ##Purpose
 A ruby library used to root out smells in your cukes. Tailored for identifying critical problems as well as general improvements to your project/features/scenarios/step definitions.
