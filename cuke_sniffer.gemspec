@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = 'cuke_sniffer'
-  s.version = '1.0.0'
-  s.date = '2016-06-26'
+  s.version = '1.0.1'
+  s.date = '2016-06-28'
   s.summary = "CukeSniffer"
   s.description = "A ruby library used to root out smells in your cukes."
   s.authors = ["Robert Cochran", "Chris Vaughn", "Robert Anderson"]
@@ -46,7 +46,6 @@ Gem::Specification.new do |s|
   s.homepage = 'https://github.com/r-cochran/cuke_sniffer'
   s.executables = ["cuke_sniffer"]
 
-  # todo - figure out which versions of these gems are compatible with this gem
-  s.add_runtime_dependency('nokogiri')
-  s.add_runtime_dependency('roxml')
+  s.add_runtime_dependency('nokogiri', '~> 1.6', '>= 1.6.8')
+  s.add_runtime_dependency('roxml', '~> 3.3', '>= 3.3.1')
 end
