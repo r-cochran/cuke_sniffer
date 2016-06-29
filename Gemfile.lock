@@ -2,6 +2,8 @@ PATH
   remote: .
   specs:
     cuke_sniffer (1.0.0)
+      nokogiri
+      roxml
 
 GEM
   remote: https://rubygems.org/

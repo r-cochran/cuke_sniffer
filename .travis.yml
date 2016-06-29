@@ -2,6 +2,8 @@ language: ruby
 bundler_args: --without deployment
 before_install:
     - gem install bundler
+    - npm install phantomjs-prebuilt
+
 script: rake travis
 rvm:
   - 1.9.3
