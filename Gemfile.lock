@@ -47,7 +47,7 @@ GEM
     nokogiri (1.6.8-x86-mingw32)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
-    phantomjs (2.1.1.0)
+    phantomjs (1.9.8.0)
     pkg-config (1.1.7)
     rack (1.6.4)
     rake (10.1.0)
@@ -76,6 +76,7 @@ DEPENDENCIES
   cuke_sniffer!
   jasmine
   nokogiri (~> 1.0, >= 1.6.2)
+  phantomjs (~> 1.9.8.0)
   rake
   roxml
   rspec

@@ -7,6 +7,7 @@ group :development do
   gem 'nokogiri', '~> 1.0', '>=1.6.2'
   gem 'roxml'
   gem 'jasmine'
+  gem 'phantomjs', '~> 1.9.8.0'
 end
 
 gemspec
