@@ -32,15 +32,21 @@ GEM
       rack (>= 1.2.1)
       rake
     jasmine-core (2.4.1)
-    mini_portile (0.5.1)
+    mini_portile2 (2.1.0)
     minitest (4.7.5)
     multi_json (1.7.9)
     multi_test (0.0.2)
-    nokogiri (1.6.0)
-      mini_portile (~> 0.5.0)
-    nokogiri (1.6.0-x86-mingw32)
-      mini_portile (~> 0.5.0)
+    nokogiri (1.6.8)
+      mini_portile2 (~> 2.1.0)
+      pkg-config (~> 1.1.7)
+    nokogiri (1.6.8-x64-mingw32)
+      mini_portile2 (~> 2.1.0)
+      pkg-config (~> 1.1.7)
+    nokogiri (1.6.8-x86-mingw32)
+      mini_portile2 (~> 2.1.0)
+      pkg-config (~> 1.1.7)
     phantomjs (2.1.1.0)
+    pkg-config (1.1.7)
     rack (1.6.4)
     rake (10.1.0)
     roxml (3.3.1)
@@ -60,13 +66,14 @@ GEM
 
 PLATFORMS
   ruby
+  x64-mingw32
   x86-mingw32
 
 DEPENDENCIES
   cucumber
   cuke_sniffer!
   jasmine
-  nokogiri
+  nokogiri (~> 1.0, >= 1.6.2)
   rake
   roxml
   rspec

@@ -45,4 +45,8 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.homepage = 'https://github.com/r-cochran/cuke_sniffer'
   s.executables = ["cuke_sniffer"]
+
+  # todo - figure out which versions of these gems are compatible with this gem
+  s.add_runtime_dependency('nokogiri')
+  s.add_runtime_dependency('roxml')
 end
