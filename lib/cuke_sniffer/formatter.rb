@@ -13,9 +13,9 @@ module CukeSniffer
     def self.output_console(cuke_sniffer)
       summary = cuke_sniffer.summary
       output = "Suite Summary" +
-                "  Total Score: #{summary[:total_score]}\n" +
-                get_output_summary_nodes(cuke_sniffer) +
-                console_improvement_list(summary[:improvement_list])
+          "  Total Score: #{summary[:total_score]}\n" +
+          get_output_summary_nodes(cuke_sniffer) +
+          console_improvement_list(summary[:improvement_list])
 
       puts output
     end
@@ -32,9 +32,9 @@ module CukeSniffer
     # Formats the section data for a summary object
     def self.console_summary(name, summary)
       "  #{name}\n" +
-      "    Min: #{summary[:min]}\n" +
-      "    Max: #{summary[:max]}\n" +
-      "    Average: #{summary[:average]}\n"
+          "    Min: #{summary[:min]}\n" +
+          "    Max: #{summary[:max]}\n" +
+          "    Average: #{summary[:average]}\n"
     end
 
     # Formats the improvement list data for summary
@@ -55,7 +55,9 @@ module CukeSniffer
     def self.output_html(cuke_sniffer, file_name = DEFAULT_OUTPUT_FILE_NAME, template_name = "standard_template")
       cuke_sniffer = sort_cuke_sniffer_lists(cuke_sniffer)
       output = ERB.new(extract_markup("#{template_name}.html.erb")).result(binding)
-      File.open(format_html_file_name(file_name), 'w') do |f| f.write(output) end
+      File.open(format_html_file_name(file_name), 'w') do |f|
+        f.write(output)
+      end
     end
 
     # Returns an ERB page built up for the passed file name
@@ -102,7 +104,9 @@ module CukeSniffer
       end
     end
 
-    # Creates an xml file in the junit with issues organized by file.
+    # Creates an xml file that can be read by Jenkins/Hudson in the junit format with issues organized and collated by file.
+    # Each file becomes a testsuite with corresponding failures associated to it.
+    # If no failures are found this will be marked as a pass by Jenkins/Hudson.
     # file_name defaults to "cuke_sniffer_result.xml" unless specified
     #  cuke_sniffer.output_xml
     # Or
@@ -111,34 +115,47 @@ module CukeSniffer
       file_name = file_name + ".xml" unless file_name =~ /\.xml$/
       results = {}
       failures = 0
+      suits={}
       current = cuke_sniffer.features
       current.concat cuke_sniffer.scenarios
       current.concat cuke_sniffer.step_definitions
       current.concat cuke_sniffer.hooks
       current.each do |test|
         location = test.location.gsub("#{Dir.pwd}/", '')
-        location_no_line = location.gsub(/:[0-9]*/,'')
+        location_no_line = location.gsub(/:[0-9]*/, '')
         line_num = location.include?(":") ? location.gsub(/.*:(.*)/, "\\1") : "full_file"
-        errors = test.rules_hash.keys.map {|f| {:line => line_num,
-                                                :severity => test.rules_hash,
-                                                :error => f,
-                                                :formatted => "Severity: #{test.rules_hash[f]}\nLocation: #{location}\nError: #{f}"}}
+        errors = test.rules_hash.keys.map { |f| {:line => "line: #{line_num}",
+                                                 :error => f,
+                                                 :formatted => "Location: #{location}",
+                                                 :instances => "Instances: #{test.rules_hash[f]}"
+        } }
         results[location_no_line] = results[location_no_line].nil? ? errors : results[location_no_line].concat(errors)
         failures += test.rules_hash.size
       end
+      results.each do |location, failure|
+        suits[location]=failure
+      end
       builder = Nokogiri::XML::Builder.new do |xml|
         xml.testsuites(:tests => results.size, :failures => failures) do
-          results.each do |location, failures|
-            failures.each do |failure|
-              xml.testcase(:classname => location, :name => failure[:line], :time => 0) do
-                xml.failure(failure[:formatted], :type => 'failure', :message => failure[:error])
+          suits.each do |location, failures|
+            xml.testsuite(:name => location, :tests => 1, :failures => failures.length) do
+              if failures.length == 0
+                xml.testcase(:classname => location, :name => location, :time => 0, :status => 0)
+              else
+                failures.each do |failure|
+                  xml.testcase(:classname => location, :name => failure[:line], :time => 0, :status => failure[:instances]) do
+                    xml.failure(failure[:formatted], :type => 'failure', :message => "#{failure[:error]} #{failure[:instances]}")
+                  end
+                end
               end
             end
           end
         end
       end
       output = builder.to_xml
-      File.open(file_name, 'w') do |f| f.write(output) end
+      File.open(file_name, 'w') do |f|
+        f.write(output)
+      end
       # Return here to aid testing.
       output
     end
