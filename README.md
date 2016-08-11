@@ -31,6 +31,13 @@ Usage
 ---
 cuke_sniffer can be used through the [command line] (https://github.com/r-cochran/cuke_sniffer/wiki/Command-Line) or [inline](https://github.com/r-cochran/cuke_sniffer/wiki/Ruby-inline). Follow the links to learn more.
 
+----
+Rules
+----
+The list of rules/improvements has been constructed on opinions from the authors and feedback from community members. Not everyone will share these opinions and for that reason all improvements can be turned off when generating this report. See the wiki for instructions on how.
+
+[Rule List] (https://github.com/r-cochran/cuke_sniffer/wiki/Rules-list)
+
 ---    
 Output
 ----
