@@ -32,21 +32,16 @@ module CukeSniffer
 
     private
 
-    def create_name(line, filter)
-      line.gsub!(/#{COMMENT_REGEX}#{filter}/, "")
-      line.strip!
-      @name += " " unless @name.empty? or line.empty?
-      @name += line
+    def create_name(model)
+      @name = model.name
+      @name += ' ' + model.description.gsub("\n", ' ') unless model.description.empty?
     end
 
-    def update_tag_list(line)
-      comment_start = (line =~ /([^@\w]#)|(^#)/)
-
-      if comment_start
-        line[0...comment_start].split.each { |single_tag| @tags << single_tag }
-        @tags << line[comment_start..line.length].strip
-      else
-        line.split.each { |single_tag| @tags << single_tag }
+    def update_tag_list(model)
+      unless model.is_a?(CukeModeler::Background)
+        model.tags.each do |tag|
+          @tags << tag.name
+        end
       end
     end
 

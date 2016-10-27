@@ -40,7 +40,9 @@ module CukeSniffer
       @steps = []
       @inline_tables = {}
       @examples_table = []
-      split_scenario(scenario)
+      @scenario_model = determine_model(scenario)
+
+      split_scenario(@scenario_model)
     end
 
     def ==(comparison_object) # :nodoc:
@@ -60,7 +62,7 @@ module CukeSniffer
     end
 
     def outline?
-      type === 'Scenario Outline'
+      @scenario_model.is_a?(CukeModeler::Outline)
     end
 
     def commented_examples
@@ -82,86 +84,101 @@ module CukeSniffer
 
     private
 
-    def split_scenario(scenario)
-      ranges = define_ranges(scenario)
-      split_tag_list(ranges[:tags])
-      split_name_and_type(ranges[:name].join(" "))
-      split_scenario_body(ranges[:body])
-      split_examples(ranges[:examples]) unless ranges[:examples].nil?
-    end
 
-    def define_ranges(scenario)
-      ranges = {}
-      index = 0
-      index += 1 until index >= scenario.length or scenario[index] =~ SCENARIO_TITLE_STYLES
-      ranges[:tags] = scenario[0...index]
+    def determine_model(source)
 
-      start_index = index
-      index += 1 until index >= scenario.length or scenario[index].match STEP_REGEX or scenario[index].include?("Examples:")
-      ranges[:name] = scenario[start_index...index]
+      # May have been given a model object directly (from a CukeSniffer::Feature)
+      return source if source.is_a?(CukeModeler::Model)
 
-      start_index = index
-      index += 1 until index >= scenario.length or scenario[index].include?("Examples:")
-      ranges[:body] = scenario[start_index...index]
+      model = nil
 
-      ranges[:examples] = scenario[index + 1..scenario.size] if index < scenario.length and scenario[index].include?("Examples:")
-      ranges
-    end
+      begin
+        # Try a feature model
+        model = CukeModeler::Feature.new(source.join("\n"))
 
-    def split_tag_list(list_of_tag_lines)
-      list_of_tag_lines.each do |line|
-        update_tag_list(line)
-      end
-    end
+        # May have to remodel if it turns out to not be a feature. Check only works with Gherkin 2.x
+        raise 'Source was not for a feature.' unless model.parsing_data['type'].nil? # features don't have types
 
-    def split_name_and_type(name_section)
-      match = name_section.match(SCENARIO_TITLE_STYLES)
-      @type = match[:type] unless match.nil?
-      create_name(name_section, SCENARIO_TITLE_STYLES)
-    end
+        # Grab the, presumably only, relevant model out of it
+        model = model.background || model.tests.first
+      rescue
+        begin
+          # Try a background model
+          model = CukeModeler::Background.new(source.join("\n"))
 
-    def split_scenario_body(scenario_body)
-      extract_steps(scenario_body)
-      extract_inline_tables(scenario_body)
-    end
+          # May have to remodel if it turns out to not be a background. Check only works with Gherkin 2.x
+          raise 'Source was not for a background.' unless model.parsing_data['type'] == 'background'
+        rescue
+          begin
+            # Try an outline model
+            model = CukeModeler::Outline.new(source.join("\n"))
 
-    def extract_steps(scenario_body)
-      scenario_body.each do |line|
-        next if line =~ /^\|.*\|/ or line.empty? or line.match(STEP_REGEX).nil?
-        @steps << line
-      end
-    end
-
-    def extract_inline_tables(scenario_body)
-      index = 0
-      while index < scenario_body.size
-        if scenario_body[index] =~ /^\|.*\|/
-          start_index = index
-          while index < scenario_body.size and scenario_body[index] =~ /^\|.*\|/
-            index += 1
+            # May have to remodel if it turns out to not be a scenario. Check only works with Gherkin 2.x
+            raise 'Source was not for an outline.' unless model.parsing_data['type'] == 'scenario_outline'
+          rescue
+            # Try a scenario model (done last because an outline can be confused for a scenario but not the other way around)
+            model = CukeModeler::Scenario.new(source.join("\n"))
           end
-          @inline_tables[scenario_body[start_index-1]] = scenario_body[start_index..index]
         end
-        index += 1
+      end
+
+
+      model
+    end
+
+
+    def split_scenario(model)
+      split_tag_list(model)
+      split_name_and_type(model)
+      split_scenario_body(model)
+      split_examples(model) if model.is_a?(CukeModeler::Outline)
+    end
+
+    def split_tag_list(model)
+      update_tag_list(model)
+    end
+
+    def split_name_and_type(model)
+      case
+        when model.is_a?(CukeModeler::Background)
+          @type = 'Background'
+        when model.is_a?(CukeModeler::Scenario)
+          @type = 'Scenario'
+        when model.is_a?(CukeModeler::Outline)
+          @type = 'Scenario Outline'
+      end
+
+      create_name(model)
+    end
+
+    def split_scenario_body(model)
+      extract_steps(model)
+      extract_inline_tables(model)
+    end
+
+    def extract_steps(model)
+      model.steps.each do |step|
+        @steps << "#{step.keyword} #{step.text}"
       end
     end
 
-    def split_examples(examples_section)
-      remove_examples_declaration(examples_section).each do |line|
-        next if line.include?("Examples:")
-        @examples_table << line if line =~ /#{COMMENT_REGEX}\|.*\|/
+    def extract_inline_tables(model)
+      model.steps.each do |step|
+        if step.block && step.block.is_a?(CukeModeler::Table)
+          @inline_tables["#{step.keyword} #{step.text}"] = step.block.rows.collect { |row| row.to_s }
+        end
       end
     end
 
-    def remove_examples_declaration(examples_section)
-      return_section = []
-      index = 0
-      while index < examples_section.size
-        index += 2 if(examples_section[index].include?("Examples:"))
-        return_section << examples_section[index]
-        index += 1
+    def split_examples(outline_model)
+      # Gather the parameter row of the first table + argument rows for all tables
+      outline_model.examples.each do |example|
+        @examples_table << example.argument_rows.collect { |row| row.to_s }
       end
-      return_section
+
+      @examples_table.unshift(outline_model.examples.first.parameter_row.to_s) unless outline_model.examples.empty?
+
+      @examples_table.flatten!
     end
   end
 end

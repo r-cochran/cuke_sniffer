@@ -34,12 +34,18 @@ module CukeSniffer
     # file_name must be in the format of "file_path\file_name.feature"
     def initialize(file_name)
       super(file_name)
+      @feature_model = CukeModeler::FeatureFile.new(file_name).feature
       @type = "Feature"
       @scenarios = []
       @scenarios_score = 0
       @total_score = 0
       @feature_lines = IO.readlines(file_name)
-      split_feature(file_name, feature_lines) unless @feature_lines == []
+
+      if @feature_model
+        build_tags
+        build_name
+        add_scenarios_to_feature if (@feature_model.background || @feature_model.tests.any?)
+      end
     end
 
     def ==(comparison_object) # :nodoc:
@@ -55,54 +61,26 @@ module CukeSniffer
 
     private
 
-    def split_feature(file_name, feature_lines)
-      index = 0
-      until index >= feature_lines.length or feature_lines[index].match /Feature:\s*(?<name>.*)/
-        update_tag_list(feature_lines[index])
-        index += 1
-      end
 
-      until index >= feature_lines.length or feature_lines[index].match TAG_REGEX or feature_lines[index].match SCENARIO_TITLE_REGEX
-        create_name(feature_lines[index], "Feature:")
-        index += 1
-      end
-
-      scenario_title_found = false
-      index_of_title = nil
-      code_block = []
-      until index >= feature_lines.length
-        if scenario_title_found and feature_lines[index].match SCENARIO_TITLE_REGEX
-          not_our_code = []
-          code_block.reverse.each do |line|
-            break if line =~ /#{SCENARIO_TITLE_STYLES}|#{STEP_STYLES}|^\|.*\||Examples:/
-            not_our_code << line
-          end
-
-          if not_our_code.empty?
-            add_scenario_to_feature(code_block, index_of_title)
-          else
-            add_scenario_to_feature(code_block[0...(-1 * not_our_code.length)], index_of_title)
-          end
-          scenario_title_found = false
-          code_block = not_our_code.reverse
-        end
-        code_block << feature_lines[index].strip
-        if feature_lines[index].match SCENARIO_TITLE_REGEX
-          scenario_title_found = true
-          index_of_title = "#{file_name}:#{index + 1}"
-        end
-        index += 1
-      end
-      #TODO - Last scenario falling through above logic, needs a fix (code_block related)
-      add_scenario_to_feature(code_block, index_of_title) unless code_block==[]
+    def build_tags
+      update_tag_list(@feature_model)
     end
 
-    def add_scenario_to_feature(code_block, index_of_title)
-      scenario = CukeSniffer::Scenario.new(index_of_title, code_block)
-      if scenario.type == "Background"
-        @background = scenario
-      else
-        @scenarios << scenario
+    def build_name
+      create_name(@feature_model)
+    end
+
+    def add_scenarios_to_feature
+      file_name = @feature_model.parent_model.path
+
+      if @feature_model.background
+        location = "#{file_name}:#{@feature_model.background.source_line}"
+        @background = CukeSniffer::Scenario.new(location, @feature_model.background)
+      end
+
+      @feature_model.tests.each do |test_model|
+        location = "#{file_name}:#{test_model.source_line}"
+        @scenarios << CukeSniffer::Scenario.new(location, test_model)
       end
     end
   end

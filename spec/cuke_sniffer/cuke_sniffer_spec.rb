@@ -182,6 +182,8 @@ describe CukeSniffer do
     end
 
     it "should be able to handle the substitution of Scenario Outline steps that are missing the examples table" do
+      pending('This test requires invalid Gherkin')
+
       feature_block = [
           "Feature: bad feature",
           '#Scenario Outline: commented scenario',

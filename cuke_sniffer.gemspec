@@ -48,4 +48,5 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency('nokogiri', '~> 1.6', '>= 1.6.8')
   s.add_runtime_dependency('roxml', '~> 3.3', '>= 3.3.1')
+  s.add_runtime_dependency('cuke_modeler', '~> 1.0')
 end
