@@ -62,7 +62,7 @@ describe CukeSniffer::Scenario do
   end
 
   it "should retain information on a tagged scenario" do
-    pending('fix comment based tests last')
+    pending('This test requires invalid Gherkin')
 
     scenario_block = [
         "@tag1 @tag2",
@@ -188,7 +188,7 @@ describe CukeSniffer::Scenario do
   end
 
   it "should capture a scenario even if it commented out" do
-    pending('fix comment based tests last')
+    pending('non-behavioral test. new implementation safely breaks it')
 
     scenario_block = [
         "# Scenario: I am a commented Scenario",
@@ -324,8 +324,9 @@ describe CukeSniffer::Scenario do
     ]
   end
 
+  # todo - copy/pasted name of test does not match test goal
   it "should not pick up commented non-example lines in an example table" do
-    pending('fix comment based tests last')
+    pending('non-behavioral test. new implementation safely breaks it')
 
     scenario_block = [
         "Scenario Outline: Commented example",
@@ -417,9 +418,8 @@ describe CukeSniffer::Scenario do
 
   describe "#commented_examples" do
     it "returns a commented example" do
-      pending('fix comment based tests last')
-
-      scenario_block = [
+      feature_block = [
+          'Feature:',
           "Scenario Outline: Test Scenario",
           "Given I need a <animal>",
           "Examples:",
@@ -428,13 +428,18 @@ describe CukeSniffer::Scenario do
           "#|dog|",
           "#|gerbil|"
       ]
-      location = "path/path/path/my_feature.feature:1"
-      scenario = CukeSniffer::Scenario.new(location, scenario_block)
-      scenario.commented_examples.should == ["#|dog|", "#|gerbil|"]
+      @file_name = 'foo.feature'
+
+      build_file(feature_block, @file_name)
+      feature = CukeSniffer::Feature.new(@file_name)
+      delete_temp_files
+
+      feature.scenarios.first.commented_examples.should == ["#|dog|", "#|gerbil|"]
     end
 
     it "returns an empty array when there are no commented examples" do
-      scenario_block = [
+      feature_block = [
+          'Feature:',
           "Scenario Outline: Test Scenario",
           "Given I need a <animal>",
           "Examples:",
@@ -443,18 +448,31 @@ describe CukeSniffer::Scenario do
           "|dog|",
           "|gerbil|"
       ]
-      location = "path/path/path/my_feature.feature:1"
-      scenario = CukeSniffer::Scenario.new(location, scenario_block)
+      @file_name = 'foo.feature'
+
+      build_file(feature_block, @file_name)
+      feature = CukeSniffer::Feature.new(@file_name)
+      delete_temp_files
+
+      scenario = feature.scenarios.first
+
       scenario.commented_examples.should == []
     end
 
     it "returns empty list when there are no examples" do
-      scenario_block = [
+      feature_block = [
+          'Feature:',
           "Scenario: Test Scenario",
           "Given I need a animal",
       ]
-      location = "path/path/path/my_feature.feature:1"
-      scenario = CukeSniffer::Scenario.new(location, scenario_block)
+      @file_name = 'foo.feature'
+
+      build_file(feature_block, 'foo.feature')
+      feature = CukeSniffer::Feature.new(@file_name)
+      delete_temp_files
+
+      scenario = feature.scenarios.first
+
       scenario.commented_examples.should == []
     end
   end
@@ -638,33 +656,49 @@ describe "ScenarioRules" do
   end
 
   it "should punish Scenarios with commented steps" do
-    pending('fix comment based tests last')
-
-    scenario_block = [
+    feature_block = [
+        'Feature:',
         "Scenario: Scenario with commented line",
         "#Given I am first",
         "When I am second",
         "Then I am third"
     ]
-    test_scenario_rule(scenario_block, :commented_step)
+    @file_name = 'foo.feature'
+
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(:commented_step, RULES[:commented_step])
+    build_file(feature_block, @file_name)
+    feature = CukeSniffer::Feature.new(@file_name)
+    delete_temp_files
+    @cli.features = [feature]
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+
+    verify_rule(@cli.features.first.scenarios.first, rule, 1)
   end
 
   it "should punish each step in a Scenario that is commented" do
-    pending('fix comment based tests last')
-
-    scenario_block = [
+    feature_block = [
+        'Feature:',
         "Scenario: Scenario with commented line",
         "#Given I am first",
         "#When I am second",
-        "#Then I am third"
+        "#Then I am third",
+        'Scenario: Just an extra scenario to make sure that comments are not lost in gherkin 2.x'
     ]
-    test_scenario_rule(scenario_block, :commented_step, 3)
+    @file_name = 'foo.feature'
+
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(:commented_step, RULES[:commented_step])
+    build_file(feature_block, @file_name)
+    feature = CukeSniffer::Feature.new(@file_name)
+    delete_temp_files
+    @cli.features = [feature]
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+
+    verify_rule(@cli.features.first.scenarios.first, rule, 3)
   end
 
   it "should punish Scenario Outlines with commented examples" do
-    pending('fix comment based tests last')
-
-    scenario_block = [
+    feature_block = [
+        'Feature:',
         "Scenario Outline: Scenario with commented line",
         "Given I am first",
         "When I am second",
@@ -674,13 +708,21 @@ describe "ScenarioRules" do
         "#|a|",
         "|b|"
     ]
-    test_scenario_rule(scenario_block, :commented_example)
+    @file_name = 'foo.feature'
+
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(:commented_example, RULES[:commented_example])
+    build_file(feature_block, @file_name)
+    feature = CukeSniffer::Feature.new(@file_name)
+    delete_temp_files
+    @cli.features = [feature]
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+
+    verify_rule(@cli.features.first.scenarios.first, rule, 1)
   end
 
   it "should punish each commented example in a Scenario Outline" do
-    pending('fix comment based tests last')
-
-    scenario_block = [
+    feature_block = [
+        'Feature:',
         "Scenario Outline: Scenario with commented line",
         "Given I am first",
         "When I am second",
@@ -690,7 +732,16 @@ describe "ScenarioRules" do
         "#|a|",
         "#|b|"
     ]
-    test_scenario_rule(scenario_block, :commented_example, 2)
+    @file_name = 'foo.feature'
+
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(:commented_example, RULES[:commented_example])
+    build_file(feature_block, @file_name)
+    feature = CukeSniffer::Feature.new(@file_name)
+    delete_temp_files
+    @cli.features = [feature]
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+
+    verify_rule(@cli.features.first.scenarios.first, rule, 2)
   end
 
   it "should punish Scenario Outlines with no examples" do
@@ -838,7 +889,7 @@ describe "ScenarioRules" do
   end
 
   it "should punish Scenarios that have a comment on a line after a tag" do
-    pending('This test requires invalid Gherkin')
+    pending('this behavior is not really doable anymore. replace')
 
     scenario_block = [
         "@tag",
@@ -861,7 +912,7 @@ describe "ScenarioRules" do
   end
 
   it "should punish Scenarios that have commented tags" do
-    pending('fix comment based tests last')
+    pending("this kind of test requires more definition around what elements comments 'belong' to")
 
     scenario_block = [
         '#@tag',
@@ -1067,31 +1118,48 @@ describe "BackgroundRules" do
   end
 
   it "should punish Backgrounds with commented steps" do
-    pending('fix comment based tests last')
-
-    background_block = [
-        "Background: Scenario with commented line",
+    feature_block = [
+        'Feature:',
+        "Background: Background with commented line",
         "#Given I am first",
         "When I am second",
         "Then I am third"
     ]
-    test_background_rule(background_block, :commented_step)
+    @file_name = 'foo.feature'
+
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(:commented_step, RULES[:commented_step])
+    build_file(feature_block, @file_name)
+    feature = CukeSniffer::Feature.new(@file_name)
+    delete_temp_files
+    @cli.features = [feature]
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+
+    verify_rule(@cli.features.first.background, rule, 1)
   end
 
   it "should punish each step in a Background that is commented" do
-    pending('fix comment based tests last')
-
-    background_block = [
+    feature_block = [
+        'Feature:',
         "Background: Background with commented line",
         "#Given I am first",
         "#When I am second",
-        "#Then I am third"
+        "#Then I am third",
+        'Scenario: Just an extra scenario to make sure that comments are not lost in gherkin 2.x'
     ]
-    test_background_rule(background_block, :commented_step, 3)
+    @file_name = 'foo.feature'
+
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(:commented_step, RULES[:commented_step])
+    build_file(feature_block, @file_name)
+    feature = CukeSniffer::Feature.new(@file_name)
+    delete_temp_files
+    @cli.features = [feature]
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+
+    verify_rule(@cli.features.first.background, rule, 3)
   end
 
   it "should not punish Backgrounds with too many tags" do
-    pending('This test requires invalid Gherkin')
+    pending('this behavior is not really doable anymore. replace')
 
     background_block = []
     RULES[:too_many_tags][:max].times { |n| background_block << "@tag_#{n}" }
@@ -1169,7 +1237,7 @@ describe "BackgroundRules" do
   end
 
   it "should punish Backgrounds that have tags" do
-    pending('This test requires invalid Gherkin')
+    pending('this behavior is not really doable anymore. replace')
 
     background_block = [
         "@tag",

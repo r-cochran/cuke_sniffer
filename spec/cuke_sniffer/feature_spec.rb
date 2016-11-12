@@ -16,7 +16,7 @@ describe CukeSniffer::Feature do
   end
 
   it "should gather all feature tags" do
-    pending('This test requires invalid Gherkin')
+    pending('non-behavioral test. new implementation safely breaks it')
 
     feature_block = [
         "@tag1 @tag2",
@@ -371,7 +371,7 @@ describe "FeatureRules" do
   end
 
   it "should punish Features that have a comment on a line after a tag" do
-    pending('This test requires invalid Gherkin')
+    pending('this behavior is not really doable anymore. replace')
 
     feature_block = [
         "@tag",
@@ -392,8 +392,6 @@ describe "FeatureRules" do
   end
 
   it "should punish Features that have commented tags" do
-    pending('fix comment based tests last')
-
     feature_block = [
         '#@tag',
         "Feature: I'm a feature with a commented tag"

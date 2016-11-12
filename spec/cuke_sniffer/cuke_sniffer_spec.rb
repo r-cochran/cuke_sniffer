@@ -182,7 +182,7 @@ describe CukeSniffer do
     end
 
     it "should be able to handle the substitution of Scenario Outline steps that are missing the examples table" do
-      pending('This test requires invalid Gherkin')
+      pending('non-behavioral test. new implementation safely breaks it')
 
       feature_block = [
           "Feature: bad feature",

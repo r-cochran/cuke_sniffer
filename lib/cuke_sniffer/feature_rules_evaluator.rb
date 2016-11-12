@@ -30,6 +30,13 @@ module CukeSniffer
       comparison_object.tags == tags
     end
 
+    def commented_tag?(comment)
+      # Uncommenting the line in order to more easily try matching a tag
+      comment = comment.sub('#', '')
+
+      comment =~ CukeSniffer::Constants::TAG_REGEX
+    end
+
     private
 
     def create_name(model)

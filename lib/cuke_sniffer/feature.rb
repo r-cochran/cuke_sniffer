@@ -59,8 +59,48 @@ module CukeSniffer
       @total_score = @scenarios_score + @score
     end
 
+    def get_comments
+      related_comments = []
+
+      if @feature_model
+        feature_start_line = determine_comment_start_line
+        first_test_start_line = determine_comment_end_line
+
+        @feature_model.get_ancestor(:feature_file).comments.each do |comment_model|
+          if (comment_model.source_line > feature_start_line) || (feature_start_line == -1)
+            if (comment_model.source_line < first_test_start_line) || (first_test_start_line == -1)
+              related_comments << comment_model.text
+            end
+          end
+        end
+      end
+
+      related_comments
+    end
+
+
     private
 
+
+    def determine_comment_start_line
+      # A feature is the first possible element in a file. Therefore,
+      # all preceding comments will belong to it.
+      -1
+    end
+
+    def determine_comment_end_line
+      related_feature = @feature_model
+      tests = related_feature.tests
+      tests.unshift(related_feature.background) if related_feature.background
+
+      if tests.any?
+        # Everything until the first test/background belongs to the feature
+        tests.first.source_line
+      else
+        # Everything else in the file belongs to the feature
+        -1
+      end
+    end
 
     def build_tags
       update_tag_list(@feature_model)
