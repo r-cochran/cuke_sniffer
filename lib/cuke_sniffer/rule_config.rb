@@ -53,11 +53,16 @@ module CukeSniffer
                 lambda { |feature_rule_target, rule|
                   tokens = feature_rule_target.tags.collect { |line| line.split }.flatten
 
+                  return_value = nil
+
                   tokens.each_with_index do |token, index|
                     if feature_rule_target.is_comment?(token) && tokens[0...index].any? { |x| x =~ /\A@/ }
-                      return feature_rule_target.store_rule(rule)
+                      return_value = feature_rule_target.store_rule(rule)
+                      break
                     end
                   end
+
+                  return_value
                 }
         },
         :universal_nested_step => {
