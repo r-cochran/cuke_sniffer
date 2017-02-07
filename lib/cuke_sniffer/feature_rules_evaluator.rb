@@ -30,6 +30,10 @@ module CukeSniffer
       comparison_object.tags == tags
     end
 
+    def is_comment_and_tag?(line)
+      true if line =~ /^\#.*\@.*$/
+    end
+
     private
 
     def create_name(line, filter)

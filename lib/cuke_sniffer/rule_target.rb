@@ -63,10 +63,6 @@ module CukeSniffer
       true if line =~ /^\#.*$/
     end
 
-    def is_comment_and_tag?(line)
-      true if line =~ /^\#.*\@.*$/
-    end
-
     def store_rule(rule, phrase = rule.phrase)
       @score += rule.score
       @rules_hash[phrase] ||= 0
