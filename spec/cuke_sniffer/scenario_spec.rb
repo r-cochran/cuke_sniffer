@@ -595,10 +595,10 @@ describe "ScenarioRules" do
         "When a step",
         "When a step",
         "Then a step"
-    ]
+      ]
     test_no_scenario_rule(scenario_block, :out_of_order_steps)
   end
-
+  
   it "should punish Scenarios that also have duplicate keywords as having out of order steps" do
     scenario_block = [
         "Scenario: Scenario with duplicate steps",
@@ -609,6 +609,13 @@ describe "ScenarioRules" do
         "Then a step"
     ]
     test_scenario_rule(scenario_block, :out_of_order_steps)
+  end
+
+  it "should not punish Scenarios with no steps as having out of order steps" do
+    scenario_block = [
+        "Scenario: Empty Scenario"
+    ]
+    test_no_scenario_rule(scenario_block, :out_of_order_steps)
   end
 
   it "should punish Scenarios with And as its first step" do
@@ -863,11 +870,20 @@ describe "ScenarioRules" do
 
   it "should punish Scenarios that have commented tags" do
     scenario_block = [
-        '#@tag',
-        "Scenario: Commented tag",
-        "Given I am a step"
+      '#@tag',
+      "Scenario: Commented tag",
+      "Given I am a step"
     ]
     test_scenario_rule(scenario_block, :commented_tag)
+  end
+
+  it "comments should not be punished as commented tags" do
+    scenario_block = [
+      '#blah',
+      "Scenario: Commented tag",
+      "Given I am a step"
+    ]
+    test_no_scenario_rule(scenario_block, :commented_tag)
   end
 
   it "should not punish Scenarios that have a comment before any tags occur" do

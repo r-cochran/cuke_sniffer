@@ -198,12 +198,14 @@ module CukeSniffer
             :score => WARNING,
             :targets => ["Scenario"],
             :reason => lambda { |scenario, rule| step_order = scenario.get_step_order
-                        ["But", "*", "And"].each { |type| step_order.delete(type) }
-                        step_order = step_order.chunk { |keyword| keyword }.map(&:first)
-                        if(step_order != %w(Given When Then) and step_order != %w(When Then))
-                          scenario.store_rule(rule)
-                        end}
-
+                        if !step_order.empty?
+                          ["But", "*", "And"].each { |type| step_order.delete(type) }
+                          step_order = step_order.chunk { |keyword| keyword }.map(&:first)
+                          if(step_order != %w(Given When Then) and step_order != %w(When Then))
+                            scenario.store_rule(rule)
+                          end
+                        end
+            }
         },
         :invalid_first_step => {
             :enabled => true,
@@ -316,7 +318,7 @@ module CukeSniffer
             :score => WARNING,
             :targets => ["Feature", "Scenario"],
             :reason => lambda { |feature_rule_target, rule| feature_rule_target.tags.each do | tag |
-                          feature_rule_target.store_rule(rule, rule.phrase.gsub("{class}", feature_rule_target.type)) if feature_rule_target.is_comment?(tag)
+                          feature_rule_target.store_rule(rule, rule.phrase.gsub("{class}", feature_rule_target.type)) if feature_rule_target.is_comment_and_tag?(tag)
                         end}
         },
         :empty_hook => {
