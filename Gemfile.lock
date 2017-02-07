@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cuke_sniffer (1.0.1)
+    cuke_sniffer (1.1.0)
       nokogiri (~> 1.6, >= 1.6.8)
       roxml (~> 3.3, >= 3.3.1)
 
