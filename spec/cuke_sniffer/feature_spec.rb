@@ -401,4 +401,31 @@ describe "FeatureRules" do
     test_no_feature_rule(feature_block, :comment_after_tag)
   end
 
+  it "should punish Features that have scenarios with the same name" do
+    feature_block = [
+        "Feature: I'm a feature with a comment before a tag",
+        "Scenario: duplicate name",
+        "Scenario: duplicate name"
+    ]
+    test_feature_rule(feature_block, :duplicate_scenario_name)
+  end
+
+  it "should punish Features that have scenarios with the same name despite spacing" do
+    feature_block = [
+        "Feature: I'm a feature with a comment before a tag",
+        "Scenario: duplicate name",
+        "Scenario: duplicate name  "
+    ]
+    test_feature_rule(feature_block, :duplicate_scenario_name)
+  end
+
+  it "should not punish Features that have scenarios with unique names" do
+    feature_block = [
+        "Feature: I'm a feature with a comment before a tag",
+        "Scenario: duplicate name 1",
+        "Scenario: duplicate name 2"
+    ]
+    test_no_feature_rule(feature_block, :duplicate_scenario_name)
+  end
+
 end

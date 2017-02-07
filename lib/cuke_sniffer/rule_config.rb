@@ -355,6 +355,16 @@ module CukeSniffer
                         all_tags.flatten!
                         unique_tags = all_tags.uniq
                         true unless all_tags == unique_tags}
+        },
+        :duplicate_scenario_name => {
+            :enabled => true,
+            :phrase => "Feature has scenarios with the same name.",
+            :score => WARNING,
+            :targets => ["Feature"],
+            :reason => lambda { |feature, rule|
+                          names = feature.scenarios.collect { |scenario| scenario.name }
+                          return names.length > names.uniq.length
+            }
         }
     }
 
