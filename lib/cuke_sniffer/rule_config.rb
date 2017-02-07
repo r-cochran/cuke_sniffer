@@ -315,7 +315,7 @@ module CukeSniffer
             :score => WARNING,
             :targets => ["Feature", "Scenario"],
             :reason => lambda { |feature_rule_target, rule| feature_rule_target.tags.each do | tag |
-                          feature_rule_target.store_rule(rule, rule.phrase.gsub("{class}", feature_rule_target.type)) if feature_rule_target.is_comment?(tag)
+                          feature_rule_target.store_rule(rule, rule.phrase.gsub("{class}", feature_rule_target.type)) if feature_rule_target.is_comment_and_tag?(tag)
                         end}
         },
         :empty_hook => {
