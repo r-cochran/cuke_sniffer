@@ -198,12 +198,14 @@ module CukeSniffer
             :score => WARNING,
             :targets => ["Scenario"],
             :reason => lambda { |scenario, rule| step_order = scenario.get_step_order
-                        return if step_order.empty?
+                        if !step_order.empty?
+                          ["But", "*", "And"].each { |type| step_order.delete(type) }
 
-                        ["But", "*", "And"].each { |type| step_order.delete(type) }
-                        if(step_order != %w(Given When Then) and step_order != %w(When Then))
-                          scenario.store_rule(rule)
-                        end}
+                          if(step_order != %w(Given When Then) and step_order != %w(When Then))
+                            scenario.store_rule(rule)
+                          end
+                        end
+            }
 
         },
         :invalid_first_step => {
