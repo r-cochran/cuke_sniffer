@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative '../spec_helper'
 require 'cuke_sniffer/formatter'
 
 describe CukeSniffer::Formatter do
@@ -271,11 +271,13 @@ describe CukeSniffer::Formatter do
       xml = CukeSniffer::Formatter.output_junit_xml(cuke_sniffer, @file_name)
 
       expect(xml).to match(/<testsuites/)
+      expect(xml).to match(/<testsuite/)
       expect(xml).to match(/tests="17"/)
       expect(xml).to match(/\.feature/)
       expect(xml).to match(/<failure .*type="failure"/)
       expect(xml).to match(/<failure .*message=/)
       expect(xml).to match(/<testcase classname=/)
+      expect(xml).to match(/<testsuite/)
       expect(xml).to match(/<\/testsuites>/)
       expect(xml).to match(/<\/testcase>/)
     end
