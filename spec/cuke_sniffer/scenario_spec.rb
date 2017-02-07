@@ -588,6 +588,29 @@ describe "ScenarioRules" do
     test_scenario_rule(scenario_block, :out_of_order_steps)
   end
 
+  it "should not punish Scenarios that only have duplicate keywords as having out of order steps" do
+    scenario_block = [
+        "Scenario: Scenario with duplicate steps",
+        "Given a step",
+        "When a step",
+        "When a step",
+        "Then a step"
+      ]
+    test_no_scenario_rule(scenario_block, :out_of_order_steps)
+  end
+  
+  it "should punish Scenarios that also have duplicate keywords as having out of order steps" do
+    scenario_block = [
+        "Scenario: Scenario with duplicate steps",
+        "Given a step",
+        "When a step",
+        "When a step",
+        "Given a step",
+        "Then a step"
+    ]
+    test_scenario_rule(scenario_block, :out_of_order_steps)
+  end
+
   it "should not punish Scenarios with no steps as having out of order steps" do
     scenario_block = [
         "Scenario: Empty Scenario"

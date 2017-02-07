@@ -200,13 +200,12 @@ module CukeSniffer
             :reason => lambda { |scenario, rule| step_order = scenario.get_step_order
                         if !step_order.empty?
                           ["But", "*", "And"].each { |type| step_order.delete(type) }
-
+                          step_order = step_order.chunk { |keyword| keyword }.map(&:first)
                           if(step_order != %w(Given When Then) and step_order != %w(When Then))
                             scenario.store_rule(rule)
                           end
                         end
             }
-
         },
         :invalid_first_step => {
             :enabled => true,
