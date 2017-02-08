@@ -29,7 +29,7 @@ describe CukeSniffer::RulesEvaluator do
     rules = [rule]
 
     judge = CukeSniffer::RulesEvaluator.new(@cli, rules)
-    judge.rules.should == rules
+    expect(judge.rules).to be rules
   end
 
   it "should throw an exception when no CLI is passed in" do
@@ -98,8 +98,8 @@ describe CukeSniffer::RulesEvaluator do
     CukeSniffer::RulesEvaluator.new(@cli, [rule])
 
     judged_feature = @cli.features.first
-    judged_feature.rules_hash[rule.phrase].should == nil
-    judged_feature.score.should <= rule.score
+    expect(judged_feature.rules_hash[rule.phrase]).to be_nil
+    expect(judged_feature.score).to be <= rule.score
   end
 
   it "should judge all scenarios in a feature for rules that are enabled and targeted at Scenarios" do
@@ -130,8 +130,8 @@ describe CukeSniffer::RulesEvaluator do
     @cli.features = [CukeSniffer::Feature.new(@file_name)]
     CukeSniffer::RulesEvaluator.new(@cli, [rule])
     judged_scenario = @cli.features.first.scenarios.first
-    judged_scenario.rules_hash[rule.phrase].should == nil
-    judged_scenario.score.should <= rule.score
+    expect(judged_scenario.rules_hash[rule.phrase]).to be_nil
+    expect(judged_scenario.score).to be <= rule.score
   end
 
   it "should include the score of all scenarios in a feature in its total score" do
@@ -146,7 +146,7 @@ describe CukeSniffer::RulesEvaluator do
     build_file(feature_block, @file_name)
     @cli.features = [CukeSniffer::Feature.new(@file_name)]
     CukeSniffer::RulesEvaluator.new(@cli, [rule])
-    @cli.features.first.total_score.should == rule.score * 2
+    expect(@cli.features.first.total_score).to be rule.score * 2
   end
 
   it "should judge a background in a feature for rules that are enabled and targeted at Backgrounds" do
@@ -205,7 +205,7 @@ describe CukeSniffer::RulesEvaluator do
     build_file(feature_block, @file_name)
     @cli.features = [CukeSniffer::Feature.new(@file_name)]
     CukeSniffer::RulesEvaluator.new(@cli, [rule])
-    @cli.features.first.background.rules_hash["my_new_phrase"].should == 1
+    expect(@cli.features.first.background.rules_hash["my_new_phrase"]).to be 1
   end
 
   it "should update a phrase that contains {class} with the type that is being evaluated" do
@@ -219,7 +219,7 @@ describe CukeSniffer::RulesEvaluator do
     build_file(feature_block, @file_name)
     @cli.features = [CukeSniffer::Feature.new(@file_name)]
     CukeSniffer::RulesEvaluator.new(@cli, [rule])
-    @cli.features.first.background.rules_hash["my class is Background."].should == 1
+    expect(@cli.features.first.background.rules_hash["my class is Background."]).to be 1
   end
 
 end

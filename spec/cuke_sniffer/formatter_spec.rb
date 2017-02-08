@@ -27,7 +27,7 @@ describe CukeSniffer::Formatter do
       cuke_sniffer.features = [little_feature, big_feature]
       cuke_sniffer = CukeSniffer::Formatter.sort_cuke_sniffer_lists(cuke_sniffer)
 
-      cuke_sniffer.features.should == [big_feature, little_feature]
+      expect(cuke_sniffer.features).to eq [big_feature, little_feature]
     end
 
     it "should order the step definitions in descending order by score." do
@@ -47,7 +47,7 @@ describe CukeSniffer::Formatter do
       cuke_sniffer.step_definitions = [little_step, big_step]
       cuke_sniffer = CukeSniffer::Formatter.sort_cuke_sniffer_lists(cuke_sniffer)
 
-      cuke_sniffer.step_definitions.should == [big_step, little_step]
+      expect(cuke_sniffer.step_definitions).to eq [big_step, little_step]
     end
 
     it "should order the hooks in descending order by score." do
@@ -66,7 +66,7 @@ describe CukeSniffer::Formatter do
       cuke_sniffer.hooks = [little_hook, big_hook]
 
       cuke_sniffer = CukeSniffer::Formatter.sort_cuke_sniffer_lists(cuke_sniffer)
-      cuke_sniffer.hooks.should == [big_hook, little_hook]
+      expect(cuke_sniffer.hooks).to eq [big_hook, little_hook]
     end
 
     it "should order the rules in descending order by score." do
@@ -82,7 +82,7 @@ describe CukeSniffer::Formatter do
 
       cuke_sniffer = CukeSniffer::Formatter.sort_cuke_sniffer_lists(cuke_sniffer)
 
-      cuke_sniffer.rules.should == [big_rule, little_rule]
+      expect(cuke_sniffer.rules).to eq [big_rule, little_rule]
     end
 
   end
@@ -96,7 +96,7 @@ describe CukeSniffer::Formatter do
       CukeSniffer::Formatter.output_console(cuke_sniffer)
       $stdout = STDOUT
       file_output.close
-      File.exists?(@file_name).should be_true
+      expect(File.exists?(@file_name)).to be true
     end
   end
 
@@ -120,19 +120,19 @@ describe CukeSniffer::Formatter do
     it "should generate an html report." do
       cuke_sniffer = CukeSniffer::CLI.new()
       CukeSniffer::Formatter.output_html(cuke_sniffer, @file_name)
-      File.exists?(@file_name).should == true
+      expect(File.exists?(@file_name)).to be true
     end
 
     it "should append .html to the end of passed file name if it does not have the extension." do
       cuke_sniffer = CukeSniffer::CLI.new()
       CukeSniffer::Formatter.output_html(cuke_sniffer, "my_html")
-      File.exists?("my_html.html").should be_true
+      expect(File.exists?("my_html.html")).to be true
     end
 
     it "should have a minimum output mode where only cuke_sniffer details are present." do
       cuke_sniffer = CukeSniffer::CLI.new()
       CukeSniffer::Formatter.output_min_html(cuke_sniffer, @file_name)
-      File.exists?(@file_name).should == true
+      expect(File.exists?(@file_name)).to be true
     end
 
     describe "messages for when no object of a type was found" do
@@ -142,7 +142,7 @@ describe CukeSniffer::Formatter do
         create_html_report_for_empty_type(:features_location, features_location)
         expected_message = "There were no Features to sniff in '#{features_location}'!"
         xpath = "//*[@id='features']/div/div"
-        build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text.should == expected_message
+        expect(build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text).to eq expected_message
       end
 
       it "should say that there were no features to sniff when no step definitions were found." do
@@ -150,7 +150,7 @@ describe CukeSniffer::Formatter do
         create_html_report_for_empty_type(:step_definitions_location, step_definitions_location)
         expected_message = "There were no Step Definitions to sniff in '#{step_definitions_location}'!"
         xpath = "//*[@id='step_definitions']/div/div"
-        build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text.should == expected_message
+        expect(build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text).to eq expected_message
       end
 
       it "should say that there were no features to sniff when no hooks were found." do
@@ -158,7 +158,7 @@ describe CukeSniffer::Formatter do
         create_html_report_for_empty_type(:hooks_location, hooks_location)
         expected_message = "There were no Hooks to sniff in '#{hooks_location}'!"
         xpath = "//*[@id='hooks']/div/div"
-        build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text.should == expected_message
+        expect(build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text).to eq expected_message
       end
 
     end
@@ -182,7 +182,7 @@ describe CukeSniffer::Formatter do
 
         expected_message = "Excellent! No smells found for Features and Scenarios!"
         xpath = "//*[@id='features']/div/div"
-        build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text.should == expected_message
+        expect(build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text).to eq expected_message
       end
 
       it "produces a no smells found message when there are no rule violations for step definitions" do
@@ -205,7 +205,7 @@ describe CukeSniffer::Formatter do
 
         expected_message = "Excellent! No smells found for Step Definitions!"
         xpath = "//*[@id='step_definitions']/div/div"
-        build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text.should == expected_message
+        expect(build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text).to eq expected_message
       end
 
       it "produces a no smells found message when there are no rule violations for Hooks" do
@@ -230,7 +230,7 @@ describe CukeSniffer::Formatter do
 
         expected_message = "Excellent! No smells found for Hooks!"
         xpath = "//*[@id='hooks']/div/div"
-        build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text.should == expected_message
+        expect(build_nokogiri_from_cuke_sniffer_results.xpath(xpath).text).to eq expected_message
       end
     end
 
@@ -244,13 +244,13 @@ describe CukeSniffer::Formatter do
     it "should generate a well formed xml of the content by respectable sections" do
       cuke_sniffer = CukeSniffer::CLI.new()
       CukeSniffer::Formatter.output_xml(cuke_sniffer, @file_name)
-      File.exists?(@file_name).should == true
+      expect(File.exists?(@file_name)).to be true
     end
 
     it "should append .xml to the end of passed file name if it does have an extension already" do
       cuke_sniffer = CukeSniffer::CLI.new()
       CukeSniffer::Formatter.output_xml(cuke_sniffer, "my_xml")
-      File.exists?("my_xml.xml").should be_true
+      expect(File.exists?("my_xml.xml")).to be true
     end
 
   end
@@ -263,7 +263,7 @@ describe CukeSniffer::Formatter do
     it "should generate a junit xml file with failures by file" do
       cuke_sniffer = CukeSniffer::CLI.new()
       CukeSniffer::Formatter.output_junit_xml(cuke_sniffer, @file_name)
-      File.exists?(@file_name).should == true
+      expect(File.exists?(@file_name)).to be true
     end
 
     it "should generate results that look like junit xml" do
@@ -285,7 +285,7 @@ describe CukeSniffer::Formatter do
     it "should append .xml to the end of passed file name if it does have an extension already" do
       cuke_sniffer = CukeSniffer::CLI.new()
       CukeSniffer::Formatter.output_junit_xml(cuke_sniffer, "my_xml")
-      File.exists?("my_xml.xml").should be_true
+      expect(File.exists?("my_xml.xml")).to be true
     end
   end
 

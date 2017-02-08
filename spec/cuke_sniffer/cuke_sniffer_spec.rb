@@ -8,7 +8,7 @@ describe CukeSniffer do
       start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
       CukeSniffer::Constants::THRESHOLDS["Project"] = 2
       cuke_sniffer.summary[:total_score] = 3
-      cuke_sniffer.good?.should == false
+      expect(cuke_sniffer.good?).to be false
       CukeSniffer::Constants::THRESHOLDS["Project"] = start_threshold
     end
 
@@ -47,7 +47,7 @@ describe CukeSniffer do
       cuke_sniffer.hooks = [hook]
 
       cuke_sniffer.assess_score
-      cuke_sniffer.summary[:total_score].should == features_score + step_definitions_score + hooks_score
+      expect(cuke_sniffer.summary[:total_score]).to be features_score + step_definitions_score + hooks_score
     end
 
     it "should not catalog step definitions when the flag is sent to skip that step is true and keep track that nothing was cataloged" do
@@ -78,8 +78,8 @@ describe CukeSniffer do
           }
       )
 
-      cuke_sniffer.step_definitions.first.calls.should be_empty
-      cuke_sniffer.cataloged?.should be_false
+      expect(cuke_sniffer.step_definitions.first.calls).to be_empty
+      expect(cuke_sniffer.cataloged?).to be false
 
       File.delete(feature_file_name)
       File.delete(step_definition_file)
@@ -113,8 +113,8 @@ describe CukeSniffer do
           }
       )
 
-      cuke_sniffer.step_definitions.first.calls.should_not be_empty
-      cuke_sniffer.cataloged?.should be_true
+      expect(cuke_sniffer.step_definitions.first.calls).to_not be_empty
+      expect(cuke_sniffer.cataloged).to be true
 
       File.delete(feature_file_name)
       File.delete(step_definition_file)
@@ -147,8 +147,8 @@ describe CukeSniffer do
           }
       )
 
-      cuke_sniffer.step_definitions.first.calls.should_not be_empty
-      cuke_sniffer.cataloged?.should be_true
+      expect(cuke_sniffer.step_definitions.first.calls).to_not be_empty
+      expect(cuke_sniffer.cataloged).to be true
 
       File.delete(feature_file_name)
       File.delete(step_definition_file)
@@ -178,7 +178,7 @@ describe CukeSniffer do
       build_file(feature_block, @file_name)
       cuke_sniffer = CukeSniffer::CLI.new({:features_location => @file_name})
       actual_features = remove_rules(cuke_sniffer.features)
-      actual_features.should == [CukeSniffer::Feature.new(@file_name)]
+      expect(actual_features).to eq [CukeSniffer::Feature.new(@file_name)]
     end
 
     it "should be able to handle the substitution of Scenario Outline steps that are missing the examples table" do
@@ -233,7 +233,7 @@ describe CukeSniffer do
       build_file(step_definition_block, @file_name)
       cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location => @file_name})
       actual_step_definitions = remove_rules(cuke_sniffer.step_definitions)
-      actual_step_definitions.should == [CukeSniffer::StepDefinition.new("#@file_name:1", step_definition_block)]
+      expect(actual_step_definitions).to eq [CukeSniffer::StepDefinition.new("#@file_name:1", step_definition_block)]
     end
 
     it "should catalog all calls from scenarios and nested step definition calls on a step definition" do
@@ -265,7 +265,7 @@ describe CukeSniffer do
       cuke_sniffer.step_definitions = [live_step_definition, step_definition_with_nested_call]
 
       cuke_sniffer.catalog_step_calls
-      cuke_sniffer.step_definitions.first.calls.count.should == 2
+      expect(cuke_sniffer.step_definitions.first.calls.count).to be 2
     end
 
     it "should read every line of multiple step definition and segment those lines into steps." do
@@ -283,7 +283,7 @@ describe CukeSniffer do
       build_file(step_definition_block, @file_name)
 
       cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location => @file_name})
-      cuke_sniffer.step_definitions.count.should == 2
+      expect(cuke_sniffer.step_definitions.count).to be 2
     end
 
     it "should be able to identify step definitions that are defined in parentheses." do
@@ -295,7 +295,7 @@ describe CukeSniffer do
       build_file(step_definition_block, @file_name)
 
       cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location => @file_name})
-      cuke_sniffer.step_definitions.count.should == 1
+      expect(cuke_sniffer.step_definitions.count).to be 1
     end
 
     it "should create a list of step definition objects from a step definition file." do
@@ -308,7 +308,7 @@ describe CukeSniffer do
       expected_step_definitions = [CukeSniffer::StepDefinition.new(@file_name + ":1", step_definition_block)]
       cuke_sniffer = CukeSniffer::CLI.new({:step_definitions_location => @file_name})
       actual_step_definitions = remove_rules(cuke_sniffer.step_definitions)
-      actual_step_definitions.should == expected_step_definitions
+      expect(actual_step_definitions).to eq expected_step_definitions
     end
 
     it "should determine if it is below the step definition threshold" do
@@ -316,7 +316,7 @@ describe CukeSniffer do
       start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
       CukeSniffer::Constants::THRESHOLDS["Project"] = 200
       cuke_sniffer.summary[:total_score] = 199
-      cuke_sniffer.good?.should == true
+      expect(cuke_sniffer.good?).to be true
       CukeSniffer::Constants::THRESHOLDS["Project"] = start_threshold
     end
 
@@ -325,7 +325,7 @@ describe CukeSniffer do
       start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
       CukeSniffer::Constants::THRESHOLDS["Project"] = 2
       cuke_sniffer.summary[:total_score] = 3
-      cuke_sniffer.problem_percentage.should == (3.0/2.0)
+      expect(cuke_sniffer.problem_percentage).to be (3.0/2.0)
       CukeSniffer::Constants::THRESHOLDS["Project"] = start_threshold
     end
 
@@ -349,7 +349,7 @@ describe CukeSniffer do
       step_definition_file_name = "my_steps.rb"
       build_file(step_definition_block, step_definition_file_name)
       cuke_sniffer = CukeSniffer::CLI.new({:features_location => feature_file_name, :step_definitions_location => step_definition_file_name})
-      cuke_sniffer.step_definitions.first.calls.should == {}
+      expect(cuke_sniffer.step_definitions.first.calls).to be_empty
       File.delete(feature_file_name)
       File.delete(step_definition_file_name)
     end
@@ -373,8 +373,8 @@ describe CukeSniffer do
 
       cuke_sniffer = CukeSniffer::CLI.new()
       dead_steps = cuke_sniffer.get_dead_steps
-      dead_steps[:total].should >= 1
-      dead_steps.empty?.should be_false
+      expect(dead_steps[:total]).to be >= 1
+      expect(dead_steps.empty?).to be false
     end
 
     it "should disregard multiple white space between the Given/When/Then and the actual content of the step when cataloging step definitions and should not be considered a dead step" do
@@ -399,7 +399,8 @@ describe CukeSniffer do
       cuke_sniffer.step_definitions = [step_definition]
 
       cuke_sniffer.catalog_step_calls
-      cuke_sniffer.get_dead_steps.should == {:total => 0}
+      expect(cuke_sniffer.get_dead_steps.keys).to eq [:total]
+      expect(cuke_sniffer.get_dead_steps[:total]).to be 0
     end
 
     it "should catalog possible dead steps that don't exactly match a step definition" do
@@ -423,7 +424,8 @@ describe CukeSniffer do
       build_file(step_definition_block, step_definition_file_name)
 
       cuke_sniffer = CukeSniffer::CLI.new({:features_location => feature_file_location, :step_definitions_location => step_definition_file_name})
-      cuke_sniffer.get_dead_steps.should == {:total => 0}
+      expect(cuke_sniffer.get_dead_steps.keys).to eq [:total]
+      expect(cuke_sniffer.get_dead_steps[:total]).to be 0
 
       File.delete(feature_file_location)
       File.delete(step_definition_file_name)
@@ -461,7 +463,8 @@ describe CukeSniffer do
       cuke_sniffer.step_definitions = [john_step_definition, bill_step_definition]
 
       cuke_sniffer.catalog_step_calls
-      cuke_sniffer.get_dead_steps.should == {:total => 0}
+      expect(cuke_sniffer.get_dead_steps.keys).to eq [:total]
+      expect(cuke_sniffer.get_dead_steps[:total]).to be 0
       File.delete(feature_file_name)
     end
 
@@ -505,7 +508,8 @@ describe CukeSniffer do
       cuke_sniffer.step_definitions = step_definitions
 
       cuke_sniffer.catalog_step_calls
-      cuke_sniffer.get_dead_steps.should == {:total => 0}
+      expect(cuke_sniffer.get_dead_steps.keys).to eq [:total]
+      expect(cuke_sniffer.get_dead_steps[:total]).to be 0
       File.delete(feature_file_name)
     end
   end
@@ -529,7 +533,7 @@ describe CukeSniffer do
       build_file(hook_block, @file_name)
       cuke_sniffer = CukeSniffer::CLI.new({:hooks_location => @file_path})
       actual_hooks = remove_rules(cuke_sniffer.hooks)
-      actual_hooks.should == [CukeSniffer::Hook.new(@file_path + ":1", hook_block)]
+      expect(actual_hooks).to eq [CukeSniffer::Hook.new(@file_path + ":1", hook_block)]
     end
 
     it "should parse a hooks file with multiple hooks" do
@@ -544,7 +548,7 @@ describe CukeSniffer do
       build_file(hook_block, @file_name)
       cuke_sniffer = CukeSniffer::CLI.new({:hooks_location => @file_path})
       actual_hooks = remove_rules(cuke_sniffer.hooks)
-      actual_hooks.should == [
+      expect(actual_hooks).to eq [
           CukeSniffer::Hook.new(@file_path + ":1", hook_block[0..2]),
           CukeSniffer::Hook.new(@file_path + ":4", hook_block[3..5])
       ]
@@ -560,7 +564,7 @@ describe CukeSniffer do
       build_file(hook_block, @file_name)
       cuke_sniffer = CukeSniffer::CLI.new({:hooks_location => Dir.getwd + "/" + @file_name})
       actual_hooks = remove_rules(cuke_sniffer.hooks)
-      actual_hooks.should == [CukeSniffer::Hook.new(Dir.getwd + "/"+ @file_name +":1", hook_block)]
+      expect(actual_hooks).to eq [CukeSniffer::Hook.new(Dir.getwd + "/"+ @file_name +":1", hook_block)]
     end
 
     it "should include hooks rules in the improvements list" do
@@ -570,7 +574,7 @@ describe CukeSniffer do
       ]
       build_file(hook_block, @file_name)
       cuke_sniffer = CukeSniffer::CLI.new({:hooks_location => Dir.getwd})
-      cuke_sniffer.improvement_list.should_not be_empty
+      expect(cuke_sniffer.improvement_list).to_not be_empty
     end
 
   end
@@ -580,10 +584,10 @@ describe CukeSniffer do
     it "should build a list of rules."do
       cuke_sniffer = CukeSniffer::CLI.new()
 
-      cuke_sniffer.rules.size.should == RULES.size
-      cuke_sniffer.rules.first.phrase.should_not == nil
-      cuke_sniffer.rules.first.score.should_not == nil
-      cuke_sniffer.rules.first.enabled.should == true
+      expect(cuke_sniffer.rules.size).to be RULES.size
+      expect(cuke_sniffer.rules.first.phrase).to_not be_nil
+      expect(cuke_sniffer.rules.first.score).to_not be_nil
+      expect(cuke_sniffer.rules.first.enabled).to be true
     end
 
     it "should build a rule summary for each rule" do
@@ -598,25 +602,25 @@ describe CukeSniffer do
       rules = CukeSniffer::CukeSnifferHelper.build_rules(multiple_rule_set)
 
       multiple_rule_set.count.times do |n|
-        rules[n].enabled.should == multiple_rule_set[n][:enabled]
-        rules[n].phrase.should == multiple_rule_set[n][:phrase]
-        rules[n].score.should == multiple_rule_set[n][:score]
+        expect(rules[n].enabled).to be multiple_rule_set[n][:enabled]
+        expect(rules[n].phrase).to be  multiple_rule_set[n][:phrase]
+        expect(rules[n].score).to be multiple_rule_set[n][:score]
       end
     end
 
     it "should return an empty array when the rules hash is nil" do
       rules = CukeSniffer::CukeSnifferHelper.build_rules(nil)
-      rules.should == []
+      expect(rules).to be_empty
     end
 
     it "should return an empty array when the rules hash is an empty hash" do
       rules = CukeSniffer::CukeSnifferHelper.build_rules( {} )
-      rules.should == []
+      expect(rules).to be_empty
     end
 
     it "should store the symbol" do
       rule = CukeSniffer::CukeSnifferHelper.build_rule(:symbol, {})
-      rule.symbol.should == :symbol
+      expect(rule.symbol).to be :symbol
     end
 
     it "should not build rules with conditions when the rule has no conditions" do
@@ -626,7 +630,7 @@ describe CukeSniffer do
           :score => 0
       }
       rule = CukeSniffer::CukeSnifferHelper.build_rule(:symbol, rule_hash)
-      rule.conditions.should == {}
+      expect(rule.conditions).to be_empty
     end
 
     it "should build rules with conditions when the rule has conditions" do
@@ -640,17 +644,17 @@ describe CukeSniffer do
           :min => min
       }
       rule = CukeSniffer::CukeSnifferHelper.build_rule(:symbol, rule_hash)
-      rule.conditions[:max].should == max
-      rule.conditions[:min].should == min
+      expect(rule.conditions[:max]).to be max
+      expect(rule.conditions[:min]).to be min
     end
     it "should assign a project location when one is provided" do
       project_location = "my_project"
 
       cuke_sniffer = CukeSniffer::CLI.new({:project_location => project_location})
 
-      cuke_sniffer.features_location.should == project_location
-      cuke_sniffer.step_definitions_location.should == project_location
-      cuke_sniffer.hooks_location.should == project_location
+      expect(cuke_sniffer.features_location).to be project_location
+      expect(cuke_sniffer.step_definitions_location).to be project_location
+      expect(cuke_sniffer.hooks_location).to be project_location
     end
 
     it "should override the features location when project location and feature location are provided" do
@@ -659,9 +663,9 @@ describe CukeSniffer do
       cuke_sniffer = CukeSniffer::CLI.new({:project_location => project_location,
                                    :features_location => features_location})
 
-      cuke_sniffer.features_location.should == features_location
-      cuke_sniffer.step_definitions_location.should == project_location
-      cuke_sniffer.hooks_location.should == project_location
+      expect(cuke_sniffer.features_location).to be features_location
+      expect(cuke_sniffer.step_definitions_location).to be  project_location
+      expect(cuke_sniffer.hooks_location).to be  project_location
     end
     it "should override the step definition location when the project location and the step definition location are provided" do
       project_location = "my_project"
@@ -669,9 +673,9 @@ describe CukeSniffer do
       cuke_sniffer = CukeSniffer::CLI.new({:project_location => project_location,
                                    :step_definitions_location => step_definitions_location})
 
-      cuke_sniffer.features_location.should == project_location
-      cuke_sniffer.step_definitions_location.should == step_definitions_location
-      cuke_sniffer.hooks_location.should == project_location
+      expect(cuke_sniffer.features_location).to be project_location
+      expect(cuke_sniffer.step_definitions_location).to be step_definitions_location
+      expect(cuke_sniffer.hooks_location).to be project_location
     end
     it "should override the hooks location when the project location and the hooks location are provided" do
       project_location = "my_project"
@@ -679,9 +683,9 @@ describe CukeSniffer do
       cuke_sniffer = CukeSniffer::CLI.new({:project_location => project_location,
                                    :hooks_location => hooks_location})
 
-      cuke_sniffer.features_location.should == project_location
-      cuke_sniffer.step_definitions_location.should == project_location
-      cuke_sniffer.hooks_location.should == hooks_location
+      expect(cuke_sniffer.features_location).to be project_location
+      expect(cuke_sniffer.step_definitions_location).to be project_location
+      expect(cuke_sniffer.hooks_location).to be hooks_location
     end
   end
 end

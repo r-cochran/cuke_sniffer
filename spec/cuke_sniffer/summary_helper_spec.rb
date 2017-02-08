@@ -15,14 +15,14 @@ describe CukeSniffer::SummaryHelper do
         "top rule" => 3
     }
     actual_sorted_improvement_list = CukeSniffer::SummaryHelper.sort_improvement_list(improvement_list)
-    actual_sorted_improvement_list.keys.should == expected_sorted_improvement_list.keys
+    expect(actual_sorted_improvement_list.keys).to eq expected_sorted_improvement_list.keys
   end
 
   describe "summarizing a list of rule target objects" do
 
     it "should have a default template for a summary" do
       expected_template_keys = [:total, :total_score, :min, :min_file, :max, :max_file, :average, :threshold, :good, :bad, :improvement_list]
-      CukeSniffer::SummaryHelper::make_assessment_hash.keys.should == expected_template_keys
+      expect(CukeSniffer::SummaryHelper::make_assessment_hash.keys).to eq expected_template_keys
     end
 
     describe "initializing the summary for static values from the rule target list" do
@@ -31,22 +31,22 @@ describe CukeSniffer::SummaryHelper do
         scenario_block = ["Scenario: testing"]
         scenario = CukeSniffer::Scenario.new("location.rb:1", scenario_block)
         initialized_assessment_hash = CukeSniffer::SummaryHelper::initialize_assessment_hash([scenario], "Scenario")
-        initialized_assessment_hash[:total].should == 1
+        expect(initialized_assessment_hash[:total]).to be 1
       end
 
       it "should initialize the threshold of rule targets to the constant value for the type" do
         scenario_block = ["Scenario: testing"]
         scenario = CukeSniffer::Scenario.new("location.rb:1", scenario_block)
         initialized_assessment_hash = CukeSniffer::SummaryHelper::initialize_assessment_hash([scenario], "Scenario")
-        initialized_assessment_hash[:threshold].should == THRESHOLDS["Scenario"]
+        expect(initialized_assessment_hash[:threshold]).to eq THRESHOLDS["Scenario"]
       end
 
       it "should not initialize the min, min_file, max, max_file for an empty list" do
         initialized_assessment_hash = CukeSniffer::SummaryHelper::initialize_assessment_hash([], "Scenario")
-        initialized_assessment_hash[:min].nil?.should be_true
-        initialized_assessment_hash[:min_file].nil?.should be_true
-        initialized_assessment_hash[:max].nil?.should be_true
-        initialized_assessment_hash[:max_file].nil?.should be_true
+        expect(initialized_assessment_hash[:min].nil?).to be true
+        expect(initialized_assessment_hash[:min_file].nil?).to be true
+        expect(initialized_assessment_hash[:max].nil?).to be true
+        expect(initialized_assessment_hash[:max_file].nil?).to be true
       end
 
     end
@@ -63,7 +63,7 @@ describe CukeSniffer::SummaryHelper do
       scenario_list = [scenario]
 
       actual_result_hash = CukeSniffer::SummaryHelper.assess_rule_target_list(scenario_list, "Scenario")
-      actual_result_hash.empty?.should be_false
+      expect(actual_result_hash.empty?).to be false
 
     end
 
@@ -75,7 +75,7 @@ describe CukeSniffer::SummaryHelper do
       scenario = CukeSniffer::Scenario.new("location.rb:1", scenario_block)
       scenario_list = [scenario, scenario]
       actual_result_hash = CukeSniffer::SummaryHelper.assess_rule_target_list(scenario_list, "Scenario")
-      actual_result_hash[:total].should == 2
+      expect(actual_result_hash[:total]).to be 2
     end
 
     it "should keep track of the total score across the objects" do
@@ -88,7 +88,7 @@ describe CukeSniffer::SummaryHelper do
       scenario.score = score
       scenario_list = [scenario, scenario]
       actual_result_hash = CukeSniffer::SummaryHelper.assess_rule_target_list(scenario_list, "Scenario")
-      actual_result_hash[:total_score].should == score + score
+      expect(actual_result_hash[:total_score]).to be score + score
     end
 
     it "should keep track of the lowest score out of the objects" do
@@ -102,7 +102,7 @@ describe CukeSniffer::SummaryHelper do
       low_scenario.score = 15
       scenario_list = [low_scenario, high_scenario]
       actual_result_hash = CukeSniffer::SummaryHelper.assess_rule_target_list(scenario_list, "Scenario")
-      actual_result_hash[:min].should == 15
+      expect(actual_result_hash[:min]).to be 15
     end
 
     it "should keep track of the rule target object location with the lowest score" do
@@ -116,7 +116,7 @@ describe CukeSniffer::SummaryHelper do
       low_scenario.score = 15
       scenario_list = [low_scenario, high_scenario]
       actual_result_hash = CukeSniffer::SummaryHelper.assess_rule_target_list(scenario_list, "Scenario")
-      actual_result_hash[:min_file].should == "lower_location.rb:1"
+      expect(actual_result_hash[:min_file]).to eq "lower_location.rb:1"
     end
 
     it "should keep track of the highest score out of the objects" do
@@ -130,7 +130,7 @@ describe CukeSniffer::SummaryHelper do
       low_scenario.score = 15
       scenario_list = [low_scenario, high_scenario]
       actual_result_hash = CukeSniffer::SummaryHelper.assess_rule_target_list(scenario_list, "Scenario")
-      actual_result_hash[:max].should == 100
+      expect(actual_result_hash[:max]).to be 100
     end
 
     it "should keep track of the rule target object file with the highest score" do
@@ -144,7 +144,7 @@ describe CukeSniffer::SummaryHelper do
       low_scenario.score = 15
       scenario_list = [low_scenario, high_scenario]
       actual_result_hash = CukeSniffer::SummaryHelper.assess_rule_target_list(scenario_list, "Scenario")
-      actual_result_hash[:max_file].should == "higher_location.rb:1"
+      expect(actual_result_hash[:max_file]).to eq "higher_location.rb:1"
     end
 
     it "should keep track of the average score (rounded to 2 decimal places) across all of the rule target objects" do
@@ -158,12 +158,12 @@ describe CukeSniffer::SummaryHelper do
       low_scenario.score = 15
       scenario_list = [low_scenario, high_scenario]
       actual_result_hash = CukeSniffer::SummaryHelper.assess_rule_target_list(scenario_list, "Scenario")
-      actual_result_hash[:average].should == ((high_scenario.score + low_scenario.score).to_f / 2).round(2)
+      expect(actual_result_hash[:average]).to eq ((high_scenario.score + low_scenario.score).to_f / 2).round(2)
     end
 
     it "should keep track of the threshold set for a rule object" do
       actual_result_hash = CukeSniffer::SummaryHelper.assess_rule_target_list([], "Scenario")
-      actual_result_hash[:threshold].should == THRESHOLDS["Scenario"]
+      expect(actual_result_hash[:threshold]).to eq THRESHOLDS["Scenario"]
     end
 
     it "should keep track of the number of rule target objects that were above the threshold (bad)." do
@@ -177,7 +177,7 @@ describe CukeSniffer::SummaryHelper do
       low_scenario.score = THRESHOLDS["Scenario"] - 1
       scenario_list = [low_scenario, high_scenario]
       actual_result_hash = CukeSniffer::SummaryHelper.assess_rule_target_list(scenario_list, "Scenario")
-      actual_result_hash[:bad].should == 1
+      expect(actual_result_hash[:bad]).to be 1
     end
 
     it "should keep track of the number of rule target objects that were below the threshold (good)." do
@@ -191,7 +191,7 @@ describe CukeSniffer::SummaryHelper do
       low_scenario.score = THRESHOLDS["Scenario"] - 1
       scenario_list = [low_scenario, high_scenario]
       actual_result_hash = CukeSniffer::SummaryHelper.assess_rule_target_list(scenario_list, "Scenario")
-      actual_result_hash[:good].should == 1
+      expect(actual_result_hash[:good]).to be 1
     end
 
     it "should keep a list of all improvements that need to be mad across the rule target objects" do
@@ -205,7 +205,7 @@ describe CukeSniffer::SummaryHelper do
       low_scenario.rules_hash = {"low rule" => 1, "shared rule" => 1}
       scenario_list = [low_scenario, high_scenario]
       actual_result_hash = CukeSniffer::SummaryHelper.assess_rule_target_list(scenario_list, "Scenario")
-      actual_result_hash[:improvement_list].should == {"high rule" => 1, "low rule" => 1, "shared rule" => 2}
+      expect(actual_result_hash[:improvement_list]).to include("high rule" => 1, "low rule" => 1, "shared rule" => 2)
     end
   end
 

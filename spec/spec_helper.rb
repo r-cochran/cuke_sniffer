@@ -29,12 +29,12 @@ def delete_temp_files
 end
 
 def verify_rule(object, rule, count = 1)
-  object.rules_hash[rule.phrase].should == count
-  object.score.should >= rule.score
+  expect(object.rules_hash[rule.phrase]).to be count
+  expect(object.score).to be >= rule.score
 end
 
 def verify_no_rule(object, rule)
-  object.rules_hash[rule.phrase].should == nil
+  expect(object.rules_hash[rule.phrase]).to be_nil
 end
 
 def remove_rules(rule_objects)
