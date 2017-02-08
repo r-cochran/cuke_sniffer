@@ -73,11 +73,11 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  activesupport (= 4.0.0)
+  activesupport (~> 4.0.0)
   cucumber
   cuke_sniffer!
   jasmine
-  nokogiri (~> 1.0, >= 1.6.2)
+  nokogiri (~> 1.0)
   phantomjs (~> 1.9.8.0)
   rake
   roxml

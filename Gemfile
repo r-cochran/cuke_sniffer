@@ -4,7 +4,7 @@ group :development do
   gem 'rake'
   gem 'rspec'
   gem 'cucumber'
-  gem 'nokogiri', '~> 1.0', '>=1.6.2'
+  gem 'nokogiri', '1.6.8'
   gem 'roxml'
   gem 'activesupport', '4.0.0'
   gem 'jasmine'
