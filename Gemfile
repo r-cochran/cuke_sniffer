@@ -6,7 +6,6 @@ group :development do
   gem 'cucumber'
   gem 'nokogiri', '1.6.8'
   gem 'roxml'
-  gem 'activesupport', '4.0.0'
   gem 'jasmine'
   gem 'phantomjs', '~> 1.9.8.0'
 end
