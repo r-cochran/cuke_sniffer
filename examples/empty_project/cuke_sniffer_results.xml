@@ -10,7 +10,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b57138@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:24 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c94d0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:24 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>no_examples_table</symbol>
@@ -21,7 +21,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b57070@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:31 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c93b8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:31 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>recursive_nested_step</symbol>
@@ -32,7 +32,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b56fa8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:38 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c92f0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:38 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>background_with_tag</symbol>
@@ -43,7 +43,7 @@
       <targets>
         <targets>["Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b56ee0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:45 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c91d8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:45 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>comment_after_tag</symbol>
@@ -54,7 +54,7 @@
       <targets>
         <targets>["Feature", "Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b56df0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:53 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c90e8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:53 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>universal_nested_step</symbol>
@@ -65,7 +65,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b56d28@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:68 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c8fd0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:73 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>no_description</symbol>
@@ -76,7 +76,7 @@
       <targets>
         <targets>["Feature", "Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b56c10@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:81 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c8eb8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:86 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>no_scenarios</symbol>
@@ -87,7 +87,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b56b48@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:88 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c8da0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:93 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>commented_step</symbol>
@@ -98,7 +98,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b56a58@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:95 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c8cb0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:100 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>commented_example</symbol>
@@ -109,7 +109,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b56990@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:104 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c8b98@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:109 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>no_steps</symbol>
@@ -120,7 +120,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b568a0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:111 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c8aa8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:116 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>one_word_step</symbol>
@@ -131,7 +131,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b567b0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:118 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c8968@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:123 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>no_code</symbol>
@@ -142,7 +142,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b566c0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:125 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c88a0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:130 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>around_hook_without_2_parameters</symbol>
@@ -153,7 +153,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b565f8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:132 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c87d8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:137 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>around_hook_no_block_call</symbol>
@@ -164,7 +164,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b56530@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:139 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c86c0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:144 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>hook_no_debugging</symbol>
@@ -175,7 +175,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b56468@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:146 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c85f8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:151 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>hook_conflicting_tags</symbol>
@@ -186,7 +186,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b563a0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:154 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c84e0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:159 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>numbers_in_description</symbol>
@@ -197,7 +197,7 @@
       <targets>
         <targets>["Feature", "Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b56238@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:164 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c83a0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:169 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>empty_feature</symbol>
@@ -208,7 +208,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b56170@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:171 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c8288@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:176 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>background_with_no_scenarios</symbol>
@@ -219,7 +219,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b560a8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:178 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c81c0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:183 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>background_with_one_scenario</symbol>
@@ -230,7 +230,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b55fe0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:185 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c80f8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:190 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>too_many_steps</symbol>
@@ -246,7 +246,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b55ef0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:193 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c8008@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:198 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>out_of_order_steps</symbol>
@@ -257,7 +257,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b55e28@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:200 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c86e8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:205 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>invalid_first_step</symbol>
@@ -268,7 +268,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b55d38@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:212 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c8dc8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:220 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>asterisk_step</symbol>
@@ -279,7 +279,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b55c20@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:219 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c9408@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:227 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>one_example</symbol>
@@ -290,7 +290,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b55b58@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:227 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c9e08@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:235 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>too_many_examples</symbol>
@@ -306,7 +306,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b55a90@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:235 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92ca5b0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:243 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>multiple_given_when_then</symbol>
@@ -317,7 +317,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b559a0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:242 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92cace0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:250 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>too_many_parameters</symbol>
@@ -333,7 +333,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b558d8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:254 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c3f80@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:262 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>lazy_debugging</symbol>
@@ -344,7 +344,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b557e8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:262 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c3eb8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:270 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>pending</symbol>
@@ -355,7 +355,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b55720@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:269 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c3df0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:277 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>feature_same_tag</symbol>
@@ -366,7 +366,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b55658@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:281 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c3d28@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:289 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>scenario_same_tag</symbol>
@@ -377,7 +377,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b55590@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:295 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c3c60@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:303 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>commas_in_description</symbol>
@@ -388,7 +388,7 @@
       <targets>
         <targets>["Feature", "Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b554a0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:310 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c3b70@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:318 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>commented_tag</symbol>
@@ -399,7 +399,7 @@
       <targets>
         <targets>["Feature", "Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b553b0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:317 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c3a80@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:325 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>empty_hook</symbol>
@@ -410,7 +410,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b552e8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:326 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c39b8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:334 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>hook_all_comments</symbol>
@@ -421,7 +421,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b55220@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:333 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c38f0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:341 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>hook_duplicate_tags</symbol>
@@ -432,7 +432,18 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b55158@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:344 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c3828@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:352 (lambda)&gt;</reason>
+    </rule>
+    <rule>
+      <symbol>duplicate_scenario_name</symbol>
+      <enabled>true</enabled>
+      <phrase>Feature has scenarios with the same name.</phrase>
+      <score>10</score>
+      <conditions/>
+      <targets>
+        <targets>["Feature"]</targets>
+      </targets>
+      <reason>#&lt;Proc:0x007fa5e92c3760@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:364 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>too_many_tags</symbol>
@@ -448,7 +459,7 @@
       <targets>
         <targets>["Feature", "Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b55018@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:360 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c3648@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:378 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>long_name</symbol>
@@ -464,7 +475,7 @@
       <targets>
         <targets>["Feature", "Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b54f00@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:368 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c3530@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:386 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>implementation_word</symbol>
@@ -480,7 +491,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b54b40@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:376 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c3170@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:394 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>implementation_word_button</symbol>
@@ -491,7 +502,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b54a78@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:390 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c30a8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:408 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>implementation_word_tab</symbol>
@@ -502,7 +513,7 @@
       <targets>
         <targets>["Scenario"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b549b0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:403 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c2fe0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:421 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>too_many_scenarios</symbol>
@@ -518,7 +529,7 @@
       <targets>
         <targets>["Feature"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b548e8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:413 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c2f18@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:431 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>date_used</symbol>
@@ -529,7 +540,7 @@
       <targets>
         <targets>["Scenario", "Background"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b547f8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:420 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c2e28@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:438 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>nested_step</symbol>
@@ -540,7 +551,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b54730@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:427 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c2d38@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:445 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>commented_code</symbol>
@@ -551,7 +562,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b54668@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:434 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c2c70@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:452 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>small_sleep</symbol>
@@ -567,7 +578,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b545a0@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:442 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c2b58@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:460 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>large_sleep</symbol>
@@ -583,7 +594,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b544d8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:456 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c2a40@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:474 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>todo</symbol>
@@ -594,7 +605,7 @@
       <targets>
         <targets>["StepDefinition"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b54410@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:469 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c28d8@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:487 (lambda)&gt;</reason>
     </rule>
     <rule>
       <symbol>hook_not_in_hooks_file</symbol>
@@ -610,7 +621,7 @@
       <targets>
         <targets>["Hook"]</targets>
       </targets>
-      <reason>#&lt;Proc:0x007faa21b54320@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.0.1/lib/cuke_sniffer/rule_config.rb:477 (lambda)&gt;</reason>
+      <reason>#&lt;Proc:0x007fa5e92c2770@/usr/local/lib/ruby/gems/2.3.0/gems/cuke_sniffer-1.1.0/lib/cuke_sniffer/rule_config.rb:495 (lambda)&gt;</reason>
     </rule>
   </rules>
   <improvement_list/>
