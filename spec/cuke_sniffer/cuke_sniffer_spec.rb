@@ -325,7 +325,7 @@ describe CukeSniffer do
       start_threshold = CukeSniffer::Constants::THRESHOLDS["Project"]
       CukeSniffer::Constants::THRESHOLDS["Project"] = 2
       cuke_sniffer.summary[:total_score] = 3
-      expect(cuke_sniffer.problem_percentage).to be (3.0/2.0)
+      expect(cuke_sniffer.problem_percentage).to eq (3.0/2.0)
       CukeSniffer::Constants::THRESHOLDS["Project"] = start_threshold
     end
 

@@ -112,7 +112,7 @@ describe CukeSniffer::Feature do
     start_threshold = CukeSniffer::Constants::THRESHOLDS["Feature"]
     CukeSniffer::Constants::THRESHOLDS["Feature"] = 2
     feature.score = 3
-    expect(feature.problem_percentage).to be (3.0/2.0)
+    expect(feature.problem_percentage).to eq (3.0/2.0)
     CukeSniffer::Constants::THRESHOLDS["Feature"] = start_threshold
   end
 

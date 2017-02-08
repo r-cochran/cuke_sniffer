@@ -219,7 +219,7 @@ describe CukeSniffer::StepDefinition do
     start_threshold = CukeSniffer::Constants::THRESHOLDS["StepDefinition"]
     CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = 2
     step_definition.score = 3
-    expect(step_definition.problem_percentage).to be (3.0/2.0)
+    expect(step_definition.problem_percentage).to eq (3.0/2.0)
     CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = start_threshold
   end
 
