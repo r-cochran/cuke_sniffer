@@ -97,9 +97,13 @@ module CukeSniffer
             :phrase => "Commented step.",
             :score => ERROR,
             :targets => ["Scenario", "Background"],
-            :reason =>  lambda { |scenario, rule| scenario.steps.each do |step|
-                          scenario.store_rule(rule) if scenario.is_comment?(step)
-                        end}
+            :reason => lambda { |scenario, rule|
+              scenario_comments = scenario.get_comments
+
+              scenario_comments.each do |comment|
+                scenario.store_rule(rule) if scenario.commented_step?(comment)
+              end
+            }
         },
         :commented_example => {
             :enabled => true,
@@ -322,9 +326,13 @@ module CukeSniffer
             :phrase => "{class} has a commented out tag",
             :score => WARNING,
             :targets => ["Feature", "Scenario"],
-            :reason => lambda { |feature_rule_target, rule| feature_rule_target.tags.each do | tag |
-                          feature_rule_target.store_rule(rule, rule.phrase.gsub("{class}", feature_rule_target.type)) if feature_rule_target.is_comment_and_tag?(tag)
-                        end}
+            :reason => lambda { |feature_rule_target, rule|
+              feature_comments = feature_rule_target.get_comments
+
+              feature_comments.each do |comment|
+                feature_rule_target.store_rule(rule, rule.phrase.gsub("{class}", feature_rule_target.type)) if feature_rule_target.commented_tag?(comment)
+              end
+            }
         },
         :empty_hook => {
             :enabled => true,
