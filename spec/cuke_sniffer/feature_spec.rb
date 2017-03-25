@@ -25,20 +25,20 @@ describe CukeSniffer::Feature do
     ]
     build_file(feature_block, @file_name)
     feature = CukeSniffer::Feature.new(@file_name)
-    feature.tags.should == ["@tag1", "@tag2", "@tag3", '#@tag4']
+    expect(feature.tags).to eq ["@tag1", "@tag2", "@tag3", '#@tag4']
   end
 
   it "should parse a feature file and gather the feature name" do
     build_file(["Feature: My features are in this"], @file_name)
     feature = CukeSniffer::Feature.new(@file_name)
-    feature.location.should == @file_name
-    feature.name.should == "My features are in this"
+    expect(feature.location).to be @file_name
+    expect(feature.name).to eq "My features are in this"
   end
 
   it "should terminate when no Feature line and the end of file is reached" do
     build_file(["", "", ""], @file_name)
     feature = CukeSniffer::Feature.new(@file_name)
-    feature.name.should == ""
+    expect(feature.name).to eq ""
   end
 
   it "should capture a feature description that spans multiple lines" do
@@ -50,7 +50,7 @@ describe CukeSniffer::Feature do
     ]
     build_file(feature_block, @file_name)
     feature = CukeSniffer::Feature.new(@file_name)
-    feature.name.should == "I am a feature description that appears on multiple lines because it is legal in cucumber"
+    expect(feature.name).to eq "I am a feature description that appears on multiple lines because it is legal in cucumber"
   end
 
   it "should parse Features files where there is no space between the 'Feature:' declaration and its description" do
@@ -59,7 +59,7 @@ describe CukeSniffer::Feature do
     ]
     build_file(feature_block, @file_name)
     feature = CukeSniffer::Feature.new(@file_name)
-    feature.name.should == "Name"
+    expect(feature.name).to eq "Name"
   end
 
   it "should be able to handle an empty feature file" do
@@ -81,7 +81,7 @@ describe CukeSniffer::Feature do
     CukeSniffer::Constants::THRESHOLDS["Feature"] = 2
     feature.rules_hash = {"my rule" => 1}
     feature.score = 3
-    feature.good?.should == false
+    expect(feature.good?).to be false
     CukeSniffer::Constants::THRESHOLDS["Feature"] = start_threshold
   end
 
@@ -97,7 +97,7 @@ describe CukeSniffer::Feature do
     feature = CukeSniffer::Feature.new(@file_name)
     start_threshold = CukeSniffer::Constants::THRESHOLDS["Feature"]
     CukeSniffer::Constants::THRESHOLDS["Feature"] = 2
-    feature.good?.should == true
+    expect(feature.good?).to be true
     CukeSniffer::Constants::THRESHOLDS["Feature"] = start_threshold
   end
 
@@ -114,7 +114,7 @@ describe CukeSniffer::Feature do
     start_threshold = CukeSniffer::Constants::THRESHOLDS["Feature"]
     CukeSniffer::Constants::THRESHOLDS["Feature"] = 2
     feature.score = 3
-    feature.problem_percentage.should == (3.0/2.0)
+    expect(feature.problem_percentage).to eq (3.0/2.0)
     CukeSniffer::Constants::THRESHOLDS["Feature"] = start_threshold
   end
 
@@ -131,28 +131,31 @@ describe CukeSniffer::Feature do
 
     build_file(feature_block, @file_name)
     feature = CukeSniffer::Feature.new(@file_name)
-    feature.scenarios.count.should == 1
-    feature.scenarios.first.rules_hash.keys.include?("Scenario Outline with no examples.").should be_false
+    expect(feature.scenarios.count).to be 1
+    expect(feature.scenarios.first.rules_hash.keys.include?("Scenario Outline with no examples.")).to be false
   end
 
   describe "Handling Backgrounds" do
 
     it "should capture a background in a feature" do
-      feature_block = [
-          "Feature: Feature with background",
+      background_block = [
           "Background: I am a background",
           "Given I want to be a test",
           "When I become a test",
           "Then I am a test"
       ]
+      feature_block = [
+          "Feature: Feature with background"
+      ]
+      feature_block << background_block
+
       build_file(feature_block, @file_name)
-      scenario = CukeSniffer::Scenario.new("#@file_name:3", feature_block)
+      scenario = CukeSniffer::Scenario.new("#@file_name:2", background_block)
       feature = CukeSniffer::Feature.new(@file_name)
 
-      # todo - this line does nothing...
-      feature.background == scenario
-
-      feature.scenarios.empty?.should == true
+      expect(feature.background).to eq scenario
+      # feature.scenarios.empty?.should == true
+      expect(feature.scenarios.empty?).to be true
     end
 
   end
@@ -166,7 +169,7 @@ describe CukeSniffer::Feature do
       ]
       build_file(feature_block, @file_name)
       feature = CukeSniffer::Feature.new(@file_name)
-      feature.scenarios.should == []
+      expect(feature.scenarios).to be_empty
     end
 
     it "should should not lose the tags of the first scenario when rules are ran." do
@@ -184,7 +187,7 @@ describe CukeSniffer::Feature do
       ]
       build_file(feature_block, @file_name)
       feature = CukeSniffer::Feature.new(@file_name)
-      feature.scenarios.first.tags.should == ["@tag", "@a", "@test"]
+      expect(feature.scenarios.first.tags).to eq ["@tag", "@a", "@test"]
     end
 
     it "should only consider cucumber formatted Scenarios and Scenario Outlines when generating scenario objects" do
@@ -200,8 +203,8 @@ describe CukeSniffer::Feature do
       ]
       build_file(feature_block, @file_name)
       feature = CukeSniffer::Feature.new(@file_name)
-      feature.scenarios.count.should == 1
-      feature.scenarios.first.name.should == "Real Scenario"
+      expect(feature.scenarios.count).to be 1
+      expect(feature.scenarios.first.name).to eq "Real Scenario"
     end
 
     it "should not throw an error on a scenario outline followed by multiple examples tables with tags included" do
@@ -406,6 +409,33 @@ describe "FeatureRules" do
         "Feature: I'm a feature with a comment before a tag"
     ]
     test_no_feature_rule(feature_block, :comment_after_tag)
+  end
+
+  it "should punish Features that have scenarios with the same name" do
+    feature_block = [
+        "Feature: I'm a feature with a comment before a tag",
+        "Scenario: duplicate name",
+        "Scenario: duplicate name"
+    ]
+    test_feature_rule(feature_block, :duplicate_scenario_name)
+  end
+
+  it "should punish Features that have scenarios with the same name despite spacing" do
+    feature_block = [
+        "Feature: I'm a feature with a comment before a tag",
+        "Scenario: duplicate name",
+        "Scenario: duplicate name  "
+    ]
+    test_feature_rule(feature_block, :duplicate_scenario_name)
+  end
+
+  it "should not punish Features that have scenarios with unique names" do
+    feature_block = [
+        "Feature: I'm a feature with a comment before a tag",
+        "Scenario: duplicate name 1",
+        "Scenario: duplicate name 2"
+    ]
+    test_no_feature_rule(feature_block, :duplicate_scenario_name)
   end
 
 end

@@ -16,9 +16,9 @@ describe CukeSniffer::Scenario do
     ]
     location = "path/path/path/my_feature.feature:1"
     step_definition = CukeSniffer::Scenario.new(location, scenario_block)
-    step_definition.location.should == location
-    step_definition.name.should == "Test Scenario"
-    step_definition.steps.should == [
+    expect(step_definition.location).to eq location
+    expect(step_definition.name).to eq "Test Scenario"
+    expect(step_definition.steps).to eq [
         "Given I am making a scenario",
         "When I make the scenario",
         "Then the scenario is made"
@@ -34,9 +34,9 @@ describe CukeSniffer::Scenario do
     ]
     location = "path/path/path/my_feature.feature:1"
     step_definition = CukeSniffer::Scenario.new(location, scenario_block)
-    step_definition.location.should == location
-    step_definition.name.should == "Test Scenario"
-    step_definition.steps.should == [
+    expect(step_definition.location).to eq location
+    expect(step_definition.name).to eq "Test Scenario"
+    expect(step_definition.steps).to eq [
         "Given I am making a scenario",
         "When I make the scenario",
         "Then the scenario is made"
@@ -52,9 +52,9 @@ describe CukeSniffer::Scenario do
     ]
     location = "path/path/path/my_feature.feature:1"
     step_definition = CukeSniffer::Scenario.new(location, scenario_block)
-    step_definition.location.should == location
-    step_definition.name.should == "Test Scenario"
-    step_definition.steps.should == [
+    expect(step_definition.location).to eq location
+    expect(step_definition.name).to eq "Test Scenario"
+    expect(step_definition.steps).to eq [
         "Given I am making a scenario",
         "When I make the scenario",
         "Then the scenario is made"
@@ -75,15 +75,15 @@ describe CukeSniffer::Scenario do
     ]
     location = "path/path/path/my_feature.feature:1"
     step_definition = CukeSniffer::Scenario.new(location, scenario_block)
-    step_definition.location.should == location
-    step_definition.name.should == "Test Scenario"
-    step_definition.tags.should == [
+    expect(step_definition.location).to eq location
+    expect(step_definition.name).to eq "Test Scenario"
+    expect(step_definition.tags).to eq [
         "@tag1",
         "@tag2",
         "@tag3",
         "#comment before scenario"
     ]
-    step_definition.steps.should == [
+    expect(step_definition.steps).to eq [
         "Given I am making a scenario",
         "When I make the scenario",
         "Then the scenario is made"
@@ -102,14 +102,14 @@ describe CukeSniffer::Scenario do
     ]
     location = "path/path/path/my_feature.feature:1"
     scenario = CukeSniffer::Scenario.new(location, scenario_block)
-    scenario.location.should == location
-    scenario.name.should == "Test Scenario"
-    scenario.steps.should == [
+    expect(scenario.location).to eq location
+    expect(scenario.name).to eq "Test Scenario"
+    expect(scenario.steps).to eq [
         "Given I am making a scenario",
         "When I make the scenario",
         "Then the scenario is made"
     ]
-    scenario.examples_table.should == [
+    expect(scenario.examples_table).to eq [
         "| stuff |",
         "| a |"
     ]
@@ -120,7 +120,7 @@ describe CukeSniffer::Scenario do
         "Scenario: Test Scenario",
     ]
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.type.should == "Scenario"
+    expect(scenario.type).to eq "Scenario"
   end
 
   it "should retain the type of scenario outline" do
@@ -128,7 +128,7 @@ describe CukeSniffer::Scenario do
         "Scenario Outline: Test Scenario",
     ]
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.type.should == "Scenario Outline"
+    expect(scenario.type).to eq "Scenario Outline"
   end
 
   it "should return the name for multi-line scenarios" do
@@ -142,7 +142,7 @@ describe CukeSniffer::Scenario do
         "Then the scenario is made",
     ]
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.name.should == "Test My Multi-line Scenario"
+    expect(scenario.name).to eq "Test My Multi-line Scenario"
   end
 
   it "should only include examples in the examples table and not white space" do
@@ -160,7 +160,7 @@ describe CukeSniffer::Scenario do
     ]
 
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.examples_table.should == ["|var_name|", "|one|", "#|two|", "|three|"]
+    expect(scenario.examples_table).to eq ["|var_name|", "|one|", "#|two|", "|three|"]
   end
 
   it "should only include steps and not white space" do
@@ -179,7 +179,7 @@ describe CukeSniffer::Scenario do
     ]
 
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.steps.should == [
+    expect(scenario.steps).to eq [
         "Given I am a thing",
         "And I am also a thing",
         "#      When I skip a line",
@@ -198,7 +198,7 @@ describe CukeSniffer::Scenario do
     ]
 
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.name.should == "I am a commented Scenario"
+    expect(scenario.name).to eq "I am a commented Scenario"
   end
 
   it "should capture inline tables and associate them with the step using the table" do
@@ -209,7 +209,7 @@ describe CukeSniffer::Scenario do
         "|1|2|3|"
     ]
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.inline_tables["Given the in line table is here"].should == ["| one | two | three |", "| 1 | 2 | 3 |"]
+    expect(scenario.inline_tables["Given the in line table is here"]).to eq ["| one | two | three |", "| 1 | 2 | 3 |"]
   end
 
   it "should not clip steps after an inline table" do
@@ -221,7 +221,7 @@ describe CukeSniffer::Scenario do
         "And I am still here"
     ]
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.steps.should == [
+    expect(scenario.steps).to eq [
         "Given the in line table is here",
         "And I am still here"
     ]
@@ -239,7 +239,7 @@ describe CukeSniffer::Scenario do
         "Then I am at the end"
     ]
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.steps.should == [
+    expect(scenario.steps).to eq [
         "Given the in line table is here",
         "And I am still here",
         "Then I am at the end"
@@ -253,7 +253,7 @@ describe CukeSniffer::Scenario do
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = 2
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.score = 3
-    scenario.good?.should == false
+    expect(scenario.good?).to be false
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = start_threshold
   end
 
@@ -268,7 +268,7 @@ describe CukeSniffer::Scenario do
     start_threshold = CukeSniffer::Constants::THRESHOLDS["Scenario"]
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = 2
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.good?.should == true
+    expect(scenario.good?).to be true
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = start_threshold
   end
 
@@ -284,7 +284,7 @@ describe CukeSniffer::Scenario do
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = 2
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
     scenario.score = 3
-    scenario.problem_percentage.should == (3.0/2.0).to_f
+    expect(scenario.problem_percentage).to eq (3.0/2.0).to_f
     CukeSniffer::Constants::THRESHOLDS["Scenario"] = start_threshold
   end
 
@@ -301,7 +301,7 @@ describe CukeSniffer::Scenario do
         '| value2 |'
     ]
     scenario = CukeSniffer::Scenario.new("location:1", scenario_block)
-    scenario.examples_table.should == [
+    expect(scenario.examples_table).to eq [
         "| param |",
         "| value1 |",
         "| value2 |"
@@ -318,7 +318,7 @@ describe CukeSniffer::Scenario do
         "| 2 |"
     ]
     scenario = CukeSniffer::Scenario.new("Location.rb:1", scenario_block)
-    scenario.examples_table.should == [
+    expect(scenario.examples_table).to eq [
         "| thing |",
         "| 2 |"
     ]
@@ -336,7 +336,7 @@ describe CukeSniffer::Scenario do
         "#| 2 |"
     ]
     scenario = CukeSniffer::Scenario.new("Location.rb:1", scenario_block)
-    scenario.examples_table.should == [
+    expect(scenario.examples_table).to eq [
         "| thing |",
         "#| 2 |"
     ]
@@ -359,7 +359,7 @@ describe CukeSniffer::Scenario do
     ]
 
     scenario = CukeSniffer::Scenario.new("location.rb:1", scenario_block)
-    scenario.examples_table.should == [
+    expect(scenario.examples_table).to eq [
         "| outline |",
         "| things |",
         "| stuff |",
@@ -380,7 +380,7 @@ describe CukeSniffer::Scenario do
     ]
 
     scenario = CukeSniffer::Scenario.new("location.rb:1", scenario_block)
-    scenario.examples_table.should == [
+    expect(scenario.examples_table).to eq [
         "| outline |",
         "| things |",
         "| outline |"
@@ -394,7 +394,7 @@ describe CukeSniffer::Scenario do
       ]
       location = "path/path/path/my_feature.feature:1"
       scenario = CukeSniffer::Scenario.new(location, scenario_block)
-      scenario.outline?.should be_true
+      expect(scenario.outline?).to be true
     end
 
     it "returns false when the type is 'Scenario'" do
@@ -403,7 +403,7 @@ describe CukeSniffer::Scenario do
       ]
       location = "path/path/path/my_feature.feature:1"
       scenario = CukeSniffer::Scenario.new(location, scenario_block)
-      scenario.outline?.should be_false
+      expect(scenario.outline?).to be false
     end
 
     it "returns false when the type is 'Background'" do
@@ -412,7 +412,7 @@ describe CukeSniffer::Scenario do
       ]
       location = "path/path/path/my_feature.feature:1"
       scenario = CukeSniffer::Scenario.new(location, scenario_block)
-      scenario.outline?.should be_false
+      expect(scenario.outline?).to be false
     end
   end
 
@@ -434,7 +434,7 @@ describe CukeSniffer::Scenario do
       feature = CukeSniffer::Feature.new(@file_name)
       delete_temp_files
 
-      feature.scenarios.first.commented_examples.should == ["#|dog|", "#|gerbil|"]
+      expect(feature.scenarios.first.commented_examples).to eq ["#|dog|", "#|gerbil|"]
     end
 
     it "returns an empty array when there are no commented examples" do
@@ -456,7 +456,7 @@ describe CukeSniffer::Scenario do
 
       scenario = feature.scenarios.first
 
-      scenario.commented_examples.should == []
+      expect(scenario.commented_examples).to be_empty
     end
 
     it "returns empty list when there are no examples" do
@@ -473,7 +473,7 @@ describe CukeSniffer::Scenario do
 
       scenario = feature.scenarios.first
 
-      scenario.commented_examples.should == []
+      expect(scenario.commented_examples).to be_empty
     end
   end
 
@@ -486,7 +486,7 @@ describe CukeSniffer::Scenario do
       ]
       location = "path/path/path/my_feature.feature:1"
       scenario = CukeSniffer::Scenario.new(location, scenario_block)
-      scenario.get_steps("Given").size.should == 2
+      expect(scenario.get_steps("Given").size).to be 2
     end
 
     it "returns an empty list if there are no step styles associated" do
@@ -497,7 +497,7 @@ describe CukeSniffer::Scenario do
       ]
       location = "path/path/path/my_feature.feature:1"
       scenario = CukeSniffer::Scenario.new(location, scenario_block)
-      scenario.get_steps("Then").size.should == 0
+      expect(scenario.get_steps("Then").size).to be 0
     end
 
     it "can handle the * step starter" do
@@ -508,7 +508,7 @@ describe CukeSniffer::Scenario do
       ]
       location = "path/path/path/my_feature.feature:1"
       scenario = CukeSniffer::Scenario.new(location, scenario_block)
-      scenario.get_steps("*").size.should == 1
+      expect(scenario.get_steps("*").size).to be 1
     end
   end
 
@@ -616,6 +616,36 @@ describe "ScenarioRules" do
         "When comes third"
     ]
     test_scenario_rule(scenario_block, :out_of_order_steps)
+  end
+
+  it "should not punish Scenarios that only have duplicate keywords as having out of order steps" do
+    scenario_block = [
+        "Scenario: Scenario with duplicate steps",
+        "Given a step",
+        "When a step",
+        "When a step",
+        "Then a step"
+      ]
+    test_no_scenario_rule(scenario_block, :out_of_order_steps)
+  end
+  
+  it "should punish Scenarios that also have duplicate keywords as having out of order steps" do
+    scenario_block = [
+        "Scenario: Scenario with duplicate steps",
+        "Given a step",
+        "When a step",
+        "When a step",
+        "Given a step",
+        "Then a step"
+    ]
+    test_scenario_rule(scenario_block, :out_of_order_steps)
+  end
+
+  it "should not punish Scenarios with no steps as having out of order steps" do
+    scenario_block = [
+        "Scenario: Empty Scenario"
+    ]
+    test_no_scenario_rule(scenario_block, :out_of_order_steps)
   end
 
   it "should punish Scenarios with And as its first step" do
@@ -811,10 +841,10 @@ describe "ScenarioRules" do
     run_rule_against_scenario(scenario_block, rule)
     scenario = @cli.features[0].scenarios[0]
 
-    scenario.rules_hash.include?("Implementation word used: page.").should be_true
-    scenario.rules_hash.include?("Implementation word used: site.").should be_true
-    scenario.rules_hash["Implementation word used: page."].should == 2
-    scenario.rules_hash["Implementation word used: site."].should == 1
+    expect(scenario.rules_hash.include?("Implementation word used: page.")).to be true
+    expect(scenario.rules_hash.include?("Implementation word used: site.")).to be true
+    expect(scenario.rules_hash["Implementation word used: page."]).to be 2
+    expect(scenario.rules_hash["Implementation word used: site."]).to be 1
   end
 
   it "should not punish Scenarios that use the word table for the tab implementation word" do
@@ -828,7 +858,7 @@ describe "ScenarioRules" do
     run_rule_against_scenario(scenario_block, rule)
     scenario = @cli.features[0].scenarios[0]
 
-    scenario.rules_hash.include?("Implementation word used: tab.").should_not be_true
+    expect(scenario.rules_hash.include?("Implementation word used: tab.")).to be false
   end
 
   it "should punish Scenarios with steps that use fixed Dates(01/01/0001)" do
@@ -915,11 +945,30 @@ describe "ScenarioRules" do
     pending("this kind of test requires more definition around what elements comments 'belong' to")
 
     scenario_block = [
-        '#@tag',
+      '#@tag',
+      "Scenario: Commented tag",
+      "Given I am a step"
+    ]
+    test_scenario_rule(scenario_block, :commented_tag)
+  end
+
+  it "comments should not be punished as commented tags" do
+    feature_block = [
+        'Feature:',
+        '#blah',
         "Scenario: Commented tag",
         "Given I am a step"
     ]
-    test_scenario_rule(scenario_block, :commented_tag)
+    @file_name = 'foo.feature'
+
+    rule = CukeSniffer::CukeSnifferHelper.build_rule(:commented_tag, RULES[:commented_tag])
+    build_file(feature_block, @file_name)
+    feature = CukeSniffer::Feature.new(@file_name)
+    delete_temp_files
+    @cli.features = [feature]
+    CukeSniffer::RulesEvaluator.new(@cli, [rule])
+
+    verify_no_rule(@cli.features.first.scenarios.first, rule)
   end
 
   it "should not punish Scenarios that have a comment before any tags occur" do
@@ -939,8 +988,8 @@ describe "ScenarioRules" do
     ]
     rule = CukeSniffer::CukeSnifferHelper.build_rule(:implementation_word, RULES[:implementation_word])
     run_rule_against_scenario(scenario_block, rule)
-    @cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: radio button.").should be_true
-    @cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: button.").should be_false
+    expect(@cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: radio button.")).to be true
+    expect(@cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: button.")).to be false
   end
 
   it "should not punish implementation word Button when Radio Button is used" do
@@ -951,7 +1000,7 @@ describe "ScenarioRules" do
     ]
     rule = CukeSniffer::CukeSnifferHelper.build_rule(:implementation_word, RULES[:implementation_word_button])
     run_rule_against_scenario(scenario_block, rule)
-    @cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: button.").should be_false
+    expect(@cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: button.")).to be false
   end
 
   it "should punish implementation word button" do
@@ -962,7 +1011,7 @@ describe "ScenarioRules" do
     ]
     rule = CukeSniffer::CukeSnifferHelper.build_rule(:implementation_word, RULES[:implementation_word_button])
     run_rule_against_scenario(scenario_block, rule)
-    @cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: button.").should be_true
+    expect(@cli.features[0].scenarios[0].rules_hash.keys.include?("Implementation word used: button.")).to be true
   end
 
   it 'should not punish a scenario that has two comments before any tags' do
@@ -1077,7 +1126,7 @@ describe "BackgroundRules" do
     ]
     rule = CukeSniffer::CukeSnifferHelper.build_rule(:out_of_order_steps, RULES[:out_of_order_steps])
     run_rule_against_background(background_block, rule)
-    @cli.features.first.background.rules_hash.include?(rule.phrase).should be_false
+    expect(@cli.features.first.background.rules_hash.include?(rule.phrase)).to be false
   end
 
   it "should punish Backgrounds with And as its first step" do
@@ -1178,10 +1227,10 @@ describe "BackgroundRules" do
     run_rule_against_background(background_block, rule)
     background= @cli.features.first.background
 
-    background.rules_hash.include?("Implementation word used: page.").should be_true
-    background.rules_hash.include?("Implementation word used: site.").should be_true
-    background.rules_hash["Implementation word used: page."].should == 2
-    background.rules_hash["Implementation word used: site."].should == 1
+    expect(background.rules_hash.include?("Implementation word used: page.")).to be true
+    expect(background.rules_hash.include?("Implementation word used: site.")).to be true
+    expect(background.rules_hash["Implementation word used: page."]).to be 2
+    expect(background.rules_hash["Implementation word used: site."]).to be 1
   end
 
   it "should punish Backgrounds with steps that use fixed Dates(01/01/0001)" do

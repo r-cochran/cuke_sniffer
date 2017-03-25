@@ -101,10 +101,7 @@
                         <% next if scenario.score == 0 %>
                         <div class="col-md-12 scenario">
                           <div class="col-md-12 title">
-                            <div class="btn btn-xs btn-default" style="display:none;"> <!--TODO enable this feature -->
-                              View <span class="glyphicon glyphicon-eye-open"></span>
-                            </div>
-                            <%= scenario.type %>: <%=scenario.name %>
+                            <%= scenario.type %>: <%=scenario.name %> (line: <%=scenario.start_line %>)
                           </div>
                           <div class="col-md-12 details well">
                             <% SummaryHelper::sort_improvement_list(scenario.rules_hash).each do |phrase, count| %>

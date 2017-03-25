@@ -12,7 +12,7 @@ describe CukeSniffer::CukeSnifferHelper do
 
     step_definition = CukeSniffer::StepDefinition.new("location.rb:1", step_definition_block)
     found_nested_steps = CukeSniffer::CukeSnifferHelper.convert_steps_with_expressions(step_definition.nested_steps)
-    found_nested_steps.empty?.should be_true
+    expect(found_nested_steps.empty?).to be true
   end
 
 

@@ -13,11 +13,11 @@ describe CukeSniffer::Hook do
         "end"
     ]
     hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
-    hook.type.should == "AfterConfiguration"
-    hook.code.should == ["1+1"]
-    hook.tags.should == []
-    hook.location.should == "location.rb:1"
-    hook.parameters.should == []
+    expect(hook.type).to eq "AfterConfiguration"
+    expect(hook.code).to eq ["1+1"]
+    expect(hook.tags).to be_empty
+    expect(hook.location).to eq "location.rb:1"
+    expect(hook.parameters).to be_empty
   end
 
   it "should parse the tag filter of a hook correctly and store it" do
@@ -26,11 +26,11 @@ describe CukeSniffer::Hook do
         "end"
     ]
     hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
-    hook.type.should == "Before"
-    hook.code.should == []
-    hook.tags.should == ["@tag1", "@tag2,@tag3", "~@tag4"]
-    hook.location.should == "location.rb:1"
-    hook.parameters.should == []
+    expect(hook.type).to eq "Before"
+    expect(hook.code).to be_empty
+    expect(hook.tags).to eq ["@tag1", "@tag2,@tag3", "~@tag4"]
+    expect(hook.location).to eq "location.rb:1"
+    expect(hook.parameters).to eq []
   end
 
   it "should parse the parameters of a hook correctly and store it" do
@@ -39,7 +39,7 @@ describe CukeSniffer::Hook do
         "end"
     ]
     hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
-    hook.parameters.should == ["scenario", "block"]
+    expect(hook.parameters).to eq ["scenario", "block"]
   end
 
   describe "#around?" do
@@ -49,7 +49,7 @@ describe CukeSniffer::Hook do
           "end"
       ]
       hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
-      hook.around?.should be_true
+      expect(hook.around?).to be true
     end
 
     it "returns false when the hook is not Around" do
@@ -57,7 +57,7 @@ describe CukeSniffer::Hook do
           "Before do", "end"
       ]
       hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
-      hook.around?.should be_false
+      expect(hook.around?).to be false
     end
   end
 
@@ -69,7 +69,7 @@ describe CukeSniffer::Hook do
           "end"
       ]
       hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
-      hook.calls_block?.should be_true
+      expect(hook.calls_block?).to be true
     end
 
     it "returns false when the block is not called" do
@@ -77,7 +77,7 @@ describe CukeSniffer::Hook do
           "Before do", "end"
       ]
       hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
-      hook.calls_block?.should be_false
+      expect(hook.calls_block?).to be false
     end
   end
 
@@ -87,7 +87,7 @@ describe CukeSniffer::Hook do
           "Before('@tag1', '~@tag1') do", "end"
       ]
       hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
-      hook.conflicting_tags?.should be_true
+      expect(hook.conflicting_tags?).to be true
     end
 
     it "returns false when there is a no tags" do
@@ -95,7 +95,7 @@ describe CukeSniffer::Hook do
           "Before do", "end"
       ]
       hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
-      hook.conflicting_tags?.should be_false
+      expect(hook.conflicting_tags?).to be false
     end
 
     it "returns false when all tags are unique" do
@@ -103,7 +103,7 @@ describe CukeSniffer::Hook do
           "Before('@tag1', '~@tag2') do", "end"
       ]
       hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
-      hook.conflicting_tags?.should be_false
+      expect(hook.conflicting_tags?).to be false
     end
   end
 
@@ -113,7 +113,7 @@ describe CukeSniffer::Hook do
           "Before do", "end"
       ]
       hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
-      hook.rescues?.should be_true
+      expect(hook.rescues?).to be true
     end
 
     it "returns true when there is code and a begin/rescue block" do
@@ -127,7 +127,7 @@ describe CukeSniffer::Hook do
           "end"
       ]
       hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
-      hook.rescues?.should be_true
+      expect(hook.rescues?).to be_truthy
     end
 
     it "returns false when there is code and no begin/rescue block" do
@@ -137,7 +137,7 @@ describe CukeSniffer::Hook do
           "end"
       ]
       hook = CukeSniffer::Hook.new("location.rb:1", hook_block)
-      hook.rescues?.should be_false
+      expect(hook.rescues?).to be_falsey
     end
   end
 

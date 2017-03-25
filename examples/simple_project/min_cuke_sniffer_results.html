@@ -322,7 +322,7 @@
     <h1>
       Cuke Sniffer <a class="black" target="_blank" href="https://github.com/r-cochran/cuke_sniffer"><span class="fa fa-github"></span></a>
       
-        <small>1.0.1</small>
+        <small>1.1.0</small>
       
     </h1>
     <div>Score:
@@ -1009,42 +1009,6 @@
           </div>
         </div>
       
-        <div class="rule" data-rule-symbol="around_hook_without_2_parameters"
-            
-                rule-Hook
-            
-        >
-          <div>
-            <input type="checkbox"
-                
-                    checked="checked"
-                
-            />
-            <span data-phrase>Around hook without 2 parameters for Scenario and Block.</span>
-          </div>
-          <div class="details" style="display:none;">
-            <div class="well">
-              <div class="row">
-                <div class="col-md-3">
-                  <b>Score:</b>
-                </div>
-                <div class="col-md-9">
-                  25
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <b>Targets:</b>
-                </div>
-                <div class="col-md-9" data-targets>
-                  Hook
-                </div>
-              </div>
-              
-            </div>
-          </div>
-        </div>
-      
         <div class="rule" data-rule-symbol="no_description"
             
                 rule-Feature
@@ -1076,42 +1040,6 @@
                 </div>
                 <div class="col-md-9" data-targets>
                   Feature, Scenario
-                </div>
-              </div>
-              
-            </div>
-          </div>
-        </div>
-      
-        <div class="rule" data-rule-symbol="no_scenarios"
-            
-                rule-Feature
-            
-        >
-          <div>
-            <input type="checkbox"
-                
-                    checked="checked"
-                
-            />
-            <span data-phrase>Feature with no scenarios.</span>
-          </div>
-          <div class="details" style="display:none;">
-            <div class="well">
-              <div class="row">
-                <div class="col-md-3">
-                  <b>Score:</b>
-                </div>
-                <div class="col-md-9">
-                  25
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <b>Targets:</b>
-                </div>
-                <div class="col-md-9" data-targets>
-                  Feature
                 </div>
               </div>
               
@@ -1305,6 +1233,78 @@
           </div>
         </div>
       
+        <div class="rule" data-rule-symbol="around_hook_without_2_parameters"
+            
+                rule-Hook
+            
+        >
+          <div>
+            <input type="checkbox"
+                
+                    checked="checked"
+                
+            />
+            <span data-phrase>Around hook without 2 parameters for Scenario and Block.</span>
+          </div>
+          <div class="details" style="display:none;">
+            <div class="well">
+              <div class="row">
+                <div class="col-md-3">
+                  <b>Score:</b>
+                </div>
+                <div class="col-md-9">
+                  25
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <b>Targets:</b>
+                </div>
+                <div class="col-md-9" data-targets>
+                  Hook
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      
+        <div class="rule" data-rule-symbol="no_scenarios"
+            
+                rule-Feature
+            
+        >
+          <div>
+            <input type="checkbox"
+                
+                    checked="checked"
+                
+            />
+            <span data-phrase>Feature with no scenarios.</span>
+          </div>
+          <div class="details" style="display:none;">
+            <div class="well">
+              <div class="row">
+                <div class="col-md-3">
+                  <b>Score:</b>
+                </div>
+                <div class="col-md-9">
+                  25
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <b>Targets:</b>
+                </div>
+                <div class="col-md-9" data-targets>
+                  Feature
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      
         <div class="rule" data-rule-symbol="hook_conflicting_tags"
             
                 rule-Hook
@@ -1406,6 +1406,42 @@
                 </div>
                 <div class="col-md-9" data-targets>
                   Hook
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      
+        <div class="rule" data-rule-symbol="background_with_one_scenario"
+            
+                rule-Feature
+            
+        >
+          <div>
+            <input type="checkbox"
+                
+                    checked="checked"
+                
+            />
+            <span data-phrase>Feature has a background with one scenario.</span>
+          </div>
+          <div class="details" style="display:none;">
+            <div class="well">
+              <div class="row">
+                <div class="col-md-3">
+                  <b>Score:</b>
+                </div>
+                <div class="col-md-9">
+                  10
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <b>Targets:</b>
+                </div>
+                <div class="col-md-9" data-targets>
+                  Feature
                 </div>
               </div>
               
@@ -1518,6 +1554,42 @@
                 </div>
                 <div class="col-md-9" data-targets>
                   Feature, Scenario, Background
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      
+        <div class="rule" data-rule-symbol="duplicate_scenario_name"
+            
+                rule-Feature
+            
+        >
+          <div>
+            <input type="checkbox"
+                
+                    checked="checked"
+                
+            />
+            <span data-phrase>Feature has scenarios with the same name.</span>
+          </div>
+          <div class="details" style="display:none;">
+            <div class="well">
+              <div class="row">
+                <div class="col-md-3">
+                  <b>Score:</b>
+                </div>
+                <div class="col-md-9">
+                  10
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <b>Targets:</b>
+                </div>
+                <div class="col-md-9" data-targets>
+                  Feature
                 </div>
               </div>
               
@@ -1709,7 +1781,7 @@
           </div>
         </div>
       
-        <div class="rule" data-rule-symbol="scenario_same_tag"
+        <div class="rule" data-rule-symbol="feature_same_tag"
             
                 rule-Feature
             
@@ -1720,7 +1792,7 @@
                     checked="checked"
                 
             />
-            <span data-phrase>Tag appears on all scenarios.</span>
+            <span data-phrase>Same tag appears on both Feature and Scenario</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">
@@ -2167,7 +2239,7 @@
           </div>
         </div>
       
-        <div class="rule" data-rule-symbol="background_with_one_scenario"
+        <div class="rule" data-rule-symbol="scenario_same_tag"
             
                 rule-Feature
             
@@ -2178,43 +2250,7 @@
                     checked="checked"
                 
             />
-            <span data-phrase>Feature has a background with one scenario.</span>
-          </div>
-          <div class="details" style="display:none;">
-            <div class="well">
-              <div class="row">
-                <div class="col-md-3">
-                  <b>Score:</b>
-                </div>
-                <div class="col-md-9">
-                  10
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <b>Targets:</b>
-                </div>
-                <div class="col-md-9" data-targets>
-                  Feature
-                </div>
-              </div>
-              
-            </div>
-          </div>
-        </div>
-      
-        <div class="rule" data-rule-symbol="feature_same_tag"
-            
-                rule-Feature
-            
-        >
-          <div>
-            <input type="checkbox"
-                
-                    checked="checked"
-                
-            />
-            <span data-phrase>Same tag appears on both Feature and Scenario</span>
+            <span data-phrase>Tag appears on all scenarios.</span>
           </div>
           <div class="details" style="display:none;">
             <div class="well">

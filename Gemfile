@@ -4,7 +4,7 @@ group :development do
   gem 'rake'
   gem 'rspec', '< 3.0' # Will have to update test assertions before using a recent version of rspec
   gem 'cucumber'
-  gem 'nokogiri', '~> 1.0', '>=1.6.2'
+  gem 'nokogiri', '1.6.8'
   gem 'roxml'
   gem 'jasmine'
   gem 'phantomjs', '~> 1.9.8.0'

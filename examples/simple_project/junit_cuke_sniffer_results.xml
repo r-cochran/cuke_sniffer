@@ -1,63 +1,58 @@
 <?xml version="1.0"?>
 <testsuites tests="8" failures="12">
-  <testcase classname="examples/simple_project/features/scenarios/nested_directory/nested_feature.feature" name="3" time="0">
-    <failure type="failure" message="Scenario steps out of Given/When/Then order.">Severity: 1
-Location: examples/simple_project/features/scenarios/nested_directory/nested_feature.feature:3
-Error: Scenario steps out of Given/When/Then order.</failure>
-  </testcase>
-  <testcase classname="examples/simple_project/features/step_definitions/nested_steps/nested_steps.rb" name="1" time="0">
-    <failure type="failure" message="Lazy Debugging through puts, p, or print">Severity: 1
-Location: examples/simple_project/features/step_definitions/nested_steps/nested_steps.rb:1
-Error: Lazy Debugging through puts, p, or print</failure>
-  </testcase>
-  <testcase classname="examples/simple_project/features/step_definitions/simple_calculator_steps.rb" name="1" time="0">
-    <failure type="failure" message="Nested step call.">Severity: 1
-Location: examples/simple_project/features/step_definitions/simple_calculator_steps.rb:1
-Error: Nested step call.</failure>
-  </testcase>
-  <testcase classname="examples/simple_project/features/support/env.rb" name="1" time="0">
-    <failure type="failure" message="Hook with no content.">Severity: 1
-Location: examples/simple_project/features/support/env.rb:1
-Error: Hook with no content.</failure>
-  </testcase>
-  <testcase classname="examples/simple_project/features/support/env.rb" name="1" time="0">
-    <failure type="failure" message="Hook is only comments.">Severity: 1
-Location: examples/simple_project/features/support/env.rb:1
-Error: Hook is only comments.</failure>
-  </testcase>
-  <testcase classname="examples/simple_project/features/support/env.rb" name="1" time="0">
-    <failure type="failure" message="Hook found outside of the designated hooks file">Severity: 1
-Location: examples/simple_project/features/support/env.rb:1
-Error: Hook found outside of the designated hooks file</failure>
-  </testcase>
-  <testcase classname="examples/simple_project/features/support/hooks.rb" name="1" time="0">
-    <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging.">Severity: 1
-Location: examples/simple_project/features/support/hooks.rb:1
-Error: Hook without a begin/rescue. Reduced visibility when debugging.</failure>
-  </testcase>
-  <testcase classname="examples/simple_project/features/support/hooks.rb" name="5" time="0">
-    <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging.">Severity: 1
-Location: examples/simple_project/features/support/hooks.rb:5
-Error: Hook without a begin/rescue. Reduced visibility when debugging.</failure>
-  </testcase>
-  <testcase classname="examples/simple_project/features/support/hooks.rb" name="9" time="0">
-    <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging.">Severity: 1
-Location: examples/simple_project/features/support/hooks.rb:9
-Error: Hook without a begin/rescue. Reduced visibility when debugging.</failure>
-  </testcase>
-  <testcase classname="examples/simple_project/features/support/hooks.rb" name="13" time="0">
-    <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging.">Severity: 1
-Location: examples/simple_project/features/support/hooks.rb:13
-Error: Hook without a begin/rescue. Reduced visibility when debugging.</failure>
-  </testcase>
-  <testcase classname="examples/simple_project/features/support/hooks.rb" name="17" time="0">
-    <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging.">Severity: 1
-Location: examples/simple_project/features/support/hooks.rb:17
-Error: Hook without a begin/rescue. Reduced visibility when debugging.</failure>
-  </testcase>
-  <testcase classname="examples/simple_project/features/support/hooks.rb" name="21" time="0">
-    <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging.">Severity: 1
-Location: examples/simple_project/features/support/hooks.rb:21
-Error: Hook without a begin/rescue. Reduced visibility when debugging.</failure>
-  </testcase>
+  <testsuite name="examples/simple_project/features/scenarios/complex_calculator.feature" tests="1" failures="0">
+    <testcase classname="examples/simple_project/features/scenarios/complex_calculator.feature" name="examples/simple_project/features/scenarios/complex_calculator.feature" time="0" status="0"/>
+  </testsuite>
+  <testsuite name="examples/simple_project/features/scenarios/nested_directory/nested_feature.feature" tests="1" failures="1">
+    <testcase classname="examples/simple_project/features/scenarios/nested_directory/nested_feature.feature" name="line: 3" time="0" status="Instances: 1">
+      <failure type="failure" message="Scenario steps out of Given/When/Then order. Instances: 1">Location: examples/simple_project/features/scenarios/nested_directory/nested_feature.feature:3</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="examples/simple_project/features/scenarios/simple_calculator.feature" tests="1" failures="0">
+    <testcase classname="examples/simple_project/features/scenarios/simple_calculator.feature" name="examples/simple_project/features/scenarios/simple_calculator.feature" time="0" status="0"/>
+  </testsuite>
+  <testsuite name="examples/simple_project/features/step_definitions/complex_calculator_steps.rb" tests="1" failures="0">
+    <testcase classname="examples/simple_project/features/step_definitions/complex_calculator_steps.rb" name="examples/simple_project/features/step_definitions/complex_calculator_steps.rb" time="0" status="0"/>
+  </testsuite>
+  <testsuite name="examples/simple_project/features/step_definitions/nested_steps/nested_steps.rb" tests="1" failures="1">
+    <testcase classname="examples/simple_project/features/step_definitions/nested_steps/nested_steps.rb" name="line: 1" time="0" status="Instances: 1">
+      <failure type="failure" message="Lazy Debugging through puts, p, or print Instances: 1">Location: examples/simple_project/features/step_definitions/nested_steps/nested_steps.rb:1</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="examples/simple_project/features/step_definitions/simple_calculator_steps.rb" tests="1" failures="1">
+    <testcase classname="examples/simple_project/features/step_definitions/simple_calculator_steps.rb" name="line: 1" time="0" status="Instances: 1">
+      <failure type="failure" message="Nested step call. Instances: 1">Location: examples/simple_project/features/step_definitions/simple_calculator_steps.rb:1</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="examples/simple_project/features/support/env.rb" tests="1" failures="3">
+    <testcase classname="examples/simple_project/features/support/env.rb" name="line: 1" time="0" status="Instances: 1">
+      <failure type="failure" message="Hook with no content. Instances: 1">Location: examples/simple_project/features/support/env.rb:1</failure>
+    </testcase>
+    <testcase classname="examples/simple_project/features/support/env.rb" name="line: 1" time="0" status="Instances: 1">
+      <failure type="failure" message="Hook is only comments. Instances: 1">Location: examples/simple_project/features/support/env.rb:1</failure>
+    </testcase>
+    <testcase classname="examples/simple_project/features/support/env.rb" name="line: 1" time="0" status="Instances: 1">
+      <failure type="failure" message="Hook found outside of the designated hooks file Instances: 1">Location: examples/simple_project/features/support/env.rb:1</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="examples/simple_project/features/support/hooks.rb" tests="1" failures="6">
+    <testcase classname="examples/simple_project/features/support/hooks.rb" name="line: 1" time="0" status="Instances: 1">
+      <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging. Instances: 1">Location: examples/simple_project/features/support/hooks.rb:1</failure>
+    </testcase>
+    <testcase classname="examples/simple_project/features/support/hooks.rb" name="line: 5" time="0" status="Instances: 1">
+      <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging. Instances: 1">Location: examples/simple_project/features/support/hooks.rb:5</failure>
+    </testcase>
+    <testcase classname="examples/simple_project/features/support/hooks.rb" name="line: 9" time="0" status="Instances: 1">
+      <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging. Instances: 1">Location: examples/simple_project/features/support/hooks.rb:9</failure>
+    </testcase>
+    <testcase classname="examples/simple_project/features/support/hooks.rb" name="line: 13" time="0" status="Instances: 1">
+      <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging. Instances: 1">Location: examples/simple_project/features/support/hooks.rb:13</failure>
+    </testcase>
+    <testcase classname="examples/simple_project/features/support/hooks.rb" name="line: 17" time="0" status="Instances: 1">
+      <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging. Instances: 1">Location: examples/simple_project/features/support/hooks.rb:17</failure>
+    </testcase>
+    <testcase classname="examples/simple_project/features/support/hooks.rb" name="line: 21" time="0" status="Instances: 1">
+      <failure type="failure" message="Hook without a begin/rescue. Reduced visibility when debugging. Instances: 1">Location: examples/simple_project/features/support/hooks.rb:21</failure>
+    </testcase>
+  </testsuite>
 </testsuites>

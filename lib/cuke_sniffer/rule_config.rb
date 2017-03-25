@@ -53,11 +53,16 @@ module CukeSniffer
                 lambda { |feature_rule_target, rule|
                   tokens = feature_rule_target.tags.collect { |line| line.split }.flatten
 
+                  return_value = nil
+
                   tokens.each_with_index do |token, index|
                     if feature_rule_target.is_comment?(token) && tokens[0...index].any? { |x| x =~ /\A@/ }
-                      return feature_rule_target.store_rule(rule)
+                      return_value = feature_rule_target.store_rule(rule)
+                      break
                     end
                   end
+
+                  return_value
                 }
         },
         :universal_nested_step => {
@@ -202,11 +207,14 @@ module CukeSniffer
             :score => WARNING,
             :targets => ["Scenario"],
             :reason => lambda { |scenario, rule| step_order = scenario.get_step_order
-                        ["But", "*", "And"].each { |type| step_order.delete(type) }
-                        if(step_order != %w(Given When Then) and step_order != %w(When Then))
-                          scenario.store_rule(rule)
-                        end}
-
+                        if !step_order.empty?
+                          ["But", "*", "And"].each { |type| step_order.delete(type) }
+                          step_order = step_order.chunk { |keyword| keyword }.map(&:first)
+                          if(step_order != %w(Given When Then) and step_order != %w(When Then))
+                            scenario.store_rule(rule)
+                          end
+                        end
+            }
         },
         :invalid_first_step => {
             :enabled => true,
@@ -355,6 +363,16 @@ module CukeSniffer
                         all_tags.flatten!
                         unique_tags = all_tags.uniq
                         true unless all_tags == unique_tags}
+        },
+        :duplicate_scenario_name => {
+            :enabled => true,
+            :phrase => "Feature has scenarios with the same name.",
+            :score => WARNING,
+            :targets => ["Feature"],
+            :reason => lambda { |feature, rule|
+                          names = feature.scenarios.collect { |scenario| scenario.name }
+                          return names.length > names.uniq.length
+            }
         }
     }
 

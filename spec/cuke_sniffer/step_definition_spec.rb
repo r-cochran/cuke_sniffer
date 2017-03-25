@@ -14,7 +14,7 @@ describe CukeSniffer::StepDefinition do
     ]
     location = "path/path/path/my_steps.rb:1"
     step_definition = CukeSniffer::StepDefinition.new(location, step_definition_block)
-    step_definition.location.should == location
+    expect(step_definition.location).to eq location
   end
 
   it "should accept a simple step definition with no parameters it should divide that code into a regular expression, parameters, and code" do
@@ -24,9 +24,9 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.regex.should == /^the second number is 1$/
-    step_definition.parameters.should == []
-    step_definition.code.should == ["@second_number = 1"]
+    expect(step_definition.regex).to eq /^the second number is 1$/
+    expect(step_definition.parameters).to be_empty
+    expect(step_definition.code).to eq ["@second_number = 1"]
   end
 
   it "should accept a simple step definition with parameters it should divide that code into a regular expression, parameters, and code" do
@@ -36,9 +36,9 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.regex.should == /^the first number is "([^"]*)"$/
-    step_definition.parameters.should == ["first_number"]
-    step_definition.code.should == ["@second_number = 1"]
+    expect(step_definition.regex).to eq /^the first number is "([^"]*)"$/
+    expect(step_definition.parameters).to eq ["first_number"]
+    expect(step_definition.code).to eq ["@second_number = 1"]
   end
 
   it 'is not impacted by excess whitespace around parameters' do
@@ -47,7 +47,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.parameters.should == [
+    expect(step_definition.parameters).to eq [
         'param_1',
         'param_2',
         'param_3'
@@ -64,7 +64,7 @@ describe CukeSniffer::StepDefinition do
     location = "myFile.rb:line 3"
     step_string = "the first number is \"1\""
     step_definition.add_call(location, step_string)
-    step_definition.calls.should == {location => step_string}
+    expect(step_definition.calls).to include(location => step_string)
   end
 
   it "should evaluate 1 complex nested step with open and close on the same line" do
@@ -75,7 +75,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.should == {"location:2" => nested_step}
+    expect(step_definition.nested_steps).to include("location:2" => nested_step)
   end
 
   it "should evaluate 1 complex nested step with open on the same line" do
@@ -87,7 +87,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.should == {"location:2" => nested_step}
+    expect(step_definition.nested_steps).to include("location:2" => nested_step)
   end
 
   it "should capture a nested step with an expression" do
@@ -98,7 +98,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.should == {"location:2" => nested_step}
+    expect(step_definition.nested_steps).to include("location:2" => nested_step)
   end
 
   it "should evaluate 1 complex nested step with the close on the same line" do
@@ -110,7 +110,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.should == {"location:3" => nested_step}
+    expect(step_definition.nested_steps).to include("location:3" => nested_step)
   end
 
   it "should evaluate 1 complex nested steps on its own line" do
@@ -123,7 +123,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.should == {"location:3" => nested_step}
+    expect(step_definition.nested_steps).to include("location:3" => nested_step)
   end
 
   it "should evaluate many complex nested step with steps on their own line" do
@@ -137,7 +137,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.should == {"location:3" => nested_step, "location:4" => nested_step}
+    expect(step_definition.nested_steps).to include("location:3" => nested_step, "location:4" => nested_step)
   end
 
   it "should evaluate many complex nested step with steps on the start line, their own line, and the close line" do
@@ -151,12 +151,12 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.should == {
+    expect(step_definition.nested_steps).to include(
         "location:2" => nested_step,
         "location:3" => nested_step,
         "location:4" => nested_step,
         "location:5" => nested_step
-    }
+    )
   end
 
   it "should evaluate multiple sets of complex nested steps across multiple lines" do
@@ -177,12 +177,12 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.should == {
+    expect(step_definition.nested_steps).to include(
         "location:3" => nested_step_set_one,
         "location:4" => nested_step_set_one,
         "location:8" => nested_step_set_two,
         "location:9" => nested_step_set_two,
-        "location:10" => nested_step_set_two, }
+        "location:10" => nested_step_set_two)
   end
 
   it "should determine if it is above the scenario threshold" do
@@ -194,7 +194,7 @@ describe CukeSniffer::StepDefinition do
     start_threshold = CukeSniffer::Constants::THRESHOLDS["StepDefinition"]
     CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = 2
     step_definition.score = 3
-    step_definition.good?.should == false
+    expect(step_definition.good?).to be false
     CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = start_threshold
   end
 
@@ -206,7 +206,7 @@ describe CukeSniffer::StepDefinition do
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
     start_threshold = CukeSniffer::Constants::THRESHOLDS["StepDefinition"]
     CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = 200
-    step_definition.good?.should == true
+    expect(step_definition.good?).to be true
     CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = start_threshold
   end
 
@@ -219,7 +219,7 @@ describe CukeSniffer::StepDefinition do
     start_threshold = CukeSniffer::Constants::THRESHOLDS["StepDefinition"]
     CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = 2
     step_definition.score = 3
-    step_definition.problem_percentage.should == (3.0/2.0)
+    expect(step_definition.problem_percentage).to eq (3.0/2.0)
     CukeSniffer::Constants::THRESHOLDS["StepDefinition"] = start_threshold
   end
 
@@ -230,7 +230,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.values.include?("I am calling a nested step").should be_true
+    expect(step_definition.nested_steps.values.include?("I am calling a nested step")).to be true
   end
 
   it "should capture a nested step correctly that are on the same line as the closing of a string literal" do
@@ -241,7 +241,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.values.include?("I am calling a nested step").should be_true
+    expect(step_definition.nested_steps.values.include?("I am calling a nested step")).to be true
   end
 
   it "should capture a nested step correctly that are on the same line as the opening of a string literal" do
@@ -251,7 +251,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.values.include?("I am calling a nested step").should be_true
+    expect(step_definition.nested_steps.values.include?("I am calling a nested step")).to be true
   end
 
   it "should capture a nested step correctly that uses a } to close a variable use and is not the true end of the strings" do
@@ -262,7 +262,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.values.include?("this is the true end of the nested step").should be_true
+    expect(step_definition.nested_steps.values.include?("this is the true end of the nested step")).to be true
   end
 
   it "should capture nested steps when the 'step' call is used with simple string" do
@@ -272,7 +272,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.values.include?("my nested step call").should be_true
+    expect(step_definition.nested_steps.values.include?("my nested step call")).to be true
   end
 
   it "should capture nested steps when the 'step' call is used with string literal" do
@@ -282,7 +282,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.values.include?("my nested step call").should be_true
+    expect(step_definition.nested_steps.values.include?("my nested step call")).to be true
   end
 
   it "should capture nested steps used in conditional logic" do
@@ -294,7 +294,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.values.include?("my nested step call").should be_true
+    expect(step_definition.nested_steps.values.include?("my nested step call")).to be true
   end
 
   it "should ignore commented lines when looking for nested steps" do
@@ -304,7 +304,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.should == {}
+    expect(step_definition.nested_steps).to be_empty
   end
 
   it "should disregard nested steps that have \\ in their statements" do
@@ -314,8 +314,8 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.nested_steps.should == {"location:2" => 'my nested step call says hello to "John"'}
-    step_definition.nested_steps.values[0].should =~ /my nested step call says hello to ".*"/
+    expect(step_definition.nested_steps).to include("location:2" => 'my nested step call says hello to "John"')
+    expect(step_definition.nested_steps.values[0]).to be =~ /my nested step call says hello to ".*"/
   end
 
   it "should return all recursive nested step definitions" do
@@ -325,7 +325,7 @@ describe CukeSniffer::StepDefinition do
         "end"
     ]
     step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-    step_definition.recursive_nested_steps.should == {"location:2" => "recursive step"}
+    expect(step_definition.recursive_nested_steps).to include("location:2" => "recursive step")
 
   end
 
@@ -337,7 +337,7 @@ describe CukeSniffer::StepDefinition do
           "end"
       ]
       step_definition = CukeSniffer::StepDefinition.new("location:1", step_definition_block)
-      step_definition.todo.should == ["#TODO I need to do something here"]
+      expect(step_definition.todo).to eq ["#TODO I need to do something here"]
     end
   end
 end
