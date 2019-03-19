@@ -158,7 +158,7 @@ module CukeSniffer
       index = 0
       while index < examples_section.size
         index += 2 if(examples_section[index].include?("Examples:"))
-        return_section << examples_section[index]
+        return_section << examples_section[index].to_s
         index += 1
       end
       return_section
